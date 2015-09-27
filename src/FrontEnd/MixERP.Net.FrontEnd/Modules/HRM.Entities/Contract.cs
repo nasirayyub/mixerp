@@ -64,6 +64,22 @@ namespace MixERP.Net.Entities.HRM
         [ColumnDbType("int4", 0, false, "")]
         public int EmploymentStatusCodeId { get; set; }
 
+        [Column("verification_status_id")]
+        [ColumnDbType("int4", 0, false, "")]
+        public int VerificationStatusId { get; set; }
+
+        [Column("verified_by_user_id")]
+        [ColumnDbType("int4", 0, true, "")]
+        public int? VerifiedByUserId { get; set; }
+
+        [Column("verified_on")]
+        [ColumnDbType("date", 0, true, "")]
+        public DateTime? VerifiedOn { get; set; }
+
+        [Column("verification_reason")]
+        [ColumnDbType("varchar", 128, true, "")]
+        public string VerificationReason { get; set; }
+
         [Column("audit_user_id")]
         [ColumnDbType("int4", 0, true, "")]
         public int? AuditUserId { get; set; }

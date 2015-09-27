@@ -1,13 +1,22 @@
 --This table should not be localized.
 SELECT * FROM core.recreate_menu('HRM', '~/Modules/HRM/Index.mix', 'HRM', 0, NULL);
+
 SELECT * FROM core.recreate_menu('Tasks', NULL, 'HRMTA', 1, core.get_menu_id('HRM'));
 SELECT * FROM core.recreate_menu('Attendance', '~/Modules/HRM/Tasks/Attendance.mix', 'ATTNDCE', 2, core.get_menu_id('HRMTA'));
 SELECT * FROM core.recreate_menu('Employees', '~/Modules/HRM/Tasks/Employees.mix?View=kanban', 'EMPL', 2, core.get_menu_id('HRMTA'));
 SELECT * FROM core.recreate_menu('Contracts', '~/Modules/HRM/Tasks/Contracts.mix', 'CTRCT', 2, core.get_menu_id('HRMTA'));
-SELECT * FROM core.recreate_menu('Leave Application', '~/Modules/HRM/Tasks/LeaveApplication.mix', 'LEVAPP', 2, core.get_menu_id('HRMTA'));
-SELECT * FROM core.recreate_menu('Resignation', '~/Modules/HRM/Tasks/Resignation.mix', 'RESIGN', 2, core.get_menu_id('HRMTA'));
-SELECT * FROM core.recreate_menu('Termination', '~/Modules/HRM/Tasks/Termination.mix', 'TERMIN', 2, core.get_menu_id('HRMTA'));
-SELECT * FROM core.recreate_menu('Exit', '~/Modules/HRM/Tasks/Exit.mix', 'EXIT', 2, core.get_menu_id('HRMTA'));
+SELECT * FROM core.recreate_menu('Leave Application', '~/Modules/HRM/Tasks/LeaveApplications.mix', 'LEVAPP', 2, core.get_menu_id('HRMTA'));
+SELECT * FROM core.recreate_menu('Resignations', '~/Modules/HRM/Tasks/Resignations.mix', 'RESIGN', 2, core.get_menu_id('HRMTA'));
+SELECT * FROM core.recreate_menu('Terminations', '~/Modules/HRM/Tasks/Terminations.mix', 'TERMIN', 2, core.get_menu_id('HRMTA'));
+SELECT * FROM core.recreate_menu('Exits', '~/Modules/HRM/Tasks/Exits.mix', 'EXIT', 2, core.get_menu_id('HRMTA'));
+
+SELECT * FROM core.recreate_menu('Verification', NULL, 'HRMVER', 1, core.get_menu_id('HRM'));
+SELECT * FROM core.recreate_menu('Verify Contracts', '~/Modules/HRM/Verification/Contracts.mix', 'VERCTRCT', 2, core.get_menu_id('HRMVER'));
+SELECT * FROM core.recreate_menu('Verify Leave Applications', '~/Modules/HRM/Verification/LeaveApplications.mix', 'VERLEVAPP', 2, core.get_menu_id('HRMVER'));
+SELECT * FROM core.recreate_menu('Verify Resignations', '~/Modules/HRM/Verification/Resignations.mix', 'VERRESIGN', 2, core.get_menu_id('HRMVER'));
+SELECT * FROM core.recreate_menu('Verify Terminations', '~/Modules/HRM/Verification/Terminations.mix', 'VERTERMIN', 2, core.get_menu_id('HRMVER'));
+SELECT * FROM core.recreate_menu('Verify Exits', '~/Modules/HRM/Verification/Exits.mix', 'VEREXIT', 2, core.get_menu_id('HRMVER'));
+
 
 SELECT * FROM core.recreate_menu('Payroll', NULL, 'PAYRL', 1, core.get_menu_id('HRM'));
 SELECT * FROM core.recreate_menu('Wages', '~/Modules/HRM/Payroll/Wages.mix', 'WAGES', 2, core.get_menu_id('PAYRL'));

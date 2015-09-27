@@ -10,8 +10,13 @@
     </div>
 
     <div class="big error"></div>
-    <input type="button" id="SaveButton" value="Save" class="ui green button" />
-    <input type="button" id="CancelButton" value="Cancel" class="ui red button" />
+
+    <a href="javascript:void(0);" class="ui green button" id="SaveButton">
+        <span data-localize="Titles.Save"></span>
+    </a>
+    <a href="javascript:void(0);" class="ui red button" id="CancelButton">
+        <span data-localize="Titles.Cancel"></span>
+    </a>
 
     <script>
         function initializeAjaxRequest() {
@@ -40,8 +45,8 @@
         var saveButton = $("#SaveButton");
         var scrud = $("#scrud");
         var cancelButton = $("#CancelButton");
-        var form = $(".form.factory");
-        var view = $(".view.factory");
+        var scrudForm = $(".form.factory");
+        var scrudView = $(".view.factory");
         var grid = [undefined, "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen"];
         var editData;
         var dropdownsLoaded = false;
@@ -81,6 +86,19 @@
             return (returnTo || "");
         };
 
+        function showView() {
+            var url = updateQueryString("View", "kanban");
+            window.history.pushState({ path: url }, '', url);
+
+            window.scrudForm.hide();
+            $("div[data-target]").hide();
+            $("[data-target]").removeClass("active");
+            $('[data-target="kanban"]').show().addClass("active");
+
+            window.scrudView.fadeIn(500);
+            loadPageCount(loadGrid);
+        };
+
         cancelButton.click(function () {
             var confirmed = confirmAction();
 
@@ -90,9 +108,8 @@
 
             resetForm();
 
-            if (view.length) {
-                form.hide();
-                view.fadeIn(500);
+            if (window.scrudView.length) {
+                showView();
             };
 
             if (getReturnUrl()) {
@@ -168,7 +185,6 @@
                     customField.Value = value;
 
                     customFields.push(customField);
-
                 });
             };
 
@@ -178,23 +194,19 @@
 
             ajaxAddOrEdit.success(function () {
                 saveButton.removeClass("loading");
-                var confirmed = confirm("Task completed successfully. Return to view?");
+                var confirmed = confirm(window.Resources.Labels.TaskCompletedSuccessfullyReturnToView());
 
                 resetForm();
 
                 if (confirmed) {
-                    form.hide();
+                    window.scrudForm.hide();
 
                     if (getReturnUrl()) {
                         window.location.href = getReturnUrl();
                     };
 
-                    if (view.length) {
-                        var url = updateQueryString("View", "View");
-                        window.history.pushState({ path: url }, '', url);
-
-                        view.fadeIn(500);
-                        loadPageCount(loadGrid);
+                    if (window.scrudView.length) {
+                        showView();
                     };
                 };
             });
@@ -239,7 +251,7 @@
             var required = $(".form.factory #scrud [required]:not(:disabled):not([readonly])");
             required.trigger("blur");
 
-            var errorFields = form.find(".error:not(.big.error)");
+            var errorFields = window.scrudForm.find(".error:not(.big.error)");
 
             $.each(errorFields, function (i, v) {
                 var label = $(v).find("label");
@@ -263,18 +275,6 @@
             };
 
             return getAjaxRequest(url);
-
-            //Todo: to remove
-            //var apiName = pocoName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-
-            //var url = "/api/" + getSchema() + "/" + apiName + "/custom-fields";
-            //var queryString = getQueryStringByName(scrudFactory.queryStringKey || "");
-
-            //if (queryString) {
-            //    url += "/" + queryString;
-            //};
-
-            //return getAjaxRequest(url);
         };
 
         function getFormView() {
@@ -298,22 +298,22 @@
     <script>
 
         function showForm() {
-            var form = $(".form.factory");
-            var view = $(".view.factory");
+            window.scrudForm = $(".form.factory");
+            window.scrudView = $(".view.factory");
 
             var defaultView = window.getQueryStringByName("View");
 
             if ((defaultView || "") === "FormView") {
-                if (view.length) {
-                    view.hide();
+                if (window.scrudView.length) {
+                    window.scrudView.hide();
                 };
 
-                form.fadeIn(500);
+                window.scrudForm.fadeIn(500);
             } else {
-                if (view.length) {
-                    form.hide();
+                if (window.scrudView.length) {
+                    window.scrudForm.hide();
                 } else {
-                    form.fadeIn(500);
+                    window.scrudForm.fadeIn(500);
                 };
             };
         };
@@ -321,10 +321,6 @@
         //$(window).load
         $(document).ready(function () {
             loadEdit();
-            setTimeout(
-                function () {
-                    showForm();
-                }, 500);
         });
 
         $(document).ajaxStop(function () {
@@ -334,13 +330,14 @@
             loadDropdowns();
             setRegionalFormat();
             loadDatepicker();
-            triggerReadyEvent();
+            triggerFormReadyEvent();
         });
 
-        function triggerReadyEvent() {
-            if (!formReady) {
-                formReady = true;
+        function triggerFormReadyEvent() {
+            if (!window.formReady) {
+                window.formReady = true;
                 $(document).trigger("formready");
+                showForm();
             };
         };
 
@@ -821,3 +818,4 @@
         });
     </script>
 </div>
+<script src="/Scripts/mixerp/utitlities/localizable.js"></script>

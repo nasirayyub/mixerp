@@ -428,3 +428,25 @@ $$
 LANGUAGE plpgsql;
 
 DROP TABLE IF EXISTS office.holiday;
+
+DROP VIEW IF EXISTS core.item_cost_price_scrud_view;
+DROP VIEW IF EXISTS core.item_scrud_view;
+DROP VIEW IF EXISTS core.item_view;
+DROP VIEW IF EXISTS core.party_view;
+DROP VIEW IF EXISTS core.party_scrud_view;
+DROP VIEW IF EXISTS core.party_selector_view;
+DROP VIEW IF EXISTS core.recurring_invoice_setup_scrud_view;
+DROP VIEW IF EXISTS core.sales_tax_exempt_detail_scrud_view;
+DROP VIEW IF EXISTS core.shipping_address_scrud_view;
+DROP VIEW IF EXISTS core.supplier_view;
+DROP VIEW IF EXISTS core.supplier_selector_view;
+DROP VIEW IF EXISTS transactions.sales_quotation_view;
+DROP VIEW IF EXISTS transactions.sales_order_view;
+DROP VIEW IF EXISTS transactions.sales_delivery_view;
+DROP VIEW IF EXISTS transactions.receipt_view;
+
+ALTER TABLE core.parties
+ALTER COLUMN company_name TYPE national character varying(128);
+
+ALTER TABLE core.parties
+ALTER COLUMN party_name TYPE national character varying(150);

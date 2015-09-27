@@ -10,6 +10,16 @@ BEGIN
     IF(hstore(NEW) ? 'change_status_to') THEN
         _new_status_id := NEW.change_status_to;
     END IF;
+
+    IF(hstore(NEW) ? 'service_end_date') THEN
+        _service_end := NEW.service_end_date;
+    END IF;
+
+    IF(_service_end = NULL) THEN
+        IF(hstore(NEW) ? 'desired_resign_date') THEN
+            _service_end := NEW.desired_resign_date;
+        END IF;
+    END IF;
     
     IF(NEW.verification_status_id > 0) THEN        
         UPDATE hrm.employees

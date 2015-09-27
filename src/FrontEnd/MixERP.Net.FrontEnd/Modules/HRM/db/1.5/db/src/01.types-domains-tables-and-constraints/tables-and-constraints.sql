@@ -215,7 +215,11 @@ CREATE TABLE hrm.contracts
     began_on                                date,
     ended_on                                date,
     employment_status_code_id               integer NOT NULL REFERENCES hrm.employment_status_codes(employment_status_code_id),
-    audit_user_id                           integer NULL REFERENCES office.users(user_id),
+    verification_status_id                  integer NOT NULL REFERENCES core.verification_statuses(verification_status_id),
+    verified_by_user_id                     integer REFERENCES office.users(user_id),
+    verified_on                             date,
+    verification_reason                     national character varying(128) NULL,
+   audit_user_id                           integer NULL REFERENCES office.users(user_id),
     
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
                                             DEFAULT(NOW())    
@@ -345,6 +349,10 @@ CREATE TABLE hrm.leave_applications
     reason                                  text,
     start_date                              date,
     end_date                                date,
+    verification_status_id                  integer NOT NULL REFERENCES core.verification_statuses(verification_status_id),
+    verified_by_user_id                     integer REFERENCES office.users(user_id),
+    verified_on                             date,
+    verification_reason                     national character varying(128) NULL,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),    
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
                                             DEFAULT(NOW())    
@@ -364,7 +372,6 @@ CREATE TABLE hrm.resignations
     verified_by_user_id                     integer REFERENCES office.users(user_id),
     verified_on                             date,
     verification_reason                     national character varying(128) NULL,
-    service_end_date                        date NOT NULL,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),    
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
                                             DEFAULT(NOW())    

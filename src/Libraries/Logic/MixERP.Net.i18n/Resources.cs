@@ -1759,6 +1759,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for You can mark this item with a flag, however you will not be able to see the flags created by other users.
+		/// </summary>
+		public static string FlagDescription 
+		{
+			get
+			{
+				return Get("FlagDescription");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for You can mark this transaction with a flag, however you will not be able to see the flags created by other users.
 		/// </summary>
 		public static string FlagLabel 
@@ -1766,6 +1777,28 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("FlagLabel");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Flag removed.
+		/// </summary>
+		public static string FlagRemoved 
+		{
+			get
+			{
+				return Get("FlagRemoved");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Flag saved.
+		/// </summary>
+		public static string FlagSaved 
+		{
+			get
+			{
+				return Get("FlagSaved");
 			}
 		}
 		
@@ -1799,6 +1832,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("GoToTop");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Successfully imported {0} items.
+		/// </summary>
+		public static string ImportedNItems 
+		{
+			get
+			{
+				return Get("ImportedNItems");
 			}
 		}
 		
@@ -1990,6 +2034,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Filter: {0}
+		/// </summary>
+		public static string NamedFilter 
+		{
+			get
+			{
+				return Get("NamedFilter");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for No additional user found.
 		/// </summary>
 		public static string NoAdditionalUserFound 
@@ -2030,6 +2085,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("NoFiscalYearDefined");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for No instance of form was found.
+		/// </summary>
+		public static string NoFormFound 
+		{
+			get
+			{
+				return Get("NoFormFound");
 			}
 		}
 		
@@ -2254,6 +2320,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Processing  your CSV file.
+		/// </summary>
+		public static string ProcessingYourCSVFile 
+		{
+			get
+			{
+				return Get("ProcessingYourCSVFile");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Receipt #{0} notification, {1}
 		/// </summary>
 		public static string ReceiptEmailSubject 
@@ -2272,6 +2349,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("ReleaseContainsNoUpdates");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Requesting import. This may take several minutes to complete.
+		/// </summary>
+		public static string RequestingImport 
+		{
+			get
+			{
+				return Get("RequestingImport");
 			}
 		}
 		
@@ -2327,6 +2415,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("RestoringFile");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Rolling back changes.
+		/// </summary>
+		public static string RollingBackChanges 
+		{
+			get
+			{
+				return Get("RollingBackChanges");
 			}
 		}
 		
@@ -2419,6 +2518,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Successfully processed your file.
+		/// </summary>
+		public static string SuccessfullyProcessedYourFile 
+		{
+			get
+			{
+				return Get("SuccessfullyProcessedYourFile");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for {0} out of {1} tasks completed.
 		/// </summary>
 		public static string TaskCompletedProgress 
@@ -2437,6 +2547,28 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("TaskCompletedSuccessfully");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Task completed successfully. Refresh the view?
+		/// </summary>
+		public static string TaskCompletedSuccessfullyRefreshView 
+		{
+			get
+			{
+				return Get("TaskCompletedSuccessfullyRefreshView");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Task completed successfully. Return to the view?
+		/// </summary>
+		public static string TaskCompletedSuccessfullyReturnToView 
+		{
+			get
+			{
+				return Get("TaskCompletedSuccessfullyReturnToView");
 			}
 		}
 		
@@ -2602,6 +2734,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("UpdateOperationCompletedSuccessfully");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Your upload is of invalid file type "{0}". Please try again.
+		/// </summary>
+		public static string UploadInvalidTryAgain 
+		{
+			get
+			{
+				return Get("UploadInvalidTryAgain");
 			}
 		}
 		
@@ -2836,6 +2979,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("CannotAccessAccount");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for The column "{0}" does not exist or is invalid. Are you sure you want to continue?
+		/// </summary>
+		public static string ColumnInvalidAreYouSure 
+		{
+			get
+			{
+				return Get("ColumnInvalidAreYouSure");
 			}
 		}
 		
@@ -10312,6 +10466,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Add a Kanban List
+		/// </summary>
+		public static string AddAKanbanList 
+		{
+			get
+			{
+				return Get("AddAKanbanList");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Add New
 		/// </summary>
 		public static string AddNew 
@@ -10319,6 +10484,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("AddNew");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Add New Checklist
+		/// </summary>
+		public static string AddNewChecklist 
+		{
+			get
+			{
+				return Get("AddNewChecklist");
 			}
 		}
 		
@@ -10462,6 +10638,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("AnalyzeDatabse");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for And
+		/// </summary>
+		public static string And 
+		{
+			get
+			{
+				return Get("And");
 			}
 		}
 		
@@ -11049,6 +11236,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Column Name
+		/// </summary>
+		public static string ColumnName 
+		{
+			get
+			{
+				return Get("ColumnName");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Comment
 		/// </summary>
 		public static string Comment 
@@ -11100,6 +11298,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("CompoundUnitsOfMeasure");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Condition
+		/// </summary>
+		public static string Condition 
+		{
+			get
+			{
+				return Get("Condition");
 			}
 		}
 		
@@ -11247,6 +11456,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Create a Flag
+		/// </summary>
+		public static string CreateAFlag 
+		{
+			get
+			{
+				return Get("CreateAFlag");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Create Backup
 		/// </summary>
 		public static string CreateBackup 
@@ -11331,6 +11551,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("CreateItemOrService");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Create New
+		/// </summary>
+		public static string CreateNew 
+		{
+			get
+			{
+				return Get("CreateNew");
 			}
 		}
 		
@@ -11742,6 +11973,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Data Import
+		/// </summary>
+		public static string DataImport 
+		{
+			get
+			{
+				return Get("DataImport");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Data Type
 		/// </summary>
 		public static string DataType 
@@ -11914,6 +12156,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("DeleteSelected");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Delete This Checklist
+		/// </summary>
+		public static string DeleteThisChecklist 
+		{
+			get
+			{
+				return Get("DeleteThisChecklist");
 			}
 		}
 		
@@ -12255,6 +12508,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("EditSelected");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Edit This Checklist
+		/// </summary>
+		public static string EditThisChecklist 
+		{
+			get
+			{
+				return Get("EditThisChecklist");
 			}
 		}
 		
@@ -12622,6 +12886,28 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Export Data
+		/// </summary>
+		public static string ExportData 
+		{
+			get
+			{
+				return Get("ExportData");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Export This Document
+		/// </summary>
+		public static string ExportThisDocument 
+		{
+			get
+			{
+				return Get("ExportThisDocument");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Export to Doc
 		/// </summary>
 		public static string ExportToDoc 
@@ -12761,6 +13047,39 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("Filter");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Filter Condition
+		/// </summary>
+		public static string FilterCondition 
+		{
+			get
+			{
+				return Get("FilterCondition");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Filter Name
+		/// </summary>
+		public static string FilterName 
+		{
+			get
+			{
+				return Get("FilterName");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Filter Statement
+		/// </summary>
+		public static string FilterStatement 
+		{
+			get
+			{
+				return Get("FilterStatement");
 			}
 		}
 		
@@ -13062,6 +13381,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Grid View
+		/// </summary>
+		public static string GridView 
+		{
+			get
+			{
+				return Get("GridView");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Hide for Now
 		/// </summary>
 		public static string HideForNow 
@@ -13135,6 +13465,28 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("IdentificationDetails");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Import
+		/// </summary>
+		public static string Import 
+		{
+			get
+			{
+				return Get("Import");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Import Data
+		/// </summary>
+		public static string ImportData 
+		{
+			get
+			{
+				return Get("ImportData");
 			}
 		}
 		
@@ -13546,6 +13898,50 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Kanban
+		/// </summary>
+		public static string Kanban 
+		{
+			get
+			{
+				return Get("Kanban");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Kanban Id
+		/// </summary>
+		public static string KanbanId 
+		{
+			get
+			{
+				return Get("KanbanId");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Kanban Name
+		/// </summary>
+		public static string KanbanName 
+		{
+			get
+			{
+				return Get("KanbanName");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Kanban View
+		/// </summary>
+		public static string KanbanView 
+		{
+			get
+			{
+				return Get("KanbanView");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for The property 'KeyColumn' cannot be left empty.
 		/// </summary>
 		public static string KeyColumnEmptyExceptionMessage 
@@ -13766,6 +14162,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Loading
+		/// </summary>
+		public static string Loading 
+		{
+			get
+			{
+				return Get("Loading");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Logged in to
 		/// </summary>
 		public static string LoggedInTo 
@@ -13795,6 +14202,28 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("MAVCO");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Make As Default
+		/// </summary>
+		public static string MakeAsDefault 
+		{
+			get
+			{
+				return Get("MakeAsDefault");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Manage Filters
+		/// </summary>
+		public static string ManageFilters 
+		{
+			get
+			{
+				return Get("ManageFilters");
 			}
 		}
 		
@@ -15020,6 +15449,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Rating
+		/// </summary>
+		public static string Rating 
+		{
+			get
+			{
+				return Get("Rating");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Reason
 		/// </summary>
 		public static string Reason 
@@ -15280,6 +15720,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("RememberMe");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Remove As Default
+		/// </summary>
+		public static string RemoveAsDefault 
+		{
+			get
+			{
+				return Get("RemoveAsDefault");
 			}
 		}
 		
@@ -15845,6 +16296,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Save this Filter
+		/// </summary>
+		public static string SaveThisFilter 
+		{
+			get
+			{
+				return Get("SaveThisFilter");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Saving
 		/// </summary>
 		public static string Saving 
@@ -15885,6 +16347,28 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("Select");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Select a Column
+		/// </summary>
+		public static string SelectAColumn 
+		{
+			get
+			{
+				return Get("SelectAColumn");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Select a Filter
+		/// </summary>
+		public static string SelectAFilter 
+		{
+			get
+			{
+				return Get("SelectAFilter");
 			}
 		}
 		
@@ -17363,6 +17847,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Value
+		/// </summary>
+		public static string Value 
+		{
+			get
+			{
+				return Get("Value");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Value Date
 		/// </summary>
 		public static string ValueDate 
@@ -17370,6 +17865,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("ValueDate");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Verification
+		/// </summary>
+		public static string Verification 
+		{
+			get
+			{
+				return Get("Verification");
 			}
 		}
 		

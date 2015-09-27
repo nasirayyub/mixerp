@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.Net.Core.Modules.HRM.Tasks
+namespace MixERP.Net.Core.Modules.HRM.Verification
 {
 
 
-    public partial class Termination
+    public partial class LeaveApplications
     {
     }
 }

@@ -31,95 +31,43 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
     scrudFactory.formTableName = "core.parties";
 
     scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
-    scrudFactory.readonlyColumns = ["PartyName"];
+    scrudFactory.readonlyColumns = ["PartyName", "PartyCode"];
+    scrudFactory.hiddenColumns = ["AccountId"];
 
     scrudFactory.allowDelete = true;
     scrudFactory.allowEdit = true;
-    scrudFactory.viewUrl = "EmployeeInfo.mix?EmployeeId={Key}";
+    scrudFactory.viewUrl = "PartyInfo.mix?PartyId={Key}";
 
-    scrudFactory.live = "EmployeeName";
+    scrudFactory.live = "PartyName";
+
     scrudFactory.layout = [
         ["Photo", ""],
+        ["PartyId", "PartyCode", "", ""],
+        ["PartyName", ""],
         ["EmployeeId", "EmployeeName", "", ""],
-        ["FirstName", "MiddleName", "LastName", "GenderCode", "", "", "", ""]
+        ["FirstName", "MiddleName", "LastName", "PartyTypeId", "", "", "", ""]
     ];
 
     scrudFactory.returnUrl = "../Employees.mix";
     scrudFactory.queryStringKey = "EmployeeId";
     scrudFactory.keys = [
         {
-            property: "GenderCode",
-            url: '/api/core/gender/display-fields',
+            property: "PartyTypeId",
+            url: '/api/core/party-type/display-fields',
             data: null,
             valueField: "Key",
             textField: "Value"
         },
         {
-            property: "OfficeId",
-            url: '/api/office/office/display-fields',
+            property: "EntityId",
+            url: '/api/core/entity/display-fields',
             data: null,
             valueField: "Key",
             textField: "Value"
         },
         {
-            property: "UserId",
-            url: '/api/office/user/display-fields',
-            data: null,
-            valueField: "Key",
-            textField: "Value"
-        },
-        {
-            property: "EmployeeTypeId",
-            url: '/api/hrm/employee-type/display-fields',
-            data: null,
-            valueField: "Key",
-            textField: "Value"
-        },
-        {
-            property: "CurrentDepartmentId",
-            url: '/api/office/department/display-fields',
-            data: null,
-            valueField: "Key",
-            textField: "Value"
-        },
-        {
-            property: "CurrentRoleId",
-            url: '/api/office/role/display-fields',
-            data: null,
-            valueField: "Key",
-            textField: "Value"
-        },
-        {
-            property: "CurrentEmploymentStatusId",
-            url: '/api/hrm/employment-status/display-fields',
-            data: null,
-            valueField: "Key",
-            textField: "Value"
-        },
-        {
-            property: "CurrentJobTitleId",
-            url: '/api/hrm/job-title/display-fields',
-            data: null,
-            valueField: "Key",
-            textField: "Value"
-        },
-        {
-            property: "CurrentPayGradeId",
-            url: '/api/hrm/pay-grade/display-fields',
-            data: null,
-            valueField: "Key",
-            textField: "Value"
-        },
-        {
-            property: "CurrentShiftId",
-            url: '/api/hrm/shift/display-fields',
-            data: null,
-            valueField: "Key",
-            textField: "Value"
-        },
-        {
-            property: "NationalityCode",
-            url: '/api/core/nationality/display-fields',
+            property: "IndustryId",
+            url: '/api/core/industry/display-fields',
             data: null,
             valueField: "Key",
             textField: "Value"
@@ -143,3 +91,40 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
 
 <div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
 <div data-ng-include="'/Views/Modules/FormFactory.html'"></div>
+
+<script>
+    $(document).on("formready", function() {
+        initialize();
+    });
+
+    function initialize() {
+
+        var firstName = $("#first_name");
+        var middleName = $("#middle_name");
+        var lastName = $("#last_name");
+        var partyName = $("#party_name");
+
+        function displayPartyName() {
+            var f = (firstName.val() || "");
+            var m = (middleName.val() || "");
+            var l = (lastName.val() || "");
+
+            var name = f + " " + m;
+            if (l) {
+                name = l.trim() + ", " + f + " " + m;
+            };
+
+
+            partyName.val(name.trim());
+
+            partyName.trigger("keyup");
+        };
+
+
+        firstName.keyup(function () { displayPartyName(); });
+        middleName.keyup(function () { displayPartyName(); });
+        lastName.keyup(function () { displayPartyName(); });
+
+    };
+
+</script>

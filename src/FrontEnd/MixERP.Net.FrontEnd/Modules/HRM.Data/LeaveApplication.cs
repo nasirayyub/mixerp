@@ -697,6 +697,34 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             return Factory.Get<MixERP.Net.Entities.HRM.LeaveApplication>(this._Catalog, sql);
         }
 
+        public void Verify(long leaveApplicationId, short verificationStatusId, string reason)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Verify, this._LoginId, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to verify entity \"LeaveApplication\" with Primary Key {PrimaryKey} was denied to the user with Login ID {LoginId}.", leaveApplicationId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            if (leaveApplicationId > 0)
+            {
+                const string sql =
+                    "UPDATE hrm.leave_applications SET verification_status_id=@0, verified_by_user_id=@1, verified_on=NOW(), verification_reason=@2 WHERE leave_application_id = @3;";
+
+                Factory.NonQuery(this._Catalog, sql, verificationStatusId, this._UserId, reason, leaveApplicationId);
+            }
+        }
 
     }
 }

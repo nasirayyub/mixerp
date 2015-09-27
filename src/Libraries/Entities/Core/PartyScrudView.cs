@@ -65,11 +65,11 @@ namespace MixERP.Net.Entities.Core
         public string CurrencyCode { get; set; }
 
         [Column("party_name")]
-        [ColumnDbType("text", 0, true, "")]
+        [ColumnDbType("varchar", 0, true, "")]
         public string PartyName { get; set; }
 
         [Column("company_name")]
-        [ColumnDbType("text", 0, true, "")]
+        [ColumnDbType("varchar", 128, true, "")]
         public string CompanyName { get; set; }
 
         [Column("zip_code")]

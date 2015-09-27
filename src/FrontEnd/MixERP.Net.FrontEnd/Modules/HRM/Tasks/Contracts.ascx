@@ -19,6 +19,7 @@
 
 
     scrudFactory.readonlyColumns = ["EndedOn"];
+    scrudFactory.hiddenColumns = ["VerificationStatusId", "VerifiedByUserId", "VerifiedOn", "VerificationReason"];
 
     scrudFactory.keys = [
         {
@@ -69,3 +70,9 @@
 
 <div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
 <div data-ng-include="'/Views/Modules/FormFactory.html'"></div>
+
+<script>
+    $(document).on("formready", function() {
+        $("#verification_status_id").val("0");
+    });
+</script>

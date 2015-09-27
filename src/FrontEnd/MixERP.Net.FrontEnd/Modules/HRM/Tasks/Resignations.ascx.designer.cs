@@ -11,7 +11,7 @@ namespace MixERP.Net.Core.Modules.HRM.Tasks
 {
 
 
-    public partial class Exit
+    public partial class Resignations
     {
     }
 }

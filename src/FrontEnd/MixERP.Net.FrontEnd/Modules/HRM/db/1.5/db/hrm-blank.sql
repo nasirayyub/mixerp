@@ -216,7 +216,11 @@ CREATE TABLE hrm.contracts
     began_on                                date,
     ended_on                                date,
     employment_status_code_id               integer NOT NULL REFERENCES hrm.employment_status_codes(employment_status_code_id),
-    audit_user_id                           integer NULL REFERENCES office.users(user_id),
+    verification_status_id                  integer NOT NULL REFERENCES core.verification_statuses(verification_status_id),
+    verified_by_user_id                     integer REFERENCES office.users(user_id),
+    verified_on                             date,
+    verification_reason                     national character varying(128) NULL,
+   audit_user_id                           integer NULL REFERENCES office.users(user_id),
     
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
                                             DEFAULT(NOW())    
@@ -346,6 +350,10 @@ CREATE TABLE hrm.leave_applications
     reason                                  text,
     start_date                              date,
     end_date                                date,
+    verification_status_id                  integer NOT NULL REFERENCES core.verification_statuses(verification_status_id),
+    verified_by_user_id                     integer REFERENCES office.users(user_id),
+    verified_on                             date,
+    verification_reason                     national character varying(128) NULL,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),    
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
                                             DEFAULT(NOW())    
@@ -365,7 +373,6 @@ CREATE TABLE hrm.resignations
     verified_by_user_id                     integer REFERENCES office.users(user_id),
     verified_on                             date,
     verification_reason                     national character varying(128) NULL,
-    service_end_date                        date NOT NULL,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),    
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
                                             DEFAULT(NOW())    
@@ -437,6 +444,16 @@ BEGIN
     IF(hstore(NEW) ? 'change_status_to') THEN
         _new_status_id := NEW.change_status_to;
     END IF;
+
+    IF(hstore(NEW) ? 'service_end_date') THEN
+        _service_end := NEW.service_end_date;
+    END IF;
+
+    IF(_service_end = NULL) THEN
+        IF(hstore(NEW) ? 'desired_resign_date') THEN
+            _service_end := NEW.desired_resign_date;
+        END IF;
+    END IF;
     
     IF(NEW.verification_status_id > 0) THEN        
         UPDATE hrm.employees
@@ -485,14 +502,23 @@ CREATE TRIGGER undismiss_employee_trigger BEFORE DELETE ON hrm.exits FOR EACH RO
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/03.menus/0.menus.sql --<--<--
 --This table should not be localized.
 SELECT * FROM core.recreate_menu('HRM', '~/Modules/HRM/Index.mix', 'HRM', 0, NULL);
+
 SELECT * FROM core.recreate_menu('Tasks', NULL, 'HRMTA', 1, core.get_menu_id('HRM'));
 SELECT * FROM core.recreate_menu('Attendance', '~/Modules/HRM/Tasks/Attendance.mix', 'ATTNDCE', 2, core.get_menu_id('HRMTA'));
 SELECT * FROM core.recreate_menu('Employees', '~/Modules/HRM/Tasks/Employees.mix?View=kanban', 'EMPL', 2, core.get_menu_id('HRMTA'));
 SELECT * FROM core.recreate_menu('Contracts', '~/Modules/HRM/Tasks/Contracts.mix', 'CTRCT', 2, core.get_menu_id('HRMTA'));
-SELECT * FROM core.recreate_menu('Leave Application', '~/Modules/HRM/Tasks/LeaveApplication.mix', 'LEVAPP', 2, core.get_menu_id('HRMTA'));
-SELECT * FROM core.recreate_menu('Resignation', '~/Modules/HRM/Tasks/Resignation.mix', 'RESIGN', 2, core.get_menu_id('HRMTA'));
-SELECT * FROM core.recreate_menu('Termination', '~/Modules/HRM/Tasks/Termination.mix', 'TERMIN', 2, core.get_menu_id('HRMTA'));
-SELECT * FROM core.recreate_menu('Exit', '~/Modules/HRM/Tasks/Exit.mix', 'EXIT', 2, core.get_menu_id('HRMTA'));
+SELECT * FROM core.recreate_menu('Leave Application', '~/Modules/HRM/Tasks/LeaveApplications.mix', 'LEVAPP', 2, core.get_menu_id('HRMTA'));
+SELECT * FROM core.recreate_menu('Resignations', '~/Modules/HRM/Tasks/Resignations.mix', 'RESIGN', 2, core.get_menu_id('HRMTA'));
+SELECT * FROM core.recreate_menu('Terminations', '~/Modules/HRM/Tasks/Terminations.mix', 'TERMIN', 2, core.get_menu_id('HRMTA'));
+SELECT * FROM core.recreate_menu('Exits', '~/Modules/HRM/Tasks/Exits.mix', 'EXIT', 2, core.get_menu_id('HRMTA'));
+
+SELECT * FROM core.recreate_menu('Verification', NULL, 'HRMVER', 1, core.get_menu_id('HRM'));
+SELECT * FROM core.recreate_menu('Verify Contracts', '~/Modules/HRM/Verification/Contracts.mix', 'VERCTRCT', 2, core.get_menu_id('HRMVER'));
+SELECT * FROM core.recreate_menu('Verify Leave Applications', '~/Modules/HRM/Verification/LeaveApplications.mix', 'VERLEVAPP', 2, core.get_menu_id('HRMVER'));
+SELECT * FROM core.recreate_menu('Verify Resignations', '~/Modules/HRM/Verification/Resignations.mix', 'VERRESIGN', 2, core.get_menu_id('HRMVER'));
+SELECT * FROM core.recreate_menu('Verify Terminations', '~/Modules/HRM/Verification/Terminations.mix', 'VERTERMIN', 2, core.get_menu_id('HRMVER'));
+SELECT * FROM core.recreate_menu('Verify Exits', '~/Modules/HRM/Verification/Exits.mix', 'VEREXIT', 2, core.get_menu_id('HRMVER'));
+
 
 SELECT * FROM core.recreate_menu('Payroll', NULL, 'PAYRL', 1, core.get_menu_id('HRM'));
 SELECT * FROM core.recreate_menu('Wages', '~/Modules/HRM/Payroll/Wages.mix', 'WAGES', 2, core.get_menu_id('PAYRL'));
@@ -568,6 +594,38 @@ INNER JOIN hrm.employment_status_codes
 ON hrm.employment_status_codes.employment_status_code_id = hrm.contracts.employment_status_code_id
 LEFT JOIN hrm.leave_benefits
 ON hrm.leave_benefits.leave_benefit_id = hrm.contracts.leave_benefit_id;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.contract_verification_scrud_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.contract_verification_scrud_view;
+
+CREATE VIEW hrm.contract_verification_scrud_view
+AS
+SELECT
+    hrm.contracts.contract_id,
+    hrm.employees.employee_id,
+    hrm.employees.employee_code || ' (' || hrm.employees.employee_name || ')' AS employee,
+    hrm.employees.photo,
+    office.offices.office_code || ' (' || office.offices.office_name || ')' AS office,
+    office.departments.department_code || ' (' || office.departments.department_name || ')' AS department,
+    office.roles.role_code || ' (' || office.roles.role_name || ')' AS role,
+    hrm.leave_benefits.leave_benefit_code || ' (' || hrm.leave_benefits.leave_benefit_name || ')' AS leave_benefit,
+    hrm.employment_status_codes.status_code || ' (' || hrm.employment_status_codes.status_code_name || ')' AS employment_status_code,
+    hrm.contracts.began_on,
+    hrm.contracts.ended_on
+FROM hrm.contracts
+INNER JOIN hrm.employees
+ON hrm.employees.employee_id = hrm.contracts.employee_id
+INNER JOIN office.offices
+ON office.offices.office_id = hrm.contracts.office_id
+INNER JOIN office.departments
+ON office.departments.department_id = hrm.contracts.department_id
+INNER JOIN office.roles
+ON office.roles.role_id = hrm.contracts.role_id
+INNER JOIN hrm.employment_status_codes
+ON hrm.employment_status_codes.employment_status_code_id = hrm.contracts.employment_status_code_id
+LEFT JOIN hrm.leave_benefits
+ON hrm.leave_benefits.leave_benefit_id = hrm.contracts.leave_benefit_id
+WHERE verification_status_id = 0;
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_experience_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_experience_scrud_view;
@@ -712,6 +770,33 @@ ON hrm.employment_statuses.employment_status_id = hrm.exits.change_status_to
 INNER JOIN hrm.exit_types
 ON hrm.exit_types.exit_type_id = hrm.exits.exit_type_id
 INNER JOIN hrm.employees AS forwarded_to
+ON forwarded_to.employee_id = hrm.exits.forward_to;
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.exit_verification_scrud_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.exit_scrud_view;
+
+CREATE VIEW hrm.exit_scrud_view
+AS
+SELECT
+    hrm.exits.exit_id,
+    hrm.exits.employee_id,
+    hrm.employees.employee_code || ' (' || hrm.employees.employee_name || ')' AS employee,
+    hrm.employees.photo,
+    hrm.exits.reason,
+    forwarded_to.employee_code || ' (' || forwarded_to.employee_name || ' )' AS forward_to,
+    hrm.employment_statuses.employment_status_code || ' (' || hrm.employment_statuses.employment_status_name || ')' AS employment_status,
+    hrm.exit_types.exit_type_code || ' (' || hrm.exit_types.exit_type_name || ')' AS exit_type,
+    hrm.exits.details,
+    hrm.exits.exit_interview_details
+FROM hrm.exits
+INNER JOIN hrm.employees
+ON hrm.employees.employee_id = hrm.exits.employee_id
+INNER JOIN hrm.employment_statuses
+ON hrm.employment_statuses.employment_status_id = hrm.exits.change_status_to
+INNER JOIN hrm.exit_types
+ON hrm.exit_types.exit_type_id = hrm.exits.exit_type_id
+INNER JOIN hrm.employees AS forwarded_to
 ON forwarded_to.employee_id = hrm.exits.forward_to
 WHERE verification_status_id = 0;
 
@@ -739,6 +824,30 @@ ON hrm.leave_types.leave_type_id = hrm.leave_applications.leave_type_id
 INNER JOIN office.users
 ON office.users.user_id = hrm.leave_applications.entered_by;
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.leave_application_verification_scrud_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.leave_application_verification_scrud_view;
+
+CREATE VIEW hrm.leave_application_verification_scrud_view
+AS
+SELECT
+    hrm.leave_applications.leave_application_id,
+    hrm.employees.employee_code || ' (' || hrm.employees.employee_name || ')' AS employee,
+    hrm.employees.photo,
+    hrm.leave_types.leave_type_code || ' (' || hrm.leave_types.leave_type_name || ')' AS leave_type,
+    office.users.user_name AS entered_by,
+    hrm.leave_applications.applied_on,
+    hrm.leave_applications.reason,
+    hrm.leave_applications.start_date,
+    hrm.leave_applications.end_date
+FROM hrm.leave_applications
+INNER JOIN hrm.employees
+ON hrm.employees.employee_id = hrm.leave_applications.employee_id
+INNER JOIN hrm.leave_types
+ON hrm.leave_types.leave_type_id = hrm.leave_applications.leave_type_id
+INNER JOIN office.users
+ON office.users.user_id = hrm.leave_applications.entered_by
+WHERE verification_status_id = 0;
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.office_hour_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.office_hour_scrud_view;
 
@@ -760,10 +869,78 @@ ON hrm.shifts.shift_id = hrm.office_hours.shift_id
 INNER JOIN core.week_days
 ON core.week_days.week_day_id = hrm.office_hours.week_day_id;
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.resignation_verification_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.resignation_verification_scrud_view;
+
+CREATE VIEW hrm.resignation_verification_scrud_view
+AS
+SELECT
+    hrm.resignations.resignation_id,
+    office.users.user_name AS entered_by,
+    hrm.resignations.notice_date,
+    hrm.resignations.desired_resign_date,
+    hrm.employees.employee_code || ' (' || hrm.employees.employee_name || ')' AS employee,
+    hrm.employees.photo,
+    forward_to.employee_code || ' (' || forward_to.employee_name || ')' AS forward_to,
+    hrm.resignations.reason
+FROM hrm.resignations
+INNER JOIN office.users
+ON office.users.user_id = hrm.resignations.entered_by
+INNER JOIN hrm.employees
+ON hrm.employees.employee_id = hrm.resignations.employee_id
+INNER JOIN hrm.employees AS forward_to
+ON forward_to.employee_id = hrm.resignations.forward_to
+WHERE verification_status_id = 0;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.resignation_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.resignation_scrud_view;
+
+CREATE VIEW hrm.resignation_scrud_view
+AS
+SELECT
+    hrm.resignations.resignation_id,
+    office.users.user_name AS entered_by,
+    hrm.resignations.notice_date,
+    hrm.resignations.desired_resign_date,
+    hrm.employees.employee_code || ' (' || hrm.employees.employee_name || ')' AS employee,
+    hrm.employees.photo,
+    forward_to.employee_code || ' (' || forward_to.employee_name || ')' AS forward_to,
+    hrm.resignations.reason
+FROM hrm.resignations
+INNER JOIN office.users
+ON office.users.user_id = hrm.resignations.entered_by
+INNER JOIN hrm.employees
+ON hrm.employees.employee_id = hrm.resignations.employee_id
+INNER JOIN hrm.employees AS forward_to
+ON forward_to.employee_id = hrm.resignations.forward_to;
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.termination_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.termination_scrud_view;
 
 CREATE VIEW hrm.termination_scrud_view
+AS
+SELECT
+    hrm.terminations.termination_id,
+    hrm.employees.employee_code || ' (' || hrm.employees.employee_name || ')' AS employee,
+    hrm.employees.photo,
+    hrm.terminations.notice_date,
+    hrm.terminations.service_end_date,
+    forwarded_to.employee_code || ' (' || forwarded_to.employee_name || ' )' AS forward_to,
+    hrm.employment_statuses.employment_status_code || ' (' || hrm.employment_statuses.employment_status_name || ')' AS employment_status,
+    hrm.terminations.reason,
+    hrm.terminations.details
+FROM hrm.terminations
+INNER JOIN hrm.employees
+ON hrm.employees.employee_id = hrm.terminations.employee_id
+INNER JOIN hrm.employment_statuses
+ON hrm.employment_statuses.employment_status_id = hrm.terminations.change_status_to
+INNER JOIN hrm.employees AS forwarded_to
+ON forwarded_to.employee_id = hrm.terminations.forward_to;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.termination_verification_scrud_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.termination_verification_scrud_view;
+
+CREATE VIEW hrm.termination_verification_scrud_view
 AS
 SELECT
     hrm.terminations.termination_id,

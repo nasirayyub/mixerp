@@ -61,7 +61,7 @@ namespace MixERP.Net.Entities.Core
         public string LastName { get; set; }
 
         [Column("party_name")]
-        [ColumnDbType("text", 0, true, "")]
+        [ColumnDbType("varchar", 150, true, "")]
         public string PartyName { get; set; }
 
         [Column("zip_code")]

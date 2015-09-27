@@ -76,10 +76,6 @@ namespace MixERP.Net.Entities.HRM
         [ColumnDbType("varchar", 128, true, "")]
         public string VerificationReason { get; set; }
 
-        [Column("service_end_date")]
-        [ColumnDbType("date", 0, false, "")]
-        public DateTime ServiceEndDate { get; set; }
-
         [Column("audit_user_id")]
         [ColumnDbType("int4", 0, true, "")]
         public int? AuditUserId { get; set; }

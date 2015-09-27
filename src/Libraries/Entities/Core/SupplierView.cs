@@ -52,9 +52,9 @@ namespace MixERP.Net.Entities.Core
         [ColumnDbType("varchar", 50, true, "")]
         public string LastName { get; set; }
 
-        [Column("party_name")]
-        [ColumnDbType("text", 0, true, "")]
-        public string PartyName { get; set; }
+        [Column("company_name")]
+        [ColumnDbType("varchar", 128, true, "")]
+        public string CompanyName { get; set; }
 
         [Column("date_of_birth")]
         [ColumnDbType("date", 0, true, "")]
@@ -155,5 +155,13 @@ namespace MixERP.Net.Entities.Core
         [Column("audit_ts")]
         [ColumnDbType("timestamptz", 0, true, "")]
         public DateTime? AuditTs { get; set; }
+
+        [Column("party_name")]
+        [ColumnDbType("varchar", 150, true, "")]
+        public string PartyName { get; set; }
+
+        [Column("photo")]
+        [ColumnDbType("image", 0, true, "")]
+        public string Photo { get; set; }
     }
 }

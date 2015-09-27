@@ -695,6 +695,34 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             return Factory.Get<MixERP.Net.Entities.HRM.Contract>(this._Catalog, sql);
         }
 
+        public void Verify(long contractId, short verificationStatusId, string reason)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Verify, this._LoginId, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to verify entity \"Contract\" with Primary Key {PrimaryKey} was denied to the user with Login ID {LoginId}.", contractId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            if (contractId > 0)
+            {
+                const string sql =
+                    "UPDATE hrm.contracts SET verification_status_id=@0, verified_by_user_id=@1, verified_on=NOW(), verification_reason=@2 WHERE contract_id = @3;";
+
+                Factory.NonQuery(this._Catalog, sql, verificationStatusId, this._UserId, reason, contractId);
+            }
+        }
 
     }
 }

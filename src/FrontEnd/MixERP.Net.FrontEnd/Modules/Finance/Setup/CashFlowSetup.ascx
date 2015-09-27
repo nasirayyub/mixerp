@@ -33,6 +33,11 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
     scrudFactory.allowDelete = true;
     scrudFactory.allowEdit = true;
 
+    scrudFactory.card = {
+        header:"CashFlowHeading",
+        meta : "AccountMaster"
+    };
+
     scrudFactory.keys = [
         {
             property: "CashFlowHeadingId",

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Exit.ascx.cs" Inherits="MixERP.Net.Core.Modules.HRM.Tasks.Exit" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Exits.ascx.cs" Inherits="MixERP.Net.Core.Modules.HRM.Tasks.Exits" %>
 <script>
     var scrudFactory = new Object();
     

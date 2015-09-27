@@ -36,6 +36,12 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
     scrudFactory.live = "PaymentCardName";
     scrudFactory.queryStringKey = "AccountId";
 
+    scrudFactory.card = {
+        header: "PaymentCardCode",
+        meta: "PaymentCardName",
+        description:"CardType"
+    };
+
     scrudFactory.layout = [
         ["PaymentCardId", ""],
         ["PaymentCardCode", "PaymentCardName", "", ""],

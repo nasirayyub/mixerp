@@ -90,6 +90,7 @@
   <ItemGroup>
     <Compile Include="ContractController.cs" />
     <Compile Include="ContractScrudViewController.cs" />
+    <Compile Include="ContractVerificationScrudViewController.cs" />
     <Compile Include="EducationLevelController.cs" />
     <Compile Include="EmployeeController.cs" />
     <Compile Include="EmployeeExperienceController.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="JobTitleController.cs" />
     <Compile Include="LeaveApplicationController.cs" />
     <Compile Include="LeaveApplicationScrudViewController.cs" />
+    <Compile Include="LeaveApplicationVerificationScrudViewController.cs" />
     <Compile Include="LeaveBenefitController.cs" />
     <Compile Include="LeaveTypeController.cs" />
     <Compile Include="OfficeHourController.cs" />
@@ -121,12 +123,15 @@
     <Compile Include="PayGradeController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResignationController.cs" />
+    <Compile Include="ResignationScrudViewController.cs" />
+    <Compile Include="ResignationVerificationScrudViewController.cs" />
     <Compile Include="SalaryController.cs" />
     <Compile Include="SalaryFrequencyController.cs" />
     <Compile Include="SalaryTypeController.cs" />
     <Compile Include="ShiftController.cs" />
     <Compile Include="TerminationController.cs" />
     <Compile Include="TerminationScrudViewController.cs" />
+    <Compile Include="TerminationVerificationScrudViewController.cs" />
     <Compile Include="WagesSetupController.cs" />
   </ItemGroup>
   <ItemGroup>

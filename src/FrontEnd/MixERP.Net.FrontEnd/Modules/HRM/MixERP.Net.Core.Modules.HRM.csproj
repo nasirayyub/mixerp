@@ -124,10 +124,15 @@
     <Content Include="Tasks\Employee\SocialNetworks.ascx" />
     <Content Include="Tasks\Employee\Wages.ascx" />
     <Content Include="Tasks\Entry\Employees.ascx" />
-    <Content Include="Tasks\Exit.ascx" />
-    <Content Include="Tasks\LeaveApplication.ascx" />
-    <Content Include="Tasks\Resignation.ascx" />
-    <Content Include="Tasks\Termination.ascx" />
+    <Content Include="Tasks\Exits.ascx" />
+    <Content Include="Tasks\LeaveApplications.ascx" />
+    <Content Include="Tasks\Resignations.ascx" />
+    <Content Include="Tasks\Terminations.ascx" />
+    <Content Include="Verification\Contracts.ascx" />
+    <Content Include="Verification\Exits.ascx" />
+    <Content Include="Verification\LeaveApplications.ascx" />
+    <Content Include="Verification\Resignations.ascx" />
+    <Content Include="Verification\Terminations.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -343,33 +348,68 @@
     <Compile Include="Tasks\Entry\Employees.ascx.designer.cs">
       <DependentUpon>Employees.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Tasks\Exit.ascx.cs">
-      <DependentUpon>Exit.ascx</DependentUpon>
+    <Compile Include="Tasks\Exits.ascx.cs">
+      <DependentUpon>Exits.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Tasks\Exit.ascx.designer.cs">
-      <DependentUpon>Exit.ascx</DependentUpon>
+    <Compile Include="Tasks\Exits.ascx.designer.cs">
+      <DependentUpon>Exits.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Tasks\LeaveApplication.ascx.cs">
-      <DependentUpon>LeaveApplication.ascx</DependentUpon>
+    <Compile Include="Tasks\LeaveApplications.ascx.cs">
+      <DependentUpon>LeaveApplications.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Tasks\LeaveApplication.ascx.designer.cs">
-      <DependentUpon>LeaveApplication.ascx</DependentUpon>
+    <Compile Include="Tasks\LeaveApplications.ascx.designer.cs">
+      <DependentUpon>LeaveApplications.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Tasks\Resignation.ascx.cs">
-      <DependentUpon>Resignation.ascx</DependentUpon>
+    <Compile Include="Tasks\Resignations.ascx.cs">
+      <DependentUpon>Resignations.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Tasks\Resignation.ascx.designer.cs">
-      <DependentUpon>Resignation.ascx</DependentUpon>
+    <Compile Include="Tasks\Resignations.ascx.designer.cs">
+      <DependentUpon>Resignations.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Tasks\Termination.ascx.cs">
-      <DependentUpon>Termination.ascx</DependentUpon>
+    <Compile Include="Tasks\Terminations.ascx.cs">
+      <DependentUpon>Terminations.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Tasks\Termination.ascx.designer.cs">
-      <DependentUpon>Termination.ascx</DependentUpon>
+    <Compile Include="Tasks\Terminations.ascx.designer.cs">
+      <DependentUpon>Terminations.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Verification\Contracts.ascx.cs">
+      <DependentUpon>Contracts.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Verification\Contracts.ascx.designer.cs">
+      <DependentUpon>Contracts.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Verification\Exits.ascx.cs">
+      <DependentUpon>Exits.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Verification\Exits.ascx.designer.cs">
+      <DependentUpon>Exits.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Verification\LeaveApplications.ascx.cs">
+      <DependentUpon>LeaveApplications.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Verification\LeaveApplications.ascx.designer.cs">
+      <DependentUpon>LeaveApplications.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Verification\Resignations.ascx.cs">
+      <DependentUpon>Resignations.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Verification\Resignations.ascx.designer.cs">
+      <DependentUpon>Resignations.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Verification\Terminations.ascx.cs">
+      <DependentUpon>Terminations.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Verification\Terminations.ascx.designer.cs">
+      <DependentUpon>Terminations.ascx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
