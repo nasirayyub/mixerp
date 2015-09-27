@@ -452,6 +452,31 @@ ALTER COLUMN company_name TYPE national character varying(128);
 ALTER TABLE core.parties
 ALTER COLUMN party_name TYPE national character varying(150);
 
+DO
+$$
+BEGIN    
+    IF NOT EXISTS (
+        SELECT 1 
+        FROM   pg_catalog.pg_class c
+        JOIN   pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+        WHERE  n.nspname = 'core'
+        AND    c.relname = 'marital_statuses'
+        AND    c.relkind = 'r'
+    ) THEN
+        CREATE TABLE core.marital_statuses
+        (
+            marital_status_id                       SERIAL NOT NULL PRIMARY KEY,
+            marital_status_code                     national character varying(12) NOT NULL UNIQUE,
+            marital_status_name                     national character varying(128) NOT NULL,
+            is_legally_recognized_marriage          boolean NOT NULL DEFAULT(false),
+            audit_user_id                           integer NULL REFERENCES office.users(user_id),    
+            audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                                    DEFAULT(NOW())
+        );
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/core/core.create_kanban.sql --<--<--
 DROP FUNCTION IF EXISTS core.create_kanban
@@ -1583,6 +1608,7 @@ SELECT * FROM core.create_menu('Other Setup', NULL, 'OTHR', 1, core.get_menu_id(
 SELECT * FROM core.create_menu('Genders', '~/Modules/BackOffice/Other/Genders.mix', 'GENDR', 2, core.get_menu_id('OTHR'));
 SELECT * FROM core.create_menu('Identification Types', '~/Modules/BackOffice/Other/IdentificationTypes.mix', 'IDNTYP', 2, core.get_menu_id('OTHR'));
 SELECT * FROM core.create_menu('Nationalities', '~/Modules/BackOffice/Other/Nationalities.mix', 'NTNALY', 2, core.get_menu_id('OTHR'));
+SELECT * FROM core.create_menu('Marital Statuses', '~/Modules/BackOffice/Other/MaritalStatuses.mix', 'MATSTS', 2, core.get_menu_id('OTHR'));
 
 SELECT * FROM core.create_menu('Default Entity Access Policy', '~/Modules/BackOffice/Policy/DefaultEntityAccess.mix', 'DEFEAPOL', 2, core.get_menu_id('SPM'));
 SELECT * FROM core.create_menu('Entity Access Policy', '~/Modules/BackOffice/Policy/EntityAccess.mix', 'EAPOL', 2, core.get_menu_id('SPM'));

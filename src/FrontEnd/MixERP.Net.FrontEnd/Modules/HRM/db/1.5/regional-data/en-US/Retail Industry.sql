@@ -51,18 +51,18 @@ SELECT 'MOR', 'Morning Shift',  '6:00'::time,   '14:00'::time   UNION ALL
 SELECT 'DAY', 'Day Shift',      '14:00',        '20:00'         UNION ALL
 SELECT 'NIT', 'Night Shift',    '20:00',        '6:00';
 
-INSERT INTO hrm.employee_types(employee_type_code, employee_type_name)
-SELECT 'DEF', 'Default' UNION ALL
-SELECT 'OUE', 'Outdoor Employees' UNION ALL
-SELECT 'PRO', 'Project Employees' UNION ALL
-SELECT 'SUP', 'Support Staffs' UNION ALL
-SELECT 'ENG', 'Engineers';
+INSERT INTO hrm.employee_types(employee_type_code, employee_type_name, account_id)
+SELECT 'DEF', 'Default',            core.get_account_id_by_account_number('20100') UNION ALL
+SELECT 'OUE', 'Outdoor Employees',  core.get_account_id_by_account_number('20100') UNION ALL
+SELECT 'PRO', 'Project Employees',  core.get_account_id_by_account_number('20100') UNION ALL
+SELECT 'SUP', 'Support Staffs',     core.get_account_id_by_account_number('20100') UNION ALL
+SELECT 'ENG', 'Engineers',          core.get_account_id_by_account_number('20100');
 
-INSERT INTO hrm.salary_types(salary_type_code, salary_type_name)
-SELECT 'BAS', 'Basic Salary' UNION
-SELECT 'OTS', 'Overtime Salary' UNION ALL
-SELECT 'COM', 'Commision' UNION ALL
-SELECT 'EBE', 'Employee Benefits';
+INSERT INTO hrm.salary_types(salary_type_code, salary_type_name, account_id)
+SELECT 'BAS', 'Basic Salary',       core.get_account_id_by_account_number('43700') UNION
+SELECT 'OTS', 'Overtime Salary',    core.get_account_id_by_account_number('43700') UNION ALL
+SELECT 'COM', 'Commision',          core.get_account_id_by_account_number('43700') UNION ALL
+SELECT 'EBE', 'Employee Benefits',  core.get_account_id_by_account_number('43700');
 
 INSERT INTO hrm.leave_types(leave_type_code, leave_type_name)
 SELECT 'NOR', 'Normal' UNION ALL
@@ -84,3 +84,26 @@ SELECT 3, 3,                'Quarterly' UNION ALL
 SELECT 4, 4,                'Semi Annually' UNION ALL
 SELECT 5, 5,                'Anually';
 
+
+DO
+$$
+    DECLARE _employment_tax_id      integer;
+    DECLARE _tax_authority_id       integer;
+BEGIN
+    SELECT tax_authority_id INTO _tax_authority_id
+    FROM core.tax_authorities
+    WHERE tax_authority_code = 'IRS';
+
+    INSERT INTO hrm.employment_taxes(tax_authority_id, employment_tax_code, employment_tax_name)
+    SELECT _tax_authority_id, 'USET', 'United States Employment Tax';
+
+    SELECT employment_tax_id INTO _employment_tax_id
+    FROM hrm.employment_taxes
+    WHERE employment_tax_code = 'USET';
+
+    INSERT INTO hrm.employment_tax_details(employment_tax_id, employment_tax_detail_code, employment_tax_detail_name, employee_tax_rate, employer_tax_rate)
+    SELECT _employment_tax_id, 'SS', 'Social Security', 6.2,    6.2 UNION ALL
+    SELECT _employment_tax_id, 'MC', 'Medicare',        1.45,   1.45;
+END
+$$
+LANGUAGE plpgsql;

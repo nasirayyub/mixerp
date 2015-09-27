@@ -126,6 +126,7 @@ CREATE TABLE hrm.employee_types
     employee_type_id                        SERIAL NOT NULL PRIMARY KEY,
     employee_type_code                      national character varying(12) NOT NULL UNIQUE,
     employee_type_name                      national character varying(128) NOT NULL,
+    account_id                              bigint NOT NULL REFERENCES core.accounts(account_id),
     audit_user_id                           integer NULL REFERENCES office.users(user_id),
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
                                             DEFAULT(NOW())    
@@ -141,6 +142,7 @@ CREATE TABLE hrm.employees
     employee_name                           national character varying(160) NOT NULL,
     gender_code                             national character varying(4) NOT NULL 
                                             REFERENCES core.genders(gender_code),
+    marital_status_id                       integer NOT NULL REFERENCES core.marital_statuses(marital_status_id),
     joined_on                               date NULL,
     office_id                               integer NOT NULL REFERENCES office.offices(office_id),
     user_id                                 integer REFERENCES office.users(user_id),
@@ -169,6 +171,15 @@ CREATE TABLE hrm.employees
     email_address                           national character varying(128) DEFAULT(''),
     website                                 national character varying(128) DEFAULT(''),
     blog                                    national character varying(128) DEFAULT(''),
+    is_smoker                               boolean,
+    is_alcoholic                            boolean,
+    with_disabilities                       boolean,
+    low_vision                              boolean,
+    uses_wheeelchair                        boolean,
+    hard_of_hearing                         boolean,
+    is_aphonic                              boolean,
+    is_cognitively_disabled                 boolean,
+    is_autistic                             boolean,
     service_ended_on                        date NULL,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
@@ -220,7 +231,7 @@ CREATE TABLE hrm.contracts
     verified_by_user_id                     integer REFERENCES office.users(user_id),
     verified_on                             date,
     verification_reason                     national character varying(128) NULL,
-   audit_user_id                           integer NULL REFERENCES office.users(user_id),
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),
     
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
                                             DEFAULT(NOW())    
@@ -238,6 +249,7 @@ CREATE TABLE hrm.salary_types
     salary_type_id                          SERIAL NOT NULL PRIMARY KEY,
     salary_type_code                        national character varying(12) NOT NULL UNIQUE,
     salary_type_name                        national character varying(128) NOT NULL,
+    account_id                              bigint NOT NULL REFERENCES core.accounts(account_id),
     audit_user_id                           integer NULL REFERENCES office.users(user_id),
     
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
@@ -254,6 +266,7 @@ CREATE TABLE hrm.wages_setup
     hourly_rate                             public.money_strict NOT NULL,
     overtime_applicable                     boolean NOT NULL DEFAULT(true),
     overtime_hourly_rate                    public.money_strict2 NOT NULL,
+    account_id                              bigint NOT NULL REFERENCES core.accounts(account_id),
     description                             text,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),
     
@@ -279,6 +292,72 @@ CREATE TABLE hrm.employee_wages
                                             DEFAULT(NOW())    
 );
 
+CREATE TABLE hrm.provident_funds
+(
+    provident_fund_id                       SERIAL NOT NULL PRIMARY KEY,
+    provident_fund_code                     national character varying(12) NOT NULL UNIQUE,
+    provident_fund_name                     national character varying(128) NOT NULL,
+    employee_contribution_rate              public.decimal_strict NOT NULL,
+    employer_contribution_rate              public.decimal_strict NOT NULL,
+    fund_holding_account_id                 bigint NOT NULL REFERENCES core.accounts(account_id),
+    provident_fund_expense_account_id       bigint NOT NULL REFERENCES core.accounts(account_id),
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),    
+    audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                            DEFAULT(NOW())    
+);
+
+CREATE TABLE hrm.salary_taxes
+(
+    salary_tax_id                           SERIAL NOT NULL PRIMARY KEY,
+    salary_tax_code                         national character varying(12) NOT NULL UNIQUE,
+    salary_tax_name                         national character varying(128) NOT NULL,
+    tax_authority_id                        integer NOT NULL REFERENCES core.tax_authorities(tax_authority_id),
+    standard_deduction                      public.money_strict2 NOT NULL DEFAULT(0),
+    personal_exemption                      public.money_strict2 NOT NULL DEFAULT(0),
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),    
+    audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                            DEFAULT(NOW())    
+);
+
+CREATE TABLE hrm.salary_tax_income_brackets
+(
+    salary_tax_income_bracket_id            SERIAL NOT NULL PRIMARY KEY,
+    salary_tax_id                           integer NOT NULL REFERENCES hrm.salary_taxes(salary_tax_id),
+    salary_from                             public.money_strict NOT NULL,
+    salary_to                               public.money_strict NOT NULL
+                                            CHECK (salary_to > salary_from),
+    income_tax_rate                         public.decimal_strict NOT NULL,
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),    
+    audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                            DEFAULT(NOW())    
+);
+
+CREATE TABLE hrm.employment_taxes
+(
+    employment_tax_id                       SERIAL NOT NULL PRIMARY KEY,
+    employment_tax_code                     national character varying(12) NOT NULL UNIQUE,
+    employment_tax_name                     national character varying(128) NOT NULL,
+    tax_authority_id                        integer NOT NULL REFERENCES core.tax_authorities(tax_authority_id),
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),    
+    audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                            DEFAULT(NOW())    
+);
+
+
+CREATE TABLE hrm.employment_tax_details
+(
+    employment_tax_detail_id                SERIAL NOT NULL PRIMARY KEY,
+    employment_tax_id                       integer NOT NULL REFERENCES hrm.employment_taxes(employment_tax_id),
+    employment_tax_detail_code              national character varying(12) NOT NULL UNIQUE,
+    employment_tax_detail_name              national character varying(128) NOT NULL,
+    employee_tax_rate                       public.decimal_strict NOT NULL,
+    employer_tax_rate                       public.decimal_strict NOT NULL,    
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),    
+    audit_ts                                TIMESTAMP WITH TIME ZONE NULL    
+);
+
+
+
 CREATE TABLE hrm.salaries
 (
     salary_id                               BIGSERIAL NOT NULL PRIMARY KEY,    
@@ -290,7 +369,10 @@ CREATE TABLE hrm.salaries
     amount                                  public.money_strict NOT NULL,
     deduction_applicable                    boolean NOT NULL DEFAULT(false),
     auto_deduction_based_on_attendance      boolean NOT NULL DEFAULT(false),
-    audit_user_id                           integer NULL REFERENCES office.users(user_id),    
+    provident_fund_id                       integer NULL REFERENCES hrm.provident_funds(provident_fund_id),
+    employment_tax_id                       integer NULL REFERENCES hrm.employment_taxes(employment_tax_id),
+    salary_tax_id                           integer NULL REFERENCES hrm.salary_taxes(salary_tax_id),
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
                                             DEFAULT(NOW())    
 );

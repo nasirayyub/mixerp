@@ -450,3 +450,29 @@ ALTER COLUMN company_name TYPE national character varying(128);
 
 ALTER TABLE core.parties
 ALTER COLUMN party_name TYPE national character varying(150);
+
+DO
+$$
+BEGIN    
+    IF NOT EXISTS (
+        SELECT 1 
+        FROM   pg_catalog.pg_class c
+        JOIN   pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+        WHERE  n.nspname = 'core'
+        AND    c.relname = 'marital_statuses'
+        AND    c.relkind = 'r'
+    ) THEN
+        CREATE TABLE core.marital_statuses
+        (
+            marital_status_id                       SERIAL NOT NULL PRIMARY KEY,
+            marital_status_code                     national character varying(12) NOT NULL UNIQUE,
+            marital_status_name                     national character varying(128) NOT NULL,
+            is_legally_recognized_marriage          boolean NOT NULL DEFAULT(false),
+            audit_user_id                           integer NULL REFERENCES office.users(user_id),    
+            audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                                    DEFAULT(NOW())
+        );
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
