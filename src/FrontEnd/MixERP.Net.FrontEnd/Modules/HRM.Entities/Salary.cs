@@ -64,6 +64,18 @@ namespace MixERP.Net.Entities.HRM
         [ColumnDbType("bool", 0, false, "false")]
         public bool AutoDeductionBasedOnAttendance { get; set; }
 
+        [Column("provident_fund_id")]
+        [ColumnDbType("int4", 0, true, "")]
+        public int? ProvidentFundId { get; set; }
+
+        [Column("employment_tax_id")]
+        [ColumnDbType("int4", 0, true, "")]
+        public int? EmploymentTaxId { get; set; }
+
+        [Column("salary_tax_id")]
+        [ColumnDbType("int4", 0, true, "")]
+        public int? SalaryTaxId { get; set; }
+
         [Column("audit_user_id")]
         [ColumnDbType("int4", 0, true, "")]
         public int? AuditUserId { get; set; }

@@ -60,6 +60,10 @@ namespace MixERP.Net.Entities.HRM
         [ColumnDbType("money_strict2", 0, false, "")]
         public decimal OvertimeHourlyRate { get; set; }
 
+        [Column("account_id")]
+        [ColumnDbType("int8", 0, false, "")]
+        public long AccountId { get; set; }
+
         [Column("description")]
         [ColumnDbType("text", 0, true, "")]
         public string Description { get; set; }

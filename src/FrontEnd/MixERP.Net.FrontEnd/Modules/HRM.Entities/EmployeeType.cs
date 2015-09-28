@@ -40,6 +40,10 @@ namespace MixERP.Net.Entities.HRM
         [ColumnDbType("varchar", 128, false, "")]
         public string EmployeeTypeName { get; set; }
 
+        [Column("account_id")]
+        [ColumnDbType("int8", 0, false, "")]
+        public long AccountId { get; set; }
+
         [Column("audit_user_id")]
         [ColumnDbType("int4", 0, true, "")]
         public int? AuditUserId { get; set; }

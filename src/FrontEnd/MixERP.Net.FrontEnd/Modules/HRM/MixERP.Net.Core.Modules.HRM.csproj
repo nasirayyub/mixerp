@@ -97,7 +97,12 @@
     <Content Include="Payroll\Bonus.ascx" />
     <Content Include="Payroll\Commissions.ascx" />
     <Content Include="Payroll\Deduction.ascx" />
+    <Content Include="Setup\EmploymentTaxDetails.ascx" />
+    <Content Include="Setup\EmploymentTaxes.ascx" />
     <Content Include="Payroll\Salary.ascx" />
+    <Content Include="Setup\ProvidentFunds.ascx" />
+    <Content Include="Setup\SalaryTaxes.ascx" />
+    <Content Include="Setup\SalaryTaxIncomeBrackets.ascx" />
     <Content Include="Payroll\Wages.ascx" />
     <Content Include="Setup\EducationLevels.ascx" />
     <Content Include="Setup\EmployeeTypes.ascx" />
@@ -158,12 +163,47 @@
     <Compile Include="Payroll\Deduction.ascx.designer.cs">
       <DependentUpon>Deduction.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Setup\EmploymentTaxDetails.ascx.cs">
+      <DependentUpon>EmploymentTaxDetails.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\EmploymentTaxDetails.ascx.designer.cs">
+      <DependentUpon>EmploymentTaxDetails.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\EmploymentTaxes.ascx.cs">
+      <DependentUpon>EmploymentTaxes.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\EmploymentTaxes.ascx.designer.cs">
+      <DependentUpon>EmploymentTaxes.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Payroll\Salary.ascx.cs">
       <DependentUpon>Salary.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Payroll\Salary.ascx.designer.cs">
       <DependentUpon>Salary.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\ProvidentFunds.ascx.cs">
+      <DependentUpon>ProvidentFunds.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\ProvidentFunds.ascx.designer.cs">
+      <DependentUpon>ProvidentFunds.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\SalaryTaxes.ascx.cs">
+      <DependentUpon>SalaryTaxes.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\SalaryTaxes.ascx.designer.cs">
+      <DependentUpon>SalaryTaxes.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\SalaryTaxIncomeBrackets.ascx.cs">
+      <DependentUpon>SalaryTaxIncomeBrackets.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\SalaryTaxIncomeBrackets.ascx.designer.cs">
+      <DependentUpon>SalaryTaxIncomeBrackets.ascx</DependentUpon>
     </Compile>
     <Compile Include="Payroll\Wages.ascx.cs">
       <DependentUpon>Wages.ascx</DependentUpon>

@@ -28,6 +28,11 @@ SELECT * FROM core.recreate_menu('Commissions', '~/Modules/HRM/Payroll/Commissio
 
 
 SELECT * FROM core.recreate_menu('Setup & Maintenance', NULL, 'HRMSSM', 1, core.get_menu_id('HRM'));
+SELECT * FROM core.recreate_menu('Salary Taxes', '~/Modules/HRM/Setup/SalaryTaxes.mix', 'SALTAX', 2, core.get_menu_id('HRMSSM'));
+SELECT * FROM core.recreate_menu('Salary Tax Income Brackets', '~/Modules/HRM/Setup/SalaryTaxIncomeBrackets.mix', 'STIBTAX', 2, core.get_menu_id('HRMSSM'));
+SELECT * FROM core.recreate_menu('Employment Taxes', '~/Modules/HRM/Setup/EmploymentTaxes.mix', 'EMPTAX', 2, core.get_menu_id('HRMSSM'));
+SELECT * FROM core.recreate_menu('Employment Tax Details', '~/Modules/HRM/Setup/EmploymentTaxDetails.mix', 'EMPTAXD', 2, core.get_menu_id('HRMSSM'));
+SELECT * FROM core.recreate_menu('Provident Funds', '~/Modules/HRM/Setup/ProvidentFunds.mix', 'PROFUN', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Holiday Setup', '~/Modules/HRM/Setup/HolidaySetup.mix', 'HOLDAY', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Salaries', '~/Modules/HRM/Setup/Salaries.mix', 'SETSAL', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Wages', '~/Modules/HRM/Setup/Wages.mix', 'SETWAGES', 2, core.get_menu_id('HRMSSM'));

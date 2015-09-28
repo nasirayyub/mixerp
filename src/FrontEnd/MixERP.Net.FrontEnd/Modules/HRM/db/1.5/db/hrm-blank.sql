@@ -612,6 +612,11 @@ SELECT * FROM core.recreate_menu('Commissions', '~/Modules/HRM/Payroll/Commissio
 
 
 SELECT * FROM core.recreate_menu('Setup & Maintenance', NULL, 'HRMSSM', 1, core.get_menu_id('HRM'));
+SELECT * FROM core.recreate_menu('Salary Taxes', '~/Modules/HRM/Setup/SalaryTaxes.mix', 'SALTAX', 2, core.get_menu_id('HRMSSM'));
+SELECT * FROM core.recreate_menu('Salary Tax Income Brackets', '~/Modules/HRM/Setup/SalaryTaxIncomeBrackets.mix', 'STIBTAX', 2, core.get_menu_id('HRMSSM'));
+SELECT * FROM core.recreate_menu('Employment Taxes', '~/Modules/HRM/Setup/EmploymentTaxes.mix', 'EMPTAX', 2, core.get_menu_id('HRMSSM'));
+SELECT * FROM core.recreate_menu('Employment Tax Details', '~/Modules/HRM/Setup/EmploymentTaxDetails.mix', 'EMPTAXD', 2, core.get_menu_id('HRMSSM'));
+SELECT * FROM core.recreate_menu('Provident Funds', '~/Modules/HRM/Setup/ProvidentFunds.mix', 'PROFUN', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Holiday Setup', '~/Modules/HRM/Setup/HolidaySetup.mix', 'HOLDAY', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Salaries', '~/Modules/HRM/Setup/Salaries.mix', 'SETSAL', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Wages', '~/Modules/HRM/Setup/Wages.mix', 'SETWAGES', 2, core.get_menu_id('HRMSSM'));
@@ -828,31 +833,36 @@ ON hrm.employee_wages.employee_id = hrm.employees.employee_id
 INNER JOIN hrm.wages_setup
 ON hrm.wages_setup.wages_setup_id = hrm.employee_wages.wages_setup_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.exit_scrud_view.sql --<--<--
-DROP VIEW IF EXISTS hrm.exit_scrud_view;
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employment_tax_detail_scrud_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.employment_tax_detail_scrud_view;
 
-CREATE VIEW hrm.exit_scrud_view
+CREATE VIEW hrm.employment_tax_detail_scrud_view
 AS
 SELECT
-    hrm.exits.exit_id,
-    hrm.exits.employee_id,
-    hrm.employees.employee_code || ' (' || hrm.employees.employee_name || ')' AS employee,
-    hrm.employees.photo,
-    hrm.exits.reason,
-    forwarded_to.employee_code || ' (' || forwarded_to.employee_name || ' )' AS forward_to,
-    hrm.employment_statuses.employment_status_code || ' (' || hrm.employment_statuses.employment_status_name || ')' AS employment_status,
-    hrm.exit_types.exit_type_code || ' (' || hrm.exit_types.exit_type_name || ')' AS exit_type,
-    hrm.exits.details,
-    hrm.exits.exit_interview_details
-FROM hrm.exits
-INNER JOIN hrm.employees
-ON hrm.employees.employee_id = hrm.exits.employee_id
-INNER JOIN hrm.employment_statuses
-ON hrm.employment_statuses.employment_status_id = hrm.exits.change_status_to
-INNER JOIN hrm.exit_types
-ON hrm.exit_types.exit_type_id = hrm.exits.exit_type_id
-INNER JOIN hrm.employees AS forwarded_to
-ON forwarded_to.employee_id = hrm.exits.forward_to;
+    hrm.employment_tax_details.employment_tax_detail_id,
+    hrm.employment_taxes.employment_tax_code || ' (' || hrm.employment_taxes.employment_tax_name || ')' AS employment_tax,
+    hrm.employment_tax_details.employment_tax_detail_code,
+    hrm.employment_tax_details.employment_tax_detail_name,
+    hrm.employment_tax_details.employee_tax_rate,
+    hrm.employment_tax_details.employer_tax_rate
+FROM hrm.employment_tax_details
+INNER JOIN hrm.employment_taxes
+ON hrm.employment_taxes.employment_tax_id = hrm.employment_tax_details.employment_tax_id;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employment_tax_scrud_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.employment_tax_scrud_view;
+
+CREATE VIEW hrm.employment_tax_scrud_view
+AS
+SELECT
+    hrm.employment_taxes.employment_tax_id,
+    hrm.employment_taxes.employment_tax_code,
+    hrm.employment_taxes.employment_tax_name,
+    core.tax_authorities.tax_authority_code || ' (' || core.tax_authorities.tax_authority_name || ')' AS tax_authority
+FROM hrm.employment_taxes
+INNER JOIN core.tax_authorities
+ON hrm.employment_taxes.tax_authority_id = core.tax_authorities.tax_authority_id;
+
 
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.exit_verification_scrud_view.sql --<--<--
@@ -951,6 +961,25 @@ ON hrm.shifts.shift_id = hrm.office_hours.shift_id
 INNER JOIN core.week_days
 ON core.week_days.week_day_id = hrm.office_hours.week_day_id;
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.provident_fund_scrud_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.provident_fund_scrud_view;
+
+CREATE VIEW hrm.provident_fund_scrud_view
+AS
+SELECT
+    hrm.provident_funds.provident_fund_id,
+    hrm.provident_funds.provident_fund_code,
+    hrm.provident_funds.provident_fund_name,
+    hrm.provident_funds.employee_contribution_rate::text || '%' AS employee_contribution_rate,
+    hrm.provident_funds.employer_contribution_rate::text || '%' AS employer_contribution_rate,
+    holding_account.account_number || ' (' || holding_account.account_name || ')' AS holiding_account,
+    expense_account.account_number || ' (' || expense_account.account_name || ')' AS expense_account    
+FROM hrm.provident_funds
+INNER JOIN core.accounts AS holding_account
+ON hrm.provident_funds.fund_holding_account_id = holding_account.account_id
+INNER JOIN core.accounts AS expense_account
+ON hrm.provident_funds.provident_fund_expense_account_id = expense_account.account_id;
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.resignation_verification_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.resignation_verification_scrud_view;
 
@@ -995,6 +1024,54 @@ INNER JOIN hrm.employees
 ON hrm.employees.employee_id = hrm.resignations.employee_id
 INNER JOIN hrm.employees AS forward_to
 ON forward_to.employee_id = hrm.resignations.forward_to;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.salary_tax_income_bracket_scrud_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.salary_tax_income_bracket_scrud_view;
+
+CREATE VIEW hrm.salary_tax_income_bracket_scrud_view
+AS
+SELECT
+    hrm.salary_tax_income_brackets.salary_tax_income_bracket_id,
+    hrm.salary_taxes.salary_tax_code || ' (' || hrm.salary_taxes.salary_tax_name || ')' AS salary_tax,
+    hrm.salary_tax_income_brackets.salary_from,
+    hrm.salary_tax_income_brackets.salary_to,
+    hrm.salary_tax_income_brackets.income_tax_rate::text || '%' AS income_tax_rate
+FROM hrm.salary_tax_income_brackets
+INNER JOIN hrm.salary_taxes
+ON hrm.salary_tax_income_brackets.salary_tax_id = hrm.salary_taxes.salary_tax_id;
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.salary_tax_scrud_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.salary_tax_scrud_view;
+
+CREATE VIEW hrm.salary_tax_scrud_view
+AS
+SELECT
+    hrm.salary_taxes.salary_tax_id,
+    hrm.salary_taxes.salary_tax_code,
+    hrm.salary_taxes.salary_tax_name,
+    core.tax_authorities.tax_authority_code || ' (' || core.tax_authorities.tax_authority_name || ')' AS tax_authority,
+    hrm.salary_taxes.standard_deduction,
+    hrm.salary_taxes.personal_exemption
+FROM hrm.salary_taxes
+INNER JOIN core.tax_authorities
+ON hrm.salary_taxes.tax_authority_id = core.tax_authorities.tax_authority_id;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.salary_tax_scurd_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.salary_tax_scurd_view;
+
+CREATE VIEW hrm.salary_tax_scurd_view
+AS
+SELECT
+    hrm.salary_taxes.salary_tax_id,
+    hrm.salary_taxes.salary_tax_code,
+    hrm.salary_taxes.salary_tax_name,
+    core.tax_authorities.tax_authority_code || ' (' || core.tax_authorities.tax_authority_name || ')' AS tax_authority,
+    hrm.salary_taxes.standard_deduction,
+    hrm.salary_taxes.personal_exemption
+FROM hrm.salary_taxes
+INNER JOIN core.tax_authorities
+ON hrm.salary_taxes.tax_authority_id = core.tax_authorities.tax_authority_id;
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.termination_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.termination_scrud_view;
@@ -1042,6 +1119,27 @@ ON hrm.employment_statuses.employment_status_id = hrm.terminations.change_status
 INNER JOIN hrm.employees AS forwarded_to
 ON forwarded_to.employee_id = hrm.terminations.forward_to
 WHERE verification_status_id = 0;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.selector-views/hrm.provident_fund_expense_account_selector_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.provident_fund_expense_account_selector_view;
+
+CREATE VIEW hrm.provident_fund_expense_account_selector_view
+AS
+SELECT * FROM core.account_scrud_view
+WHERE account_master_id >= 20400
+ORDER BY account_id; --Expenses
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.selector-views/hrm.provident_fund_holding_account_selector_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.provident_fund_holding_account_selector_view;
+
+CREATE VIEW hrm.provident_fund_holding_account_selector_view
+AS
+SELECT * FROM core.account_scrud_view
+--Accounts Receivable, Accounts Payable
+WHERE account_master_id = ANY(ARRAY[10110, 15010])
+ORDER BY account_id;
+
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.views/hrm.employee_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_view;
