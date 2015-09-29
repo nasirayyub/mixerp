@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/policy/auto-verification-policy-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.Policy.AutoVerificationPolicyScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Policy.AutoVerificationPolicyScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.AutoVerificationPolicyScrudViewContext.GetPagedResult();
+                return this.AutoVerificationPolicyScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/policy/auto-verification-policy-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Policy.AutoVerificationPolicyScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Policy.AutoVerificationPolicyScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.AutoVerificationPolicyScrudViewContext.GetPagedResult(pageNumber);
+                return this.AutoVerificationPolicyScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

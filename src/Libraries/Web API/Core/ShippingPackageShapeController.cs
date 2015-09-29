@@ -106,7 +106,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/shipping-package-shape/export")]
+        [Route("~/api/core/shipping-package-shape/all")]
         public IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShape> Get()
         {
             try
@@ -197,11 +199,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/shipping-package-shape")]
-        public IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShape> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShape> GetPaginatedResult()
         {
             try
             {
-                return this.ShippingPackageShapeContext.GetPagedResult();
+                return this.ShippingPackageShapeContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -229,11 +231,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/shipping-package-shape/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShape> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShape> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.ShippingPackageShapeContext.GetPagedResult(pageNumber);
+                return this.ShippingPackageShapeContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -289,7 +291,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 shipping package shapes on each page, sorted by the property ShippingPackageShapeId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -355,7 +357,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 shipping package shapes on each page, sorted by the property ShippingPackageShapeId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

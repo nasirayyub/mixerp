@@ -106,7 +106,9 @@ namespace MixERP.Net.Api.HRM
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/hrm/employee-type/export")]
+        [Route("~/api/hrm/employee-type/all")]
         public IEnumerable<MixERP.Net.Entities.HRM.EmployeeType> Get()
         {
             try
@@ -197,11 +199,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/hrm/employee-type")]
-        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeType> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeType> GetPaginatedResult()
         {
             try
             {
-                return this.EmployeeTypeContext.GetPagedResult();
+                return this.EmployeeTypeContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -229,11 +231,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/hrm/employee-type/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeType> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeType> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.EmployeeTypeContext.GetPagedResult(pageNumber);
+                return this.EmployeeTypeContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -289,7 +291,7 @@ namespace MixERP.Net.Api.HRM
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 employee types on each page, sorted by the property EmployeeTypeId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -355,7 +357,7 @@ namespace MixERP.Net.Api.HRM
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 employee types on each page, sorted by the property EmployeeTypeId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

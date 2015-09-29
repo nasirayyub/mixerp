@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/purcahse-account-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.PurcahseAccountSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.PurcahseAccountSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.PurcahseAccountSelectorViewContext.GetPagedResult();
+                return this.PurcahseAccountSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/purcahse-account-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.PurcahseAccountSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.PurcahseAccountSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.PurcahseAccountSelectorViewContext.GetPagedResult(pageNumber);
+                return this.PurcahseAccountSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/hrm/office-hour-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.HRM.OfficeHourScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.HRM.OfficeHourScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.OfficeHourScrudViewContext.GetPagedResult();
+                return this.OfficeHourScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/hrm/office-hour-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.OfficeHourScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.HRM.OfficeHourScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.OfficeHourScrudViewContext.GetPagedResult(pageNumber);
+                return this.OfficeHourScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/payment-term-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.PaymentTermScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.PaymentTermScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.PaymentTermScrudViewContext.GetPagedResult();
+                return this.PaymentTermScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/payment-term-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.PaymentTermScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.PaymentTermScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.PaymentTermScrudViewContext.GetPagedResult(pageNumber);
+                return this.PaymentTermScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

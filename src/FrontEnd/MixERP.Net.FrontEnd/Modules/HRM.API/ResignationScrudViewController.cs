@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/hrm/resignation-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.HRM.ResignationScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.HRM.ResignationScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.ResignationScrudViewContext.GetPagedResult();
+                return this.ResignationScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/hrm/resignation-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.ResignationScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.HRM.ResignationScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.ResignationScrudViewContext.GetPagedResult(pageNumber);
+                return this.ResignationScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

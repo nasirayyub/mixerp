@@ -104,7 +104,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/widget-setup/export")]
+        [Route("~/api/core/widget-setup/all")]
         public IEnumerable<MixERP.Net.Entities.Core.WidgetSetup> Get()
         {
             try
@@ -195,11 +197,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/widget-setup")]
-        public IEnumerable<MixERP.Net.Entities.Core.WidgetSetup> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.WidgetSetup> GetPaginatedResult()
         {
             try
             {
-                return this.WidgetSetupContext.GetPagedResult();
+                return this.WidgetSetupContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -227,11 +229,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/widget-setup/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.WidgetSetup> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.WidgetSetup> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.WidgetSetupContext.GetPagedResult(pageNumber);
+                return this.WidgetSetupContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -287,7 +289,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 widget setups on each page, sorted by the property WidgetSetupId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -353,7 +355,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 widget setups on each page, sorted by the property WidgetSetupId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

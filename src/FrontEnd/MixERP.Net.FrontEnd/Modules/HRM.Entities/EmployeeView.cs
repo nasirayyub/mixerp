@@ -60,6 +60,10 @@ namespace MixERP.Net.Entities.HRM
         [ColumnDbType("varchar", 50, true, "")]
         public string GenderName { get; set; }
 
+        [Column("marital_status")]
+        [ColumnDbType("text", 0, true, "")]
+        public string MaritalStatus { get; set; }
+
         [Column("joined_on")]
         [ColumnDbType("date", 0, true, "")]
         public DateTime? JoinedOn { get; set; }
@@ -215,5 +219,41 @@ namespace MixERP.Net.Entities.HRM
         [Column("blog")]
         [ColumnDbType("varchar", 128, true, "")]
         public string Blog { get; set; }
+
+        [Column("is_smoker")]
+        [ColumnDbType("bool", 0, true, "")]
+        public bool? IsSmoker { get; set; }
+
+        [Column("is_alcoholic")]
+        [ColumnDbType("bool", 0, true, "")]
+        public bool? IsAlcoholic { get; set; }
+
+        [Column("with_disabilities")]
+        [ColumnDbType("bool", 0, true, "")]
+        public bool? WithDisabilities { get; set; }
+
+        [Column("low_vision")]
+        [ColumnDbType("bool", 0, true, "")]
+        public bool? LowVision { get; set; }
+
+        [Column("uses_wheelchair")]
+        [ColumnDbType("bool", 0, true, "")]
+        public bool? UsesWheelchair { get; set; }
+
+        [Column("hard_of_hearing")]
+        [ColumnDbType("bool", 0, true, "")]
+        public bool? HardOfHearing { get; set; }
+
+        [Column("is_aphonic")]
+        [ColumnDbType("bool", 0, true, "")]
+        public bool? IsAphonic { get; set; }
+
+        [Column("is_cognitively_disabled")]
+        [ColumnDbType("bool", 0, true, "")]
+        public bool? IsCognitivelyDisabled { get; set; }
+
+        [Column("is_autistic")]
+        [ColumnDbType("bool", 0, true, "")]
+        public bool? IsAutistic { get; set; }
     }
 }

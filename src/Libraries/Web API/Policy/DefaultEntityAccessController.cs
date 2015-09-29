@@ -107,7 +107,9 @@ namespace MixERP.Net.Api.Policy
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/policy/default-entity-access/export")]
+        [Route("~/api/policy/default-entity-access/all")]
         public IEnumerable<MixERP.Net.Entities.Policy.DefaultEntityAccess> Get()
         {
             try
@@ -198,11 +200,11 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/policy/default-entity-access")]
-        public IEnumerable<MixERP.Net.Entities.Policy.DefaultEntityAccess> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Policy.DefaultEntityAccess> GetPaginatedResult()
         {
             try
             {
-                return this.DefaultEntityAccessContext.GetPagedResult();
+                return this.DefaultEntityAccessContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -230,11 +232,11 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/policy/default-entity-access/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Policy.DefaultEntityAccess> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Policy.DefaultEntityAccess> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.DefaultEntityAccessContext.GetPagedResult(pageNumber);
+                return this.DefaultEntityAccessContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -290,7 +292,7 @@ namespace MixERP.Net.Api.Policy
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 default entity accesses on each page, sorted by the property DefaultEntityAccessId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -356,7 +358,7 @@ namespace MixERP.Net.Api.Policy
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 default entity accesses on each page, sorted by the property DefaultEntityAccessId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

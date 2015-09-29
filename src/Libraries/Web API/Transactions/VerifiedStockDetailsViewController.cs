@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/transactions/verified-stock-details-view")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.VerifiedStockDetailsView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Transactions.VerifiedStockDetailsView> GetPaginatedResult()
         {
             try
             {
-                return this.VerifiedStockDetailsViewContext.GetPagedResult();
+                return this.VerifiedStockDetailsViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/transactions/verified-stock-details-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.VerifiedStockDetailsView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Transactions.VerifiedStockDetailsView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.VerifiedStockDetailsViewContext.GetPagedResult(pageNumber);
+                return this.VerifiedStockDetailsViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

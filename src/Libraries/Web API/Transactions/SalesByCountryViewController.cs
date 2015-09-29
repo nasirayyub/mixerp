@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/transactions/sales-by-country-view")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.SalesByCountryView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Transactions.SalesByCountryView> GetPaginatedResult()
         {
             try
             {
-                return this.SalesByCountryViewContext.GetPagedResult();
+                return this.SalesByCountryViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/transactions/sales-by-country-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.SalesByCountryView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Transactions.SalesByCountryView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.SalesByCountryViewContext.GetPagedResult(pageNumber);
+                return this.SalesByCountryViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

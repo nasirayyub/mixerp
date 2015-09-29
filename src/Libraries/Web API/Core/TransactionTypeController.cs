@@ -103,7 +103,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/transaction-type/export")]
+        [Route("~/api/core/transaction-type/all")]
         public IEnumerable<MixERP.Net.Entities.Core.TransactionType> Get()
         {
             try
@@ -194,11 +196,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/transaction-type")]
-        public IEnumerable<MixERP.Net.Entities.Core.TransactionType> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.TransactionType> GetPaginatedResult()
         {
             try
             {
-                return this.TransactionTypeContext.GetPagedResult();
+                return this.TransactionTypeContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -226,11 +228,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/transaction-type/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.TransactionType> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.TransactionType> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.TransactionTypeContext.GetPagedResult(pageNumber);
+                return this.TransactionTypeContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -286,7 +288,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 transaction types on each page, sorted by the property TransactionTypeId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -352,7 +354,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 transaction types on each page, sorted by the property TransactionTypeId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

@@ -109,7 +109,9 @@ namespace MixERP.Net.Api.Audit
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/audit/failed-login/export")]
+        [Route("~/api/audit/failed-login/all")]
         public IEnumerable<MixERP.Net.Entities.Audit.FailedLogin> Get()
         {
             try
@@ -200,11 +202,11 @@ namespace MixERP.Net.Api.Audit
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/audit/failed-login")]
-        public IEnumerable<MixERP.Net.Entities.Audit.FailedLogin> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Audit.FailedLogin> GetPaginatedResult()
         {
             try
             {
-                return this.FailedLoginContext.GetPagedResult();
+                return this.FailedLoginContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -232,11 +234,11 @@ namespace MixERP.Net.Api.Audit
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/audit/failed-login/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Audit.FailedLogin> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Audit.FailedLogin> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.FailedLoginContext.GetPagedResult(pageNumber);
+                return this.FailedLoginContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -292,7 +294,7 @@ namespace MixERP.Net.Api.Audit
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 failed logins on each page, sorted by the property FailedLoginId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -358,7 +360,7 @@ namespace MixERP.Net.Api.Audit
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 failed logins on each page, sorted by the property FailedLoginId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

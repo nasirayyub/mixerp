@@ -112,7 +112,9 @@ namespace MixERP.Net.Api.Transactions
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/transactions/customer-receipt/export")]
+        [Route("~/api/transactions/customer-receipt/all")]
         public IEnumerable<MixERP.Net.Entities.Transactions.CustomerReceipt> Get()
         {
             try
@@ -203,11 +205,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/transactions/customer-receipt")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.CustomerReceipt> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Transactions.CustomerReceipt> GetPaginatedResult()
         {
             try
             {
-                return this.CustomerReceiptContext.GetPagedResult();
+                return this.CustomerReceiptContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -235,11 +237,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/transactions/customer-receipt/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.CustomerReceipt> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Transactions.CustomerReceipt> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.CustomerReceiptContext.GetPagedResult(pageNumber);
+                return this.CustomerReceiptContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -295,7 +297,7 @@ namespace MixERP.Net.Api.Transactions
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 customer receipts on each page, sorted by the property ReceiptId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -361,7 +363,7 @@ namespace MixERP.Net.Api.Transactions
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 customer receipts on each page, sorted by the property ReceiptId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

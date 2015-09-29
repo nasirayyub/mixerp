@@ -109,7 +109,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/compound-item-detail/export")]
+        [Route("~/api/core/compound-item-detail/all")]
         public IEnumerable<MixERP.Net.Entities.Core.CompoundItemDetail> Get()
         {
             try
@@ -200,11 +202,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/compound-item-detail")]
-        public IEnumerable<MixERP.Net.Entities.Core.CompoundItemDetail> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.CompoundItemDetail> GetPaginatedResult()
         {
             try
             {
-                return this.CompoundItemDetailContext.GetPagedResult();
+                return this.CompoundItemDetailContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -232,11 +234,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/compound-item-detail/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.CompoundItemDetail> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.CompoundItemDetail> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.CompoundItemDetailContext.GetPagedResult(pageNumber);
+                return this.CompoundItemDetailContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -292,7 +294,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 compound item details on each page, sorted by the property CompoundItemDetailId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -358,7 +360,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 compound item details on each page, sorted by the property CompoundItemDetailId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

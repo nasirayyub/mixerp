@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/hrm/employment-tax-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.HRM.EmploymentTaxScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.HRM.EmploymentTaxScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.EmploymentTaxScrudViewContext.GetPagedResult();
+                return this.EmploymentTaxScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/hrm/employment-tax-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.EmploymentTaxScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.HRM.EmploymentTaxScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.EmploymentTaxScrudViewContext.GetPagedResult(pageNumber);
+                return this.EmploymentTaxScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

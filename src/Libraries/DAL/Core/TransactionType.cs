@@ -482,11 +482,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Performs a select statement on table "core.transaction_types" producing a paged result of 10.
+        /// Performs a select statement on table "core.transaction_types" producing a paginated result of 10.
         /// </summary>
         /// <returns>Returns the first page of collection of "TransactionType" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.TransactionType> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.TransactionType> GetPaginatedResult()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -511,12 +511,12 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Performs a select statement on table "core.transaction_types" producing a paged result of 10.
+        /// Performs a select statement on table "core.transaction_types" producing a paginated result of 10.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the paged result.</param>
+        /// <param name="pageNumber">Enter the page number to produce the paginated result.</param>
         /// <returns>Returns collection of "TransactionType" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.TransactionType> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.TransactionType> GetPaginatedResult(long pageNumber)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -581,9 +581,9 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Performs a filtered select statement on table "core.transaction_types" producing a paged result of 10.
+        /// Performs a filtered select statement on table "core.transaction_types" producing a paginated result of 10.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the paged result.</param>
+        /// <param name="pageNumber">Enter the page number to produce the paginated result. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns collection of "TransactionType" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -613,8 +613,12 @@ namespace MixERP.Net.Schemas.Core.Data
             MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.Core.TransactionType(), filters);
 
             sql.OrderBy("transaction_type_id");
-            sql.Append("LIMIT @0", 10);
-            sql.Append("OFFSET @0", offset);
+
+            if (pageNumber > 0)
+            {
+                sql.Append("LIMIT @0", 10);
+                sql.Append("OFFSET @0", offset);
+            }
 
             return Factory.Get<MixERP.Net.Entities.Core.TransactionType>(this._Catalog, sql);
         }
@@ -653,9 +657,9 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Performs a filtered select statement on table "core.transaction_types" producing a paged result of 10.
+        /// Performs a filtered select statement on table "core.transaction_types" producing a paginated result of 10.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the paged result.</param>
+        /// <param name="pageNumber">Enter the page number to produce the paginated result. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns collection of "TransactionType" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -687,8 +691,12 @@ namespace MixERP.Net.Schemas.Core.Data
             MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.Core.TransactionType(), filters);
 
             sql.OrderBy("transaction_type_id");
-            sql.Append("LIMIT @0", 10);
-            sql.Append("OFFSET @0", offset);
+
+            if (pageNumber > 0)
+            {
+                sql.Append("LIMIT @0", 10);
+                sql.Append("OFFSET @0", offset);
+            }
 
             return Factory.Get<MixERP.Net.Entities.Core.TransactionType>(this._Catalog, sql);
         }

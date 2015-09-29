@@ -88,6 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttendanceController.cs" />
     <Compile Include="ContractController.cs" />
     <Compile Include="ContractScrudViewController.cs" />
     <Compile Include="ContractVerificationScrudViewController.cs" />

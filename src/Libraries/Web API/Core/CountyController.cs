@@ -106,7 +106,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/county/export")]
+        [Route("~/api/core/county/all")]
         public IEnumerable<MixERP.Net.Entities.Core.County> Get()
         {
             try
@@ -197,11 +199,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/county")]
-        public IEnumerable<MixERP.Net.Entities.Core.County> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.County> GetPaginatedResult()
         {
             try
             {
-                return this.CountyContext.GetPagedResult();
+                return this.CountyContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -229,11 +231,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/county/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.County> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.County> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.CountyContext.GetPagedResult(pageNumber);
+                return this.CountyContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -289,7 +291,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 counties on each page, sorted by the property CountyId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -355,7 +357,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 counties on each page, sorted by the property CountyId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

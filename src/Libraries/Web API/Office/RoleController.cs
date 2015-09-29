@@ -107,7 +107,9 @@ namespace MixERP.Net.Api.Office
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/office/role/export")]
+        [Route("~/api/office/role/all")]
         public IEnumerable<MixERP.Net.Entities.Office.Role> Get()
         {
             try
@@ -198,11 +200,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/office/role")]
-        public IEnumerable<MixERP.Net.Entities.Office.Role> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Office.Role> GetPaginatedResult()
         {
             try
             {
-                return this.RoleContext.GetPagedResult();
+                return this.RoleContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -230,11 +232,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/office/role/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Office.Role> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Office.Role> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.RoleContext.GetPagedResult(pageNumber);
+                return this.RoleContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -290,7 +292,7 @@ namespace MixERP.Net.Api.Office
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 roles on each page, sorted by the property RoleId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -356,7 +358,7 @@ namespace MixERP.Net.Api.Office
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 roles on each page, sorted by the property RoleId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

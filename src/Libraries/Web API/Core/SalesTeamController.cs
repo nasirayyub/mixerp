@@ -105,7 +105,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/sales-team/export")]
+        [Route("~/api/core/sales-team/all")]
         public IEnumerable<MixERP.Net.Entities.Core.SalesTeam> Get()
         {
             try
@@ -196,11 +198,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/sales-team")]
-        public IEnumerable<MixERP.Net.Entities.Core.SalesTeam> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.SalesTeam> GetPaginatedResult()
         {
             try
             {
-                return this.SalesTeamContext.GetPagedResult();
+                return this.SalesTeamContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -228,11 +230,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/sales-team/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.SalesTeam> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.SalesTeam> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.SalesTeamContext.GetPagedResult(pageNumber);
+                return this.SalesTeamContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -288,7 +290,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 sales teams on each page, sorted by the property SalesTeamId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -354,7 +356,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 sales teams on each page, sorted by the property SalesTeamId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

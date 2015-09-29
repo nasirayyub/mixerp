@@ -37,6 +37,13 @@
             textField: "Value"
         },
         {
+            property: "MaritalStatusId",
+            url: '/api/core/marital-status/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
             property: "OfficeId",
             url: '/api/office/office/display-fields',
             data: null,

@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/office/work-center-view")]
-        public IEnumerable<MixERP.Net.Entities.Office.WorkCenterView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Office.WorkCenterView> GetPaginatedResult()
         {
             try
             {
-                return this.WorkCenterViewContext.GetPagedResult();
+                return this.WorkCenterViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/office/work-center-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Office.WorkCenterView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Office.WorkCenterView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.WorkCenterViewContext.GetPagedResult(pageNumber);
+                return this.WorkCenterViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

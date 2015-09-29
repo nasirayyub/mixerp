@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/party-type-account-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.PartyTypeAccountSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.PartyTypeAccountSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.PartyTypeAccountSelectorViewContext.GetPagedResult();
+                return this.PartyTypeAccountSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/party-type-account-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.PartyTypeAccountSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.PartyTypeAccountSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.PartyTypeAccountSelectorViewContext.GetPagedResult(pageNumber);
+                return this.PartyTypeAccountSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

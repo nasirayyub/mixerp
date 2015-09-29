@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/brand-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.BrandSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.BrandSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.BrandSelectorViewContext.GetPagedResult();
+                return this.BrandSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/brand-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.BrandSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.BrandSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.BrandSelectorViewContext.GetPagedResult(pageNumber);
+                return this.BrandSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

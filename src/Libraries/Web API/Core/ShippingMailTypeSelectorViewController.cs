@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/shipping-mail-type-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.ShippingMailTypeSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.ShippingMailTypeSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.ShippingMailTypeSelectorViewContext.GetPagedResult();
+                return this.ShippingMailTypeSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/shipping-mail-type-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.ShippingMailTypeSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.ShippingMailTypeSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.ShippingMailTypeSelectorViewContext.GetPagedResult(pageNumber);
+                return this.ShippingMailTypeSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

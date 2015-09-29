@@ -106,7 +106,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/social-network/export")]
+        [Route("~/api/core/social-network/all")]
         public IEnumerable<MixERP.Net.Entities.Core.SocialNetwork> Get()
         {
             try
@@ -197,11 +199,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/social-network")]
-        public IEnumerable<MixERP.Net.Entities.Core.SocialNetwork> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.SocialNetwork> GetPaginatedResult()
         {
             try
             {
-                return this.SocialNetworkContext.GetPagedResult();
+                return this.SocialNetworkContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -229,11 +231,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/social-network/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.SocialNetwork> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.SocialNetwork> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.SocialNetworkContext.GetPagedResult(pageNumber);
+                return this.SocialNetworkContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -289,7 +291,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 social networks on each page, sorted by the property SocialNetworkName.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -355,7 +357,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 social networks on each page, sorted by the property SocialNetworkName.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

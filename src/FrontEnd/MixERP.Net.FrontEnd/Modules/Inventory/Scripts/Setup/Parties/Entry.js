@@ -303,7 +303,7 @@ saveButton.click(function () {
     party.LastName = lastNameInputText.val();
     party.PartyName = partyNameInputText.val();
     party.CompanyName = companyNameInputText.val();
-    party.DateOfBirth = Date.parseExact(dateOfBirthInputText.val(), window.shortDateFormat);
+    party.DateOfBirth = window.parseLocalizedDate(dateOfBirthInputText.val());
     party.EntityId = parseInt(entitySelect.getSelectedValue());
     party.IndustryId = parseInt(industrySelect.getSelectedValue());
     party.CountryId = parseInt(countrySelect.getSelectedValue());

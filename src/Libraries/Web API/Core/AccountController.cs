@@ -113,7 +113,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/account/export")]
+        [Route("~/api/core/account/all")]
         public IEnumerable<MixERP.Net.Entities.Core.Account> Get()
         {
             try
@@ -204,11 +206,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/account")]
-        public IEnumerable<MixERP.Net.Entities.Core.Account> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.Account> GetPaginatedResult()
         {
             try
             {
-                return this.AccountContext.GetPagedResult();
+                return this.AccountContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -236,11 +238,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/account/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.Account> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.Account> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.AccountContext.GetPagedResult(pageNumber);
+                return this.AccountContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -296,7 +298,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 accounts on each page, sorted by the property AccountId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -362,7 +364,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 accounts on each page, sorted by the property AccountId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

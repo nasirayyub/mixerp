@@ -461,7 +461,7 @@ function getDefaultSalesTax() {
 };
 
 var validateProductControl = function () {
-    valueDate = Date.parseExact(dateTextBox.val(), window.shortDateFormat);
+    valueDate = window.parseLocalizedDate(dateTextBox.val());
     errorLabelBottom.html("");
 
     removeDirty(dateTextBox);

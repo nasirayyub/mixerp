@@ -109,7 +109,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/merchant-fee-setup/export")]
+        [Route("~/api/core/merchant-fee-setup/all")]
         public IEnumerable<MixERP.Net.Entities.Core.MerchantFeeSetup> Get()
         {
             try
@@ -200,11 +202,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/merchant-fee-setup")]
-        public IEnumerable<MixERP.Net.Entities.Core.MerchantFeeSetup> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.MerchantFeeSetup> GetPaginatedResult()
         {
             try
             {
-                return this.MerchantFeeSetupContext.GetPagedResult();
+                return this.MerchantFeeSetupContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -232,11 +234,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/merchant-fee-setup/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.MerchantFeeSetup> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.MerchantFeeSetup> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.MerchantFeeSetupContext.GetPagedResult(pageNumber);
+                return this.MerchantFeeSetupContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -292,7 +294,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 merchant fee setups on each page, sorted by the property MerchantFeeSetupId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -358,7 +360,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 merchant fee setups on each page, sorted by the property MerchantFeeSetupId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

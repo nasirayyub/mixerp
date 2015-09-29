@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/hrm/contract-verification-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.HRM.ContractVerificationScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.HRM.ContractVerificationScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.ContractVerificationScrudViewContext.GetPagedResult();
+                return this.ContractVerificationScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/hrm/contract-verification-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.ContractVerificationScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.HRM.ContractVerificationScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.ContractVerificationScrudViewContext.GetPagedResult(pageNumber);
+                return this.ContractVerificationScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

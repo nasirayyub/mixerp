@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/custom-field-definition-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldDefinitionView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldDefinitionView> GetPaginatedResult()
         {
             try
             {
-                return this.CustomFieldDefinitionViewContext.GetPagedResult();
+                return this.CustomFieldDefinitionViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/custom-field-definition-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldDefinitionView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldDefinitionView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.CustomFieldDefinitionViewContext.GetPagedResult(pageNumber);
+                return this.CustomFieldDefinitionViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

@@ -105,7 +105,9 @@ namespace MixERP.Net.Api.Transactions
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/transactions/late-fee/export")]
+        [Route("~/api/transactions/late-fee/all")]
         public IEnumerable<MixERP.Net.Entities.Transactions.LateFee> Get()
         {
             try
@@ -196,11 +198,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/transactions/late-fee")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.LateFee> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Transactions.LateFee> GetPaginatedResult()
         {
             try
             {
-                return this.LateFeeContext.GetPagedResult();
+                return this.LateFeeContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -228,11 +230,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/transactions/late-fee/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.LateFee> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Transactions.LateFee> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.LateFeeContext.GetPagedResult(pageNumber);
+                return this.LateFeeContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -288,7 +290,7 @@ namespace MixERP.Net.Api.Transactions
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 late fees on each page, sorted by the property TransactionMasterId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -354,7 +356,7 @@ namespace MixERP.Net.Api.Transactions
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 late fees on each page, sorted by the property TransactionMasterId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

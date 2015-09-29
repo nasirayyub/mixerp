@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/fiscal-year-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.FiscalYearSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.FiscalYearSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.FiscalYearSelectorViewContext.GetPagedResult();
+                return this.FiscalYearSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/fiscal-year-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.FiscalYearSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.FiscalYearSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.FiscalYearSelectorViewContext.GetPagedResult(pageNumber);
+                return this.FiscalYearSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

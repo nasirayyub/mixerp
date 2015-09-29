@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/hrm/provident-fund-holding-account-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.HRM.ProvidentFundHoldingAccountSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.HRM.ProvidentFundHoldingAccountSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.ProvidentFundHoldingAccountSelectorViewContext.GetPagedResult();
+                return this.ProvidentFundHoldingAccountSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/hrm/provident-fund-holding-account-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.ProvidentFundHoldingAccountSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.HRM.ProvidentFundHoldingAccountSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.ProvidentFundHoldingAccountSelectorViewContext.GetPagedResult(pageNumber);
+                return this.ProvidentFundHoldingAccountSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

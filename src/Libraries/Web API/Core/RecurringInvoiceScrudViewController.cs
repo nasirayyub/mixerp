@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/recurring-invoice-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.RecurringInvoiceScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.RecurringInvoiceScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.RecurringInvoiceScrudViewContext.GetPagedResult();
+                return this.RecurringInvoiceScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/recurring-invoice-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.RecurringInvoiceScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.RecurringInvoiceScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.RecurringInvoiceScrudViewContext.GetPagedResult(pageNumber);
+                return this.RecurringInvoiceScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

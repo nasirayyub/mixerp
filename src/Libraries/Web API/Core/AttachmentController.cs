@@ -1,7 +1,11 @@
 // ReSharper disable All
+
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Web;
 using System.Web.Http;
 using MixERP.Net.Api.Framework;
 using MixERP.Net.ApplicationState.Cache;
@@ -110,7 +114,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/attachment/export")]
+        [Route("~/api/core/attachment/all")]
         public IEnumerable<MixERP.Net.Entities.Core.Attachment> Get()
         {
             try
@@ -201,11 +207,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/attachment")]
-        public IEnumerable<MixERP.Net.Entities.Core.Attachment> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.Attachment> GetPaginatedResult()
         {
             try
             {
-                return this.AttachmentContext.GetPagedResult();
+                return this.AttachmentContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -233,11 +239,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/attachment/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.Attachment> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.Attachment> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.AttachmentContext.GetPagedResult(pageNumber);
+                return this.AttachmentContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -293,7 +299,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 attachments on each page, sorted by the property AttachmentId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -359,7 +365,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 attachments on each page, sorted by the property AttachmentId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]
@@ -707,6 +713,10 @@ namespace MixERP.Net.Api.Core
                     HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
 
                     response.Content = new ByteArrayContent(buffer);
+
+                    response.Headers.CacheControl = new CacheControlHeaderValue();
+                    response.Headers.CacheControl.MaxAge = new TimeSpan(365);
+                    response.Headers.CacheControl.Public = true;
                     response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline");
                     response.Content.Headers.ContentDisposition.FileName = file.Name;
                     response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(MixERP.Net.Common.Helpers.ImageHelper.GetContentType(file.Extension));

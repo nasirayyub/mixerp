@@ -105,7 +105,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/custom-field-data-type/export")]
+        [Route("~/api/core/custom-field-data-type/all")]
         public IEnumerable<MixERP.Net.Entities.Core.CustomFieldDataType> Get()
         {
             try
@@ -196,11 +198,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/custom-field-data-type")]
-        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldDataType> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldDataType> GetPaginatedResult()
         {
             try
             {
-                return this.CustomFieldDataTypeContext.GetPagedResult();
+                return this.CustomFieldDataTypeContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -228,11 +230,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/custom-field-data-type/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldDataType> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldDataType> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.CustomFieldDataTypeContext.GetPagedResult(pageNumber);
+                return this.CustomFieldDataTypeContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -288,7 +290,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 custom field data types on each page, sorted by the property DataType.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -354,7 +356,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 custom field data types on each page, sorted by the property DataType.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

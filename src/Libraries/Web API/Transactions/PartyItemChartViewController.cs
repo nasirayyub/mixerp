@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/transactions/party-item-chart-view")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.PartyItemChartView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Transactions.PartyItemChartView> GetPaginatedResult()
         {
             try
             {
-                return this.PartyItemChartViewContext.GetPagedResult();
+                return this.PartyItemChartViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/transactions/party-item-chart-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.PartyItemChartView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Transactions.PartyItemChartView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.PartyItemChartViewContext.GetPagedResult(pageNumber);
+                return this.PartyItemChartViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

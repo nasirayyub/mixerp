@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/currency-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.CurrencyScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.CurrencyScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.CurrencyScrudViewContext.GetPagedResult();
+                return this.CurrencyScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/currency-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.CurrencyScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.CurrencyScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.CurrencyScrudViewContext.GetPagedResult(pageNumber);
+                return this.CurrencyScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

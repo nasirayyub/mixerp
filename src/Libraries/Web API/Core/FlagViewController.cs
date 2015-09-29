@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/flag-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.FlagView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.FlagView> GetPaginatedResult()
         {
             try
             {
-                return this.FlagViewContext.GetPagedResult();
+                return this.FlagViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/flag-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.FlagView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.FlagView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.FlagViewContext.GetPagedResult(pageNumber);
+                return this.FlagViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

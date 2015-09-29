@@ -102,7 +102,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/config/export")]
+        [Route("~/api/core/config/all")]
         public IEnumerable<MixERP.Net.Entities.Core.Config> Get()
         {
             try
@@ -193,11 +195,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/config")]
-        public IEnumerable<MixERP.Net.Entities.Core.Config> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.Config> GetPaginatedResult()
         {
             try
             {
-                return this.ConfigContext.GetPagedResult();
+                return this.ConfigContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -225,11 +227,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/config/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.Config> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.Config> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.ConfigContext.GetPagedResult(pageNumber);
+                return this.ConfigContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -285,7 +287,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 configs on each page, sorted by the property ConfigId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -351,7 +353,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 configs on each page, sorted by the property ConfigId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

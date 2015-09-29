@@ -108,7 +108,7 @@ saveButton.click(function () {
     var statementReference = statementReferenceTextArea.val();
     var costCenterId = parseInt(costCenterSelect.getSelectedValue() || 0);
     var cashRepositoryId = parseInt(cashRepositorySelect.getSelectedValue() || 0);
-    var postedDate = Date.parseExact(postedDateTextBox.val(), window.shortDateFormat);
+    var postedDate = window.parseLocalizedDate(postedDateTextBox.val());
     var bankAccountId = parseInt(bankSelect.getSelectedValue() || 0);
     var paymentCardId = parseInt(paymentCardSelect.getSelectedValue() || 0);
     var bankInstrumentCode = instrumentCodeInputText.val();

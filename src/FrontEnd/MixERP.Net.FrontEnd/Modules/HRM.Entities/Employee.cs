@@ -188,9 +188,9 @@ namespace MixERP.Net.Entities.HRM
         [ColumnDbType("bool", 0, true, "")]
         public bool? LowVision { get; set; }
 
-        [Column("uses_wheeelchair")]
+        [Column("uses_wheelchair")]
         [ColumnDbType("bool", 0, true, "")]
-        public bool? UsesWheeelchair { get; set; }
+        public bool? UsesWheelchair { get; set; }
 
         [Column("hard_of_hearing")]
         [ColumnDbType("bool", 0, true, "")]

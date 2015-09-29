@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/bonus-slab-account-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.BonusSlabAccountSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.BonusSlabAccountSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.BonusSlabAccountSelectorViewContext.GetPagedResult();
+                return this.BonusSlabAccountSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/bonus-slab-account-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.BonusSlabAccountSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.BonusSlabAccountSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.BonusSlabAccountSelectorViewContext.GetPagedResult(pageNumber);
+                return this.BonusSlabAccountSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

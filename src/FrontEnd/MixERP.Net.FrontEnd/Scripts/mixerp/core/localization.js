@@ -106,3 +106,19 @@ String.prototype.toMoment = function () {
 
     return window.moment(d).fromNow();
 };
+
+String.prototype.toTime = function () {
+    if (isNullOrWhiteSpace(this)) {
+        return "";
+    };
+
+    var val = this;
+
+    if (val.indexOf("Z", val.length - 1) === -1) {
+        val += "Z";
+    };
+
+    var d = new Date(val);
+
+    return d.getUTCHours() + ":" + d.getUTCMinutes();
+};

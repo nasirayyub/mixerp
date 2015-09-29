@@ -464,8 +464,8 @@ var postpostJournalTransaction = function(valueDate, bookDate, referenceNumber, 
 };
 
 var validate = function() {
-    valueDate = Date.parseExact(valueDateTextBox.val(), window.shortDateFormat);
-    bookDate = Date.parseExact(bookDateTextBox.val(), window.shortDateFormat);
+    valueDate = window.parseLocalizedDate(valueDateTextBox.val());
+    bookDate = window.parseLocalizedDate(bookDateTextBox.val());
 
     errorLabelBottom.html("");
 

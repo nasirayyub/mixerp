@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/hrm/provident-fund-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.HRM.ProvidentFundScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.HRM.ProvidentFundScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.ProvidentFundScrudViewContext.GetPagedResult();
+                return this.ProvidentFundScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/hrm/provident-fund-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.ProvidentFundScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.HRM.ProvidentFundScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.ProvidentFundScrudViewContext.GetPagedResult(pageNumber);
+                return this.ProvidentFundScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

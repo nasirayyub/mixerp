@@ -174,7 +174,7 @@ CREATE TABLE hrm.employees
     is_alcoholic                            boolean,
     with_disabilities                       boolean,
     low_vision                              boolean,
-    uses_wheeelchair                        boolean,
+    uses_wheelchair                         boolean,
     hard_of_hearing                         boolean,
     is_aphonic                              boolean,
     is_cognitively_disabled                 boolean,

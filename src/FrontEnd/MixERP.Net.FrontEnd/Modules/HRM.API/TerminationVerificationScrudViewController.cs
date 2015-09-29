@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/hrm/termination-verification-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.HRM.TerminationVerificationScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.HRM.TerminationVerificationScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.TerminationVerificationScrudViewContext.GetPagedResult();
+                return this.TerminationVerificationScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/hrm/termination-verification-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.TerminationVerificationScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.HRM.TerminationVerificationScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.TerminationVerificationScrudViewContext.GetPagedResult(pageNumber);
+                return this.TerminationVerificationScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

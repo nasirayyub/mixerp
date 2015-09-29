@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/late-fee-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.LateFeeScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.LateFeeScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.LateFeeScrudViewContext.GetPagedResult();
+                return this.LateFeeScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/late-fee-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.LateFeeScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.LateFeeScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.LateFeeScrudViewContext.GetPagedResult(pageNumber);
+                return this.LateFeeScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

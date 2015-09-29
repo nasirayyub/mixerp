@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/hrm/employee-social-network-detail-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetailScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetailScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.EmployeeSocialNetworkDetailScrudViewContext.GetPagedResult();
+                return this.EmployeeSocialNetworkDetailScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/hrm/employee-social-network-detail-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetailScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetailScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.EmployeeSocialNetworkDetailScrudViewContext.GetPagedResult(pageNumber);
+                return this.EmployeeSocialNetworkDetailScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

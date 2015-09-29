@@ -104,7 +104,9 @@ namespace MixERP.Net.Api.Config
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/config/db-parameter/export")]
+        [Route("~/api/config/db-parameter/all")]
         public IEnumerable<MixERP.Net.Entities.Config.DbParameter> Get()
         {
             try
@@ -195,11 +197,11 @@ namespace MixERP.Net.Api.Config
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/config/db-parameter")]
-        public IEnumerable<MixERP.Net.Entities.Config.DbParameter> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Config.DbParameter> GetPaginatedResult()
         {
             try
             {
-                return this.DbParameterContext.GetPagedResult();
+                return this.DbParameterContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -227,11 +229,11 @@ namespace MixERP.Net.Api.Config
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/config/db-parameter/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Config.DbParameter> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Config.DbParameter> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.DbParameterContext.GetPagedResult(pageNumber);
+                return this.DbParameterContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -287,7 +289,7 @@ namespace MixERP.Net.Api.Config
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 db parameters on each page, sorted by the property Key.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -353,7 +355,7 @@ namespace MixERP.Net.Api.Config
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 db parameters on each page, sorted by the property Key.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

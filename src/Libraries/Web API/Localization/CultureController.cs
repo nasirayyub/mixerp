@@ -102,7 +102,9 @@ namespace MixERP.Net.Api.Localization
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/localization/culture/export")]
+        [Route("~/api/localization/culture/all")]
         public IEnumerable<MixERP.Net.Entities.Localization.Culture> Get()
         {
             try
@@ -193,11 +195,11 @@ namespace MixERP.Net.Api.Localization
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/localization/culture")]
-        public IEnumerable<MixERP.Net.Entities.Localization.Culture> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Localization.Culture> GetPaginatedResult()
         {
             try
             {
-                return this.CultureContext.GetPagedResult();
+                return this.CultureContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -225,11 +227,11 @@ namespace MixERP.Net.Api.Localization
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/localization/culture/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Localization.Culture> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Localization.Culture> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.CultureContext.GetPagedResult(pageNumber);
+                return this.CultureContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -285,7 +287,7 @@ namespace MixERP.Net.Api.Localization
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 cultures on each page, sorted by the property CultureCode.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -351,7 +353,7 @@ namespace MixERP.Net.Api.Localization
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 cultures on each page, sorted by the property CultureCode.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

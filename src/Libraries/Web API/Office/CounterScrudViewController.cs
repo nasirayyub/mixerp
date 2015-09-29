@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/office/counter-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.Office.CounterScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Office.CounterScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.CounterScrudViewContext.GetPagedResult();
+                return this.CounterScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/office/counter-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Office.CounterScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Office.CounterScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.CounterScrudViewContext.GetPagedResult(pageNumber);
+                return this.CounterScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

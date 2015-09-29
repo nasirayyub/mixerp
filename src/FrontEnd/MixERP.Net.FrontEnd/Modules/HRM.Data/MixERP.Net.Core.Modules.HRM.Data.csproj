@@ -80,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attendance.cs" />
     <Compile Include="Contract.cs" />
     <Compile Include="ContractScrudView.cs" />
     <Compile Include="ContractVerificationScrudView.cs" />

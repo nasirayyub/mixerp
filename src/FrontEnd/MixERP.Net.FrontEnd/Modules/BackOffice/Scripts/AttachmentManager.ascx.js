@@ -64,7 +64,6 @@ MixERPApp.controller("AttachmentController", function ($scope, $sce, $window) {
     };
 
     $scope.initializeModal = function (attachment) {
-        alert(JSON.stringify(attachment));
         $('#opener .header').html("<i class='photo icon'></i>" + attachment.OriginalFileName);
         $('#opener img').attr('src', '/api/core/attachment/document/900/500/' + attachment.FilePath);
         $('#opener p').html(attachment.Comment);

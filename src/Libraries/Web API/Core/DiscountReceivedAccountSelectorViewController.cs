@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/discount-received-account-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.DiscountReceivedAccountSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.DiscountReceivedAccountSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.DiscountReceivedAccountSelectorViewContext.GetPagedResult();
+                return this.DiscountReceivedAccountSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/discount-received-account-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.DiscountReceivedAccountSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.DiscountReceivedAccountSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.DiscountReceivedAccountSelectorViewContext.GetPagedResult(pageNumber);
+                return this.DiscountReceivedAccountSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

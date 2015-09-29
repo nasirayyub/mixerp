@@ -243,7 +243,7 @@ var calculateTotal = function () {
 };
 
 saveButton.click(function () {
-    var valueDate = Date.parseExact(valueDateTextBox.val(), window.shortDateFormat);
+    var valueDate = window.parseLocalizedDate(valueDateTextBox.val());
     var referenceNumber = referenceNumberInputText.val();
     var statementReference = statementReferenceTextArea.val();
 

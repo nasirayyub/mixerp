@@ -131,7 +131,9 @@ namespace MixERP.Net.Api.Office
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/office/office/export")]
+        [Route("~/api/office/office/all")]
         public IEnumerable<MixERP.Net.Entities.Office.Office> Get()
         {
             try
@@ -222,11 +224,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/office/office")]
-        public IEnumerable<MixERP.Net.Entities.Office.Office> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Office.Office> GetPaginatedResult()
         {
             try
             {
-                return this.OfficeContext.GetPagedResult();
+                return this.OfficeContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -254,11 +256,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/office/office/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Office.Office> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Office.Office> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.OfficeContext.GetPagedResult(pageNumber);
+                return this.OfficeContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -314,7 +316,7 @@ namespace MixERP.Net.Api.Office
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 offices on each page, sorted by the property OfficeId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -380,7 +382,7 @@ namespace MixERP.Net.Api.Office
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 offices on each page, sorted by the property OfficeId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

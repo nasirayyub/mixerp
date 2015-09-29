@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/transactions/verified-transaction-view")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.VerifiedTransactionView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Transactions.VerifiedTransactionView> GetPaginatedResult()
         {
             try
             {
-                return this.VerifiedTransactionViewContext.GetPagedResult();
+                return this.VerifiedTransactionViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/transactions/verified-transaction-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.VerifiedTransactionView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Transactions.VerifiedTransactionView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.VerifiedTransactionViewContext.GetPagedResult(pageNumber);
+                return this.VerifiedTransactionViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

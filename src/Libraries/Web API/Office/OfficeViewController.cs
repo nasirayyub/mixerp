@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/office/office-view")]
-        public IEnumerable<MixERP.Net.Entities.Office.OfficeView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Office.OfficeView> GetPaginatedResult()
         {
             try
             {
-                return this.OfficeViewContext.GetPagedResult();
+                return this.OfficeViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/office/office-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Office.OfficeView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Office.OfficeView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.OfficeViewContext.GetPagedResult(pageNumber);
+                return this.OfficeViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

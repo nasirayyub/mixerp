@@ -148,6 +148,18 @@
                             </td>
                         </tr>
                         <tr>
+                            <td style="width: 200px;">{{getResource('Resources.Titles.Gender')}}
+                            </td>
+                            <td>{{employee.GenderName}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 200px;">{{getResource('Resources.Titles.MaritalStatus')}}
+                            </td>
+                            <td>{{employee.MaritalStatus}}
+                            </td>
+                        </tr>
+                        <tr>
                             <td style="width: 200px;">{{getResource('Resources.Titles.EmployeeType')}}
                             </td>
                             <td>{{employee.EmployeeType}}
@@ -477,7 +489,7 @@
         getEmployeeAjax.success(function (msg) {
             $scope.$apply(function () {
                 $scope.employee = msg[0];
-                $scope.employee.JoinedOnAgo = $window.moment(new Date(msg[0].JoinedOn)).fromNow();
+                $scope.employee.JoinedOnAgo = $window.moment($window.removeTimezone(msg[0].JoinedOn)).fromNow();
                 var age = $window.moment().diff($window.moment(msg[0].DateOfBirth), "years");
 
                 if (!age) { age = ""; };
@@ -508,8 +520,8 @@
 
         getExperiencesAjax.success(function (msg) {
             $.each(msg, function (i) {
-                msg[i].StartedOnAgo = $window.moment(new Date(msg[i].StartedOn)).fromNow();
-                msg[i].EndedOnAgo = $window.moment(new Date(msg[i].EndedOn)).fromNow();
+                msg[i].StartedOnAgo = $window.moment($window.removeTimezone(msg[i].StartedOn)).fromNow();
+                msg[i].EndedOnAgo = $window.moment($window.removeTimezone(msg[i].EndedOn)).fromNow();
             });
 
             $scope.$apply(function () {
@@ -519,8 +531,8 @@
 
         getQualificationsAjax.success(function (msg) {
             $.each(msg, function (i) {
-                msg[i].StartedOnAgo = $window.moment(new Date(msg[i].StartedOn)).fromNow();
-                msg[i].CompletedOnAgo = $window.moment(new Date(msg[i].CompletedOn)).fromNow();
+                msg[i].StartedOnAgo = $window.moment($window.removeTimezone(msg[i].StartedOn)).fromNow();
+                msg[i].CompletedOnAgo = $window.moment($window.removeTimezone(msg[i].CompletedOn)).fromNow();
             });
 
             $scope.$apply(function () {

@@ -99,7 +99,7 @@ namespace MixERP.Net.Api.HRM
                                         new EntityColumn { ColumnName = "is_alcoholic",  PropertyName = "IsAlcoholic",  DataType = "bool",  DbDataType = "bool",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "with_disabilities",  PropertyName = "WithDisabilities",  DataType = "bool",  DbDataType = "bool",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "low_vision",  PropertyName = "LowVision",  DataType = "bool",  DbDataType = "bool",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
-                                        new EntityColumn { ColumnName = "uses_wheeelchair",  PropertyName = "UsesWheeelchair",  DataType = "bool",  DbDataType = "bool",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "uses_wheelchair",  PropertyName = "UsesWheelchair",  DataType = "bool",  DbDataType = "bool",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "hard_of_hearing",  PropertyName = "HardOfHearing",  DataType = "bool",  DbDataType = "bool",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "is_aphonic",  PropertyName = "IsAphonic",  DataType = "bool",  DbDataType = "bool",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "is_cognitively_disabled",  PropertyName = "IsCognitivelyDisabled",  DataType = "bool",  DbDataType = "bool",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
@@ -148,7 +148,9 @@ namespace MixERP.Net.Api.HRM
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/hrm/employee/export")]
+        [Route("~/api/hrm/employee/all")]
         public IEnumerable<MixERP.Net.Entities.HRM.Employee> Get()
         {
             try
@@ -239,11 +241,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/hrm/employee")]
-        public IEnumerable<MixERP.Net.Entities.HRM.Employee> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.HRM.Employee> GetPaginatedResult()
         {
             try
             {
-                return this.EmployeeContext.GetPagedResult();
+                return this.EmployeeContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -271,11 +273,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/hrm/employee/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.Employee> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.HRM.Employee> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.EmployeeContext.GetPagedResult(pageNumber);
+                return this.EmployeeContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -331,7 +333,7 @@ namespace MixERP.Net.Api.HRM
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 employees on each page, sorted by the property EmployeeId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -397,7 +399,7 @@ namespace MixERP.Net.Api.HRM
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 employees on each page, sorted by the property EmployeeId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

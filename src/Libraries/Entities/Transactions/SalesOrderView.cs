@@ -61,7 +61,7 @@ namespace MixERP.Net.Entities.Transactions
         public string StatementReference { get; set; }
 
         [Column("customer_name")]
-        [ColumnDbType("text", 0, true, "")]
+        [ColumnDbType("varchar", 150, true, "")]
         public string CustomerName { get; set; }
 
         [Column("price_type_name")]

@@ -106,7 +106,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/fiscal-year/export")]
+        [Route("~/api/core/fiscal-year/all")]
         public IEnumerable<MixERP.Net.Entities.Core.FiscalYear> Get()
         {
             try
@@ -197,11 +199,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/fiscal-year")]
-        public IEnumerable<MixERP.Net.Entities.Core.FiscalYear> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.FiscalYear> GetPaginatedResult()
         {
             try
             {
-                return this.FiscalYearContext.GetPagedResult();
+                return this.FiscalYearContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -229,11 +231,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/fiscal-year/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.FiscalYear> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.FiscalYear> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.FiscalYearContext.GetPagedResult(pageNumber);
+                return this.FiscalYearContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -289,7 +291,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 fiscal years on each page, sorted by the property FiscalYearCode.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -355,7 +357,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 fiscal years on each page, sorted by the property FiscalYearCode.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

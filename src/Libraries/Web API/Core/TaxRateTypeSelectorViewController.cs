@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/tax-rate-type-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.TaxRateTypeSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.TaxRateTypeSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.TaxRateTypeSelectorViewContext.GetPagedResult();
+                return this.TaxRateTypeSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/tax-rate-type-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.TaxRateTypeSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.TaxRateTypeSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.TaxRateTypeSelectorViewContext.GetPagedResult(pageNumber);
+                return this.TaxRateTypeSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

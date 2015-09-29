@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/office/store-type-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Office.StoreTypeSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Office.StoreTypeSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.StoreTypeSelectorViewContext.GetPagedResult();
+                return this.StoreTypeSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/office/store-type-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Office.StoreTypeSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Office.StoreTypeSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.StoreTypeSelectorViewContext.GetPagedResult(pageNumber);
+                return this.StoreTypeSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

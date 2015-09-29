@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/shipping-address-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.ShippingAddressView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.ShippingAddressView> GetPaginatedResult()
         {
             try
             {
-                return this.ShippingAddressViewContext.GetPagedResult();
+                return this.ShippingAddressViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/shipping-address-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.ShippingAddressView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.ShippingAddressView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.ShippingAddressViewContext.GetPagedResult(pageNumber);
+                return this.ShippingAddressViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

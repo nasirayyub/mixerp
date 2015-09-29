@@ -106,7 +106,9 @@ namespace MixERP.Net.Api.Policy
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/policy/store-policy-detail/export")]
+        [Route("~/api/policy/store-policy-detail/all")]
         public IEnumerable<MixERP.Net.Entities.Policy.StorePolicyDetail> Get()
         {
             try
@@ -197,11 +199,11 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/policy/store-policy-detail")]
-        public IEnumerable<MixERP.Net.Entities.Policy.StorePolicyDetail> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Policy.StorePolicyDetail> GetPaginatedResult()
         {
             try
             {
-                return this.StorePolicyDetailContext.GetPagedResult();
+                return this.StorePolicyDetailContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -229,11 +231,11 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/policy/store-policy-detail/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Policy.StorePolicyDetail> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Policy.StorePolicyDetail> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.StorePolicyDetailContext.GetPagedResult(pageNumber);
+                return this.StorePolicyDetailContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -289,7 +291,7 @@ namespace MixERP.Net.Api.Policy
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 store policy details on each page, sorted by the property StorePolicyDetailId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -355,7 +357,7 @@ namespace MixERP.Net.Api.Policy
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 store policy details on each page, sorted by the property StorePolicyDetailId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

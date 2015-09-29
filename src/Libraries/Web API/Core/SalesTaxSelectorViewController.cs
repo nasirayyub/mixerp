@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/sales-tax-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.SalesTaxSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.SalesTaxSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.SalesTaxSelectorViewContext.GetPagedResult();
+                return this.SalesTaxSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/sales-tax-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.SalesTaxSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.SalesTaxSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.SalesTaxSelectorViewContext.GetPagedResult(pageNumber);
+                return this.SalesTaxSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

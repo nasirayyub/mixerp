@@ -108,7 +108,9 @@ namespace MixERP.Net.Api.Policy
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/policy/api-access-policy/export")]
+        [Route("~/api/policy/api-access-policy/all")]
         public IEnumerable<MixERP.Net.Entities.Policy.ApiAccessPolicy> Get()
         {
             try
@@ -199,11 +201,11 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/policy/api-access-policy")]
-        public IEnumerable<MixERP.Net.Entities.Policy.ApiAccessPolicy> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Policy.ApiAccessPolicy> GetPaginatedResult()
         {
             try
             {
-                return this.ApiAccessPolicyContext.GetPagedResult();
+                return this.ApiAccessPolicyContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -231,11 +233,11 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/policy/api-access-policy/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Policy.ApiAccessPolicy> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Policy.ApiAccessPolicy> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.ApiAccessPolicyContext.GetPagedResult(pageNumber);
+                return this.ApiAccessPolicyContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -291,7 +293,7 @@ namespace MixERP.Net.Api.Policy
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 api access policies on each page, sorted by the property ApiAccessPolicyId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -357,7 +359,7 @@ namespace MixERP.Net.Api.Policy
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 api access policies on each page, sorted by the property ApiAccessPolicyId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

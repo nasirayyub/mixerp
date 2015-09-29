@@ -121,7 +121,9 @@ namespace MixERP.Net.Api.Transactions
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/transactions/transaction-master/export")]
+        [Route("~/api/transactions/transaction-master/all")]
         public IEnumerable<MixERP.Net.Entities.Transactions.TransactionMaster> Get()
         {
             try
@@ -212,11 +214,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/transactions/transaction-master")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.TransactionMaster> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Transactions.TransactionMaster> GetPaginatedResult()
         {
             try
             {
-                return this.TransactionMasterContext.GetPagedResult();
+                return this.TransactionMasterContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -244,11 +246,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/transactions/transaction-master/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.TransactionMaster> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Transactions.TransactionMaster> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.TransactionMasterContext.GetPagedResult(pageNumber);
+                return this.TransactionMasterContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -304,7 +306,7 @@ namespace MixERP.Net.Api.Transactions
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 transaction masters on each page, sorted by the property TransactionMasterId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -370,7 +372,7 @@ namespace MixERP.Net.Api.Transactions
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 transaction masters on each page, sorted by the property TransactionMasterId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

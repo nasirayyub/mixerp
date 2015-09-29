@@ -108,7 +108,9 @@ namespace MixERP.Net.Api.Audit
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/audit/login/export")]
+        [Route("~/api/audit/login/all")]
         public IEnumerable<MixERP.Net.Entities.Audit.Login> Get()
         {
             try
@@ -199,11 +201,11 @@ namespace MixERP.Net.Api.Audit
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/audit/login")]
-        public IEnumerable<MixERP.Net.Entities.Audit.Login> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Audit.Login> GetPaginatedResult()
         {
             try
             {
-                return this.LoginContext.GetPagedResult();
+                return this.LoginContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -231,11 +233,11 @@ namespace MixERP.Net.Api.Audit
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/audit/login/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Audit.Login> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Audit.Login> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.LoginContext.GetPagedResult(pageNumber);
+                return this.LoginContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -291,7 +293,7 @@ namespace MixERP.Net.Api.Audit
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 logins on each page, sorted by the property LoginId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -357,7 +359,7 @@ namespace MixERP.Net.Api.Audit
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 logins on each page, sorted by the property LoginId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

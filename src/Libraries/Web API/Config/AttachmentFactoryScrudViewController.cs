@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Config
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/config/attachment-factory-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.Config.AttachmentFactoryScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Config.AttachmentFactoryScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.AttachmentFactoryScrudViewContext.GetPagedResult();
+                return this.AttachmentFactoryScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Config
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/config/attachment-factory-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Config.AttachmentFactoryScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Config.AttachmentFactoryScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.AttachmentFactoryScrudViewContext.GetPagedResult(pageNumber);
+                return this.AttachmentFactoryScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

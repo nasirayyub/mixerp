@@ -107,7 +107,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/kanban/export")]
+        [Route("~/api/core/kanban/all")]
         public IEnumerable<MixERP.Net.Entities.Core.Kanban> Get()
         {
             try
@@ -198,11 +200,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/kanban")]
-        public IEnumerable<MixERP.Net.Entities.Core.Kanban> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.Kanban> GetPaginatedResult()
         {
             try
             {
-                return this.KanbanContext.GetPagedResult();
+                return this.KanbanContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -230,11 +232,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/kanban/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.Kanban> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.Kanban> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.KanbanContext.GetPagedResult(pageNumber);
+                return this.KanbanContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -290,7 +292,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 kanbans on each page, sorted by the property KanbanId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -356,7 +358,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 kanbans on each page, sorted by the property KanbanId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

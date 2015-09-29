@@ -7,6 +7,10 @@ function convertDate(d) {
     };
 };
 
+function parseLocalizedDate(dateString) {
+    return removeTimezone(Date.parseExact(dateString, window.shortDateFormat).toISOString());
+};
+
 function removeTimezone(dateTime) {
     return dateTime.toString().replace("Z", "");
 };
@@ -28,7 +32,7 @@ function getTime(dateTime) {
 };
 
 function dateAdd(dt, expression, number) {
-    var d = Date.parseExact(dt, shortDateFormat);
+    var d = Date.parseExact(removeTimezone(dt), shortDateFormat);
     var ret = new Date();
 
     if (expression === "d") {

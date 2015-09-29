@@ -91,8 +91,8 @@ printButton.click(function () {
     var report = "AccountStatementReport.mix?ItemCode={0}&StoreId={1}&From={2}&To={3}";
     var itemCode = itemCodeInputText.val();
     var storeId = storeIdHidden.val();
-    var from = Date.parseExact(fromDateTextBox.val(), window.shortDateFormat).toDateString();
-    var to = Date.parseExact(toDateTextBox.val(), window.shortDateFormat).toDateString();
+    var from = new Date(window.parseLocalizedDate(fromDateTextBox.val())).toDateString();
+    var to = new Date(window.parseLocalizedDate(toDateTextBox.val())).toDateString();
 
 
     if (isNullOrWhiteSpace(itemCode)) {

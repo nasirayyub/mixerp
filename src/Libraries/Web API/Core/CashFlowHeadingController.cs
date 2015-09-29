@@ -109,7 +109,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/cash-flow-heading/export")]
+        [Route("~/api/core/cash-flow-heading/all")]
         public IEnumerable<MixERP.Net.Entities.Core.CashFlowHeading> Get()
         {
             try
@@ -200,11 +202,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/cash-flow-heading")]
-        public IEnumerable<MixERP.Net.Entities.Core.CashFlowHeading> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.CashFlowHeading> GetPaginatedResult()
         {
             try
             {
-                return this.CashFlowHeadingContext.GetPagedResult();
+                return this.CashFlowHeadingContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -232,11 +234,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/cash-flow-heading/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.CashFlowHeading> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.CashFlowHeading> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.CashFlowHeadingContext.GetPagedResult(pageNumber);
+                return this.CashFlowHeadingContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -292,7 +294,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 cash flow headings on each page, sorted by the property CashFlowHeadingId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -358,7 +360,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 cash flow headings on each page, sorted by the property CashFlowHeadingId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

@@ -323,6 +323,7 @@
     <Compile Include="LateFeeAccountSelectorViewController.cs" />
     <Compile Include="LateFeeController.cs" />
     <Compile Include="LateFeeScrudViewController.cs" />
+    <Compile Include="MaritalStatusController.cs" />
     <Compile Include="MenuController.cs" />
     <Compile Include="MenuLocaleController.cs" />
     <Compile Include="MerchantAccountSelectorViewController.cs" />

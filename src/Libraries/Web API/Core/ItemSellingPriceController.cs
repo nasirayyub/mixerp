@@ -109,7 +109,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/item-selling-price/export")]
+        [Route("~/api/core/item-selling-price/all")]
         public IEnumerable<MixERP.Net.Entities.Core.ItemSellingPrice> Get()
         {
             try
@@ -200,11 +202,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/item-selling-price")]
-        public IEnumerable<MixERP.Net.Entities.Core.ItemSellingPrice> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.ItemSellingPrice> GetPaginatedResult()
         {
             try
             {
-                return this.ItemSellingPriceContext.GetPagedResult();
+                return this.ItemSellingPriceContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -232,11 +234,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/item-selling-price/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.ItemSellingPrice> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.ItemSellingPrice> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.ItemSellingPriceContext.GetPagedResult(pageNumber);
+                return this.ItemSellingPriceContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -292,7 +294,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 item selling prices on each page, sorted by the property ItemSellingPriceId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -358,7 +360,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 item selling prices on each page, sorted by the property ItemSellingPriceId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

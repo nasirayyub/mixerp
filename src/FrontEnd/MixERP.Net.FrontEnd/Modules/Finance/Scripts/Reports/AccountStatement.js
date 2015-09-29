@@ -92,7 +92,7 @@ function showReconcileWindow() {
     var selection = getSelectedCheckBoxItemIds(checkBoxColumnPosition, bookDateColumnPosition, statementGridView, 1)[0];
     var tranCode = getSelectedCheckBoxItemIds(checkBoxColumnPosition, tranCodeColumnPosition, statementGridView, 1)[0];
 
-    var parsedDate = Date.parseExact(selection, window.shortDateFormat);
+    var parsedDate = window.parseLocalizedDate(selection);
 
 
     if (parsedDate) {
@@ -120,7 +120,7 @@ function reconcile() {
     var month = parseInt2(monthInputText.val());
     var day = parseInt2(dayInputText.val());
 
-    var currentDate = Date.parseExact(currentBookDateInputText.val(), window.shortDateFormat);
+    var currentDate = window.parseLocalizedDate(currentBookDateInputText.val());
     var reconciledDate = new Date(year, month - 1, day);
     //Javascript month begins with 0  ^^^^^^^^^^^
 

@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/compound-item-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.CompoundItemSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.CompoundItemSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.CompoundItemSelectorViewContext.GetPagedResult();
+                return this.CompoundItemSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/compound-item-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.CompoundItemSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.CompoundItemSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.CompoundItemSelectorViewContext.GetPagedResult(pageNumber);
+                return this.CompoundItemSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

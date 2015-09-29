@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/bank-accounts-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.BankAccountsScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.BankAccountsScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.BankAccountsScrudViewContext.GetPagedResult();
+                return this.BankAccountsScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/bank-accounts-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.BankAccountsScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.BankAccountsScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.BankAccountsScrudViewContext.GetPagedResult(pageNumber);
+                return this.BankAccountsScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

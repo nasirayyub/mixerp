@@ -35,8 +35,8 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
     $(function () {
 
         var balanceSheetGridView = $("#BalanceSheetGridView");
-        var previousPeriod = Date.parseExact(previousPeriodDateTextBox.val(), window.shortDateFormat);
-        var currentPeriod = Date.parseExact(currentPeriodDateTextBox.val(), window.shortDateFormat);
+        var previousPeriod = window.parseLocalizedDate(previousPeriodDateTextBox.val());
+        var currentPeriod = window.parseLocalizedDate(currentPeriodDateTextBox.val());
         var factor = parseInt2(factorInputText.val());
 
         var url;

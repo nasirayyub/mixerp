@@ -155,6 +155,7 @@
     <Compile Include="LateFee.cs" />
     <Compile Include="LateFeeAccountSelectorView.cs" />
     <Compile Include="LateFeeScrudView.cs" />
+    <Compile Include="MaritalStatus.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="MenuLocale.cs" />
     <Compile Include="MerchantAccountSelectorView.cs" />

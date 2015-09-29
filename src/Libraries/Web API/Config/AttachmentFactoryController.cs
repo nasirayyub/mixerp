@@ -104,7 +104,9 @@ namespace MixERP.Net.Api.Config
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/config/attachment-factory/export")]
+        [Route("~/api/config/attachment-factory/all")]
         public IEnumerable<MixERP.Net.Entities.Config.AttachmentFactory> Get()
         {
             try
@@ -195,11 +197,11 @@ namespace MixERP.Net.Api.Config
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/config/attachment-factory")]
-        public IEnumerable<MixERP.Net.Entities.Config.AttachmentFactory> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Config.AttachmentFactory> GetPaginatedResult()
         {
             try
             {
-                return this.AttachmentFactoryContext.GetPagedResult();
+                return this.AttachmentFactoryContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -227,11 +229,11 @@ namespace MixERP.Net.Api.Config
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/config/attachment-factory/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Config.AttachmentFactory> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Config.AttachmentFactory> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.AttachmentFactoryContext.GetPagedResult(pageNumber);
+                return this.AttachmentFactoryContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -287,7 +289,7 @@ namespace MixERP.Net.Api.Config
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 attachment factories on each page, sorted by the property Key.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -353,7 +355,7 @@ namespace MixERP.Net.Api.Config
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 attachment factories on each page, sorted by the property Key.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

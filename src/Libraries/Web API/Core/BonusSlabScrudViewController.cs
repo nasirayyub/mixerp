@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/bonus-slab-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.BonusSlabScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.BonusSlabScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.BonusSlabScrudViewContext.GetPagedResult();
+                return this.BonusSlabScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/bonus-slab-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.BonusSlabScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.BonusSlabScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.BonusSlabScrudViewContext.GetPagedResult(pageNumber);
+                return this.BonusSlabScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

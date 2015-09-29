@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/office/cash-repository-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.Office.CashRepositoryScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Office.CashRepositoryScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.CashRepositoryScrudViewContext.GetPagedResult();
+                return this.CashRepositoryScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/office/cash-repository-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Office.CashRepositoryScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Office.CashRepositoryScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.CashRepositoryScrudViewContext.GetPagedResult(pageNumber);
+                return this.CashRepositoryScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

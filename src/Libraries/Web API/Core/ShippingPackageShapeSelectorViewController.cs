@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/shipping-package-shape-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShapeSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShapeSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.ShippingPackageShapeSelectorViewContext.GetPagedResult();
+                return this.ShippingPackageShapeSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/shipping-package-shape-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShapeSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShapeSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.ShippingPackageShapeSelectorViewContext.GetPagedResult(pageNumber);
+                return this.ShippingPackageShapeSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

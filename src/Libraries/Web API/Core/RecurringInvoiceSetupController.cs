@@ -116,7 +116,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/recurring-invoice-setup/export")]
+        [Route("~/api/core/recurring-invoice-setup/all")]
         public IEnumerable<MixERP.Net.Entities.Core.RecurringInvoiceSetup> Get()
         {
             try
@@ -207,11 +209,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/recurring-invoice-setup")]
-        public IEnumerable<MixERP.Net.Entities.Core.RecurringInvoiceSetup> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.RecurringInvoiceSetup> GetPaginatedResult()
         {
             try
             {
-                return this.RecurringInvoiceSetupContext.GetPagedResult();
+                return this.RecurringInvoiceSetupContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -239,11 +241,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/recurring-invoice-setup/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.RecurringInvoiceSetup> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.RecurringInvoiceSetup> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.RecurringInvoiceSetupContext.GetPagedResult(pageNumber);
+                return this.RecurringInvoiceSetupContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -299,7 +301,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 recurring invoice setups on each page, sorted by the property RecurringInvoiceSetupId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -365,7 +367,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 recurring invoice setups on each page, sorted by the property RecurringInvoiceSetupId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

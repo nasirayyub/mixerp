@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Config
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/config/open-exchange-rate-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.Config.OpenExchangeRateScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Config.OpenExchangeRateScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.OpenExchangeRateScrudViewContext.GetPagedResult();
+                return this.OpenExchangeRateScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Config
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/config/open-exchange-rate-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Config.OpenExchangeRateScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Config.OpenExchangeRateScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.OpenExchangeRateScrudViewContext.GetPagedResult(pageNumber);
+                return this.OpenExchangeRateScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

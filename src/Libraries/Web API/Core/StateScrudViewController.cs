@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/state-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.StateScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.StateScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.StateScrudViewContext.GetPagedResult();
+                return this.StateScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/state-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.StateScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.StateScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.StateScrudViewContext.GetPagedResult(pageNumber);
+                return this.StateScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/frequency-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.FrequencySelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.FrequencySelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.FrequencySelectorViewContext.GetPagedResult();
+                return this.FrequencySelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/frequency-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.FrequencySelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.FrequencySelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.FrequencySelectorViewContext.GetPagedResult(pageNumber);
+                return this.FrequencySelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

@@ -104,7 +104,9 @@ namespace MixERP.Net.Api.Policy
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/policy/menu-access/export")]
+        [Route("~/api/policy/menu-access/all")]
         public IEnumerable<MixERP.Net.Entities.Policy.MenuAccess> Get()
         {
             try
@@ -195,11 +197,11 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/policy/menu-access")]
-        public IEnumerable<MixERP.Net.Entities.Policy.MenuAccess> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Policy.MenuAccess> GetPaginatedResult()
         {
             try
             {
-                return this.MenuAccessContext.GetPagedResult();
+                return this.MenuAccessContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -227,11 +229,11 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/policy/menu-access/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Policy.MenuAccess> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Policy.MenuAccess> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.MenuAccessContext.GetPagedResult(pageNumber);
+                return this.MenuAccessContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -287,7 +289,7 @@ namespace MixERP.Net.Api.Policy
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 menu accesses on each page, sorted by the property AccessId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -353,7 +355,7 @@ namespace MixERP.Net.Api.Policy
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 menu accesses on each page, sorted by the property AccessId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

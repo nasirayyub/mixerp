@@ -103,7 +103,9 @@ namespace MixERP.Net.Api.Transactions
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/transactions/stock-master-non-gl-relation/export")]
+        [Route("~/api/transactions/stock-master-non-gl-relation/all")]
         public IEnumerable<MixERP.Net.Entities.Transactions.StockMasterNonGlRelation> Get()
         {
             try
@@ -194,11 +196,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/transactions/stock-master-non-gl-relation")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.StockMasterNonGlRelation> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Transactions.StockMasterNonGlRelation> GetPaginatedResult()
         {
             try
             {
-                return this.StockMasterNonGlRelationContext.GetPagedResult();
+                return this.StockMasterNonGlRelationContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -226,11 +228,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/transactions/stock-master-non-gl-relation/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.StockMasterNonGlRelation> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Transactions.StockMasterNonGlRelation> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.StockMasterNonGlRelationContext.GetPagedResult(pageNumber);
+                return this.StockMasterNonGlRelationContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -286,7 +288,7 @@ namespace MixERP.Net.Api.Transactions
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 stock master non gl relations on each page, sorted by the property StockMasterNonGlRelationId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -352,7 +354,7 @@ namespace MixERP.Net.Api.Transactions
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 stock master non gl relations on each page, sorted by the property StockMasterNonGlRelationId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/policy/voucher-verification-policy-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.Policy.VoucherVerificationPolicyScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Policy.VoucherVerificationPolicyScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.VoucherVerificationPolicyScrudViewContext.GetPagedResult();
+                return this.VoucherVerificationPolicyScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/policy/voucher-verification-policy-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Policy.VoucherVerificationPolicyScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Policy.VoucherVerificationPolicyScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.VoucherVerificationPolicyScrudViewContext.GetPagedResult(pageNumber);
+                return this.VoucherVerificationPolicyScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

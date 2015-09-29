@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/hrm/salary-tax-income-bracket-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.HRM.SalaryTaxIncomeBracketScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.HRM.SalaryTaxIncomeBracketScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.SalaryTaxIncomeBracketScrudViewContext.GetPagedResult();
+                return this.SalaryTaxIncomeBracketScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/hrm/salary-tax-income-bracket-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.SalaryTaxIncomeBracketScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.HRM.SalaryTaxIncomeBracketScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.SalaryTaxIncomeBracketScrudViewContext.GetPagedResult(pageNumber);
+                return this.SalaryTaxIncomeBracketScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

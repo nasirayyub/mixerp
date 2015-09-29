@@ -118,7 +118,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/tax-authority/export")]
+        [Route("~/api/core/tax-authority/all")]
         public IEnumerable<MixERP.Net.Entities.Core.TaxAuthority> Get()
         {
             try
@@ -209,11 +211,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/tax-authority")]
-        public IEnumerable<MixERP.Net.Entities.Core.TaxAuthority> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.TaxAuthority> GetPaginatedResult()
         {
             try
             {
-                return this.TaxAuthorityContext.GetPagedResult();
+                return this.TaxAuthorityContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -241,11 +243,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/tax-authority/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.TaxAuthority> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.TaxAuthority> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.TaxAuthorityContext.GetPagedResult(pageNumber);
+                return this.TaxAuthorityContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -301,7 +303,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 tax authorities on each page, sorted by the property TaxAuthorityId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -367,7 +369,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 tax authorities on each page, sorted by the property TaxAuthorityId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

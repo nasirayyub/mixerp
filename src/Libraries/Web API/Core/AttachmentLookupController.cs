@@ -104,7 +104,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/attachment-lookup/export")]
+        [Route("~/api/core/attachment-lookup/all")]
         public IEnumerable<MixERP.Net.Entities.Core.AttachmentLookup> Get()
         {
             try
@@ -195,11 +197,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/attachment-lookup")]
-        public IEnumerable<MixERP.Net.Entities.Core.AttachmentLookup> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.AttachmentLookup> GetPaginatedResult()
         {
             try
             {
-                return this.AttachmentLookupContext.GetPagedResult();
+                return this.AttachmentLookupContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -227,11 +229,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/attachment-lookup/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.AttachmentLookup> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.AttachmentLookup> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.AttachmentLookupContext.GetPagedResult(pageNumber);
+                return this.AttachmentLookupContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -287,7 +289,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 attachment lookups on each page, sorted by the property AttachmentLookupId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -353,7 +355,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 attachment lookups on each page, sorted by the property AttachmentLookupId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

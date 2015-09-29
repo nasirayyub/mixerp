@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Localization
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/localization/resource-view")]
-        public IEnumerable<MixERP.Net.Entities.Localization.ResourceView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Localization.ResourceView> GetPaginatedResult()
         {
             try
             {
-                return this.ResourceViewContext.GetPagedResult();
+                return this.ResourceViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Localization
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/localization/resource-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Localization.ResourceView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Localization.ResourceView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.ResourceViewContext.GetPagedResult(pageNumber);
+                return this.ResourceViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

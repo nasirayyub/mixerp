@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/sales-tax-detail-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.SalesTaxDetailScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.SalesTaxDetailScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.SalesTaxDetailScrudViewContext.GetPagedResult();
+                return this.SalesTaxDetailScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/sales-tax-detail-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.SalesTaxDetailScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.SalesTaxDetailScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.SalesTaxDetailScrudViewContext.GetPagedResult(pageNumber);
+                return this.SalesTaxDetailScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

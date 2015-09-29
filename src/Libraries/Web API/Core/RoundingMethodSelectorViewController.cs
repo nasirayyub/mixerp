@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/rounding-method-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.RoundingMethodSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.RoundingMethodSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.RoundingMethodSelectorViewContext.GetPagedResult();
+                return this.RoundingMethodSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/rounding-method-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.RoundingMethodSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.RoundingMethodSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.RoundingMethodSelectorViewContext.GetPagedResult(pageNumber);
+                return this.RoundingMethodSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

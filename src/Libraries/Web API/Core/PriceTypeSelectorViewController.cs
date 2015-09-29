@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/price-type-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.PriceTypeSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.PriceTypeSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.PriceTypeSelectorViewContext.GetPagedResult();
+                return this.PriceTypeSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/price-type-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.PriceTypeSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.PriceTypeSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.PriceTypeSelectorViewContext.GetPagedResult(pageNumber);
+                return this.PriceTypeSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

@@ -106,7 +106,9 @@ namespace MixERP.Net.Api.Office
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/office/cashier/export")]
+        [Route("~/api/office/cashier/all")]
         public IEnumerable<MixERP.Net.Entities.Office.Cashier> Get()
         {
             try
@@ -197,11 +199,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/office/cashier")]
-        public IEnumerable<MixERP.Net.Entities.Office.Cashier> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Office.Cashier> GetPaginatedResult()
         {
             try
             {
-                return this.CashierContext.GetPagedResult();
+                return this.CashierContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -229,11 +231,11 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/office/cashier/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Office.Cashier> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Office.Cashier> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.CashierContext.GetPagedResult(pageNumber);
+                return this.CashierContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -289,7 +291,7 @@ namespace MixERP.Net.Api.Office
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 cashiers on each page, sorted by the property CashierId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -355,7 +357,7 @@ namespace MixERP.Net.Api.Office
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 cashiers on each page, sorted by the property CashierId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

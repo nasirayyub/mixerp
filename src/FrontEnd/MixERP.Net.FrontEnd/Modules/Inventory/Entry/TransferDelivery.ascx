@@ -70,7 +70,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 
 
     function StockAdjustmentFactory_FormvView_SaveButton_Callback() {
-        var valueDate = Date.parseExact(valueDateTextBox.val(), window.shortDateFormat);
+        var valueDate = window.parseLocalizedDate(valueDateTextBox.val());
         var referenceNumber = referenceNumberInputText.val();
         var statementReference = statementReferenceTextArea.val();
         var requestId = parseFloat(getQueryStringByName("RequestId") || 0);

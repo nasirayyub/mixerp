@@ -124,7 +124,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
     };
 
     saveButton.click(function () {
-        var valueDate = Date.parseExact(valueDateTextBox.val(), window.shortDateFormat);
+        var valueDate = window.parseLocalizedDate(valueDateTextBox.val());
         var referenceNumber = referenceNumberInputText.val();
         var statementReference = statementReferenceTextArea.val();
 

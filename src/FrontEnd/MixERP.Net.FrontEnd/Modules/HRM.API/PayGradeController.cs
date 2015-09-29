@@ -108,7 +108,9 @@ namespace MixERP.Net.Api.HRM
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/hrm/pay-grade/export")]
+        [Route("~/api/hrm/pay-grade/all")]
         public IEnumerable<MixERP.Net.Entities.HRM.PayGrade> Get()
         {
             try
@@ -199,11 +201,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/hrm/pay-grade")]
-        public IEnumerable<MixERP.Net.Entities.HRM.PayGrade> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.HRM.PayGrade> GetPaginatedResult()
         {
             try
             {
-                return this.PayGradeContext.GetPagedResult();
+                return this.PayGradeContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -231,11 +233,11 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/hrm/pay-grade/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.PayGrade> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.HRM.PayGrade> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.PayGradeContext.GetPagedResult(pageNumber);
+                return this.PayGradeContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -291,7 +293,7 @@ namespace MixERP.Net.Api.HRM
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 pay grades on each page, sorted by the property PayGradeId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -357,7 +359,7 @@ namespace MixERP.Net.Api.HRM
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 pay grades on each page, sorted by the property PayGradeId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/transactions/sales-delivery-view")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.SalesDeliveryView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Transactions.SalesDeliveryView> GetPaginatedResult()
         {
             try
             {
-                return this.SalesDeliveryViewContext.GetPagedResult();
+                return this.SalesDeliveryViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/transactions/sales-delivery-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.SalesDeliveryView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Transactions.SalesDeliveryView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.SalesDeliveryViewContext.GetPagedResult(pageNumber);
+                return this.SalesDeliveryViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

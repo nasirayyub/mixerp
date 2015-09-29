@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Config
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/config/db-parameter-scrud-view")]
-        public IEnumerable<MixERP.Net.Entities.Config.DbParameterScrudView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Config.DbParameterScrudView> GetPaginatedResult()
         {
             try
             {
-                return this.DbParameterScrudViewContext.GetPagedResult();
+                return this.DbParameterScrudViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Config
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/config/db-parameter-scrud-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Config.DbParameterScrudView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Config.DbParameterScrudView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.DbParameterScrudViewContext.GetPagedResult(pageNumber);
+                return this.DbParameterScrudViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {

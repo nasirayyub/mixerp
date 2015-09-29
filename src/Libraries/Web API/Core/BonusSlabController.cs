@@ -110,7 +110,9 @@ namespace MixERP.Net.Api.Core
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
+        [Route("all")]
         [Route("~/api/core/bonus-slab/export")]
+        [Route("~/api/core/bonus-slab/all")]
         public IEnumerable<MixERP.Net.Entities.Core.BonusSlab> Get()
         {
             try
@@ -201,11 +203,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/bonus-slab")]
-        public IEnumerable<MixERP.Net.Entities.Core.BonusSlab> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.BonusSlab> GetPaginatedResult()
         {
             try
             {
-                return this.BonusSlabContext.GetPagedResult();
+                return this.BonusSlabContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -233,11 +235,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/bonus-slab/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.BonusSlab> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.BonusSlab> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.BonusSlabContext.GetPagedResult(pageNumber);
+                return this.BonusSlabContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -293,7 +295,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 bonus slabs on each page, sorted by the property BonusSlabId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
@@ -359,7 +361,7 @@ namespace MixERP.Net.Api.Core
         /// <summary>
         ///     Creates a filtered and paginated collection containing 10 bonus slabs on each page, sorted by the property BonusSlabId.
         /// </summary>
-        /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
+        /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]

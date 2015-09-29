@@ -84,11 +84,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
         [Route("~/api/core/inventory-account-selector-view")]
-        public IEnumerable<MixERP.Net.Entities.Core.InventoryAccountSelectorView> GetPagedResult()
+        public IEnumerable<MixERP.Net.Entities.Core.InventoryAccountSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.InventoryAccountSelectorViewContext.GetPagedResult();
+                return this.InventoryAccountSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -116,11 +116,11 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
         [Route("~/api/core/inventory-account-selector-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.Core.InventoryAccountSelectorView> GetPagedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.Core.InventoryAccountSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.InventoryAccountSelectorViewContext.GetPagedResult(pageNumber);
+                return this.InventoryAccountSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
