@@ -17,10 +17,26 @@
 
     scrudFactory.live = "WagesSetupName";
 
+    scrudFactory.layout = [
+        ["WagesSetupId", ""],
+        ["WagesSetupCode", "WagesSetupName", "", ""],
+        ["CurrencyCode", "AccountId", "", ""],
+        ["MaxWeekHours", "HourlyRate", "", ""],
+        ["OvertimeApplicable", "OvertimeHourlyRate", "", ""],
+        ["Description", ""]
+    ];
+
     scrudFactory.keys = [
         {
             property: "CurrencyCode",
             url: '/api/core/currency/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "AccountId",
+            url: '/api/hrm/wages-account-selector-view/display-fields',
             data: null,
             valueField: "Key",
             textField: "Value"

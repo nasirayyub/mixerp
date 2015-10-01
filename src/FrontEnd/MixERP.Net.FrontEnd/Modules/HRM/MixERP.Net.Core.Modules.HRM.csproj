@@ -94,9 +94,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Payroll\Bonus.ascx" />
-    <Content Include="Payroll\Commissions.ascx" />
     <Content Include="Payroll\Deduction.ascx" />
+    <Content Include="Reports\Attendances.ascx" />
+    <Content Include="Setup\Deductions.ascx" />
     <Content Include="Setup\EmploymentTaxDetails.ascx" />
     <Content Include="Setup\EmploymentTaxes.ascx" />
     <Content Include="Payroll\Salary.ascx" />
@@ -142,26 +142,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FirstSteps\EducationLevel.cs" />
-    <Compile Include="Payroll\Bonus.ascx.cs">
-      <DependentUpon>Bonus.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Payroll\Bonus.ascx.designer.cs">
-      <DependentUpon>Bonus.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Payroll\Commissions.ascx.cs">
-      <DependentUpon>Commissions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Payroll\Commissions.ascx.designer.cs">
-      <DependentUpon>Commissions.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Payroll\Deduction.ascx.cs">
       <DependentUpon>Deduction.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Payroll\Deduction.ascx.designer.cs">
       <DependentUpon>Deduction.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Attendances.ascx.cs">
+      <DependentUpon>Attendances.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Attendances.ascx.designer.cs">
+      <DependentUpon>Attendances.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\Deductions.ascx.cs">
+      <DependentUpon>Deductions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\Deductions.ascx.designer.cs">
+      <DependentUpon>Deductions.ascx</DependentUpon>
     </Compile>
     <Compile Include="Setup\EmploymentTaxDetails.ascx.cs">
       <DependentUpon>EmploymentTaxDetails.ascx</DependentUpon>

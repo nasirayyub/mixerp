@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.HRM
             }
         }
 
+        /// <summary>
+        ///     Returns collection of employee qualification scrud view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/hrm/employee-qualification-scrud-view/export")]
+        [Route("~/api/hrm/employee-qualification-scrud-view/all")]
+        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeQualificationScrudView> Get()
+        {
+            try
+            {
+                return this.EmployeeQualificationScrudViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 employee qualification scrud views on each page, sorted by the property .

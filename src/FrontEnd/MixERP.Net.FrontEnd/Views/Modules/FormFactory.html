@@ -223,6 +223,8 @@
         function resetForm() {
             var fields = $(".form-field, .custom-field");
 
+            $(".uploader.field .ui.image.preview").attr("src", "/Static/images/mixerp-logo-light.png");
+
             $.each(fields, function () {
                 var el = $(this);
                 var defaultValue = el.attr("data-default-value");
@@ -243,6 +245,7 @@
                     };
                 } else {
                     el.val(defaultValue);
+                    el.attr("data-val", defaultValue);
                 };
             });
         };
@@ -767,7 +770,7 @@
                 case "text":
                     return $("<textarea />");
                 case "date":
-                    return $("<input type='date' class='date' />");
+                    return $("<input type='text' class='date' />");
                 case "bool":
                     var el = $("<select class='ui search dropdown' />");
                     var option = "<option";

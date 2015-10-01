@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.Net.Core.Modules.HRM.Payroll
+namespace MixERP.Net.Core.Modules.HRM.Reports
 {
 
 
-    public partial class Bonus
+    public partial class Attendances
     {
     }
 }

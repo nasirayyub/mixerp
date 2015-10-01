@@ -1,5 +1,5 @@
 ﻿-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/01.types-domains-tables-and-constraints/tables-and-constraints.sql --<--<--
-/********************************************************************************
+ /********************************************************************************
 Copyright (C) MixERP Inc. (http://mixof.org).
 This file is part of MixERP.
 MixERP is free software: you can redistribute it and/or modify
@@ -511,7 +511,50 @@ CREATE TABLE hrm.exits
 );
 
 
+CREATE TABLE hrm.attendances
+(
+    attendance_id                           BIGSERIAL NOT NULL PRIMARY KEY,
+    office_id                               integer NOT NULL REFERENCES office.offices(office_id),
+    employee_id                             integer NOT NULL REFERENCES hrm.employees(employee_id),
+    attendance_date                         date NOT NULL,
+    was_present                             boolean NOT NULL,
+    check_in_time                           time NULL,
+    check_out_time                          time NULL,
+    overtime_hours                          numeric NOT NULL,
+    was_absent                              boolean NOT NULL CHECK(was_absent != was_present),
+    reason_for_absentism                    text,
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),
+    audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                            DEFAULT(NOW())    
+);
 
+CREATE UNIQUE INDEX attendance_date_employee_id_uix
+ON hrm.attendances(attendance_date, employee_id);
+
+CREATE TABLE hrm.deduction_setups
+(
+    deduction_setup_id                      SERIAL NOT NULL PRIMARY KEY,
+    deduction_setup_code                    national character varying(12) NOT NULL UNIQUE,
+    deduction_setup_name                    national character varying(128) NOT NULL,
+    account_id                              integer NOT NULL REFERENCES core.accounts(account_id),
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),
+    audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                            DEFAULT(NOW())    
+);
+
+CREATE TABLE hrm.salary_deductions
+(
+    salary_deduction_id                     BIGSERIAL NOT NULL PRIMARY KEY,
+    employee_id                             integer NOT NULL REFERENCES hrm.employees(employee_id),
+    deduction_setup_id                      integer NOT NULL REFERENCES hrm.deduction_setups(deduction_setup_id),
+    currency_code                           national character varying(12) NOT NULL REFERENCES core.currencies(currency_code),
+    amount                                  public.money_strict,
+    begins_from                             date,
+    ends_on                                 date CHECK(ends_on > begins_from),
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),
+    audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                            DEFAULT(NOW())    
+);
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/triggers/employee_dismissal.sql --<--<--
 DROP FUNCTION IF EXISTS hrm.dismiss_employee() CASCADE;
@@ -587,7 +630,7 @@ SELECT * FROM core.recreate_menu('HRM', '~/Modules/HRM/Index.mix', 'HRM', 0, NUL
 
 SELECT * FROM core.recreate_menu('Tasks', NULL, 'HRMTA', 1, core.get_menu_id('HRM'));
 SELECT * FROM core.recreate_menu('Attendance', '~/Modules/HRM/Tasks/Attendance.mix', 'ATTNDCE', 2, core.get_menu_id('HRMTA'));
-SELECT * FROM core.recreate_menu('Employees', '~/Modules/HRM/Tasks/Employees.mix?View=kanban', 'EMPL', 2, core.get_menu_id('HRMTA'));
+SELECT * FROM core.recreate_menu('Employees', '~/Modules/HRM/Tasks/Employees.mix', 'EMPL', 2, core.get_menu_id('HRMTA'));
 SELECT * FROM core.recreate_menu('Contracts', '~/Modules/HRM/Tasks/Contracts.mix', 'CTRCT', 2, core.get_menu_id('HRMTA'));
 SELECT * FROM core.recreate_menu('Leave Application', '~/Modules/HRM/Tasks/LeaveApplications.mix', 'LEVAPP', 2, core.get_menu_id('HRMTA'));
 SELECT * FROM core.recreate_menu('Resignations', '~/Modules/HRM/Tasks/Resignations.mix', 'RESIGN', 2, core.get_menu_id('HRMTA'));
@@ -604,12 +647,8 @@ SELECT * FROM core.recreate_menu('Verify Exits', '~/Modules/HRM/Verification/Exi
 
 SELECT * FROM core.recreate_menu('Payroll', NULL, 'PAYRL', 1, core.get_menu_id('HRM'));
 SELECT * FROM core.recreate_menu('Wages', '~/Modules/HRM/Payroll/Wages.mix', 'WAGES', 2, core.get_menu_id('PAYRL'));
-SELECT * FROM core.recreate_menu('Overtime', '~/Modules/HRM/Payroll/Overtime.mix', 'OVERTM', 2, core.get_menu_id('PAYRL'));
-SELECT * FROM core.recreate_menu('Deduction', '~/Modules/HRM/Payroll/Deduction.mix', 'OVERTM', 2, core.get_menu_id('PAYRL'));
+SELECT * FROM core.recreate_menu('Deduction', '~/Modules/HRM/Payroll/Deduction.mix', 'DEDUC', 2, core.get_menu_id('PAYRL'));
 SELECT * FROM core.recreate_menu('Salary', '~/Modules/HRM/Payroll/Salary.mix', 'SALRY', 2, core.get_menu_id('PAYRL'));
-SELECT * FROM core.recreate_menu('Bonus', '~/Modules/HRM/Payroll/Bonus.mix', 'BONUS', 2, core.get_menu_id('PAYRL'));
-SELECT * FROM core.recreate_menu('Commissions', '~/Modules/HRM/Payroll/Commissions.mix', 'COMMSN', 2, core.get_menu_id('PAYRL'));
-
 
 SELECT * FROM core.recreate_menu('Setup & Maintenance', NULL, 'HRMSSM', 1, core.get_menu_id('HRM'));
 SELECT * FROM core.recreate_menu('Salary Taxes', '~/Modules/HRM/Setup/SalaryTaxes.mix', 'SALTAX', 2, core.get_menu_id('HRMSSM'));
@@ -620,6 +659,7 @@ SELECT * FROM core.recreate_menu('Provident Funds', '~/Modules/HRM/Setup/Provide
 SELECT * FROM core.recreate_menu('Holiday Setup', '~/Modules/HRM/Setup/HolidaySetup.mix', 'HOLDAY', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Salaries', '~/Modules/HRM/Setup/Salaries.mix', 'SETSAL', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Wages', '~/Modules/HRM/Setup/Wages.mix', 'SETWAGES', 2, core.get_menu_id('HRMSSM'));
+SELECT * FROM core.recreate_menu('Deductions', '~/Modules/HRM/Setup/Deductions.mix', 'SETDED', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Employment Statuses', '~/Modules/HRM/Setup/EmploymentStatuses.mix', 'EMPSTA', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Employee Types', '~/Modules/HRM/Setup/EmployeeTypes.mix', 'EMPTYP', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Education Levels', '~/Modules/HRM/Setup/EducationLevels.mix', 'EDULVL', 2, core.get_menu_id('HRMSSM'));
@@ -630,8 +670,10 @@ SELECT * FROM core.recreate_menu('Shifts', '~/Modules/HRM/Setup/Shifts.mix', 'SH
 SELECT * FROM core.recreate_menu('Office Hours', '~/Modules/HRM/Setup/OfficeHours.mix', 'OFFHRS', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Leave Types', '~/Modules/HRM/Setup/LeaveTypes.mix', 'LEVTYP', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Leave Benefits', '~/Modules/HRM/Setup/LeaveBenefits.mix', 'LEVBEN', 2, core.get_menu_id('HRMSSM'));
-SELECT * FROM core.recreate_menu('Exit Types', '~/Modules/HRM/Setup/ExitTypes.mix', 'Exit Types', 2, core.get_menu_id('HRMSSM'));
+SELECT * FROM core.recreate_menu('Exit Types', '~/Modules/HRM/Setup/ExitTypes.mix', 'EXITTYP', 2, core.get_menu_id('HRMSSM'));
+
 SELECT * FROM core.recreate_menu('HRM Reports', NULL, 'HRMRPT', 1, core.get_menu_id('HRM'));
+SELECT * FROM core.recreate_menu('Attendances', '~/Modules/HRM/Reports/Attendances.mix', 'HRMRPTAT', 2, core.get_menu_id('HRMRPT'));
 
 
 DELETE FROM policy.menu_access;
@@ -713,6 +755,20 @@ ON hrm.employment_status_codes.employment_status_code_id = hrm.contracts.employm
 LEFT JOIN hrm.leave_benefits
 ON hrm.leave_benefits.leave_benefit_id = hrm.contracts.leave_benefit_id
 WHERE verification_status_id = 0;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.deduction_setup_scrud_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.deduction_setup_scrud_view;
+
+CREATE VIEW hrm.deduction_setup_scrud_view
+AS
+SELECT
+    hrm.deduction_setups.deduction_setup_id,
+    hrm.deduction_setups.deduction_setup_code,
+    hrm.deduction_setups.deduction_setup_name,
+    core.accounts.account_number || ' (' || core.accounts.account_name || ')' AS account    
+FROM hrm.deduction_setups
+INNER JOIN core.accounts
+ON core.accounts.account_id = hrm.deduction_setups.account_id;
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_experience_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_experience_scrud_view;
@@ -1025,6 +1081,26 @@ ON hrm.employees.employee_id = hrm.resignations.employee_id
 INNER JOIN hrm.employees AS forward_to
 ON forward_to.employee_id = hrm.resignations.forward_to;
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.salary_deduction_scrud_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.salary_deduction_scrud_view;
+
+CREATE VIEW hrm.salary_deduction_scrud_view
+AS
+SELECT
+    hrm.salary_deductions.salary_deduction_id,
+    hrm.employees.employee_code || ' (' || hrm.employees.employee_name || ')' AS employee,
+    hrm.employees.photo,
+    hrm.deduction_setups.deduction_setup_code || ' (' || hrm.deduction_setups.deduction_setup_name || ')' AS deduction_setup,
+    hrm.salary_deductions.currency_code,
+    hrm.salary_deductions.amount,
+    hrm.salary_deductions.begins_from,
+    hrm.salary_deductions.ends_on
+FROM hrm.salary_deductions
+INNER JOIN hrm.employees
+ON hrm.employees.employee_id = hrm.salary_deductions.employee_id
+INNER JOIN hrm.deduction_setups
+ON hrm.deduction_setups.deduction_setup_id = hrm.salary_deductions.deduction_setup_id;
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.salary_tax_income_bracket_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.salary_tax_income_bracket_scrud_view;
 
@@ -1120,6 +1196,17 @@ INNER JOIN hrm.employees AS forwarded_to
 ON forwarded_to.employee_id = hrm.terminations.forward_to
 WHERE verification_status_id = 0;
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.selector-views/hrm.deduction_account_selector_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.deduction_account_selector_view;
+
+CREATE VIEW hrm.deduction_account_selector_view
+AS
+SELECT * FROM core.account_scrud_view
+--Accounts Receivable, Accounts Payable
+WHERE account_master_id = ANY(ARRAY[10110, 15010])
+ORDER BY account_id;
+
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.selector-views/hrm.provident_fund_expense_account_selector_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.provident_fund_expense_account_selector_view;
 
@@ -1140,6 +1227,42 @@ SELECT * FROM core.account_scrud_view
 WHERE account_master_id = ANY(ARRAY[10110, 15010])
 ORDER BY account_id;
 
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.selector-views/hrm.wages_account_selector_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.wages_account_selector_view;
+
+CREATE VIEW hrm.wages_account_selector_view
+AS
+SELECT * FROM core.account_scrud_view
+--Accounts Receivable, Accounts Payable
+WHERE account_master_id = ANY(ARRAY[10110, 15010])
+ORDER BY account_id;
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.views/hrm.attendance_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.attendance_view;
+
+CREATE VIEW hrm.attendance_view
+AS
+SELECT
+    hrm.attendances.attendance_id,
+    hrm.attendances.office_id,
+    office.offices.office_code || ' (' || office.offices.office_name || ')' AS office,
+    hrm.attendances.employee_id,
+    hrm.employees.employee_code || ' (' || hrm.employees.employee_name || ')' AS employee,
+    hrm.employees.photo,
+    hrm.attendances.attendance_date,
+    hrm.attendances.was_present,
+    hrm.attendances.check_in_time,
+    hrm.attendances.check_out_time,
+    hrm.attendances.overtime_hours,
+    hrm.attendances.was_absent,
+    hrm.attendances.reason_for_absentism
+FROM hrm.attendances
+INNER JOIN office.offices
+ON office.offices.office_id = hrm.attendances.office_id
+INNER JOIN hrm.employees
+ON hrm.employees.employee_id = hrm.attendances.employee_id;
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.views/hrm.employee_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_view;

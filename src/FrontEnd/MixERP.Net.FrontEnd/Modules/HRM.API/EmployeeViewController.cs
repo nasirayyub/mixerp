@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.HRM
             }
         }
 
+        /// <summary>
+        ///     Returns collection of employee view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/hrm/employee-view/export")]
+        [Route("~/api/hrm/employee-view/all")]
+        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeView> Get()
+        {
+            try
+            {
+                return this.EmployeeViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 employee views on each page, sorted by the property .

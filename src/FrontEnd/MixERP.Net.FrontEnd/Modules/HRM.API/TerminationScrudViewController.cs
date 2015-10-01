@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.HRM
             }
         }
 
+        /// <summary>
+        ///     Returns collection of termination scrud view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/hrm/termination-scrud-view/export")]
+        [Route("~/api/hrm/termination-scrud-view/all")]
+        public IEnumerable<MixERP.Net.Entities.HRM.TerminationScrudView> Get()
+        {
+            try
+            {
+                return this.TerminationScrudViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 termination scrud views on each page, sorted by the property .

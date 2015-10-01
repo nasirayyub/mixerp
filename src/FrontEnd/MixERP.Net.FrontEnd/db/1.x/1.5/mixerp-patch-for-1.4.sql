@@ -2816,6 +2816,7 @@ SELECT localization.add_localized_resource('Titles', '', 'Flags', 'Flags');
 SELECT localization.add_localized_resource('Titles', '', 'Frequencies', 'Frequencies');
 SELECT localization.add_localized_resource('Titles', '', 'Friday', 'Friday');
 SELECT localization.add_localized_resource('Titles', '', 'From', 'From');
+SELECT localization.add_localized_resource('Titles', '', 'Gender', 'Gender');
 SELECT localization.add_localized_resource('Titles', '', 'GLAdvice', 'GL Advice');
 SELECT localization.add_localized_resource('Titles', '', 'GLDetails', 'GL Details');
 SELECT localization.add_localized_resource('Titles', '', 'GLHead', 'GL Head');
@@ -2903,6 +2904,7 @@ SELECT localization.add_localized_resource('Titles', '', 'MAVCO', 'Moving Averag
 SELECT localization.add_localized_resource('Titles', '', 'MakeAsDefault', 'Make As Default');
 SELECT localization.add_localized_resource('Titles', '', 'ManageFilters', 'Manage Filters');
 SELECT localization.add_localized_resource('Titles', '', 'ManageProfile', 'Manage Profile');
+SELECT localization.add_localized_resource('Titles', '', 'MaritalStatus', 'Marital Status');
 SELECT localization.add_localized_resource('Titles', '', 'MaximumCreditAmount', 'Maximum Credit Amount');
 SELECT localization.add_localized_resource('Titles', '', 'MaximumCreditPeriod', 'Maximum Credit Period');
 SELECT localization.add_localized_resource('Titles', '', 'MenuAccessPolicy', 'Menu Access Policy');

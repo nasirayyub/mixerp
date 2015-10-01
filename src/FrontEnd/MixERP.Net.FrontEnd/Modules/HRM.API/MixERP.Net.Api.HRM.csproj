@@ -89,9 +89,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttendanceController.cs" />
+    <Compile Include="AttendanceViewController.cs" />
     <Compile Include="ContractController.cs" />
     <Compile Include="ContractScrudViewController.cs" />
     <Compile Include="ContractVerificationScrudViewController.cs" />
+    <Compile Include="DeductionAccountSelectorViewController.cs" />
+    <Compile Include="DeductionSetupController.cs" />
+    <Compile Include="DeductionSetupScrudViewController.cs" />
     <Compile Include="EducationLevelController.cs" />
     <Compile Include="EmployeeController.cs" />
     <Compile Include="EmployeeExperienceController.cs" />
@@ -135,6 +139,8 @@
     <Compile Include="ResignationScrudViewController.cs" />
     <Compile Include="ResignationVerificationScrudViewController.cs" />
     <Compile Include="SalaryController.cs" />
+    <Compile Include="SalaryDeductionController.cs" />
+    <Compile Include="SalaryDeductionScrudViewController.cs" />
     <Compile Include="SalaryFrequencyController.cs" />
     <Compile Include="SalaryTaxController.cs" />
     <Compile Include="SalaryTaxIncomeBracketController.cs" />
@@ -145,6 +151,7 @@
     <Compile Include="TerminationController.cs" />
     <Compile Include="TerminationScrudViewController.cs" />
     <Compile Include="TerminationVerificationScrudViewController.cs" />
+    <Compile Include="WagesAccountSelectorViewController.cs" />
     <Compile Include="WagesSetupController.cs" />
   </ItemGroup>
   <ItemGroup>

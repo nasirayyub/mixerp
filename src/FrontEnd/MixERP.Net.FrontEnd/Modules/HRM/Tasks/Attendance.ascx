@@ -10,7 +10,7 @@
             </div>
             <div class="ui field">
                 <label>&nbsp;</label>
-                <div class="ui green inverted button">Show</div>
+                <a href="javascript:void(0);" data-ng-click="show();" class="ui green button">Show</a>
             </div>
         </div>
     </div>
@@ -51,7 +51,7 @@
                         <div class="vpad8 absent" style="display: none;">
                             <div class="ui field">
                                 <label>Reason</label>
-                                <textarea rows="1"></textarea>
+                                <textarea rows="1" data-ng-model="employee.Attendance.ReasonForAbsentism"></textarea>
                             </div>
                         </div>
                     </div>
@@ -89,32 +89,35 @@
             return window.getAjaxRequest(url, "POST", data);
         };
 
-        var requestEmployeesAjax = requestEmployees();
+        $scope.show = function() {
+            var requestEmployeesAjax = requestEmployees();
 
-        requestEmployeesAjax.success(function (employees) {
-            var date = window.parseLocalizedDate($("#DateInputDate").val());
+            requestEmployeesAjax.success(function (employees) {
+                var date = window.parseLocalizedDate($("#DateInputDate").val());
 
-            var requestAttendanceAjax = requestAttendance(date);
+                var requestAttendanceAjax = requestAttendance(date);
 
-            requestAttendanceAjax.success(function (attendance) {
-                $.each(employees, function (i, v) {
-                    var employee = v;
+                requestAttendanceAjax.success(function (attendance) {
+                    $.each(employees, function (i, v) {
+                        var employee = v;
 
-                    var a = $window.Enumerable.From(attendance)
-                        .Where(function (x) { return x.EmployeeId === employee.EmployeeId }).FirstOrDefault();
+                        var a = $window.Enumerable.From(attendance)
+                            .Where(function (x) { return x.EmployeeId === employee.EmployeeId }).FirstOrDefault() || new Object();
 
-                    //alert(a.CheckInTime);
-                    a.CheckInTime = (a.CheckInTime || "").toString().toTime();
-                    a.CheckOutTime = (a.CheckOutTime || "").toString().toTime();
+                        a.CheckInTime = (a.CheckInTime || "").toString().toTime();
+                        a.CheckOutTime = (a.CheckOutTime || "").toString().toTime();
 
-                    employees[i].Attendance = a;
-                });
+                        employees[i].Attendance = a;
+                    });
 
-                $scope.$apply(function () {
-                    $scope.employees = employees;
+                    $scope.$apply(function () {
+                        $scope.employees = employees;
+                    });
                 });
             });
-        });
+        };
+
+        $scope.show();
 
         $scope.success = function() {
             $timeout(function() {

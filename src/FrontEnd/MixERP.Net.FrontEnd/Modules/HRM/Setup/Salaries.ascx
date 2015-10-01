@@ -50,6 +50,27 @@
             data: null,
             valueField: "Key",
             textField: "Value"
+        },
+        {
+            property: "ProvidentFundId",
+            url: '/api/hrm/provident-fund/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "EmploymentTaxId",
+            url: '/api/hrm/employment-tax/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "SalaryTaxId",
+            url: '/api/hrm/salary-tax/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
         }
     ];
 

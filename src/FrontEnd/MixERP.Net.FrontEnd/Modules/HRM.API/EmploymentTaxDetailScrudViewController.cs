@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.HRM
             }
         }
 
+        /// <summary>
+        ///     Returns collection of employment tax detail scrud view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/hrm/employment-tax-detail-scrud-view/export")]
+        [Route("~/api/hrm/employment-tax-detail-scrud-view/all")]
+        public IEnumerable<MixERP.Net.Entities.HRM.EmploymentTaxDetailScrudView> Get()
+        {
+            try
+            {
+                return this.EmploymentTaxDetailScrudViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 employment tax detail scrud views on each page, sorted by the property .

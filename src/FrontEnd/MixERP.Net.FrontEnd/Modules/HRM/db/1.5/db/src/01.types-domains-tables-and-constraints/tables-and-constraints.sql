@@ -1,4 +1,4 @@
-/********************************************************************************
+ /********************************************************************************
 Copyright (C) MixERP Inc. (http://mixof.org).
 This file is part of MixERP.
 MixERP is free software: you can redistribute it and/or modify
@@ -510,3 +510,47 @@ CREATE TABLE hrm.exits
 );
 
 
+CREATE TABLE hrm.attendances
+(
+    attendance_id                           BIGSERIAL NOT NULL PRIMARY KEY,
+    office_id                               integer NOT NULL REFERENCES office.offices(office_id),
+    employee_id                             integer NOT NULL REFERENCES hrm.employees(employee_id),
+    attendance_date                         date NOT NULL,
+    was_present                             boolean NOT NULL,
+    check_in_time                           time NULL,
+    check_out_time                          time NULL,
+    overtime_hours                          numeric NOT NULL,
+    was_absent                              boolean NOT NULL CHECK(was_absent != was_present),
+    reason_for_absentism                    text,
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),
+    audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                            DEFAULT(NOW())    
+);
+
+CREATE UNIQUE INDEX attendance_date_employee_id_uix
+ON hrm.attendances(attendance_date, employee_id);
+
+CREATE TABLE hrm.deduction_setups
+(
+    deduction_setup_id                      SERIAL NOT NULL PRIMARY KEY,
+    deduction_setup_code                    national character varying(12) NOT NULL UNIQUE,
+    deduction_setup_name                    national character varying(128) NOT NULL,
+    account_id                              integer NOT NULL REFERENCES core.accounts(account_id),
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),
+    audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                            DEFAULT(NOW())    
+);
+
+CREATE TABLE hrm.salary_deductions
+(
+    salary_deduction_id                     BIGSERIAL NOT NULL PRIMARY KEY,
+    employee_id                             integer NOT NULL REFERENCES hrm.employees(employee_id),
+    deduction_setup_id                      integer NOT NULL REFERENCES hrm.deduction_setups(deduction_setup_id),
+    currency_code                           national character varying(12) NOT NULL REFERENCES core.currencies(currency_code),
+    amount                                  public.money_strict,
+    begins_from                             date,
+    ends_on                                 date CHECK(ends_on > begins_from),
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),
+    audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                            DEFAULT(NOW())    
+);

@@ -89,6 +89,35 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
+        /// Executes a select query on the view "hrm.termination_verification_scrud_view" to return a all instances of the "TerminationVerificationScrudView" class. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "TerminationVerificationScrudView" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<MixERP.Net.Entities.HRM.TerminationVerificationScrudView> Get()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"TerminationVerificationScrudView\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.termination_verification_scrud_view ORDER BY 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.TerminationVerificationScrudView>(this._Catalog, sql);
+        }
+
+        /// <summary>
         /// Displayfields provide a minimal name/value context for data binding the row collection of hrm.termination_verification_scrud_view.
         /// </summary>
         /// <returns>Returns an enumerable name and value collection for the view hrm.termination_verification_scrud_view</returns>
