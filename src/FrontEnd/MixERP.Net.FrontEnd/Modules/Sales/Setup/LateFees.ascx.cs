@@ -31,36 +31,8 @@ namespace MixERP.Net.Core.Modules.Sales.Setup
     {
         public override void OnControlLoad(object sender, EventArgs e)
         {
-            using (Scrud scrud = new Scrud())
-            {
-                scrud.KeyColumn = "late_fee_id";
-                scrud.TableSchema = "core";
-                scrud.Table = "late_fee";
-                scrud.ViewSchema = "core";
-                scrud.View = "late_fee_scrud_view";
-                scrud.Text = Titles.LateFees;
-
-                scrud.DisplayFields = GetDisplayFields();
-                scrud.DisplayViews = GetDisplayViews();
-                scrud.UseDisplayViewsAsParents = true;
-
-                this.ScrudPlaceholder.Controls.Add(scrud);
-            }
+         
         }
 
-        private static string GetDisplayFields()
-        {
-            List<string> displayFields = new List<string>();
-            ScrudHelper.AddDisplayField(displayFields, "core.accounts.account_id",
-                DbConfig.GetDbParameter(AppUsers.GetCurrentUserDB(), "AccountDisplayField"));
-            return string.Join(",", displayFields);
-        }
-
-        private static string GetDisplayViews()
-        {
-            List<string> displayViews = new List<string>();
-            ScrudHelper.AddDisplayView(displayViews, "core.accounts.account_id", "core.late_fee_account_selector_view");
-            return string.Join(",", displayViews);
-        }
     }
 }

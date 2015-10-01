@@ -28,22 +28,8 @@ namespace MixERP.Net.Core.Modules.Sales.Setup
     {
         public override void OnControlLoad(object sender, EventArgs e)
         {
-            this.LoadControl();
+
         }
 
-        protected void LoadControl()
-        {
-            using (Scrud scrud = new Scrud())
-            {
-                scrud.KeyColumn = "sales_team_id";
-                scrud.TableSchema = "core";
-                scrud.Table = "sales_teams";
-                scrud.ViewSchema = "core";
-                scrud.View = "sales_team_scrud_view";
-
-                scrud.Text = Titles.SalesTeams;
-                this.ScrudPlaceholder.Controls.Add(scrud);
-            }
-        }
     }
 }

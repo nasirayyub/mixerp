@@ -17,28 +17,61 @@ You should have received a copy of the GNU General Public License
 along with MixERP.  If not, see <http://www.gnu.org/licenses />.
 --%>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="PaymentTerms.ascx.cs" Inherits="MixERP.Net.Core.Modules.Sales.Setup.PaymentTerms" %>
-<asp:PlaceHolder runat="server" ID="ScrudPlaceholder" />
-<script type="text/javascript">
-    function scrudCustomValidator() {
-        var dueDaysTextbox = $("#due_days_textbox");
-        var dueFrequencyIdDropdownlist = $("#due_frequency_id_dropdownlist");
-        var lateFeeIdDropdownlist = $("#late_fee_id_dropdownlist");
-        var lateFeePostingFrequencyIdDropdownlist = $("#late_fee_posting_frequency_id_dropdownlist");
+<style>
+    .disableClick {
+        pointer-events: none;
+    }
+</style>
 
-        var dueDays = parseInt2(dueDaysTextbox.val());
-        var dueFrequency = parseInt2(dueFrequencyIdDropdownlist.getSelectedValue());
-        var lateFee = parseInt2(lateFeeIdDropdownlist.getSelectedValue());
-        var lateFeePostingFrequency = parseInt2(lateFeePostingFrequencyIdDropdownlist.getSelectedValue());
+<script>
+    var scrudFactory = new Object();
 
-        if (!dueFrequency && dueDays === 0 || dueFrequency && dueDays > 0) {
-            displayMessage(Resources.Warnings.DueFrequencyErrorMessage());
-            return false;
-        };
-        
-        if (!lateFee && lateFeePostingFrequency || lateFee && !lateFeePostingFrequency) {
-           displayMessage(Resources.Warnings.LateFeeErrorMessage());
-           return false;
-       };
-        return true;
-    };
-</script>   
+    scrudFactory.title = Resources.Titles.PaymentTerms();
+
+    scrudFactory.viewAPI = "/api/core/payment-term-scrud-view";
+    scrudFactory.viewTableName = "core.payment_term_scrud_view";
+
+    scrudFactory.formAPI = "/api/core/payment-term";
+    scrudFactory.formTableName = "core.payment_terms";
+
+    scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
+
+
+    scrudFactory.allowDelete = true;
+    scrudFactory.allowEdit = true;
+
+
+    scrudFactory.live = "PaymentTermName";
+    scrudFactory.queryStringKey = "PaymentTermId";
+
+    scrudFactory.keys = [
+        {
+            property: "DueFrequencyId",
+            url: '/api/core/frequency/display-fields',
+            data: null,
+            isArray: false,
+            valueField: "Key",
+            textField: "Value"
+        },
+        //{
+        //    property: "LateFeeId",
+        //    url: '/api/core/late-fee/display-fields',
+        //    data: null,
+        //    isArray: false,
+        //    valueField: "Key",
+        //    textField: "Value"
+        //},
+         {
+             property: "LateFeePostingFrequencyId",
+             url: '/api/core/frequency/display-fields',
+             data: null,
+             isArray: false,
+             valueField: "Key",
+             textField: "Value"
+         },
+    ];
+</script>
+
+
+<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
+<div data-ng-include="'/Views/Modules/FormFactory.html'"></div>

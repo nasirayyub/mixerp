@@ -17,7 +17,76 @@ You should have received a copy of the GNU General Public License
 along with MixERP.  If not, see <http://www.gnu.org/licenses />.
 --%>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="RecurringInvoices.ascx.cs" Inherits="MixERP.Net.Core.Modules.Sales.Setup.RecurringInvoices" %>
-<asp:PlaceHolder runat="server" ID="ScrudPlaceholder" />
+
+<script>
+    var scrudFactory = new Object();
+
+    scrudFactory.title = Resources.Titles.RecurringInvoices();
+
+    scrudFactory.viewAPI = "/api/core/recurring-invoice-scrud-view";
+    scrudFactory.viewTableName = "core.recurring_invoice_scrud_view";
+
+    scrudFactory.formAPI = "/api/core/recurring-invoice";
+    scrudFactory.formTableName = "core.recurring_invoices";
+
+    scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
+
+
+    scrudFactory.allowDelete = true;
+    scrudFactory.allowEdit = true;
+
+
+    scrudFactory.live = "RecurringInvoiceName";
+    scrudFactory.queryStringKey = "RecurringInvoiceId";
+
+    scrudFactory.keys = [
+        {
+            property: "ItemId",
+            url: '/api/core/item/display-fields',
+            data: null,
+            isArray: false,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "RecurrenceTypeId",
+            url: '/api/core/recurrence-type/display-fields',
+            data: null,
+            isArray: false,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "RecurringFrequencyId",
+            url: '/api/core/frequency/display-fields',
+            data: null,
+            isArray: false,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "AccountId",
+            url: '/api/core/recurring-invoice-account-selector-view/display-fields',
+            data: null,
+            isArray: false,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "PaymentTermId",
+            url: '/api/core/payment-term/display-fields',
+            data: null,
+            isArray: false,
+            valueField: "Key",
+            textField: "Value"
+        }
+    ];
+</script>
+
+
+<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
+<div data-ng-include="'/Views/Modules/FormFactory.html'"></div>
+
 <script type="text/javascript">
     function scrudCustomValidator() {
         var itemIdDropdownlist = $("#item_id_dropdownlist");

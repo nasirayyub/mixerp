@@ -31,34 +31,9 @@ namespace MixERP.Net.Core.Modules.Sales.Setup
     {
         public override void OnControlLoad(object sender, EventArgs e)
         {
-            using (Scrud scrud = new Scrud())
-            {
-                scrud.KeyColumn = "bonus_slab_detail_id";
-                scrud.TableSchema = "core";
-                scrud.Table = "bonus_slab_details";
-                scrud.ViewSchema = "core";
-                scrud.View = "bonus_slab_detail_scrud_view";
-                scrud.DisplayFields = GetDisplayFields();
-                scrud.DisplayViews = GetDisplayViews();
-                scrud.Text = Titles.BonusSlabDetails;
 
-                this.ScrudPlaceholder.Controls.Add(scrud);
-            }
         }
 
-        private static string GetDisplayFields()
-        {
-            List<string> displayFields = new List<string>();
-            ScrudHelper.AddDisplayField(displayFields, "core.bonus_slabs.bonus_slab_id",
-                DbConfig.GetDbParameter(AppUsers.GetCurrentUserDB(), "BonusSlabDisplayField"));
-            return string.Join(",", displayFields);
-        }
 
-        private static string GetDisplayViews()
-        {
-            List<string> displayViews = new List<string>();
-            ScrudHelper.AddDisplayView(displayViews, "core.bonus_slabs.bonus_slab_id", "core.bonus_slab_scrud_view");
-            return string.Join(",", displayViews);
-        }
     }
 }
