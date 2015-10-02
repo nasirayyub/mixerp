@@ -31,36 +31,8 @@ namespace MixERP.Net.Core.Modules.Sales.Setup
     {
         public override void OnControlLoad(object sender, EventArgs e)
         {
-            using (Scrud scrud = new Scrud())
-            {
-                scrud.KeyColumn = "salesperson_bonus_setup_id";
-                scrud.TableSchema = "core";
-                scrud.Table = "salesperson_bonus_setups";
-                scrud.ViewSchema = "core";
-                scrud.View = "salesperson_bonus_setup_scrud_view";
-                scrud.DisplayFields = GetDisplayFields();
-                scrud.DisplayViews = GetDisplayViews();
-                scrud.Text = Titles.AgentBonusSlabAssignment;
-                this.ScrudPlaceholder.Controls.Add(scrud);
-            }
+
         }
 
-        private static string GetDisplayFields()
-        {
-            List<string> displayFields = new List<string>();
-            ScrudHelper.AddDisplayField(displayFields, "core.bonus_slabs.bonus_slab_id",
-                DbConfig.GetDbParameter(AppUsers.GetCurrentUserDB(), "BonusSlabDisplayField"));
-            ScrudHelper.AddDisplayField(displayFields, "core.salespersons.salesperson_id",
-                DbConfig.GetDbParameter(AppUsers.GetCurrentUserDB(), "SalespersonDisplayField"));
-            return string.Join(",", displayFields);
-        }
-
-        private static string GetDisplayViews()
-        {
-            List<string> displayViews = new List<string>();
-            ScrudHelper.AddDisplayView(displayViews, "core.bonus_slabs.bonus_slab_id", "core.bonus_slab_scrud_view");
-            ScrudHelper.AddDisplayView(displayViews, "core.salespersons.salesperson_id", "core.salesperson_scrud_view");
-            return string.Join(",", displayViews);
-        }
     }
 }

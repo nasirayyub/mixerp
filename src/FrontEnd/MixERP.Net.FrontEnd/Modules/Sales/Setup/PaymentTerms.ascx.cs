@@ -31,38 +31,8 @@ namespace MixERP.Net.Core.Modules.Sales.Setup
     {
         public override void OnControlLoad(object sender, EventArgs e)
         {
-            using (Scrud scrud = new Scrud())
-            {
-                scrud.KeyColumn = "payment_term_id";
-                scrud.TableSchema = "core";
-                scrud.Table = "payment_terms";
-                scrud.ViewSchema = "core";
-                scrud.View = "payment_term_scrud_view";
-                scrud.Text = Titles.PaymentTerms;
 
-                scrud.DisplayFields = GetDisplayFields();
-                scrud.DisplayViews = GetDisplayViews();
-
-                this.ScrudPlaceholder.Controls.Add(scrud);
-            }
         }
 
-        private static string GetDisplayFields()
-        {
-            List<string> displayFields = new List<string>();
-            ScrudHelper.AddDisplayField(displayFields, "core.frequencies.frequency_id",
-                DbConfig.GetDbParameter(AppUsers.GetCurrentUserDB(), "FrequencyDisplayField"));
-            ScrudHelper.AddDisplayField(displayFields, "core.late_fee.late_fee_id",
-                DbConfig.GetDbParameter(AppUsers.GetCurrentUserDB(), "LateFeeDisplayField"));
-            return string.Join(",", displayFields);
-        }
-
-        private static string GetDisplayViews()
-        {
-            List<string> displayViews = new List<string>();
-            ScrudHelper.AddDisplayView(displayViews, "core.frequencies.frequency_id", "core.frequencies");
-            ScrudHelper.AddDisplayView(displayViews, "core.late_fee.late_fee_id", "core.late_fee_scrud_view");
-            return string.Join(",", displayViews);
-        }
     }
 }

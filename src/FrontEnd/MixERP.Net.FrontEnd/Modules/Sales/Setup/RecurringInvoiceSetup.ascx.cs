@@ -31,59 +31,7 @@ namespace MixERP.Net.Core.Modules.Sales.Setup
     {
         public override void OnControlLoad(object sender, EventArgs e)
         {
-            using (Scrud scrud = new Scrud())
-            {
-                scrud.KeyColumn = "recurring_invoice_setup_id";
-                scrud.TableSchema = "core";
-                scrud.Table = "recurring_invoice_setup";
-                scrud.ViewSchema = "core";
-                scrud.View = "recurring_invoice_setup_scrud_view";
-                scrud.Text = Titles.RecurringInvoiceSetup;
-                scrud.ExcludeEdit =
-                    "recurrence_type_id, recurring_frequency_id, recurring_duration, recurs_on_same_calendar_date, account_id";
 
-                scrud.DisplayFields = GetDisplayFields();
-                scrud.DisplayViews = GetDisplayViews();
-                scrud.UseDisplayViewsAsParents = true;
-
-                this.ScrudPlaceholder.Controls.Add(scrud);
-            }
-        }
-
-
-        private static string GetDisplayFields()
-
-        {
-            List<string> displayFields = new List<string>();
-            ScrudHelper.AddDisplayField(displayFields, "core.recurrence_types.recurrence_type_id",
-                DbConfig.GetDbParameter(AppUsers.GetCurrentUserDB(), "RecurrenceTypeDisplayField"));
-            ScrudHelper.AddDisplayField(displayFields, "core.frequencies.frequency_id",
-                DbConfig.GetDbParameter(AppUsers.GetCurrentUserDB(), "FrequencyDisplayField"));
-            ScrudHelper.AddDisplayField(displayFields, "core.recurring_invoices.recurring_invoice_id",
-                DbConfig.GetDbParameter(AppUsers.GetCurrentUserDB(), "RecurringInvoiceDisplayField"));
-            ScrudHelper.AddDisplayField(displayFields, "core.parties.party_id",
-                DbConfig.GetDbParameter(AppUsers.GetCurrentUserDB(), "PartyDisplayField"));
-            ScrudHelper.AddDisplayField(displayFields, "core.payment_terms.payment_term_id",
-                DbConfig.GetDbParameter(AppUsers.GetCurrentUserDB(), "PaymentTermDisplayField"));
-            ScrudHelper.AddDisplayField(displayFields, "core.accounts.account_id",
-                DbConfig.GetDbParameter(AppUsers.GetCurrentUserDB(), "AccountDisplayField"));
-            return string.Join(",", displayFields);
-        }
-
-        private static string GetDisplayViews()
-        {
-            List<string> displayViews = new List<string>();
-            ScrudHelper.AddDisplayView(displayViews, "core.recurrence_types.recurrence_type_id", "core.recurrence_types");
-                //Todo:Change to scrud view
-            ScrudHelper.AddDisplayView(displayViews, "core.frequencies.frequency_id", "core.frequencies");
-            ScrudHelper.AddDisplayView(displayViews, "core.recurring_invoices.recurring_invoice_id",
-                "core.recurring_invoice_scrud_view");
-            ScrudHelper.AddDisplayView(displayViews, "core.parties.party_id", "core.party_scrud_view");
-            ScrudHelper.AddDisplayView(displayViews, "core.payment_terms.payment_term_id",
-                "core.payment_term_scrud_view");
-            ScrudHelper.AddDisplayView(displayViews, "core.accounts.account_id",
-                "core.recurring_invoice_account_selector_view");
-            return string.Join(",", displayViews);
         }
     }
 }
