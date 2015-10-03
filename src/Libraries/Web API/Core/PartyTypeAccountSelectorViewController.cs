@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Core
             }
         }
 
+        /// <summary>
+        ///     Returns collection of party type account selector view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/core/party-type-account-selector-view/export")]
+        [Route("~/api/core/party-type-account-selector-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Core.PartyTypeAccountSelectorView> Get()
+        {
+            try
+            {
+                return this.PartyTypeAccountSelectorViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 party type account selector views on each page, sorted by the property .

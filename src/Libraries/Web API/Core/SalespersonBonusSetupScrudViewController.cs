@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Core
             }
         }
 
+        /// <summary>
+        ///     Returns collection of salesperson bonus setup scrud view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/core/salesperson-bonus-setup-scrud-view/export")]
+        [Route("~/api/core/salesperson-bonus-setup-scrud-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Core.SalespersonBonusSetupScrudView> Get()
+        {
+            try
+            {
+                return this.SalespersonBonusSetupScrudViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 salesperson bonus setup scrud views on each page, sorted by the property .

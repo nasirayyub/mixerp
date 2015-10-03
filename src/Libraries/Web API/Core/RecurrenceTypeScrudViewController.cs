@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Core
             }
         }
 
+        /// <summary>
+        ///     Returns collection of recurrence type scrud view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/core/recurrence-type-scrud-view/export")]
+        [Route("~/api/core/recurrence-type-scrud-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Core.RecurrenceTypeScrudView> Get()
+        {
+            try
+            {
+                return this.RecurrenceTypeScrudViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 recurrence type scrud views on each page, sorted by the property .

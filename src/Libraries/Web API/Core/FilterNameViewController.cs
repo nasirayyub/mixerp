@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Core
             }
         }
 
+        /// <summary>
+        ///     Returns collection of filter name view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/core/filter-name-view/export")]
+        [Route("~/api/core/filter-name-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Core.FilterNameView> Get()
+        {
+            try
+            {
+                return this.FilterNameViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 filter name views on each page, sorted by the property .

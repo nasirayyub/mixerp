@@ -1,11 +1,7 @@
 // ReSharper disable All
-
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Web;
 using System.Web.Http;
 using MixERP.Net.Api.Framework;
 using MixERP.Net.ApplicationState.Cache;
@@ -713,10 +709,6 @@ namespace MixERP.Net.Api.Core
                     HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
 
                     response.Content = new ByteArrayContent(buffer);
-
-                    response.Headers.CacheControl = new CacheControlHeaderValue();
-                    response.Headers.CacheControl.MaxAge = new TimeSpan(365);
-                    response.Headers.CacheControl.Public = true;
                     response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline");
                     response.Content.Headers.ContentDisposition.FileName = file.Name;
                     response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(MixERP.Net.Common.Helpers.ImageHelper.GetContentType(file.Extension));

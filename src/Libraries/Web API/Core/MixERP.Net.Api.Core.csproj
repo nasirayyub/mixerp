@@ -109,6 +109,7 @@
     <Compile Include="CompoundUnitScrudViewController.cs" />
     <Compile Include="ConfigController.cs" />
     <Compile Include="ConvertUnitController.cs" />
+    <Compile Include="CoreLateFeeController.cs" />
     <Compile Include="CostOfSalesAccountSelectorViewController.cs" />
     <Compile Include="CountItemInStockController.cs" />
     <Compile Include="CountPurchasesController.cs" />
@@ -321,7 +322,6 @@
     <Compile Include="KanbanController.cs" />
     <Compile Include="KanbanDetailController.cs" />
     <Compile Include="LateFeeAccountSelectorViewController.cs" />
-    <Compile Include="LateFeeController.cs" />
     <Compile Include="LateFeeScrudViewController.cs" />
     <Compile Include="MaritalStatusController.cs" />
     <Compile Include="MenuController.cs" />

@@ -8,15 +8,16 @@
 
     <div class="ui stackable form" id="scrud" style="display: none;">
     </div>
-
     <div class="big error"></div>
+    <div class="ui buttons tpad8">
+        <a href="javascript:void(0);" class="ui green button" id="SaveButton">
+            <span data-localize="Titles.Save"></span>
+        </a>
+        <a href="javascript:void(0);" class="ui red button" id="CancelButton">
+            <span data-localize="Titles.Cancel"></span>
+        </a>
+    </div>
 
-    <a href="javascript:void(0);" class="ui green button" id="SaveButton">
-        <span data-localize="Titles.Save"></span>
-    </a>
-    <a href="javascript:void(0);" class="ui red button" id="CancelButton">
-        <span data-localize="Titles.Cancel"></span>
-    </a>
 
     <script>
         function initializeAjaxRequest() {
@@ -480,8 +481,9 @@
                     createColumn(fields, rightField, "four wide field");
                 };
 
-
-                scrud.append(fields);
+                if (fields.children().length > 0) {
+                    scrud.append(fields);
+                };
             };
         };
 
@@ -514,7 +516,9 @@
 
                     });
 
-                    scrud.append(fields);
+                    if (fields.children().length > 0) {
+                        scrud.append(fields);
+                    };
                 });
             };
 
@@ -534,7 +538,9 @@
                     createColumn(fields, collection[this[1]], "four wide field");
                 };
 
-                scrud.append(fields);
+                if (fields.children().length > 0) {
+                    scrud.append(fields);
+                };
             });
 
 

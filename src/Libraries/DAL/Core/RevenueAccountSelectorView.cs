@@ -89,6 +89,35 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Executes a select query on the view "core.revenue_account_selector_view" to return a all instances of the "RevenueAccountSelectorView" class. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "RevenueAccountSelectorView" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<MixERP.Net.Entities.Core.RevenueAccountSelectorView> Get()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"RevenueAccountSelectorView\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.revenue_account_selector_view ORDER BY 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.RevenueAccountSelectorView>(this._Catalog, sql);
+        }
+
+        /// <summary>
         /// Displayfields provide a minimal name/value context for data binding the row collection of core.revenue_account_selector_view.
         /// </summary>
         /// <returns>Returns an enumerable name and value collection for the view core.revenue_account_selector_view</returns>

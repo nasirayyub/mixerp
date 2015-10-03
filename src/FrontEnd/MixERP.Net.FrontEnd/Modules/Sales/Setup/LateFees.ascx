@@ -37,6 +37,16 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
 
 
     scrudFactory.live = "LateFeeName";
+    scrudFactory.keys = [
+        {
+            property: "AccountId",
+            url: '/api/core/late-fee-account-selector-view/display-fields',
+            data: null,
+            isArray: false,
+            valueField: "Key",
+            textField: "Value"
+        }
+    ];
 </script>
 
 

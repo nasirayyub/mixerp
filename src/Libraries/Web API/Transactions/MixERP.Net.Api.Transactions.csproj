@@ -131,7 +131,6 @@
     <Compile Include="IsValidPartyByTransactionMasterIdController.cs" />
     <Compile Include="IsValidStockTransactionByStockMasterIdController.cs" />
     <Compile Include="IsValidStockTransactionByTransactionMasterIdController.cs" />
-    <Compile Include="LateFeeController.cs" />
     <Compile Include="ListClosingStockController.cs" />
     <Compile Include="NonGlStockDetailController.cs" />
     <Compile Include="NonGlStockMasterController.cs" />

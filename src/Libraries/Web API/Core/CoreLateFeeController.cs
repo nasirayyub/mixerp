@@ -18,14 +18,14 @@ namespace MixERP.Net.Api.Core
     ///     Provides a direct HTTP access to perform various tasks such as adding, editing, and removing Late Fees.
     /// </summary>
     [RoutePrefix("api/v1.5/core/late-fee")]
-    public class LateFeeController : ApiController
+    public class CoreLateFeeController : ApiController
     {
         /// <summary>
         ///     The LateFee data context.
         /// </summary>
         private readonly MixERP.Net.Schemas.Core.Data.LateFee LateFeeContext;
 
-        public LateFeeController()
+        public CoreLateFeeController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
