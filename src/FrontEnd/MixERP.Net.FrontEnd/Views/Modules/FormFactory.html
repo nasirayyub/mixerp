@@ -262,8 +262,20 @@
                 console.log(label.html() + " is required");
             });
 
+            var errorCount = errorFields.length;
 
-            return errorFields.length === 0;
+            if (!errorCount) {
+
+                if (typeof (window.customFormValidator) === "function") {
+                    var isValid = window.customFormValidator();
+
+                    return isValid;
+                };
+
+                return true;
+            };
+
+            return false;
         };
 
         function getSchema() {

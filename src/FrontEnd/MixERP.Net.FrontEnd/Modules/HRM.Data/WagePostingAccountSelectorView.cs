@@ -30,9 +30,9 @@ using Serilog;
 namespace MixERP.Net.Core.Modules.HRM.Data
 {
     /// <summary>
-    /// Provides simplified data access features to perform SCRUD operation on the database view "hrm.salary_tax_scurd_view".
+    /// Provides simplified data access features to perform SCRUD operation on the database view "hrm.wage_posting_account_selector_view".
     /// </summary>
-    public class SalaryTaxScurdView : DbAccess
+    public class WagePostingAccountSelectorView : DbAccess
     {
         /// <summary>
         /// The schema of this view. Returns literal "hrm".
@@ -40,9 +40,9 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         public override string _ObjectNamespace => "hrm";
 
         /// <summary>
-        /// The schema unqualified name of this view. Returns literal "salary_tax_scurd_view".
+        /// The schema unqualified name of this view. Returns literal "wage_posting_account_selector_view".
         /// </summary>
-        public override string _ObjectName => "salary_tax_scurd_view";
+        public override string _ObjectName => "wage_posting_account_selector_view";
 
         /// <summary>
         /// Login id of application user accessing this view.
@@ -60,9 +60,9 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         public string _Catalog { get; set; }
 
         /// <summary>
-        /// Performs SQL count on the view "hrm.salary_tax_scurd_view".
+        /// Performs SQL count on the view "hrm.wage_posting_account_selector_view".
         /// </summary>
-        /// <returns>Returns the number of rows of the view "hrm.salary_tax_scurd_view".</returns>
+        /// <returns>Returns the number of rows of the view "hrm.wage_posting_account_selector_view".</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public long Count()
         {
@@ -79,21 +79,21 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to count entity \"SalaryTaxScurdView\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    Log.Information("Access to count entity \"WagePostingAccountSelectorView\" was denied to the user with Login ID {LoginId}", this._LoginId);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            const string sql = "SELECT COUNT(*) FROM hrm.salary_tax_scurd_view;";
+            const string sql = "SELECT COUNT(*) FROM hrm.wage_posting_account_selector_view;";
             return Factory.Scalar<long>(this._Catalog, sql);
         }
 
         /// <summary>
-        /// Executes a select query on the view "hrm.salary_tax_scurd_view" to return a all instances of the "SalaryTaxScurdView" class. 
+        /// Executes a select query on the view "hrm.wage_posting_account_selector_view" to return a all instances of the "WagePostingAccountSelectorView" class. 
         /// </summary>
-        /// <returns>Returns a non-live, non-mapped instances of "SalaryTaxScurdView" class.</returns>
+        /// <returns>Returns a non-live, non-mapped instances of "WagePostingAccountSelectorView" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.SalaryTaxScurdView> Get()
+        public IEnumerable<MixERP.Net.Entities.HRM.WagePostingAccountSelectorView> Get()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -108,19 +108,19 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to the export entity \"SalaryTaxScurdView\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    Log.Information("Access to the export entity \"WagePostingAccountSelectorView\" was denied to the user with Login ID {LoginId}", this._LoginId);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            const string sql = "SELECT * FROM hrm.salary_tax_scurd_view ORDER BY 1;";
-            return Factory.Get<MixERP.Net.Entities.HRM.SalaryTaxScurdView>(this._Catalog, sql);
+            const string sql = "SELECT * FROM hrm.wage_posting_account_selector_view ORDER BY 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.WagePostingAccountSelectorView>(this._Catalog, sql);
         }
 
         /// <summary>
-        /// Displayfields provide a minimal name/value context for data binding the row collection of hrm.salary_tax_scurd_view.
+        /// Displayfields provide a minimal name/value context for data binding the row collection of hrm.wage_posting_account_selector_view.
         /// </summary>
-        /// <returns>Returns an enumerable name and value collection for the view hrm.salary_tax_scurd_view</returns>
+        /// <returns>Returns an enumerable name and value collection for the view hrm.wage_posting_account_selector_view</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<DisplayField> GetDisplayFields()
         {
@@ -139,12 +139,12 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to get display field for entity \"SalaryTaxScurdView\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    Log.Information("Access to get display field for entity \"WagePostingAccountSelectorView\" was denied to the user with Login ID {LoginId}", this._LoginId);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            const string sql = "SELECT salary_tax_id AS key, salary_tax_code || ' (' || salary_tax_name || ')' as value FROM hrm.salary_tax_scurd_view;";
+            const string sql = "SELECT account_id AS key, account_number || ' (' || account_name || ')' as value FROM hrm.wage_posting_account_selector_view;";
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
             {
                 using (DataTable table = DbOperation.GetDataTable(this._Catalog, command))
@@ -176,11 +176,11 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
 
         /// <summary>
-        /// Performs a select statement on the view "hrm.salary_tax_scurd_view" producing a paginated result of 10.
+        /// Performs a select statement on the view "hrm.wage_posting_account_selector_view" producing a paginated result of 10.
         /// </summary>
-        /// <returns>Returns the first page of collection of "SalaryTaxScurdView" class.</returns>
+        /// <returns>Returns the first page of collection of "WagePostingAccountSelectorView" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.SalaryTaxScurdView> GetPaginatedResult()
+        public IEnumerable<MixERP.Net.Entities.HRM.WagePostingAccountSelectorView> GetPaginatedResult()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -195,22 +195,22 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to the first page of the entity \"SalaryTaxScurdView\" was denied to the user with Login ID {LoginId}.", this._LoginId);
+                    Log.Information("Access to the first page of the entity \"WagePostingAccountSelectorView\" was denied to the user with Login ID {LoginId}.", this._LoginId);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            const string sql = "SELECT * FROM hrm.salary_tax_scurd_view ORDER BY 1 LIMIT 10 OFFSET 0;";
-            return Factory.Get<MixERP.Net.Entities.HRM.SalaryTaxScurdView>(this._Catalog, sql);
+            const string sql = "SELECT * FROM hrm.wage_posting_account_selector_view ORDER BY 1 LIMIT 10 OFFSET 0;";
+            return Factory.Get<MixERP.Net.Entities.HRM.WagePostingAccountSelectorView>(this._Catalog, sql);
         }
 
         /// <summary>
-        /// Performs a select statement on the view "hrm.salary_tax_scurd_view" producing a paginated result of 10.
+        /// Performs a select statement on the view "hrm.wage_posting_account_selector_view" producing a paginated result of 10.
         /// </summary>
         /// <param name="pageNumber">Enter the page number to produce the paginated result.</param>
-        /// <returns>Returns collection of "SalaryTaxScurdView" class.</returns>
+        /// <returns>Returns collection of "WagePostingAccountSelectorView" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.SalaryTaxScurdView> GetPaginatedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.HRM.WagePostingAccountSelectorView> GetPaginatedResult(long pageNumber)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -225,28 +225,28 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to Page #{Page} of the entity \"SalaryTaxScurdView\" was denied to the user with Login ID {LoginId}.", pageNumber, this._LoginId);
+                    Log.Information("Access to Page #{Page} of the entity \"WagePostingAccountSelectorView\" was denied to the user with Login ID {LoginId}.", pageNumber, this._LoginId);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
             long offset = (pageNumber - 1) * 10;
-            const string sql = "SELECT * FROM hrm.salary_tax_scurd_view ORDER BY 1 LIMIT 10 OFFSET @0;";
+            const string sql = "SELECT * FROM hrm.wage_posting_account_selector_view ORDER BY 1 LIMIT 10 OFFSET @0;";
 
-            return Factory.Get<MixERP.Net.Entities.HRM.SalaryTaxScurdView>(this._Catalog, sql, offset);
+            return Factory.Get<MixERP.Net.Entities.HRM.WagePostingAccountSelectorView>(this._Catalog, sql, offset);
         }
 
         private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
-            const string sql = "SELECT * FROM core.filters WHERE object_name='hrm.salary_tax_scurd_view' AND lower(filter_name)=lower(@0);";
+            const string sql = "SELECT * FROM core.filters WHERE object_name='hrm.wage_posting_account_selector_view' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();
         }
 
         /// <summary>
-        /// Performs a filtered count on view "hrm.salary_tax_scurd_view".
+        /// Performs a filtered count on view "hrm.wage_posting_account_selector_view".
         /// </summary>
         /// <param name="filters">The list of filter conditions.</param>
-        /// <returns>Returns number of rows of "SalaryTaxScurdView" class using the filter.</returns>
+        /// <returns>Returns number of rows of "WagePostingAccountSelectorView" class using the filter.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public long CountWhere(List<EntityParser.Filter> filters)
         {
@@ -263,25 +263,25 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to count entity \"SalaryTaxScurdView\" was denied to the user with Login ID {LoginId}. Filters: {Filters}.", this._LoginId, filters);
+                    Log.Information("Access to count entity \"WagePostingAccountSelectorView\" was denied to the user with Login ID {LoginId}. Filters: {Filters}.", this._LoginId, filters);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            Sql sql = Sql.Builder.Append("SELECT COUNT(*) FROM hrm.salary_tax_scurd_view WHERE 1 = 1");
-            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.HRM.SalaryTaxScurdView(), filters);
+            Sql sql = Sql.Builder.Append("SELECT COUNT(*) FROM hrm.wage_posting_account_selector_view WHERE 1 = 1");
+            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.HRM.WagePostingAccountSelectorView(), filters);
 
             return Factory.Scalar<long>(this._Catalog, sql);
         }
 
         /// <summary>
-        /// Performs a filtered select statement on view "hrm.salary_tax_scurd_view" producing a paginated result of 10.
+        /// Performs a filtered select statement on view "hrm.wage_posting_account_selector_view" producing a paginated result of 10.
         /// </summary>
         /// <param name="pageNumber">Enter the page number to produce the paginated result. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
-        /// <returns>Returns collection of "SalaryTaxScurdView" class.</returns>
+        /// <returns>Returns collection of "WagePostingAccountSelectorView" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.SalaryTaxScurdView> GetWhere(long pageNumber, List<EntityParser.Filter> filters)
+        public IEnumerable<MixERP.Net.Entities.HRM.WagePostingAccountSelectorView> GetWhere(long pageNumber, List<EntityParser.Filter> filters)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -296,15 +296,15 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to Page #{Page} of the filtered entity \"SalaryTaxScurdView\" was denied to the user with Login ID {LoginId}. Filters: {Filters}.", pageNumber, this._LoginId, filters);
+                    Log.Information("Access to Page #{Page} of the filtered entity \"WagePostingAccountSelectorView\" was denied to the user with Login ID {LoginId}. Filters: {Filters}.", pageNumber, this._LoginId, filters);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
             long offset = (pageNumber - 1) * 10;
-            Sql sql = Sql.Builder.Append("SELECT * FROM hrm.salary_tax_scurd_view WHERE 1 = 1");
+            Sql sql = Sql.Builder.Append("SELECT * FROM hrm.wage_posting_account_selector_view WHERE 1 = 1");
 
-            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.HRM.SalaryTaxScurdView(), filters);
+            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.HRM.WagePostingAccountSelectorView(), filters);
 
             sql.OrderBy("1");
 
@@ -314,14 +314,14 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 sql.Append("OFFSET @0", offset);
             }
 
-            return Factory.Get<MixERP.Net.Entities.HRM.SalaryTaxScurdView>(this._Catalog, sql);
+            return Factory.Get<MixERP.Net.Entities.HRM.WagePostingAccountSelectorView>(this._Catalog, sql);
         }
 
         /// <summary>
-        /// Performs a filtered count on view "hrm.salary_tax_scurd_view".
+        /// Performs a filtered count on view "hrm.wage_posting_account_selector_view".
         /// </summary>
         /// <param name="filterName">The named filter.</param>
-        /// <returns>Returns number of rows of "SalaryTaxScurdView" class using the filter.</returns>
+        /// <returns>Returns number of rows of "WagePostingAccountSelectorView" class using the filter.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public long CountFiltered(string filterName)
         {
@@ -338,26 +338,26 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to count entity \"SalaryTaxScurdView\" was denied to the user with Login ID {LoginId}. Filter: {Filter}.", this._LoginId, filterName);
+                    Log.Information("Access to count entity \"WagePostingAccountSelectorView\" was denied to the user with Login ID {LoginId}. Filter: {Filter}.", this._LoginId, filterName);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
             List<EntityParser.Filter> filters = this.GetFilters(this._Catalog, filterName);
-            Sql sql = Sql.Builder.Append("SELECT COUNT(*) FROM hrm.salary_tax_scurd_view WHERE 1 = 1");
-            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.HRM.SalaryTaxScurdView(), filters);
+            Sql sql = Sql.Builder.Append("SELECT COUNT(*) FROM hrm.wage_posting_account_selector_view WHERE 1 = 1");
+            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.HRM.WagePostingAccountSelectorView(), filters);
 
             return Factory.Scalar<long>(this._Catalog, sql);
         }
 
         /// <summary>
-        /// Performs a filtered select statement on view "hrm.salary_tax_scurd_view" producing a paginated result of 10.
+        /// Performs a filtered select statement on view "hrm.wage_posting_account_selector_view" producing a paginated result of 10.
         /// </summary>
         /// <param name="pageNumber">Enter the page number to produce the paginated result. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
-        /// <returns>Returns collection of "SalaryTaxScurdView" class.</returns>
+        /// <returns>Returns collection of "WagePostingAccountSelectorView" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.SalaryTaxScurdView> GetFiltered(long pageNumber, string filterName)
+        public IEnumerable<MixERP.Net.Entities.HRM.WagePostingAccountSelectorView> GetFiltered(long pageNumber, string filterName)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -372,7 +372,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to Page #{Page} of the filtered entity \"SalaryTaxScurdView\" was denied to the user with Login ID {LoginId}. Filter: {Filter}.", pageNumber, this._LoginId, filterName);
+                    Log.Information("Access to Page #{Page} of the filtered entity \"WagePostingAccountSelectorView\" was denied to the user with Login ID {LoginId}. Filter: {Filter}.", pageNumber, this._LoginId, filterName);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
@@ -380,9 +380,9 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             List<EntityParser.Filter> filters = this.GetFilters(this._Catalog, filterName);
 
             long offset = (pageNumber - 1) * 10;
-            Sql sql = Sql.Builder.Append("SELECT * FROM hrm.salary_tax_scurd_view WHERE 1 = 1");
+            Sql sql = Sql.Builder.Append("SELECT * FROM hrm.wage_posting_account_selector_view WHERE 1 = 1");
 
-            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.HRM.SalaryTaxScurdView(), filters);
+            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.HRM.WagePostingAccountSelectorView(), filters);
 
             sql.OrderBy("1");
 
@@ -392,7 +392,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 sql.Append("OFFSET @0", offset);
             }
 
-            return Factory.Get<MixERP.Net.Entities.HRM.SalaryTaxScurdView>(this._Catalog, sql);
+            return Factory.Get<MixERP.Net.Entities.HRM.WagePostingAccountSelectorView>(this._Catalog, sql);
         }
 
     }

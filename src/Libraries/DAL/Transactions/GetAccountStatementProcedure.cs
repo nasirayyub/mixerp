@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -97,6 +98,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.get_account_statement".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<DbGetAccountStatementResult> Execute()
         {
             if (!this.SkipValidation)
@@ -111,8 +113,25 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.get_account_statement(@0::date, @1::date, @2::integer, @3::bigint, @4::integer);";
-            return Factory.Get<DbGetAccountStatementResult>(this._Catalog, query, this.ValueDateFrom, this.ValueDateTo, this.UserId, this.AccountId, this.OfficeId);
+            string query = "SELECT * FROM transactions.get_account_statement(@ValueDateFrom, @ValueDateTo, @UserId, @AccountId, @OfficeId);";
+
+            query = query.ReplaceWholeWord("@ValueDateFrom", "@0::date");
+            query = query.ReplaceWholeWord("@ValueDateTo", "@1::date");
+            query = query.ReplaceWholeWord("@UserId", "@2::integer");
+            query = query.ReplaceWholeWord("@AccountId", "@3::bigint");
+            query = query.ReplaceWholeWord("@OfficeId", "@4::integer");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.ValueDateFrom);
+            parameters.Add(this.ValueDateTo);
+            parameters.Add(this.UserId);
+            parameters.Add(this.AccountId);
+            parameters.Add(this.OfficeId);
+
+            return Factory.Get<DbGetAccountStatementResult>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

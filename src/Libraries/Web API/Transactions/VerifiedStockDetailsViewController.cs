@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Transactions
             }
         }
 
+        /// <summary>
+        ///     Returns collection of verified stock details view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/transactions/verified-stock-details-view/export")]
+        [Route("~/api/transactions/verified-stock-details-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Transactions.VerifiedStockDetailsView> Get()
+        {
+            try
+            {
+                return this.VerifiedStockDetailsViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 verified stock details views on each page, sorted by the property .

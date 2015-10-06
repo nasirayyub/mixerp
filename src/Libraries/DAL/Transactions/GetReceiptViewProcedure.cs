@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -121,6 +122,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.get_receipt_view".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<DbGetReceiptViewResult> Execute()
         {
             if (!this.SkipValidation)
@@ -135,8 +137,33 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.get_receipt_view(@0::integer, @1::integer, @2::date, @3::date, @4::character varying, @5::text, @6::character varying, @7::character varying, @8::text);";
-            return Factory.Get<DbGetReceiptViewResult>(this._Catalog, query, this.UserId, this.OfficeId, this.DateFrom, this.DateTo, this.Office, this.Party, this.User, this.ReferenceNumber, this.StatementReference);
+            string query = "SELECT * FROM transactions.get_receipt_view(@UserId, @OfficeId, @DateFrom, @DateTo, @Office, @Party, @User, @ReferenceNumber, @StatementReference);";
+
+            query = query.ReplaceWholeWord("@UserId", "@0::integer");
+            query = query.ReplaceWholeWord("@OfficeId", "@1::integer");
+            query = query.ReplaceWholeWord("@DateFrom", "@2::date");
+            query = query.ReplaceWholeWord("@DateTo", "@3::date");
+            query = query.ReplaceWholeWord("@Office", "@4::character varying");
+            query = query.ReplaceWholeWord("@Party", "@5::text");
+            query = query.ReplaceWholeWord("@User", "@6::character varying");
+            query = query.ReplaceWholeWord("@ReferenceNumber", "@7::character varying");
+            query = query.ReplaceWholeWord("@StatementReference", "@8::text");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.UserId);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.DateFrom);
+            parameters.Add(this.DateTo);
+            parameters.Add(this.Office);
+            parameters.Add(this.Party);
+            parameters.Add(this.User);
+            parameters.Add(this.ReferenceNumber);
+            parameters.Add(this.StatementReference);
+
+            return Factory.Get<DbGetReceiptViewResult>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

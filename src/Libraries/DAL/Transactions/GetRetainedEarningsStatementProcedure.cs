@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -85,6 +86,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.get_retained_earnings_statement".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<DbGetRetainedEarningsStatementResult> Execute()
         {
             if (!this.SkipValidation)
@@ -99,8 +101,21 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.get_retained_earnings_statement(@0::date, @1::integer, @2::integer);";
-            return Factory.Get<DbGetRetainedEarningsStatementResult>(this._Catalog, query, this.DateTo, this.OfficeId, this.Factor);
+            string query = "SELECT * FROM transactions.get_retained_earnings_statement(@DateTo, @OfficeId, @Factor);";
+
+            query = query.ReplaceWholeWord("@DateTo", "@0::date");
+            query = query.ReplaceWholeWord("@OfficeId", "@1::integer");
+            query = query.ReplaceWholeWord("@Factor", "@2::integer");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.DateTo);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.Factor);
+
+            return Factory.Get<DbGetRetainedEarningsStatementResult>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

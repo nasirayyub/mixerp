@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Localization
             }
         }
 
+        /// <summary>
+        ///     Returns collection of resource view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/localization/resource-view/export")]
+        [Route("~/api/localization/resource-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Localization.ResourceView> Get()
+        {
+            try
+            {
+                return this.ResourceViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 resource views on each page, sorted by the property .

@@ -122,3 +122,31 @@ String.prototype.toTime = function () {
 
     return d.getUTCHours() + ":" + d.getUTCMinutes();
 };
+
+String.prototype.toFormattedHours = function () {
+    if (isNullOrWhiteSpace(this)) {
+        return "";
+    };
+
+    if (!window.Resources.Labels.NHours) {
+        return this;
+    };
+
+
+    var val = stringFormat(window.Resources.Labels.NHours(), this);
+    return val;
+};
+
+String.prototype.toFormattedMinutes = function () {
+    if (isNullOrWhiteSpace(this)) {
+        return "";
+    };
+
+    if (!window.Resources.Labels.NMinutes) {
+        return this;
+    };
+
+
+    var val = stringFormat(window.Resources.Labels.NMinutes(), this);
+    return val;
+};

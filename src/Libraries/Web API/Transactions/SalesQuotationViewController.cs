@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Transactions
             }
         }
 
+        /// <summary>
+        ///     Returns collection of sales quotation view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/transactions/sales-quotation-view/export")]
+        [Route("~/api/transactions/sales-quotation-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Transactions.SalesQuotationView> Get()
+        {
+            try
+            {
+                return this.SalesQuotationViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 sales quotation views on each page, sorted by the property .

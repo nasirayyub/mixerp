@@ -82,6 +82,7 @@ namespace MixERP.Net.Api.Transactions
             {
                 this.procedure.CashRepositoryId = annotation.CashRepositoryId;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

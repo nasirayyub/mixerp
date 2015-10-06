@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Office;
 using Npgsql;
@@ -85,6 +86,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <summary>
         /// Prepares and executes the function "office.validate_login".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public bool Execute()
         {
             if (!this.SkipValidation)
@@ -99,8 +101,21 @@ namespace MixERP.Net.Schemas.Office.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM office.validate_login(@0::text, @1::text, @2::text);";
-            return Factory.Scalar<bool>(this._Catalog, query, this.UserName, this.Password, this.Challenge);
+            string query = "SELECT * FROM office.validate_login(@UserName, @Password, @Challenge);";
+
+            query = query.ReplaceWholeWord("@UserName", "@0::text");
+            query = query.ReplaceWholeWord("@Password", "@1::text");
+            query = query.ReplaceWholeWord("@Challenge", "@2::text");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.UserName);
+            parameters.Add(this.Password);
+            parameters.Add(this.Challenge);
+
+            return Factory.Scalar<bool>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Office
             }
         }
 
+        /// <summary>
+        ///     Returns collection of user view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/office/user-view/export")]
+        [Route("~/api/office/user-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Office.UserView> Get()
+        {
+            try
+            {
+                return this.UserViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 user views on each page, sorted by the property .

@@ -84,6 +84,7 @@ namespace MixERP.Net.Api.Office
                 this.procedure.UserId = annotation.UserId;
                 this.procedure.OfficeId = annotation.OfficeId;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

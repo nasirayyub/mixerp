@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -79,6 +80,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.get_salesperson_report".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<DbGetSalespersonReportResult> Execute()
         {
             if (!this.SkipValidation)
@@ -93,8 +95,19 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.get_salesperson_report(@0::integer, @1::integer);";
-            return Factory.Get<DbGetSalespersonReportResult>(this._Catalog, query, this.OfficeId, this.Factor);
+            string query = "SELECT * FROM transactions.get_salesperson_report(@OfficeId, @Factor);";
+
+            query = query.ReplaceWholeWord("@OfficeId", "@0::integer");
+            query = query.ReplaceWholeWord("@Factor", "@1::integer");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.Factor);
+
+            return Factory.Get<DbGetSalespersonReportResult>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

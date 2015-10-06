@@ -65,7 +65,7 @@ namespace MixERP.Net.Api.Transactions
             public string StatementReference { get; set; }
             public int ShipperId { get; set; }
             public int SourceStoreId { get; set; }
-            public MixERP.Net.Entities.Transactions.StockAdjustmentType[][] Details { get; set; }
+            public MixERP.Net.Entities.Transactions.StockAdjustmentType[] Details { get; set; }
         }
 
         public PostInventoryTransferDeliveryController()
@@ -99,6 +99,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.ShipperId = annotation.ShipperId;
                 this.procedure.SourceStoreId = annotation.SourceStoreId;
                 this.procedure.Details = annotation.Details;
+
 
                 return this.procedure.Execute();
             }

@@ -82,6 +82,7 @@ namespace MixERP.Net.Api.Core
             {
                 this.procedure.FrequencyId = annotation.FrequencyId;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

@@ -71,8 +71,8 @@ namespace MixERP.Net.Api.Transactions
             public string ShippingAddressCode { get; set; }
             public int StoreId { get; set; }
             public long[] TranIds { get; set; }
-            public MixERP.Net.Entities.Transactions.StockDetailType[][] Details { get; set; }
-            public MixERP.Net.Entities.Core.AttachmentType[][] Attachments { get; set; }
+            public MixERP.Net.Entities.Transactions.StockDetailType[] Details { get; set; }
+            public MixERP.Net.Entities.Core.AttachmentType[] Attachments { get; set; }
         }
 
         public PostNonGlTransactionController()
@@ -113,6 +113,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.TranIds = annotation.TranIds;
                 this.procedure.Details = annotation.Details;
                 this.procedure.Attachments = annotation.Attachments;
+
 
                 return this.procedure.Execute();
             }

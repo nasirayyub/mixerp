@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -145,6 +146,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.get_inventory_transfer_request_view".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<DbGetInventoryTransferRequestViewResult> Execute()
         {
             if (!this.SkipValidation)
@@ -159,8 +161,41 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.get_inventory_transfer_request_view(@0::integer, @1::bigint, @2::integer, @3::date, @4::date, @5::text, @6::text, @7::text, @8::text, @9::text, @10::text, @11::text, @12::text);";
-            return Factory.Get<DbGetInventoryTransferRequestViewResult>(this._Catalog, query, this.UserId, this.LoginId, this.OfficeId, this.From, this.To, this.Office, this.Store, this.Authorized, this.Delivered, this.Received, this.User, this.ReferenceNumber, this.StatementReference);
+            string query = "SELECT * FROM transactions.get_inventory_transfer_request_view(@UserId, @LoginId, @OfficeId, @From, @To, @Office, @Store, @Authorized, @Delivered, @Received, @User, @ReferenceNumber, @StatementReference);";
+
+            query = query.ReplaceWholeWord("@UserId", "@0::integer");
+            query = query.ReplaceWholeWord("@LoginId", "@1::bigint");
+            query = query.ReplaceWholeWord("@OfficeId", "@2::integer");
+            query = query.ReplaceWholeWord("@From", "@3::date");
+            query = query.ReplaceWholeWord("@To", "@4::date");
+            query = query.ReplaceWholeWord("@Office", "@5::text");
+            query = query.ReplaceWholeWord("@Store", "@6::text");
+            query = query.ReplaceWholeWord("@Authorized", "@7::text");
+            query = query.ReplaceWholeWord("@Delivered", "@8::text");
+            query = query.ReplaceWholeWord("@Received", "@9::text");
+            query = query.ReplaceWholeWord("@User", "@10::text");
+            query = query.ReplaceWholeWord("@ReferenceNumber", "@11::text");
+            query = query.ReplaceWholeWord("@StatementReference", "@12::text");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.UserId);
+            parameters.Add(this.LoginId);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.From);
+            parameters.Add(this.To);
+            parameters.Add(this.Office);
+            parameters.Add(this.Store);
+            parameters.Add(this.Authorized);
+            parameters.Add(this.Delivered);
+            parameters.Add(this.Received);
+            parameters.Add(this.User);
+            parameters.Add(this.ReferenceNumber);
+            parameters.Add(this.StatementReference);
+
+            return Factory.Get<DbGetInventoryTransferRequestViewResult>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

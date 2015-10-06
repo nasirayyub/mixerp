@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Office;
 using Npgsql;
@@ -79,6 +80,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <summary>
         /// Prepares and executes the function "office.can_login".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<DbCanLoginResult> Execute()
         {
             if (!this.SkipValidation)
@@ -93,8 +95,19 @@ namespace MixERP.Net.Schemas.Office.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM office.can_login(@0::integer_strict, @1::integer_strict);";
-            return Factory.Get<DbCanLoginResult>(this._Catalog, query, this.UserId, this.OfficeId);
+            string query = "SELECT * FROM office.can_login(@UserId, @OfficeId);";
+
+            query = query.ReplaceWholeWord("@UserId", "@0::integer_strict");
+            query = query.ReplaceWholeWord("@OfficeId", "@1::integer_strict");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.UserId);
+            parameters.Add(this.OfficeId);
+
+            return Factory.Get<DbCanLoginResult>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

@@ -21,36 +21,40 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 using PetaPoco;
 using System;
 
-namespace MixERP.Net.Entities.Office
+namespace MixERP.Net.Entities.HRM
 {
-    [PrimaryKey("holiday_id", autoIncrement = false)]
-    [TableName("office.holidays")]
+    [PrimaryKey("wage_processing_id", autoIncrement = true)]
+    [TableName("hrm.wage_processing")]
     [ExplicitColumns]
-    public sealed class Holiday : PetaPocoDB.Record<Holiday>, IPoco
+    public sealed class WageProcessing : PetaPocoDB.Record<WageProcessing>, IPoco
     {
-        [Column("holiday_id")]
+        [Column("wage_processing_id")]
+        [ColumnDbType("int8", 0, false, "nextval('hrm.wage_processing_wage_processing_id_seq'::regclass)")]
+        public long WageProcessingId { get; set; }
+
+        [Column("employee_id")]
         [ColumnDbType("int4", 0, false, "")]
-        public int HolidayId { get; set; }
+        public int EmployeeId { get; set; }
 
-        [Column("office_id")]
-        [ColumnDbType("int4", 0, false, "")]
-        public int OfficeId { get; set; }
+        [Column("posted_till")]
+        [ColumnDbType("date", 0, false, "")]
+        public DateTime PostedTill { get; set; }
 
-        [Column("falls_on")]
-        [ColumnDbType("date", 0, true, "")]
-        public DateTime? FallsOn { get; set; }
+        [Column("regular_hours")]
+        [ColumnDbType("numeric", 0, false, "")]
+        public decimal RegularHours { get; set; }
 
-        [Column("holiday_name")]
-        [ColumnDbType("varchar", 100, false, "")]
-        public string HolidayName { get; set; }
+        [Column("regular_pay_rate")]
+        [ColumnDbType("numeric", 0, false, "")]
+        public decimal RegularPayRate { get; set; }
 
-        [Column("description")]
-        [ColumnDbType("text", 0, true, "")]
-        public string Description { get; set; }
+        [Column("overtime_hours")]
+        [ColumnDbType("numeric", 0, false, "")]
+        public decimal OvertimeHours { get; set; }
 
-        [Column("recurs_next_year")]
-        [ColumnDbType("bool", 0, false, "true")]
-        public bool RecursNextYear { get; set; }
+        [Column("overtime_pay_rate")]
+        [ColumnDbType("numeric", 0, false, "")]
+        public decimal OvertimePayRate { get; set; }
 
         [Column("audit_user_id")]
         [ColumnDbType("int4", 0, true, "")]

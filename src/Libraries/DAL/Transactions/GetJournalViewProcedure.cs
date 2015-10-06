@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -151,6 +152,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.get_journal_view".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<DbGetJournalViewResult> Execute()
         {
             if (!this.SkipValidation)
@@ -165,8 +167,43 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.get_journal_view(@0::integer, @1::integer, @2::date, @3::date, @4::bigint, @5::character varying, @6::character varying, @7::character varying, @8::character varying, @9::character varying, @10::character varying, @11::character varying, @12::character varying, @13::character varying);";
-            return Factory.Get<DbGetJournalViewResult>(this._Catalog, query, this.UserId, this.OfficeId, this.From, this.To, this.TranId, this.TranCode, this.Book, this.ReferenceNumber, this.StatementReference, this.PostedBy, this.Office, this.Status, this.VerifiedBy, this.Reason);
+            string query = "SELECT * FROM transactions.get_journal_view(@UserId, @OfficeId, @From, @To, @TranId, @TranCode, @Book, @ReferenceNumber, @StatementReference, @PostedBy, @Office, @Status, @VerifiedBy, @Reason);";
+
+            query = query.ReplaceWholeWord("@UserId", "@0::integer");
+            query = query.ReplaceWholeWord("@OfficeId", "@1::integer");
+            query = query.ReplaceWholeWord("@From", "@2::date");
+            query = query.ReplaceWholeWord("@To", "@3::date");
+            query = query.ReplaceWholeWord("@TranId", "@4::bigint");
+            query = query.ReplaceWholeWord("@TranCode", "@5::character varying");
+            query = query.ReplaceWholeWord("@Book", "@6::character varying");
+            query = query.ReplaceWholeWord("@ReferenceNumber", "@7::character varying");
+            query = query.ReplaceWholeWord("@StatementReference", "@8::character varying");
+            query = query.ReplaceWholeWord("@PostedBy", "@9::character varying");
+            query = query.ReplaceWholeWord("@Office", "@10::character varying");
+            query = query.ReplaceWholeWord("@Status", "@11::character varying");
+            query = query.ReplaceWholeWord("@VerifiedBy", "@12::character varying");
+            query = query.ReplaceWholeWord("@Reason", "@13::character varying");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.UserId);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.From);
+            parameters.Add(this.To);
+            parameters.Add(this.TranId);
+            parameters.Add(this.TranCode);
+            parameters.Add(this.Book);
+            parameters.Add(this.ReferenceNumber);
+            parameters.Add(this.StatementReference);
+            parameters.Add(this.PostedBy);
+            parameters.Add(this.Office);
+            parameters.Add(this.Status);
+            parameters.Add(this.VerifiedBy);
+            parameters.Add(this.Reason);
+
+            return Factory.Get<DbGetJournalViewResult>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

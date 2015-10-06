@@ -77,12 +77,13 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/get-periods/execute")]
-        public IEnumerable<MixERP.Net.Entities.Core.Period[]> Execute([FromBody] Annotation annotation)
+        public IEnumerable<MixERP.Net.Entities.Core.Period> Execute([FromBody] Annotation annotation)
         {
             try
             {
                 this.procedure.DateFrom = annotation.DateFrom;
                 this.procedure.DateTo = annotation.DateTo;
+
 
                 return this.procedure.Execute();
             }

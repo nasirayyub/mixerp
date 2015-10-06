@@ -96,6 +96,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.ChangeSideWhenNegative = annotation.ChangeSideWhenNegative;
                 this.procedure.IncludeZeroBalanceAccounts = annotation.IncludeZeroBalanceAccounts;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

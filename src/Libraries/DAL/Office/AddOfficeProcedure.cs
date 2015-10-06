@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Office;
 using Npgsql;
@@ -217,6 +218,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <summary>
         /// Prepares and executes the function "office.add_office".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public void Execute()
         {
             if (!this.SkipValidation)
@@ -231,8 +233,65 @@ namespace MixERP.Net.Schemas.Office.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM office.add_office(@0::character varying, @1::character varying, @2::character varying, @3::date, @4::character varying, @5::character varying, @6::character varying, @7::character varying, @8::character varying, @9::character varying, @10::date, @11::date, @12::boolean, @13::boolean, @14::boolean, @15::integer, @16::numeric, @17::integer, @18::date, @19::boolean, @20::character varying, @21::text, @22::character varying, @23::character varying, @24::character varying);";
-            Factory.NonQuery(this._Catalog, query, this.OfficeCode, this.OfficeName, this.NickName, this.RegistrationDate, this.CurrencyCode, this.CurrencySymbol, this.CurrencyName, this.HundredthName, this.FiscalYearCode, this.FiscalYearName, this.StartsFrom, this.EndsOn, this.SalesTaxIsVat, this.HasStateSalesTax, this.HasCountySalesTax, this.QuotationValidDays, this.IncomeTaxRate, this.WeekStartDay, this.TransactionStartDate, this.IsPerpetual, this.InvValuationMethod, this.LogoFile, this.AdminName, this.UserName, this.Password);
+            string query = "SELECT * FROM office.add_office(@OfficeCode, @OfficeName, @NickName, @RegistrationDate, @CurrencyCode, @CurrencySymbol, @CurrencyName, @HundredthName, @FiscalYearCode, @FiscalYearName, @StartsFrom, @EndsOn, @SalesTaxIsVat, @HasStateSalesTax, @HasCountySalesTax, @QuotationValidDays, @IncomeTaxRate, @WeekStartDay, @TransactionStartDate, @IsPerpetual, @InvValuationMethod, @LogoFile, @AdminName, @UserName, @Password);";
+
+            query = query.ReplaceWholeWord("@OfficeCode", "@0::character varying");
+            query = query.ReplaceWholeWord("@OfficeName", "@1::character varying");
+            query = query.ReplaceWholeWord("@NickName", "@2::character varying");
+            query = query.ReplaceWholeWord("@RegistrationDate", "@3::date");
+            query = query.ReplaceWholeWord("@CurrencyCode", "@4::character varying");
+            query = query.ReplaceWholeWord("@CurrencySymbol", "@5::character varying");
+            query = query.ReplaceWholeWord("@CurrencyName", "@6::character varying");
+            query = query.ReplaceWholeWord("@HundredthName", "@7::character varying");
+            query = query.ReplaceWholeWord("@FiscalYearCode", "@8::character varying");
+            query = query.ReplaceWholeWord("@FiscalYearName", "@9::character varying");
+            query = query.ReplaceWholeWord("@StartsFrom", "@10::date");
+            query = query.ReplaceWholeWord("@EndsOn", "@11::date");
+            query = query.ReplaceWholeWord("@SalesTaxIsVat", "@12::boolean");
+            query = query.ReplaceWholeWord("@HasStateSalesTax", "@13::boolean");
+            query = query.ReplaceWholeWord("@HasCountySalesTax", "@14::boolean");
+            query = query.ReplaceWholeWord("@QuotationValidDays", "@15::integer");
+            query = query.ReplaceWholeWord("@IncomeTaxRate", "@16::numeric");
+            query = query.ReplaceWholeWord("@WeekStartDay", "@17::integer");
+            query = query.ReplaceWholeWord("@TransactionStartDate", "@18::date");
+            query = query.ReplaceWholeWord("@IsPerpetual", "@19::boolean");
+            query = query.ReplaceWholeWord("@InvValuationMethod", "@20::character varying");
+            query = query.ReplaceWholeWord("@LogoFile", "@21::text");
+            query = query.ReplaceWholeWord("@AdminName", "@22::character varying");
+            query = query.ReplaceWholeWord("@UserName", "@23::character varying");
+            query = query.ReplaceWholeWord("@Password", "@24::character varying");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.OfficeCode);
+            parameters.Add(this.OfficeName);
+            parameters.Add(this.NickName);
+            parameters.Add(this.RegistrationDate);
+            parameters.Add(this.CurrencyCode);
+            parameters.Add(this.CurrencySymbol);
+            parameters.Add(this.CurrencyName);
+            parameters.Add(this.HundredthName);
+            parameters.Add(this.FiscalYearCode);
+            parameters.Add(this.FiscalYearName);
+            parameters.Add(this.StartsFrom);
+            parameters.Add(this.EndsOn);
+            parameters.Add(this.SalesTaxIsVat);
+            parameters.Add(this.HasStateSalesTax);
+            parameters.Add(this.HasCountySalesTax);
+            parameters.Add(this.QuotationValidDays);
+            parameters.Add(this.IncomeTaxRate);
+            parameters.Add(this.WeekStartDay);
+            parameters.Add(this.TransactionStartDate);
+            parameters.Add(this.IsPerpetual);
+            parameters.Add(this.InvValuationMethod);
+            parameters.Add(this.LogoFile);
+            parameters.Add(this.AdminName);
+            parameters.Add(this.UserName);
+            parameters.Add(this.Password);
+
+            Factory.NonQuery(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

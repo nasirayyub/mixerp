@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Core;
 using Npgsql;
@@ -85,6 +86,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <summary>
         /// Prepares and executes the function "core.create_menu_locale".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public void Execute()
         {
             if (!this.SkipValidation)
@@ -99,8 +101,21 @@ namespace MixERP.Net.Schemas.Core.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM core.create_menu_locale(@0::integer, @1::text, @2::text);";
-            Factory.NonQuery(this._Catalog, query, this.MenuId, this.Culture, this.MenuText);
+            string query = "SELECT * FROM core.create_menu_locale(@MenuId, @Culture, @MenuText);";
+
+            query = query.ReplaceWholeWord("@MenuId", "@0::integer");
+            query = query.ReplaceWholeWord("@Culture", "@1::text");
+            query = query.ReplaceWholeWord("@MenuText", "@2::text");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.MenuId);
+            parameters.Add(this.Culture);
+            parameters.Add(this.MenuText);
+
+            Factory.NonQuery(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Core;
 using Npgsql;
@@ -73,6 +74,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <summary>
         /// Prepares and executes the function "core.get_frequencies".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<int> Execute()
         {
             if (!this.SkipValidation)
@@ -87,8 +89,17 @@ namespace MixERP.Net.Schemas.Core.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM core.get_frequencies(@0::integer);";
-            return Factory.Get<int>(this._Catalog, query, this.FrequencyId);
+            string query = "SELECT * FROM core.get_frequencies(@FrequencyId);";
+
+            query = query.ReplaceWholeWord("@FrequencyId", "@0::integer");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.FrequencyId);
+
+            return Factory.Get<int>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

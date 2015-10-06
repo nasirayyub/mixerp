@@ -86,6 +86,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.SourceCurrencyCode = annotation.SourceCurrencyCode;
                 this.procedure.DestinationCurrencyCode = annotation.DestinationCurrencyCode;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

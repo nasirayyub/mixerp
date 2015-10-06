@@ -90,6 +90,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.AccountId = annotation.AccountId;
                 this.procedure.OfficeId = annotation.OfficeId;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

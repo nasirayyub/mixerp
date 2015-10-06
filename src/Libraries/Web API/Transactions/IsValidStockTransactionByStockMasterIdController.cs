@@ -82,6 +82,7 @@ namespace MixERP.Net.Api.Transactions
             {
                 this.procedure.StockMasterId = annotation.StockMasterId;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

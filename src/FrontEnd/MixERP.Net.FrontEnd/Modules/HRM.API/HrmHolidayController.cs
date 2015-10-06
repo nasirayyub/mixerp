@@ -15,15 +15,15 @@ using PetaPoco;
 namespace MixERP.Net.Api.HRM
 {
     /// <summary>
-    ///     Provides a direct HTTP access to perform various tasks such as adding, editing, and removing Hrm Holidays.
+    ///     Provides a direct HTTP access to perform various tasks such as adding, editing, and removing Holidays.
     /// </summary>
-    [RoutePrefix("api/v1.5/hrm/hrm-holiday")]
+    [RoutePrefix("api/v1.5/hrm/holiday")]
     public class HrmHolidayController : ApiController
     {
         /// <summary>
-        ///     The HrmHoliday data context.
+        ///     The Holiday data context.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.HrmHoliday HrmHolidayContext;
+        private readonly MixERP.Net.Core.Modules.HRM.Data.Holiday HolidayContext;
 
         public HrmHolidayController()
         {
@@ -32,7 +32,7 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.HrmHolidayContext = new MixERP.Net.Core.Modules.HRM.Data.HrmHoliday
+            this.HolidayContext = new MixERP.Net.Core.Modules.HRM.Data.Holiday
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
@@ -46,12 +46,12 @@ namespace MixERP.Net.Api.HRM
         public string _Catalog { get; }
 
         /// <summary>
-        ///     Creates meta information of "hrm holiday" entity.
+        ///     Creates meta information of "holiday" entity.
         /// </summary>
-        /// <returns>Returns the "hrm holiday" meta information to perform CRUD operation.</returns>
+        /// <returns>Returns the "holiday" meta information to perform CRUD operation.</returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("meta")]
-        [Route("~/api/hrm/hrm-holiday/meta")]
+        [Route("~/api/hrm/holiday/meta")]
         public EntityView GetEntityView()
         {
             return new EntityView
@@ -72,17 +72,17 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Counts the number of hrm holidays.
+        ///     Counts the number of holidays.
         /// </summary>
-        /// <returns>Returns the count of the hrm holidays.</returns>
+        /// <returns>Returns the count of the holidays.</returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("count")]
-        [Route("~/api/hrm/hrm-holiday/count")]
+        [Route("~/api/hrm/holiday/count")]
         public long Count()
         {
             try
             {
-                return this.HrmHolidayContext.Count();
+                return this.HolidayContext.Count();
             }
             catch (UnauthorizedException)
             {
@@ -103,19 +103,19 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Returns collection of hrm holiday for export.
+        ///     Returns collection of holiday for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
         [Route("all")]
-        [Route("~/api/hrm/hrm-holiday/export")]
-        [Route("~/api/hrm/hrm-holiday/all")]
-        public IEnumerable<MixERP.Net.Entities.HRM.HrmHoliday> Get()
+        [Route("~/api/hrm/holiday/export")]
+        [Route("~/api/hrm/holiday/all")]
+        public IEnumerable<MixERP.Net.Entities.HRM.Holiday> Get()
         {
             try
             {
-                return this.HrmHolidayContext.Get();
+                return this.HolidayContext.Get();
             }
             catch (UnauthorizedException)
             {
@@ -136,18 +136,18 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Returns an instance of hrm holiday.
+        ///     Returns an instance of holiday.
         /// </summary>
         /// <param name="holidayId">Enter HolidayId to search for.</param>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("{holidayId}")]
-        [Route("~/api/hrm/hrm-holiday/{holidayId}")]
-        public MixERP.Net.Entities.HRM.HrmHoliday Get(long holidayId)
+        [Route("~/api/hrm/holiday/{holidayId}")]
+        public MixERP.Net.Entities.HRM.Holiday Get(long holidayId)
         {
             try
             {
-                return this.HrmHolidayContext.Get(holidayId);
+                return this.HolidayContext.Get(holidayId);
             }
             catch (UnauthorizedException)
             {
@@ -169,12 +169,12 @@ namespace MixERP.Net.Api.HRM
 
         [AcceptVerbs("GET", "HEAD")]
         [Route("get")]
-        [Route("~/api/hrm/hrm-holiday/get")]
-        public IEnumerable<MixERP.Net.Entities.HRM.HrmHoliday> Get([FromUri] long[] holidayIds)
+        [Route("~/api/hrm/holiday/get")]
+        public IEnumerable<MixERP.Net.Entities.HRM.Holiday> Get([FromUri] long[] holidayIds)
         {
             try
             {
-                return this.HrmHolidayContext.Get(holidayIds);
+                return this.HolidayContext.Get(holidayIds);
             }
             catch (UnauthorizedException)
             {
@@ -195,17 +195,17 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Creates a paginated collection containing 10 hrm holidays on each page, sorted by the property HolidayId.
+        ///     Creates a paginated collection containing 10 holidays on each page, sorted by the property HolidayId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
-        [Route("~/api/hrm/hrm-holiday")]
-        public IEnumerable<MixERP.Net.Entities.HRM.HrmHoliday> GetPaginatedResult()
+        [Route("~/api/hrm/holiday")]
+        public IEnumerable<MixERP.Net.Entities.HRM.Holiday> GetPaginatedResult()
         {
             try
             {
-                return this.HrmHolidayContext.GetPaginatedResult();
+                return this.HolidayContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -226,18 +226,18 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Creates a paginated collection containing 10 hrm holidays on each page, sorted by the property HolidayId.
+        ///     Creates a paginated collection containing 10 holidays on each page, sorted by the property HolidayId.
         /// </summary>
         /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
         /// <returns>Returns the requested page from the collection.</returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
-        [Route("~/api/hrm/hrm-holiday/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.HrmHoliday> GetPaginatedResult(long pageNumber)
+        [Route("~/api/hrm/holiday/page/{pageNumber}")]
+        public IEnumerable<MixERP.Net.Entities.HRM.Holiday> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.HrmHolidayContext.GetPaginatedResult(pageNumber);
+                return this.HolidayContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -258,19 +258,19 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Counts the number of hrm holidays using the supplied filter(s).
+        ///     Counts the number of holidays using the supplied filter(s).
         /// </summary>
         /// <param name="filters">The list of filter conditions.</param>
-        /// <returns>Returns the count of filtered hrm holidays.</returns>
+        /// <returns>Returns the count of filtered holidays.</returns>
         [AcceptVerbs("POST")]
         [Route("count-where")]
-        [Route("~/api/hrm/hrm-holiday/count-where")]
+        [Route("~/api/hrm/holiday/count-where")]
         public long CountWhere([FromBody]JArray filters)
         {
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.HrmHolidayContext.CountWhere(f);
+                return this.HolidayContext.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -291,20 +291,20 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Creates a filtered and paginated collection containing 10 hrm holidays on each page, sorted by the property HolidayId.
+        ///     Creates a filtered and paginated collection containing 10 holidays on each page, sorted by the property HolidayId.
         /// </summary>
         /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
         [Route("get-where/{pageNumber}")]
-        [Route("~/api/hrm/hrm-holiday/get-where/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.HrmHoliday> GetWhere(long pageNumber, [FromBody]JArray filters)
+        [Route("~/api/hrm/holiday/get-where/{pageNumber}")]
+        public IEnumerable<MixERP.Net.Entities.HRM.Holiday> GetWhere(long pageNumber, [FromBody]JArray filters)
         {
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.HrmHolidayContext.GetWhere(pageNumber, f);
+                return this.HolidayContext.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -325,18 +325,18 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Counts the number of hrm holidays using the supplied filter name.
+        ///     Counts the number of holidays using the supplied filter name.
         /// </summary>
         /// <param name="filterName">The named filter.</param>
-        /// <returns>Returns the count of filtered hrm holidays.</returns>
+        /// <returns>Returns the count of filtered holidays.</returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("count-filtered/{filterName}")]
-        [Route("~/api/hrm/hrm-holiday/count-filtered/{filterName}")]
+        [Route("~/api/hrm/holiday/count-filtered/{filterName}")]
         public long CountFiltered(string filterName)
         {
             try
             {
-                return this.HrmHolidayContext.CountFiltered(filterName);
+                return this.HolidayContext.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -357,19 +357,19 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Creates a filtered and paginated collection containing 10 hrm holidays on each page, sorted by the property HolidayId.
+        ///     Creates a filtered and paginated collection containing 10 holidays on each page, sorted by the property HolidayId.
         /// </summary>
         /// <param name="pageNumber">Enter the page number to produce the resultset. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("get-filtered/{pageNumber}/{filterName}")]
-        [Route("~/api/hrm/hrm-holiday/get-filtered/{pageNumber}/{filterName}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.HrmHoliday> GetFiltered(long pageNumber, string filterName)
+        [Route("~/api/hrm/holiday/get-filtered/{pageNumber}/{filterName}")]
+        public IEnumerable<MixERP.Net.Entities.HRM.Holiday> GetFiltered(long pageNumber, string filterName)
         {
             try
             {
-                return this.HrmHolidayContext.GetFiltered(pageNumber, filterName);
+                return this.HolidayContext.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -390,17 +390,17 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Displayfield is a lightweight key/value collection of hrm holidays.
+        ///     Displayfield is a lightweight key/value collection of holidays.
         /// </summary>
-        /// <returns>Returns an enumerable key/value collection of hrm holidays.</returns>
+        /// <returns>Returns an enumerable key/value collection of holidays.</returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("display-fields")]
-        [Route("~/api/hrm/hrm-holiday/display-fields")]
+        [Route("~/api/hrm/holiday/display-fields")]
         public IEnumerable<DisplayField> GetDisplayFields()
         {
             try
             {
-                return this.HrmHolidayContext.GetDisplayFields();
+                return this.HolidayContext.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -421,17 +421,17 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     A custom field is a user defined field for hrm holidays.
+        ///     A custom field is a user defined field for holidays.
         /// </summary>
-        /// <returns>Returns an enumerable custom field collection of hrm holidays.</returns>
+        /// <returns>Returns an enumerable custom field collection of holidays.</returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("custom-fields")]
-        [Route("~/api/hrm/hrm-holiday/custom-fields")]
+        [Route("~/api/hrm/holiday/custom-fields")]
         public IEnumerable<PetaPoco.CustomField> GetCustomFields()
         {
             try
             {
-                return this.HrmHolidayContext.GetCustomFields(null);
+                return this.HolidayContext.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -452,17 +452,17 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     A custom field is a user defined field for hrm holidays.
+        ///     A custom field is a user defined field for holidays.
         /// </summary>
-        /// <returns>Returns an enumerable custom field collection of hrm holidays.</returns>
+        /// <returns>Returns an enumerable custom field collection of holidays.</returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("custom-fields/{resourceId}")]
-        [Route("~/api/hrm/hrm-holiday/custom-fields/{resourceId}")]
+        [Route("~/api/hrm/holiday/custom-fields/{resourceId}")]
         public IEnumerable<PetaPoco.CustomField> GetCustomFields(string resourceId)
         {
             try
             {
-                return this.HrmHolidayContext.GetCustomFields(resourceId);
+                return this.HolidayContext.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -483,25 +483,25 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Adds or edits your instance of HrmHoliday class.
+        ///     Adds or edits your instance of Holiday class.
         /// </summary>
-        /// <param name="hrmHoliday">Your instance of hrm holidays class to add or edit.</param>
+        /// <param name="holiday">Your instance of holidays class to add or edit.</param>
         [AcceptVerbs("PUT")]
         [Route("add-or-edit")]
-        [Route("~/api/hrm/hrm-holiday/add-or-edit")]
+        [Route("~/api/hrm/holiday/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.HRM.HrmHoliday hrmHoliday = form[0].ToObject<MixERP.Net.Entities.HRM.HrmHoliday>(JsonHelper.GetJsonSerializer());
+            MixERP.Net.Entities.HRM.Holiday holiday = form[0].ToObject<MixERP.Net.Entities.HRM.Holiday>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
-            if (hrmHoliday == null)
+            if (holiday == null)
             {
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MethodNotAllowed));
             }
 
             try
             {
-                return this.HrmHolidayContext.AddOrEdit(hrmHoliday, customFields);
+                return this.HolidayContext.AddOrEdit(holiday, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -522,22 +522,22 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Adds your instance of HrmHoliday class.
+        ///     Adds your instance of Holiday class.
         /// </summary>
-        /// <param name="hrmHoliday">Your instance of hrm holidays class to add.</param>
+        /// <param name="holiday">Your instance of holidays class to add.</param>
         [AcceptVerbs("POST")]
-        [Route("add/{hrmHoliday}")]
-        [Route("~/api/hrm/hrm-holiday/add/{hrmHoliday}")]
-        public void Add(MixERP.Net.Entities.HRM.HrmHoliday hrmHoliday)
+        [Route("add/{holiday}")]
+        [Route("~/api/hrm/holiday/add/{holiday}")]
+        public void Add(MixERP.Net.Entities.HRM.Holiday holiday)
         {
-            if (hrmHoliday == null)
+            if (holiday == null)
             {
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MethodNotAllowed));
             }
 
             try
             {
-                this.HrmHolidayContext.Add(hrmHoliday);
+                this.HolidayContext.Add(holiday);
             }
             catch (UnauthorizedException)
             {
@@ -558,23 +558,23 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Edits existing record with your instance of HrmHoliday class.
+        ///     Edits existing record with your instance of Holiday class.
         /// </summary>
-        /// <param name="hrmHoliday">Your instance of HrmHoliday class to edit.</param>
+        /// <param name="holiday">Your instance of Holiday class to edit.</param>
         /// <param name="holidayId">Enter the value for HolidayId in order to find and edit the existing record.</param>
         [AcceptVerbs("PUT")]
         [Route("edit/{holidayId}")]
-        [Route("~/api/hrm/hrm-holiday/edit/{holidayId}")]
-        public void Edit(long holidayId, [FromBody] MixERP.Net.Entities.HRM.HrmHoliday hrmHoliday)
+        [Route("~/api/hrm/holiday/edit/{holidayId}")]
+        public void Edit(long holidayId, [FromBody] MixERP.Net.Entities.HRM.Holiday holiday)
         {
-            if (hrmHoliday == null)
+            if (holiday == null)
             {
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MethodNotAllowed));
             }
 
             try
             {
-                this.HrmHolidayContext.Update(hrmHoliday, holidayId);
+                this.HolidayContext.Update(holiday, holidayId);
             }
             catch (UnauthorizedException)
             {
@@ -594,32 +594,32 @@ namespace MixERP.Net.Api.HRM
             }
         }
 
-        private List<MixERP.Net.Entities.HRM.HrmHoliday> ParseCollection(dynamic collection)
+        private List<MixERP.Net.Entities.HRM.Holiday> ParseCollection(dynamic collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.HRM.HrmHoliday>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.HRM.Holiday>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
-        ///     Adds or edits multiple instances of HrmHoliday class.
+        ///     Adds or edits multiple instances of Holiday class.
         /// </summary>
-        /// <param name="collection">Your collection of HrmHoliday class to bulk import.</param>
+        /// <param name="collection">Your collection of Holiday class to bulk import.</param>
         /// <returns>Returns list of imported holidayIds.</returns>
-        /// <exception cref="MixERPException">Thrown when your any HrmHoliday class in the collection is invalid or malformed.</exception>
+        /// <exception cref="MixERPException">Thrown when your any Holiday class in the collection is invalid or malformed.</exception>
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
-        [Route("~/api/hrm/hrm-holiday/bulk-import")]
+        [Route("~/api/hrm/holiday/bulk-import")]
         public List<object> BulkImport([FromBody]dynamic collection)
         {
-            List<MixERP.Net.Entities.HRM.HrmHoliday> hrmHolidayCollection = this.ParseCollection(collection);
+            List<MixERP.Net.Entities.HRM.Holiday> holidayCollection = this.ParseCollection(collection);
 
-            if (hrmHolidayCollection == null || hrmHolidayCollection.Count.Equals(0))
+            if (holidayCollection == null || holidayCollection.Count.Equals(0))
             {
                 return null;
             }
 
             try
             {
-                return this.HrmHolidayContext.BulkImport(hrmHolidayCollection);
+                return this.HolidayContext.BulkImport(holidayCollection);
             }
             catch (UnauthorizedException)
             {
@@ -640,17 +640,17 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Deletes an existing instance of HrmHoliday class via HolidayId.
+        ///     Deletes an existing instance of Holiday class via HolidayId.
         /// </summary>
         /// <param name="holidayId">Enter the value for HolidayId in order to find and delete the existing record.</param>
         [AcceptVerbs("DELETE")]
         [Route("delete/{holidayId}")]
-        [Route("~/api/hrm/hrm-holiday/delete/{holidayId}")]
+        [Route("~/api/hrm/holiday/delete/{holidayId}")]
         public void Delete(long holidayId)
         {
             try
             {
-                this.HrmHolidayContext.Delete(holidayId);
+                this.HolidayContext.Delete(holidayId);
             }
             catch (UnauthorizedException)
             {

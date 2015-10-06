@@ -95,6 +95,7 @@
     <Compile Include="Controls\IControl.cs" />
     <Compile Include="Controls\IWidget.cs" />
     <Compile Include="Extensions\ObectExtensions.cs" />
+    <Compile Include="Extensions\StringExtendsionsMethods.cs" />
     <Compile Include="MixERPException.cs" />
     <Compile Include="Controls\MixERPUserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>

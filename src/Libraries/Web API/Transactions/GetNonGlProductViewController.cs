@@ -102,6 +102,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.ReferenceNumber = annotation.ReferenceNumber;
                 this.procedure.StatementReference = annotation.StatementReference;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

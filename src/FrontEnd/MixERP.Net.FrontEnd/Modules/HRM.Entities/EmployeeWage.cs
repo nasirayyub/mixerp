@@ -60,6 +60,10 @@ namespace MixERP.Net.Entities.HRM
         [ColumnDbType("money_strict2", 0, true, "0")]
         public decimal? OvertimeHourlyRate { get; set; }
 
+        [Column("posting_account_id")]
+        [ColumnDbType("int8", 0, false, "")]
+        public long PostingAccountId { get; set; }
+
         [Column("valid_till")]
         [ColumnDbType("date", 0, false, "")]
         public DateTime ValidTill { get; set; }

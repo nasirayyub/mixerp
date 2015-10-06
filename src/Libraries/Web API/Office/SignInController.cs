@@ -96,6 +96,7 @@ namespace MixERP.Net.Api.Office
                 this.procedure.Culture = annotation.Culture;
                 this.procedure.Challenge = annotation.Challenge;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

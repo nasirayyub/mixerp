@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Office;
 using Npgsql;
@@ -60,6 +61,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <summary>
         /// Prepares and executes the function "office.get_sys_user_id".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public int Execute()
         {
             if (!this.SkipValidation)
@@ -74,8 +76,16 @@ namespace MixERP.Net.Schemas.Office.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM office.get_sys_user_id();";
-            return Factory.Scalar<int>(this._Catalog, query);
+            string query = "SELECT * FROM office.get_sys_user_id();";
+
+
+
+
+            List<object> parameters = new List<object>();
+
+            return Factory.Scalar<int>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

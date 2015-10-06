@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -91,6 +92,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.get_write_off_cost_of_goods_sold".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public decimal Execute()
         {
             if (!this.SkipValidation)
@@ -105,8 +107,23 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.get_write_off_cost_of_goods_sold(@0::bigint, @1::integer, @2::integer, @3::integer);";
-            return Factory.Get<decimal>(this._Catalog, query, this.StockMasterId, this.ItemId, this.UnitId, this.Quantity).FirstOrDefault();
+            string query = "SELECT * FROM transactions.get_write_off_cost_of_goods_sold(@StockMasterId, @ItemId, @UnitId, @Quantity);";
+
+            query = query.ReplaceWholeWord("@StockMasterId", "@0::bigint");
+            query = query.ReplaceWholeWord("@ItemId", "@1::integer");
+            query = query.ReplaceWholeWord("@UnitId", "@2::integer");
+            query = query.ReplaceWholeWord("@Quantity", "@3::integer");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.StockMasterId);
+            parameters.Add(this.ItemId);
+            parameters.Add(this.UnitId);
+            parameters.Add(this.Quantity);
+
+            return Factory.Get<decimal>(this._Catalog, query, parameters.ToArray()).FirstOrDefault();
         }
+
+
     }
 }

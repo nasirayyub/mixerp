@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Office
             }
         }
 
+        /// <summary>
+        ///     Returns collection of store selector view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/office/store-selector-view/export")]
+        [Route("~/api/office/store-selector-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Office.StoreSelectorView> Get()
+        {
+            try
+            {
+                return this.StoreSelectorViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 store selector views on each page, sorted by the property .

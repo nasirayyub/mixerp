@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -85,6 +86,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.get_exchange_rate".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public decimal Execute()
         {
             if (!this.SkipValidation)
@@ -99,8 +101,21 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.get_exchange_rate(@0::integer, @1::character varying, @2::character varying);";
-            return Factory.Get<decimal>(this._Catalog, query, this.OfficeId, this.SourceCurrencyCode, this.DestinationCurrencyCode).FirstOrDefault();
+            string query = "SELECT * FROM transactions.get_exchange_rate(@OfficeId, @SourceCurrencyCode, @DestinationCurrencyCode);";
+
+            query = query.ReplaceWholeWord("@OfficeId", "@0::integer");
+            query = query.ReplaceWholeWord("@SourceCurrencyCode", "@1::character varying");
+            query = query.ReplaceWholeWord("@DestinationCurrencyCode", "@2::character varying");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.SourceCurrencyCode);
+            parameters.Add(this.DestinationCurrencyCode);
+
+            return Factory.Get<decimal>(this._Catalog, query, parameters.ToArray()).FirstOrDefault();
         }
+
+
     }
 }

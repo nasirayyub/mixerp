@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Core;
 using Npgsql;
@@ -97,6 +98,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <summary>
         /// Prepares and executes the function "core.recreate_menu".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public void Execute()
         {
             if (!this.SkipValidation)
@@ -111,8 +113,25 @@ namespace MixERP.Net.Schemas.Core.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM core.recreate_menu(@0::text, @1::text, @2::text, @3::integer, @4::integer);";
-            Factory.NonQuery(this._Catalog, query, this.MenuText, this.Url, this.MenuCode, this.Level, this.ParentMenuId);
+            string query = "SELECT * FROM core.recreate_menu(@MenuText, @Url, @MenuCode, @Level, @ParentMenuId);";
+
+            query = query.ReplaceWholeWord("@MenuText", "@0::text");
+            query = query.ReplaceWholeWord("@Url", "@1::text");
+            query = query.ReplaceWholeWord("@MenuCode", "@2::text");
+            query = query.ReplaceWholeWord("@Level", "@3::integer");
+            query = query.ReplaceWholeWord("@ParentMenuId", "@4::integer");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.MenuText);
+            parameters.Add(this.Url);
+            parameters.Add(this.MenuCode);
+            parameters.Add(this.Level);
+            parameters.Add(this.ParentMenuId);
+
+            Factory.NonQuery(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

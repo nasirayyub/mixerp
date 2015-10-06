@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Transactions
             }
         }
 
+        /// <summary>
+        ///     Returns collection of sales order view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/transactions/sales-order-view/export")]
+        [Route("~/api/transactions/sales-order-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Transactions.SalesOrderView> Get()
+        {
+            try
+            {
+                return this.SalesOrderViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 sales order views on each page, sorted by the property .

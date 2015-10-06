@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -97,6 +98,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.get_balance_sheet".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<DbGetBalanceSheetResult> Execute()
         {
             if (!this.SkipValidation)
@@ -111,8 +113,25 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.get_balance_sheet(@0::date, @1::date, @2::integer, @3::integer, @4::integer);";
-            return Factory.Get<DbGetBalanceSheetResult>(this._Catalog, query, this.PreviousPeriod, this.CurrentPeriod, this.UserId, this.OfficeId, this.Factor);
+            string query = "SELECT * FROM transactions.get_balance_sheet(@PreviousPeriod, @CurrentPeriod, @UserId, @OfficeId, @Factor);";
+
+            query = query.ReplaceWholeWord("@PreviousPeriod", "@0::date");
+            query = query.ReplaceWholeWord("@CurrentPeriod", "@1::date");
+            query = query.ReplaceWholeWord("@UserId", "@2::integer");
+            query = query.ReplaceWholeWord("@OfficeId", "@3::integer");
+            query = query.ReplaceWholeWord("@Factor", "@4::integer");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.PreviousPeriod);
+            parameters.Add(this.CurrentPeriod);
+            parameters.Add(this.UserId);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.Factor);
+
+            return Factory.Get<DbGetBalanceSheetResult>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

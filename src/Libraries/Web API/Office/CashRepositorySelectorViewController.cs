@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Office
             }
         }
 
+        /// <summary>
+        ///     Returns collection of cash repository selector view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/office/cash-repository-selector-view/export")]
+        [Route("~/api/office/cash-repository-selector-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Office.CashRepositorySelectorView> Get()
+        {
+            try
+            {
+                return this.CashRepositorySelectorViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 cash repository selector views on each page, sorted by the property .

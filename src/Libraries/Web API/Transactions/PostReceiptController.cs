@@ -116,6 +116,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.BankTranCode = annotation.BankTranCode;
                 this.procedure.CascadingTranId = annotation.CascadingTranId;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

@@ -88,6 +88,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.BaseQuantity = annotation.BaseQuantity;
                 this.procedure.Factor = annotation.Factor;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

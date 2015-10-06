@@ -265,7 +265,7 @@ CREATE TABLE hrm.wages_setup
     hourly_rate                             public.money_strict NOT NULL,
     overtime_applicable                     boolean NOT NULL DEFAULT(true),
     overtime_hourly_rate                    public.money_strict2 NOT NULL,
-    account_id                              bigint NOT NULL REFERENCES core.accounts(account_id),
+    expense_account_id                      bigint NOT NULL REFERENCES core.accounts(account_id),
     description                             text,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),
     
@@ -284,6 +284,7 @@ CREATE TABLE hrm.employee_wages
     hourly_rate                             public.money_strict NOT NULL,
     overtime_applicable                     boolean NOT NULL,
     overtime_hourly_rate                    public.money_strict2 DEFAULT(0),
+    posting_account_id                      bigint NOT NULL REFERENCES core.accounts(account_id),
     valid_till                              date NOT NULL,
     is_active                               boolean,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),    
@@ -323,7 +324,7 @@ CREATE TABLE hrm.salary_tax_income_brackets
     salary_tax_income_bracket_id            SERIAL NOT NULL PRIMARY KEY,
     salary_tax_id                           integer NOT NULL REFERENCES hrm.salary_taxes(salary_tax_id),
     salary_from                             public.money_strict NOT NULL,
-    salary_to                               public.money_strict NOT NULL
+    salary_to                               public.money_strict NULL
                                             CHECK (salary_to > salary_from),
     income_tax_rate                         public.decimal_strict NOT NULL,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),    
@@ -550,6 +551,34 @@ CREATE TABLE hrm.salary_deductions
     amount                                  public.money_strict,
     begins_from                             date,
     ends_on                                 date CHECK(ends_on > begins_from),
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),
+    audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                            DEFAULT(NOW())    
+);
+
+CREATE TABLE hrm.wage_processing
+(
+    wage_processing_id                      BIGSERIAL NOT NULL PRIMARY KEY,
+    employee_id                             integer NOT NULL REFERENCES hrm.employees(employee_id),
+    posted_till                             date NOT NULL,
+    regular_hours                           numeric NOT NULL,
+    regular_pay_rate                        numeric NOT NULL,
+    overtime_hours                          numeric NOT NULL,
+    overtime_pay_rate                       numeric NOT NULL,
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),
+    audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                            DEFAULT(NOW())    
+);
+
+CREATE TABLE hrm.wage_processing_details
+(
+    wage_processing_detail_id               BIGSERIAL NOT NULL PRIMARY KEY,
+    wage_processing_id                      bigint NOT NULL REFERENCES hrm.wage_processing(wage_processing_id),
+    for_date                                date,
+    hours_worked                            numeric NOT NULL,
+    lunch_deduction_minutes                 integer,
+    adjustment_minutes                      integer,
+    pay_hours                               numeric NOT NULL,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
                                             DEFAULT(NOW())    

@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -175,6 +176,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.post_receipt".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public long Execute()
         {
             if (!this.SkipValidation)
@@ -189,8 +191,51 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.post_receipt(@0::integer, @1::integer, @2::bigint, @3::character varying, @4::character varying, @5::money_strict, @6::decimal_strict, @7::decimal_strict, @8::character varying, @9::character varying, @10::integer, @11::integer, @12::date, @13::bigint, @14::integer, @15::character varying, @16::character varying, @17::bigint);";
-            return Factory.Scalar<long>(this._Catalog, query, this.UserId, this.OfficeId, this.LoginId, this.PartyCode, this.CurrencyCode, this.Amount, this.ExchangeRateDebit, this.ExchangeRateCredit, this.ReferenceNumber, this.StatementReference, this.CostCenterId, this.CashRepositoryId, this.PostedDate, this.BankAccountId, this.PaymentCardId, this.BankInstrumentCode, this.BankTranCode, this.CascadingTranId);
+            string query = "SELECT * FROM transactions.post_receipt(@UserId, @OfficeId, @LoginId, @PartyCode, @CurrencyCode, @Amount, @ExchangeRateDebit, @ExchangeRateCredit, @ReferenceNumber, @StatementReference, @CostCenterId, @CashRepositoryId, @PostedDate, @BankAccountId, @PaymentCardId, @BankInstrumentCode, @BankTranCode, @CascadingTranId);";
+
+            query = query.ReplaceWholeWord("@UserId", "@0::integer");
+            query = query.ReplaceWholeWord("@OfficeId", "@1::integer");
+            query = query.ReplaceWholeWord("@LoginId", "@2::bigint");
+            query = query.ReplaceWholeWord("@PartyCode", "@3::character varying");
+            query = query.ReplaceWholeWord("@CurrencyCode", "@4::character varying");
+            query = query.ReplaceWholeWord("@Amount", "@5::money_strict");
+            query = query.ReplaceWholeWord("@ExchangeRateDebit", "@6::decimal_strict");
+            query = query.ReplaceWholeWord("@ExchangeRateCredit", "@7::decimal_strict");
+            query = query.ReplaceWholeWord("@ReferenceNumber", "@8::character varying");
+            query = query.ReplaceWholeWord("@StatementReference", "@9::character varying");
+            query = query.ReplaceWholeWord("@CostCenterId", "@10::integer");
+            query = query.ReplaceWholeWord("@CashRepositoryId", "@11::integer");
+            query = query.ReplaceWholeWord("@PostedDate", "@12::date");
+            query = query.ReplaceWholeWord("@BankAccountId", "@13::bigint");
+            query = query.ReplaceWholeWord("@PaymentCardId", "@14::integer");
+            query = query.ReplaceWholeWord("@BankInstrumentCode", "@15::character varying");
+            query = query.ReplaceWholeWord("@BankTranCode", "@16::character varying");
+            query = query.ReplaceWholeWord("@CascadingTranId", "@17::bigint");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.UserId);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.LoginId);
+            parameters.Add(this.PartyCode);
+            parameters.Add(this.CurrencyCode);
+            parameters.Add(this.Amount);
+            parameters.Add(this.ExchangeRateDebit);
+            parameters.Add(this.ExchangeRateCredit);
+            parameters.Add(this.ReferenceNumber);
+            parameters.Add(this.StatementReference);
+            parameters.Add(this.CostCenterId);
+            parameters.Add(this.CashRepositoryId);
+            parameters.Add(this.PostedDate);
+            parameters.Add(this.BankAccountId);
+            parameters.Add(this.PaymentCardId);
+            parameters.Add(this.BankInstrumentCode);
+            parameters.Add(this.BankTranCode);
+            parameters.Add(this.CascadingTranId);
+
+            return Factory.Scalar<long>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

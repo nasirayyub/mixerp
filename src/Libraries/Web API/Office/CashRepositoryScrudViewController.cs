@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Office
             }
         }
 
+        /// <summary>
+        ///     Returns collection of cash repository scrud view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/office/cash-repository-scrud-view/export")]
+        [Route("~/api/office/cash-repository-scrud-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Office.CashRepositoryScrudView> Get()
+        {
+            try
+            {
+                return this.CashRepositoryScrudViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 cash repository scrud views on each page, sorted by the property .

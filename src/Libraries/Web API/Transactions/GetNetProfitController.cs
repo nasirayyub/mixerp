@@ -90,6 +90,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.Factor = annotation.Factor;
                 this.procedure.NoProvison = annotation.NoProvison;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

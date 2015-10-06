@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -113,11 +114,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Maps to "_details" argument of the function "transactions.post_non_gl_transaction".
         /// </summary>
-        public MixERP.Net.Entities.Transactions.StockDetailType[][] Details { get; set; }
+        public MixERP.Net.Entities.Transactions.StockDetailType[] Details { get; set; }
         /// <summary>
         /// Maps to "_attachments" argument of the function "transactions.post_non_gl_transaction".
         /// </summary>
-        public MixERP.Net.Entities.Core.AttachmentType[][] Attachments { get; set; }
+        public MixERP.Net.Entities.Core.AttachmentType[] Attachments { get; set; }
 
         /// <summary>
         /// Prepares, validates, and executes the function "transactions.post_non_gl_transaction(_book_name character varying, _office_id integer, _user_id integer, _login_id bigint, _value_date date, _reference_number character varying, _statement_reference text, _party_code character varying, _price_type_id integer, _is_non_taxable_sales boolean, _salesperson_id integer, _shipper_id integer, _shipping_address_code character varying, _store_id integer, _tran_ids bigint[], _details transactions.stock_detail_type[], _attachments core.attachment_type[])" on the database.
@@ -146,7 +147,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="tranIds">Enter argument value for "_tran_ids" parameter of the function "transactions.post_non_gl_transaction".</param>
         /// <param name="details">Enter argument value for "_details" parameter of the function "transactions.post_non_gl_transaction".</param>
         /// <param name="attachments">Enter argument value for "_attachments" parameter of the function "transactions.post_non_gl_transaction".</param>
-        public PostNonGlTransactionProcedure(string bookName, int officeId, int userId, long loginId, DateTime valueDate, string referenceNumber, string statementReference, string partyCode, int priceTypeId, bool isNonTaxableSales, int salespersonId, int shipperId, string shippingAddressCode, int storeId, long[] tranIds, MixERP.Net.Entities.Transactions.StockDetailType[][] details, MixERP.Net.Entities.Core.AttachmentType[][] attachments)
+        public PostNonGlTransactionProcedure(string bookName, int officeId, int userId, long loginId, DateTime valueDate, string referenceNumber, string statementReference, string partyCode, int priceTypeId, bool isNonTaxableSales, int salespersonId, int shipperId, string shippingAddressCode, int storeId, long[] tranIds, MixERP.Net.Entities.Transactions.StockDetailType[] details, MixERP.Net.Entities.Core.AttachmentType[] attachments)
         {
             this.BookName = bookName;
             this.OfficeId = officeId;
@@ -169,6 +170,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.post_non_gl_transaction".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public long Execute()
         {
             if (!this.SkipValidation)
@@ -183,8 +185,172 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.post_non_gl_transaction(@0::character varying, @1::integer, @2::integer, @3::bigint, @4::date, @5::character varying, @6::text, @7::character varying, @8::integer, @9::boolean, @10::integer, @11::integer, @12::character varying, @13::integer, @14::bigint[], @15::transactions.stock_detail_type[], @16::core.attachment_type[]);";
-            return Factory.Scalar<long>(this._Catalog, query, this.BookName, this.OfficeId, this.UserId, this.LoginId, this.ValueDate, this.ReferenceNumber, this.StatementReference, this.PartyCode, this.PriceTypeId, this.IsNonTaxableSales, this.SalespersonId, this.ShipperId, this.ShippingAddressCode, this.StoreId, this.TranIds, this.Details, this.Attachments);
+            string query = "SELECT * FROM transactions.post_non_gl_transaction(@BookName, @OfficeId, @UserId, @LoginId, @ValueDate, @ReferenceNumber, @StatementReference, @PartyCode, @PriceTypeId, @IsNonTaxableSales, @SalespersonId, @ShipperId, @ShippingAddressCode, @StoreId, @TranIds, @Details, @Attachments);";
+
+            query = query.ReplaceWholeWord("@BookName", "@0::character varying");
+            query = query.ReplaceWholeWord("@OfficeId", "@1::integer");
+            query = query.ReplaceWholeWord("@UserId", "@2::integer");
+            query = query.ReplaceWholeWord("@LoginId", "@3::bigint");
+            query = query.ReplaceWholeWord("@ValueDate", "@4::date");
+            query = query.ReplaceWholeWord("@ReferenceNumber", "@5::character varying");
+            query = query.ReplaceWholeWord("@StatementReference", "@6::text");
+            query = query.ReplaceWholeWord("@PartyCode", "@7::character varying");
+            query = query.ReplaceWholeWord("@PriceTypeId", "@8::integer");
+            query = query.ReplaceWholeWord("@IsNonTaxableSales", "@9::boolean");
+            query = query.ReplaceWholeWord("@SalespersonId", "@10::integer");
+            query = query.ReplaceWholeWord("@ShipperId", "@11::integer");
+            query = query.ReplaceWholeWord("@ShippingAddressCode", "@12::character varying");
+            query = query.ReplaceWholeWord("@StoreId", "@13::integer");
+
+            int tranIdsOffset = 14;
+            query = query.ReplaceWholeWord("@TranIds", "ARRAY[" + this.SqlForTranIds(this.TranIds, tranIdsOffset, 0) + "]");
+
+            int detailsOffset = tranIdsOffset + (this.TranIds == null ? 0 : this.TranIds.Count() * 0)/*The poco object TranIds has 0 columns.*/;
+            query = query.ReplaceWholeWord("@Details", "ARRAY[" + this.SqlForDetails(this.Details, detailsOffset, 9) + "]");
+
+            int attachmentsOffset = detailsOffset + (this.Details == null ? 0 : this.Details.Count() * 9)/*The poco object Details has 9 columns.*/;
+            query = query.ReplaceWholeWord("@Attachments", "ARRAY[" + this.SqlForAttachments(this.Attachments, attachmentsOffset, 4) + "]");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.BookName);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.UserId);
+            parameters.Add(this.LoginId);
+            parameters.Add(this.ValueDate);
+            parameters.Add(this.ReferenceNumber);
+            parameters.Add(this.StatementReference);
+            parameters.Add(this.PartyCode);
+            parameters.Add(this.PriceTypeId);
+            parameters.Add(this.IsNonTaxableSales);
+            parameters.Add(this.SalespersonId);
+            parameters.Add(this.ShipperId);
+            parameters.Add(this.ShippingAddressCode);
+            parameters.Add(this.StoreId);
+            parameters.AddRange(this.ParamsForTranIds(this.TranIds));
+            parameters.AddRange(this.ParamsForDetails(this.Details));
+            parameters.AddRange(this.ParamsForAttachments(this.Attachments));
+
+            return Factory.Scalar<long>(this._Catalog, query, parameters.ToArray());
+        }
+
+        private string SqlForTranIds(long[] tranIds, int offset, int memberCount)
+        {
+            if (tranIds == null)
+            {
+                return "NULL::bigint";
+            }
+            List<string> parameters = new List<string>();
+            for (int i = 0; i < tranIds.Count(); i++)
+            {
+                List<string> args = new List<string>();
+                args.Add("@" + offset);
+                offset++;
+                string parameter = "{0}::bigint";
+                parameter = string.Format(System.Globalization.CultureInfo.InvariantCulture, parameter,
+                    string.Join(",", args));
+                parameters.Add(parameter);
+            }
+            return string.Join(",", parameters);
+        }
+
+        private List<object> ParamsForTranIds(long[] tranIds)
+        {
+            List<object> collection = new List<object>();
+
+            if (tranIds != null && tranIds.Count() > 0)
+            {
+                foreach (long tranId in tranIds)
+                {
+
+                }
+            }
+            return collection;
+        }
+        private string SqlForDetails(MixERP.Net.Entities.Transactions.StockDetailType[] details, int offset, int memberCount)
+        {
+            if (details == null)
+            {
+                return "NULL::transactions.stock_detail_type";
+            }
+            List<string> parameters = new List<string>();
+            for (int i = 0; i < details.Count(); i++)
+            {
+                List<string> args = new List<string>();
+                for (int j = 0; j < memberCount; j++)
+                {
+                    args.Add("@" + offset);
+                    offset++;
+                }
+
+                string parameter = "ROW({0})::transactions.stock_detail_type";
+                parameter = string.Format(System.Globalization.CultureInfo.InvariantCulture, parameter,
+                    string.Join(",", args));
+                parameters.Add(parameter);
+            }
+            return string.Join(",", parameters);
+        }
+
+        private List<object> ParamsForDetails(MixERP.Net.Entities.Transactions.StockDetailType[] details)
+        {
+            List<object> collection = new List<object>();
+
+            if (details != null && details.Count() > 0)
+            {
+                foreach (MixERP.Net.Entities.Transactions.StockDetailType detail in details)
+                {
+                    collection.Add(detail.StoreId);
+                    collection.Add(detail.ItemCode);
+                    collection.Add(detail.Quantity);
+                    collection.Add(detail.UnitName);
+                    collection.Add(detail.Price);
+                    collection.Add(detail.Discount);
+                    collection.Add(detail.ShippingCharge);
+                    collection.Add(detail.TaxForm);
+                    collection.Add(detail.Tax);
+                }
+            }
+            return collection;
+        }
+        private string SqlForAttachments(MixERP.Net.Entities.Core.AttachmentType[] attachments, int offset, int memberCount)
+        {
+            if (attachments == null)
+            {
+                return "NULL::core.attachment_type";
+            }
+            List<string> parameters = new List<string>();
+            for (int i = 0; i < attachments.Count(); i++)
+            {
+                List<string> args = new List<string>();
+                for (int j = 0; j < memberCount; j++)
+                {
+                    args.Add("@" + offset);
+                    offset++;
+                }
+
+                string parameter = "ROW({0})::core.attachment_type";
+                parameter = string.Format(System.Globalization.CultureInfo.InvariantCulture, parameter,
+                    string.Join(",", args));
+                parameters.Add(parameter);
+            }
+            return string.Join(",", parameters);
+        }
+
+        private List<object> ParamsForAttachments(MixERP.Net.Entities.Core.AttachmentType[] attachments)
+        {
+            List<object> collection = new List<object>();
+
+            if (attachments != null && attachments.Count() > 0)
+            {
+                foreach (MixERP.Net.Entities.Core.AttachmentType attachment in attachments)
+                {
+                    collection.Add(attachment.Comment);
+                    collection.Add(attachment.FilePath);
+                    collection.Add(attachment.OriginalFileName);
+                    collection.Add(attachment.FileExtension);
+                }
+            }
+            return collection;
         }
     }
 }

@@ -88,6 +88,35 @@ namespace MixERP.Net.Schemas.Localization.Data
             return Factory.Scalar<long>(this._Catalog, sql);
         }
 
+        /// <summary>
+        /// Executes a select query on the view "localization.resource_view" to return a all instances of the "ResourceView" class. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "ResourceView" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<MixERP.Net.Entities.Localization.ResourceView> Get()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"ResourceView\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM localization.resource_view ORDER BY 1;";
+            return Factory.Get<MixERP.Net.Entities.Localization.ResourceView>(this._Catalog, sql);
+        }
+
 
 
         /// <summary>

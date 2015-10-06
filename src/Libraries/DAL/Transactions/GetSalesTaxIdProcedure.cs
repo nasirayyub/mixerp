@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -115,6 +116,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.get_sales_tax_id".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public int Execute()
         {
             if (!this.SkipValidation)
@@ -129,8 +131,31 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.get_sales_tax_id(@0::character varying, @1::integer, @2::character varying, @3::character varying, @4::integer, @5::character varying, @6::integer, @7::money_strict);";
-            return Factory.Scalar<int>(this._Catalog, query, this.TranBook, this.StoreId, this.PartyCode, this.ShippingAddressCode, this.PriceTypeId, this.ItemCode, this.UnitId, this.Price);
+            string query = "SELECT * FROM transactions.get_sales_tax_id(@TranBook, @StoreId, @PartyCode, @ShippingAddressCode, @PriceTypeId, @ItemCode, @UnitId, @Price);";
+
+            query = query.ReplaceWholeWord("@TranBook", "@0::character varying");
+            query = query.ReplaceWholeWord("@StoreId", "@1::integer");
+            query = query.ReplaceWholeWord("@PartyCode", "@2::character varying");
+            query = query.ReplaceWholeWord("@ShippingAddressCode", "@3::character varying");
+            query = query.ReplaceWholeWord("@PriceTypeId", "@4::integer");
+            query = query.ReplaceWholeWord("@ItemCode", "@5::character varying");
+            query = query.ReplaceWholeWord("@UnitId", "@6::integer");
+            query = query.ReplaceWholeWord("@Price", "@7::money_strict");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.TranBook);
+            parameters.Add(this.StoreId);
+            parameters.Add(this.PartyCode);
+            parameters.Add(this.ShippingAddressCode);
+            parameters.Add(this.PriceTypeId);
+            parameters.Add(this.ItemCode);
+            parameters.Add(this.UnitId);
+            parameters.Add(this.Price);
+
+            return Factory.Scalar<int>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

@@ -15,24 +15,24 @@ using PetaPoco;
 namespace MixERP.Net.Api.HRM
 {
     /// <summary>
-    ///     Provides a direct HTTP access to perform various tasks such as adding, editing, and removing Salary Tax Scurd Views.
+    ///     Provides a direct HTTP access to perform various tasks such as adding, editing, and removing Wage Posting Account Selector Views.
     /// </summary>
-    [RoutePrefix("api/v1.5/hrm/salary-tax-scurd-view")]
-    public class SalaryTaxScurdViewController : ApiController
+    [RoutePrefix("api/v1.5/hrm/wage-posting-account-selector-view")]
+    public class WagePostingAccountSelectorViewController : ApiController
     {
         /// <summary>
-        ///     The SalaryTaxScurdView data context.
+        ///     The WagePostingAccountSelectorView data context.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.SalaryTaxScurdView SalaryTaxScurdViewContext;
+        private readonly MixERP.Net.Core.Modules.HRM.Data.WagePostingAccountSelectorView WagePostingAccountSelectorViewContext;
 
-        public SalaryTaxScurdViewController()
+        public WagePostingAccountSelectorViewController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.SalaryTaxScurdViewContext = new MixERP.Net.Core.Modules.HRM.Data.SalaryTaxScurdView
+            this.WagePostingAccountSelectorViewContext = new MixERP.Net.Core.Modules.HRM.Data.WagePostingAccountSelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
@@ -46,17 +46,17 @@ namespace MixERP.Net.Api.HRM
         public string _Catalog { get; }
 
         /// <summary>
-        ///     Counts the number of salary tax scurd views.
+        ///     Counts the number of wage posting account selector views.
         /// </summary>
-        /// <returns>Returns the count of the salary tax scurd views.</returns>
+        /// <returns>Returns the count of the wage posting account selector views.</returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("count")]
-        [Route("~/api/hrm/salary-tax-scurd-view/count")]
+        [Route("~/api/hrm/wage-posting-account-selector-view/count")]
         public long Count()
         {
             try
             {
-                return this.SalaryTaxScurdViewContext.Count();
+                return this.WagePostingAccountSelectorViewContext.Count();
             }
             catch (UnauthorizedException)
             {
@@ -77,19 +77,19 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Returns collection of salary tax scurd view for export.
+        ///     Returns collection of wage posting account selector view for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
         [Route("all")]
-        [Route("~/api/hrm/salary-tax-scurd-view/export")]
-        [Route("~/api/hrm/salary-tax-scurd-view/all")]
-        public IEnumerable<MixERP.Net.Entities.HRM.SalaryTaxScurdView> Get()
+        [Route("~/api/hrm/wage-posting-account-selector-view/export")]
+        [Route("~/api/hrm/wage-posting-account-selector-view/all")]
+        public IEnumerable<MixERP.Net.Entities.HRM.WagePostingAccountSelectorView> Get()
         {
             try
             {
-                return this.SalaryTaxScurdViewContext.Get();
+                return this.WagePostingAccountSelectorViewContext.Get();
             }
             catch (UnauthorizedException)
             {
@@ -110,17 +110,17 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Creates a paginated collection containing 10 salary tax scurd views on each page, sorted by the property .
+        ///     Creates a paginated collection containing 10 wage posting account selector views on each page, sorted by the property .
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("")]
-        [Route("~/api/hrm/salary-tax-scurd-view")]
-        public IEnumerable<MixERP.Net.Entities.HRM.SalaryTaxScurdView> GetPaginatedResult()
+        [Route("~/api/hrm/wage-posting-account-selector-view")]
+        public IEnumerable<MixERP.Net.Entities.HRM.WagePostingAccountSelectorView> GetPaginatedResult()
         {
             try
             {
-                return this.SalaryTaxScurdViewContext.GetPaginatedResult();
+                return this.WagePostingAccountSelectorViewContext.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -141,18 +141,18 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Creates a paginated collection containing 10 salary tax scurd views on each page, sorted by the property .
+        ///     Creates a paginated collection containing 10 wage posting account selector views on each page, sorted by the property .
         /// </summary>
         /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
         /// <returns>Returns the requested page from the collection.</returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("page/{pageNumber}")]
-        [Route("~/api/hrm/salary-tax-scurd-view/page/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.SalaryTaxScurdView> GetPaginatedResult(long pageNumber)
+        [Route("~/api/hrm/wage-posting-account-selector-view/page/{pageNumber}")]
+        public IEnumerable<MixERP.Net.Entities.HRM.WagePostingAccountSelectorView> GetPaginatedResult(long pageNumber)
         {
             try
             {
-                return this.SalaryTaxScurdViewContext.GetPaginatedResult(pageNumber);
+                return this.WagePostingAccountSelectorViewContext.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -173,17 +173,17 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Displayfield is a lightweight key/value collection of salary tax scurd views.
+        ///     Displayfield is a lightweight key/value collection of wage posting account selector views.
         /// </summary>
-        /// <returns>Returns an enumerable key/value collection of salary tax scurd views.</returns>
+        /// <returns>Returns an enumerable key/value collection of wage posting account selector views.</returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("display-fields")]
-        [Route("~/api/hrm/salary-tax-scurd-view/display-fields")]
+        [Route("~/api/hrm/wage-posting-account-selector-view/display-fields")]
         public IEnumerable<DisplayField> GetDisplayFields()
         {
             try
             {
-                return this.SalaryTaxScurdViewContext.GetDisplayFields();
+                return this.WagePostingAccountSelectorViewContext.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -204,19 +204,19 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Counts the number of salary tax scurd views using the supplied filter(s).
+        ///     Counts the number of wage posting account selector views using the supplied filter(s).
         /// </summary>
         /// <param name="filters">The list of filter conditions.</param>
-        /// <returns>Returns the count of filtered salary tax scurd views.</returns>
+        /// <returns>Returns the count of filtered wage posting account selector views.</returns>
         [AcceptVerbs("POST")]
         [Route("count-where")]
-        [Route("~/api/hrm/salary-tax-scurd-view/count-where")]
+        [Route("~/api/hrm/wage-posting-account-selector-view/count-where")]
         public long CountWhere([FromBody]JArray filters)
         {
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SalaryTaxScurdViewContext.CountWhere(f);
+                return this.WagePostingAccountSelectorViewContext.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -237,20 +237,20 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Creates a filtered and paginated collection containing 10 salary tax scurd views on each page, sorted by the property .
+        ///     Creates a filtered and paginated collection containing 10 wage posting account selector views on each page, sorted by the property .
         /// </summary>
         /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
         /// <param name="filters">The list of filter conditions.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("POST")]
         [Route("get-where/{pageNumber}")]
-        [Route("~/api/hrm/salary-tax-scurd-view/get-where/{pageNumber}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.SalaryTaxScurdView> GetWhere(long pageNumber, [FromBody]JArray filters)
+        [Route("~/api/hrm/wage-posting-account-selector-view/get-where/{pageNumber}")]
+        public IEnumerable<MixERP.Net.Entities.HRM.WagePostingAccountSelectorView> GetWhere(long pageNumber, [FromBody]JArray filters)
         {
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SalaryTaxScurdViewContext.GetWhere(pageNumber, f);
+                return this.WagePostingAccountSelectorViewContext.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -271,18 +271,18 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
-        ///     Counts the number of salary tax scurd views using the supplied filter name.
+        ///     Counts the number of wage posting account selector views using the supplied filter name.
         /// </summary>
         /// <param name="filterName">The named filter.</param>
-        /// <returns>Returns the count of filtered salary tax scurd views.</returns>
+        /// <returns>Returns the count of filtered wage posting account selector views.</returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("count-filtered/{filterName}")]
-        [Route("~/api/hrm/salary-tax-scurd-view/count-filtered/{filterName}")]
+        [Route("~/api/hrm/wage-posting-account-selector-view/count-filtered/{filterName}")]
         public long CountFiltered(string filterName)
         {
             try
             {
-                return this.SalaryTaxScurdViewContext.CountFiltered(filterName);
+                return this.WagePostingAccountSelectorViewContext.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -304,19 +304,19 @@ namespace MixERP.Net.Api.HRM
 
 
         /// <summary>
-        ///     Creates a filtered and paginated collection containing 10 salary tax scurd views on each page, sorted by the property .
+        ///     Creates a filtered and paginated collection containing 10 wage posting account selector views on each page, sorted by the property .
         /// </summary>
         /// <param name="pageNumber">Enter the page number to produce the resultset.</param>
         /// <param name="filterName">The named filter.</param>
         /// <returns>Returns the requested page from the collection using the supplied filters.</returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("get-filtered/{pageNumber}/{filterName}")]
-        [Route("~/api/hrm/salary-tax-scurd-view/get-filtered/{pageNumber}/{filterName}")]
-        public IEnumerable<MixERP.Net.Entities.HRM.SalaryTaxScurdView> GetFiltered(long pageNumber, string filterName)
+        [Route("~/api/hrm/wage-posting-account-selector-view/get-filtered/{pageNumber}/{filterName}")]
+        public IEnumerable<MixERP.Net.Entities.HRM.WagePostingAccountSelectorView> GetFiltered(long pageNumber, string filterName)
         {
             try
             {
-                return this.SalaryTaxScurdViewContext.GetFiltered(pageNumber, filterName);
+                return this.WagePostingAccountSelectorViewContext.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

@@ -72,28 +72,19 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
 <div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
 <div data-ng-include="'/Views/Modules/FormFactory.html'"></div>
 <script type="text/javascript">
-
-    $(document).on("formready", function () {
+    function customFormValidator() {
         var effectiveFromTextbox = $("#effective_from");
         var endsOnTextbox = $("#ends_on");
-        var saveButton = $("#SaveButton");
 
-        endsOnTextbox.blur(function () {
-            customValidate(effectiveFromTextbox, endsOnTextbox, saveButton);
-        });
-    });
-
-    function customValidate(effectiveFromTextbox, endsOnTextbox, saveButton) {
         var effectiveFrom = parseDate(effectiveFromTextbox.val());
         var endsOn = parseDate(endsOnTextbox.val());
 
         if (endsOn <= effectiveFrom) {
-            saveButton.addClass("disableClick");
             makeDirty(endsOnTextbox);
             displayMessage(Resources.Warnings.InvalidDate());
             return false;
-        }
-        saveButton.removeClass("disableClick");
+        };
+
         return true;
     };
 

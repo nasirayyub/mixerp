@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -103,6 +104,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.verify_transaction".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public long Execute()
         {
             if (!this.SkipValidation)
@@ -117,8 +119,27 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.verify_transaction(@0::bigint, @1::integer, @2::integer, @3::bigint, @4::smallint, @5::character varying);";
-            return Factory.Scalar<long>(this._Catalog, query, this.TransactionMasterId, this.OfficeId, this.UserId, this.LoginId, this.VerificationStatusId, this.Reason);
+            string query = "SELECT * FROM transactions.verify_transaction(@TransactionMasterId, @OfficeId, @UserId, @LoginId, @VerificationStatusId, @Reason);";
+
+            query = query.ReplaceWholeWord("@TransactionMasterId", "@0::bigint");
+            query = query.ReplaceWholeWord("@OfficeId", "@1::integer");
+            query = query.ReplaceWholeWord("@UserId", "@2::integer");
+            query = query.ReplaceWholeWord("@LoginId", "@3::bigint");
+            query = query.ReplaceWholeWord("@VerificationStatusId", "@4::smallint");
+            query = query.ReplaceWholeWord("@Reason", "@5::character varying");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.TransactionMasterId);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.UserId);
+            parameters.Add(this.LoginId);
+            parameters.Add(this.VerificationStatusId);
+            parameters.Add(this.Reason);
+
+            return Factory.Scalar<long>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

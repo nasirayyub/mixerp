@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Core;
 using Npgsql;
@@ -103,6 +104,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <summary>
         /// Prepares and executes the function "core.get_compound_item_details".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<DbGetCompoundItemDetailsResult> Execute()
         {
             if (!this.SkipValidation)
@@ -117,8 +119,27 @@ namespace MixERP.Net.Schemas.Core.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM core.get_compound_item_details(@0::character varying, @1::character varying, @2::character varying, @3::integer, @4::character varying, @5::integer);";
-            return Factory.Get<DbGetCompoundItemDetailsResult>(this._Catalog, query, this.CompoundItemCode, this.SalesTaxCode, this.TranBook, this.StoreId, this.PartyCode, this.PriceTypeId);
+            string query = "SELECT * FROM core.get_compound_item_details(@CompoundItemCode, @SalesTaxCode, @TranBook, @StoreId, @PartyCode, @PriceTypeId);";
+
+            query = query.ReplaceWholeWord("@CompoundItemCode", "@0::character varying");
+            query = query.ReplaceWholeWord("@SalesTaxCode", "@1::character varying");
+            query = query.ReplaceWholeWord("@TranBook", "@2::character varying");
+            query = query.ReplaceWholeWord("@StoreId", "@3::integer");
+            query = query.ReplaceWholeWord("@PartyCode", "@4::character varying");
+            query = query.ReplaceWholeWord("@PriceTypeId", "@5::integer");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.CompoundItemCode);
+            parameters.Add(this.SalesTaxCode);
+            parameters.Add(this.TranBook);
+            parameters.Add(this.StoreId);
+            parameters.Add(this.PartyCode);
+            parameters.Add(this.PriceTypeId);
+
+            return Factory.Get<DbGetCompoundItemDetailsResult>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

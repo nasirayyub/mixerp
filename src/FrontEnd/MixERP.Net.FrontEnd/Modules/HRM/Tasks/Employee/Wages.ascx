@@ -44,6 +44,13 @@
             valueField: "Key",
             textField: "Value"
         },
+        {
+            property: "PostingAccountId",
+            url: '/api/hrm/wage-posting-account-selector-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        }
     ];
 
 </script>
@@ -64,30 +71,28 @@
                 targetEl.val("0");
             };
         });
-        
+
+        function getWagesSetup(wagesSetupId){
+            var url = "/api/hrm/wages-setup/" + wagesSetupId;
+            return window.getAjaxRequest(url);
+        }
+
         $("#wages_setup_id").change(function(){
             var wagesSetupId = $(this).val();
 
             var getWagesSetupAajx = getWagesSetup(wagesSetupId);
 
-            getWagesSetupAajx.success(function(response){
+            getWagesSetupAajx.success(function (response) {
                 $("#currency_code").dropdown("set selected", response.CurrencyCode);
                 $("#max_week_hours").val(response.MaxWeekHours);
                 $("#hourly_rate").val(response.HourlyRate);
                 $("#overtime_applicable").dropdown("set selected", response.OvertimeApplicable ? "yes": "no");
-                $("#valid_till").val(response.ValidTill);
+                $("#overtime_hourly_rate").val(response.OvertimeHourlyRate);
+
                 $("#overtime_applicable").trigger("change");
             });
-        });
-
-        function getWagesSetup(wagesSetupId){
-            var url = "/api/hrm/wages-setup/" + wagesSetupId;
-            return getAjaxRequest(url);
-        };
+        });;
 
         $("#overtime_applicable").trigger("change");
-
-
-
     });
 </script>

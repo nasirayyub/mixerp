@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -85,6 +86,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.create_routine".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public void Execute()
         {
             if (!this.SkipValidation)
@@ -99,8 +101,21 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.create_routine(@0::character varying, @1::regproc, @2::integer);";
-            Factory.NonQuery(this._Catalog, query, this.RoutineCode, this.Routine, this.Order);
+            string query = "SELECT * FROM transactions.create_routine(@RoutineCode, @Routine, @Order);";
+
+            query = query.ReplaceWholeWord("@RoutineCode", "@0::character varying");
+            query = query.ReplaceWholeWord("@Routine", "@1::regproc");
+            query = query.ReplaceWholeWord("@Order", "@2::integer");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.RoutineCode);
+            parameters.Add(this.Routine);
+            parameters.Add(this.Order);
+
+            Factory.NonQuery(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Core;
 using Npgsql;
@@ -97,6 +98,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <summary>
         /// Prepares and executes the function "core.calculate_interest".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public decimal Execute()
         {
             if (!this.SkipValidation)
@@ -111,8 +113,25 @@ namespace MixERP.Net.Schemas.Core.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM core.calculate_interest(@0::numeric, @1::numeric, @2::integer, @3::integer, @4::integer);";
-            return Factory.Scalar<decimal>(this._Catalog, query, this.Principal, this.Rate, this.Days, this.RoundUp, this.NumOfDaysInYear);
+            string query = "SELECT * FROM core.calculate_interest(@Principal, @Rate, @Days, @RoundUp, @NumOfDaysInYear);";
+
+            query = query.ReplaceWholeWord("@Principal", "@0::numeric");
+            query = query.ReplaceWholeWord("@Rate", "@1::numeric");
+            query = query.ReplaceWholeWord("@Days", "@2::integer");
+            query = query.ReplaceWholeWord("@RoundUp", "@3::integer");
+            query = query.ReplaceWholeWord("@NumOfDaysInYear", "@4::integer");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.Principal);
+            parameters.Add(this.Rate);
+            parameters.Add(this.Days);
+            parameters.Add(this.RoundUp);
+            parameters.Add(this.NumOfDaysInYear);
+
+            return Factory.Scalar<decimal>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

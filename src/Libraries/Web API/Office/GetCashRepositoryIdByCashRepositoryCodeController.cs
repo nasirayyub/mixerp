@@ -82,6 +82,7 @@ namespace MixERP.Net.Api.Office
             {
                 this.procedure.CashRepositoryCode = annotation.CashRepositoryCode;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

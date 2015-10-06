@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -133,6 +134,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.get_product_view".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<DbGetProductViewResult> Execute()
         {
             if (!this.SkipValidation)
@@ -147,8 +149,37 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.get_product_view(@0::integer, @1::text, @2::integer, @3::date, @4::date, @5::character varying, @6::text, @7::text, @8::character varying, @9::character varying, @10::text);";
-            return Factory.Get<DbGetProductViewResult>(this._Catalog, query, this.UserId, this.Book, this.OfficeId, this.DateFrom, this.DateTo, this.Office, this.Party, this.PriceType, this.User, this.ReferenceNumber, this.StatementReference);
+            string query = "SELECT * FROM transactions.get_product_view(@UserId, @Book, @OfficeId, @DateFrom, @DateTo, @Office, @Party, @PriceType, @User, @ReferenceNumber, @StatementReference);";
+
+            query = query.ReplaceWholeWord("@UserId", "@0::integer");
+            query = query.ReplaceWholeWord("@Book", "@1::text");
+            query = query.ReplaceWholeWord("@OfficeId", "@2::integer");
+            query = query.ReplaceWholeWord("@DateFrom", "@3::date");
+            query = query.ReplaceWholeWord("@DateTo", "@4::date");
+            query = query.ReplaceWholeWord("@Office", "@5::character varying");
+            query = query.ReplaceWholeWord("@Party", "@6::text");
+            query = query.ReplaceWholeWord("@PriceType", "@7::text");
+            query = query.ReplaceWholeWord("@User", "@8::character varying");
+            query = query.ReplaceWholeWord("@ReferenceNumber", "@9::character varying");
+            query = query.ReplaceWholeWord("@StatementReference", "@10::text");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.UserId);
+            parameters.Add(this.Book);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.DateFrom);
+            parameters.Add(this.DateTo);
+            parameters.Add(this.Office);
+            parameters.Add(this.Party);
+            parameters.Add(this.PriceType);
+            parameters.Add(this.User);
+            parameters.Add(this.ReferenceNumber);
+            parameters.Add(this.StatementReference);
+
+            return Factory.Get<DbGetProductViewResult>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

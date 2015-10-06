@@ -57,7 +57,7 @@ namespace MixERP.Net.Api.Transactions
         public class Annotation
         {
             public long TransactionMasterId { get; set; }
-            public MixERP.Net.Entities.Transactions.StockDetailType[][] Details { get; set; }
+            public MixERP.Net.Entities.Transactions.StockDetailType[] Details { get; set; }
         }
 
         public ValidateItemsForReturnController()
@@ -83,6 +83,7 @@ namespace MixERP.Net.Api.Transactions
             {
                 this.procedure.TransactionMasterId = annotation.TransactionMasterId;
                 this.procedure.Details = annotation.Details;
+
 
                 return this.procedure.Execute();
             }

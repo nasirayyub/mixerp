@@ -282,6 +282,7 @@
     <Compile Include="GetStateIdByStateNameController.cs" />
     <Compile Include="GetStateNameByStateIdController.cs" />
     <Compile Include="GetStateSalesTaxRateController.cs" />
+    <Compile Include="GetTaxAuthorityIdByTaxAuthorityCodeController.cs" />
     <Compile Include="GetTaxMasterIdByTaxMasterCodeController.cs" />
     <Compile Include="GetUnitCodeByUnitIdController.cs" />
     <Compile Include="GetUnitIdByUnitCodeController.cs" />

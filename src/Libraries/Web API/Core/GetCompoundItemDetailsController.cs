@@ -92,6 +92,7 @@ namespace MixERP.Net.Api.Core
                 this.procedure.PartyCode = annotation.PartyCode;
                 this.procedure.PriceTypeId = annotation.PriceTypeId;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

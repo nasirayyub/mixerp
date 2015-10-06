@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Config
             }
         }
 
+        /// <summary>
+        ///     Returns collection of open exchange rate scrud view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/config/open-exchange-rate-scrud-view/export")]
+        [Route("~/api/config/open-exchange-rate-scrud-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Config.OpenExchangeRateScrudView> Get()
+        {
+            try
+            {
+                return this.OpenExchangeRateScrudViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 open exchange rate scrud views on each page, sorted by the property .

@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Office;
 using Npgsql;
@@ -109,6 +110,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <summary>
         /// Prepares and executes the function "office.create_user".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public void Execute()
         {
             if (!this.SkipValidation)
@@ -123,8 +125,29 @@ namespace MixERP.Net.Schemas.Office.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM office.create_user(@0::integer, @1::integer, @2::integer, @3::text, @4::text, @5::text, @6::boolean);";
-            Factory.NonQuery(this._Catalog, query, this.RoleId, this.DepartmentId, this.OfficeId, this.UserName, this.Password, this.FullName, this.Elevated);
+            string query = "SELECT * FROM office.create_user(@RoleId, @DepartmentId, @OfficeId, @UserName, @Password, @FullName, @Elevated);";
+
+            query = query.ReplaceWholeWord("@RoleId", "@0::integer");
+            query = query.ReplaceWholeWord("@DepartmentId", "@1::integer");
+            query = query.ReplaceWholeWord("@OfficeId", "@2::integer");
+            query = query.ReplaceWholeWord("@UserName", "@3::text");
+            query = query.ReplaceWholeWord("@Password", "@4::text");
+            query = query.ReplaceWholeWord("@FullName", "@5::text");
+            query = query.ReplaceWholeWord("@Elevated", "@6::boolean");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.RoleId);
+            parameters.Add(this.DepartmentId);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.UserName);
+            parameters.Add(this.Password);
+            parameters.Add(this.FullName);
+            parameters.Add(this.Elevated);
+
+            Factory.NonQuery(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

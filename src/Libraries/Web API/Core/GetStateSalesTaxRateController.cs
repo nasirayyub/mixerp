@@ -82,6 +82,7 @@ namespace MixERP.Net.Api.Core
             {
                 this.procedure.StateSalesTaxId = annotation.StateSalesTaxId;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

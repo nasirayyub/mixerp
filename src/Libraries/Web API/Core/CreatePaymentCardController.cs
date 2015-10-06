@@ -86,6 +86,7 @@ namespace MixERP.Net.Api.Core
                 this.procedure.PaymentCardName = annotation.PaymentCardName;
                 this.procedure.CardTypeId = annotation.CardTypeId;
 
+
                 this.procedure.Execute();
             }
             catch (UnauthorizedException)

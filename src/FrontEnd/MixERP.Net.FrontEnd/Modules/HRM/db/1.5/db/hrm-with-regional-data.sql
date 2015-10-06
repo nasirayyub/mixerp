@@ -266,7 +266,7 @@ CREATE TABLE hrm.wages_setup
     hourly_rate                             public.money_strict NOT NULL,
     overtime_applicable                     boolean NOT NULL DEFAULT(true),
     overtime_hourly_rate                    public.money_strict2 NOT NULL,
-    account_id                              bigint NOT NULL REFERENCES core.accounts(account_id),
+    expense_account_id                      bigint NOT NULL REFERENCES core.accounts(account_id),
     description                             text,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),
     
@@ -285,6 +285,7 @@ CREATE TABLE hrm.employee_wages
     hourly_rate                             public.money_strict NOT NULL,
     overtime_applicable                     boolean NOT NULL,
     overtime_hourly_rate                    public.money_strict2 DEFAULT(0),
+    posting_account_id                      bigint NOT NULL REFERENCES core.accounts(account_id),
     valid_till                              date NOT NULL,
     is_active                               boolean,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),    
@@ -324,7 +325,7 @@ CREATE TABLE hrm.salary_tax_income_brackets
     salary_tax_income_bracket_id            SERIAL NOT NULL PRIMARY KEY,
     salary_tax_id                           integer NOT NULL REFERENCES hrm.salary_taxes(salary_tax_id),
     salary_from                             public.money_strict NOT NULL,
-    salary_to                               public.money_strict NOT NULL
+    salary_to                               public.money_strict NULL
                                             CHECK (salary_to > salary_from),
     income_tax_rate                         public.decimal_strict NOT NULL,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),    
@@ -555,6 +556,62 @@ CREATE TABLE hrm.salary_deductions
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
                                             DEFAULT(NOW())    
 );
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_salary_tax_id_by_salary_tax_code.sql --<--<--
+DROP FUNCTION IF EXISTS hrm.get_salary_tax_id_by_salary_tax_code(_salary_tax_code national character varying(12));
+CREATE FUNCTION hrm.get_salary_tax_id_by_salary_tax_code(_salary_tax_code national character varying(12))
+RETURNS integer
+AS
+$$
+BEGIN
+    RETURN salary_tax_id
+    FROM hrm.salary_taxes
+    WHERE salary_tax_code = $1;
+END
+$$
+LANGUAGE plpgsql;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/logic/hrm.get_wage_attendance.sql --<--<--
+DROP FUNCTION IF EXISTS hrm.get_wage_attendance
+(
+    _employee_id            integer,
+    _as_of                  date
+);
+
+CREATE FUNCTION hrm.get_wage_attendance
+(
+    _employee_id            integer,
+    _as_of                  date
+)
+RETURNS TABLE
+(
+    employee_id             integer,
+    employee                text,
+    photo                   text,
+    attendance_date         date,
+    hours_worked            numeric
+)
+AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT
+        hrm.employees.employee_id,
+        hrm.employees.employee_code || ' (' || hrm.employees.employee_name || ')' AS employee,
+        hrm.employees.photo::text,
+        hrm.attendances.attendance_date,
+        ROUND((EXTRACT(EPOCH FROM hrm.attendances.check_out_time - check_in_time)/3600)::numeric, 2) AS hours_worked
+    FROM hrm.attendances
+    INNER JOIN hrm.employees
+    ON hrm.employees.employee_id = hrm.attendances.employee_id
+    WHERE hrm.attendances.attendance_date <= _as_of
+    AND was_present
+    AND hrm.employees.employee_id = _employee_id;
+END
+$$
+LANGUAGE plpgsql;
+
+--SELECT * FROM hrm.get_wage_attendance(1, (NOW() + INTERVAL '10 days')::date);
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/triggers/employee_dismissal.sql --<--<--
 DROP FUNCTION IF EXISTS hrm.dismiss_employee() CASCADE;
@@ -1228,15 +1285,24 @@ WHERE account_master_id = ANY(ARRAY[10110, 15010])
 ORDER BY account_id;
 
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.selector-views/hrm.wage_posting_account_selector_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.wage_posting_account_selector_view;
+
+CREATE VIEW hrm.wage_posting_account_selector_view
+AS
+SELECT * FROM core.account_scrud_view
+--Accounts Receivable, Accounts Payable
+WHERE account_master_id = ANY(ARRAY[10110, 15010])
+ORDER BY account_id;
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.selector-views/hrm.wages_account_selector_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.wages_account_selector_view;
 
 CREATE VIEW hrm.wages_account_selector_view
 AS
 SELECT * FROM core.account_scrud_view
---Accounts Receivable, Accounts Payable
-WHERE account_master_id = ANY(ARRAY[10110, 15010])
-ORDER BY account_id;
+WHERE account_master_id >= 20400
+ORDER BY account_id; --Expenses
 
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.views/hrm.attendance_view.sql --<--<--
@@ -1574,6 +1640,56 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+INSERT INTO hrm.salary_taxes(salary_tax_code, salary_tax_name, tax_authority_id, standard_deduction, personal_exemption)
+SELECT 'SIN', 'Single Individual', core.get_tax_authority_id_by_tax_authority_code('IRS'), 6200, 3900 UNION ALL
+SELECT 'MSF', 'Married (Separately Filing)', core.get_tax_authority_id_by_tax_authority_code('IRS'), 6200, 3900 UNION ALL
+SELECT 'WID', 'Qualified Widower', core.get_tax_authority_id_by_tax_authority_code('IRS'), 12400, 3900 UNION ALL
+SELECT 'HOH', 'Head of Household', core.get_tax_authority_id_by_tax_authority_code('IRS'), 9100, 3900;
+
+INSERT INTO hrm.salary_tax_income_brackets(salary_tax_id, salary_from, salary_to, income_tax_rate)
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('SIN'), 1,      9225,           10 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('SIN'), 9225,   37450,          15 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('SIN'), 37450,  90750,          25 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('SIN'), 90750,  189300,         28 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('SIN'), 189300, 411500,         33 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('SIN'), 411500, 413200,         35 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('SIN'), 413200, NULL,           39.6;
+
+INSERT INTO hrm.salary_tax_income_brackets(salary_tax_id, salary_from, salary_to, income_tax_rate)
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('MSF'), 1,      9225,           10 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('MSF'), 9225,   37450,          15 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('MSF'), 37450,  75600,          25 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('MSF'), 75600,  115225,         28 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('MSF'), 115225, 205750,         33 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('MSF'), 205750, 232425,         35 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('MSF'), 232425, NULL,           39.6;
+
+INSERT INTO hrm.salary_tax_income_brackets(salary_tax_id, salary_from, salary_to, income_tax_rate)
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('WID'), 1,      18450,          10 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('WID'), 18450,  74900,          15 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('WID'), 74900,  151200,         25 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('WID'), 151200, 230450,         28 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('WID'), 230450, 411500,         33 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('WID'), 411500, 464850,         35 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('WID'), 464850, NULL,           39.6;
+
+INSERT INTO hrm.salary_tax_income_brackets(salary_tax_id, salary_from, salary_to, income_tax_rate)
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('HOH'), 1,      13150,          10 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('HOH'), 13150,  50200,          15 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('HOH'), 50200,  129600,         25 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('HOH'), 129600, 209850,         28 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('HOH'), 209850, 411500,         33 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('HOH'), 411500, 439000,         35 UNION ALL
+SELECT hrm.get_salary_tax_id_by_salary_tax_code('HOH'), 439000, NULL,           39.6;
+
+INSERT INTO hrm.deduction_setups(deduction_setup_code, deduction_setup_name, account_id)
+SELECT 'REN', 'Rent', core.get_account_id_by_account_number('20100') UNION ALL
+SELECT 'BOR', 'Borrowings Deduction', core.get_account_id_by_account_number('10400') UNION ALL
+SELECT 'FIC', 'Fitness Club', core.get_account_id_by_account_number('20100');
+
+INSERT INTO hrm.wages_setup(wages_setup_code, wages_setup_name, currency_code, max_week_hours, hourly_rate, overtime_applicable, overtime_hourly_rate, expense_account_id)
+SELECT 'NY-LIW', 'New York Living Wage', 'USD', 40, 14.30, true, 28.60, core.get_account_id_by_account_number('43800');
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/99.sample/kanban.sql --<--<--
 DO

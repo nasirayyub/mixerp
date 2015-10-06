@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -77,7 +78,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Maps to "_details" argument of the function "transactions.post_inventory_transfer_request".
         /// </summary>
-        public MixERP.Net.Entities.Transactions.StockAdjustmentType[][] Details { get; set; }
+        public MixERP.Net.Entities.Transactions.StockAdjustmentType[] Details { get; set; }
 
         /// <summary>
         /// Prepares, validates, and executes the function "transactions.post_inventory_transfer_request(_office_id integer, _user_id integer, _login_id bigint, _value_date date, _reference_number character varying, _statement_reference text, _details transactions.stock_adjustment_type[])" on the database.
@@ -96,7 +97,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="referenceNumber">Enter argument value for "_reference_number" parameter of the function "transactions.post_inventory_transfer_request".</param>
         /// <param name="statementReference">Enter argument value for "_statement_reference" parameter of the function "transactions.post_inventory_transfer_request".</param>
         /// <param name="details">Enter argument value for "_details" parameter of the function "transactions.post_inventory_transfer_request".</param>
-        public PostInventoryTransferRequestProcedure(int officeId, int userId, long loginId, DateTime valueDate, string referenceNumber, string statementReference, MixERP.Net.Entities.Transactions.StockAdjustmentType[][] details)
+        public PostInventoryTransferRequestProcedure(int officeId, int userId, long loginId, DateTime valueDate, string referenceNumber, string statementReference, MixERP.Net.Entities.Transactions.StockAdjustmentType[] details)
         {
             this.OfficeId = officeId;
             this.UserId = userId;
@@ -109,6 +110,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.post_inventory_transfer_request".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public long Execute()
         {
             if (!this.SkipValidation)
@@ -123,8 +125,71 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.post_inventory_transfer_request(@0::integer, @1::integer, @2::bigint, @3::date, @4::character varying, @5::text, @6::transactions.stock_adjustment_type[]);";
-            return Factory.Scalar<long>(this._Catalog, query, this.OfficeId, this.UserId, this.LoginId, this.ValueDate, this.ReferenceNumber, this.StatementReference, this.Details);
+            string query = "SELECT * FROM transactions.post_inventory_transfer_request(@OfficeId, @UserId, @LoginId, @ValueDate, @ReferenceNumber, @StatementReference, @Details);";
+
+            query = query.ReplaceWholeWord("@OfficeId", "@0::integer");
+            query = query.ReplaceWholeWord("@UserId", "@1::integer");
+            query = query.ReplaceWholeWord("@LoginId", "@2::bigint");
+            query = query.ReplaceWholeWord("@ValueDate", "@3::date");
+            query = query.ReplaceWholeWord("@ReferenceNumber", "@4::character varying");
+            query = query.ReplaceWholeWord("@StatementReference", "@5::text");
+
+            int detailsOffset = 6;
+            query = query.ReplaceWholeWord("@Details", "ARRAY[" + this.SqlForDetails(this.Details, detailsOffset, 5) + "]");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.UserId);
+            parameters.Add(this.LoginId);
+            parameters.Add(this.ValueDate);
+            parameters.Add(this.ReferenceNumber);
+            parameters.Add(this.StatementReference);
+            parameters.AddRange(this.ParamsForDetails(this.Details));
+
+            return Factory.Scalar<long>(this._Catalog, query, parameters.ToArray());
+        }
+
+        private string SqlForDetails(MixERP.Net.Entities.Transactions.StockAdjustmentType[] details, int offset, int memberCount)
+        {
+            if (details == null)
+            {
+                return "NULL::transactions.stock_adjustment_type";
+            }
+            List<string> parameters = new List<string>();
+            for (int i = 0; i < details.Count(); i++)
+            {
+                List<string> args = new List<string>();
+                for (int j = 0; j < memberCount; j++)
+                {
+                    args.Add("@" + offset);
+                    offset++;
+                }
+
+                string parameter = "ROW({0})::transactions.stock_adjustment_type";
+                parameter = string.Format(System.Globalization.CultureInfo.InvariantCulture, parameter,
+                    string.Join(",", args));
+                parameters.Add(parameter);
+            }
+            return string.Join(",", parameters);
+        }
+
+        private List<object> ParamsForDetails(MixERP.Net.Entities.Transactions.StockAdjustmentType[] details)
+        {
+            List<object> collection = new List<object>();
+
+            if (details != null && details.Count() > 0)
+            {
+                foreach (MixERP.Net.Entities.Transactions.StockAdjustmentType detail in details)
+                {
+                    collection.Add(detail.TranType);
+                    collection.Add(detail.StoreName);
+                    collection.Add(detail.ItemCode);
+                    collection.Add(detail.UnitName);
+                    collection.Add(detail.Quantity);
+                }
+            }
+            return collection;
         }
     }
 }

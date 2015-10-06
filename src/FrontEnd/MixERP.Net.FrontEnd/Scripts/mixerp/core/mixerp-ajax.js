@@ -133,7 +133,7 @@ var getAjaxRequest = function (url, type, data, bodyPost) {
 
 
     ajax.fail(function (xhr) {
-        displayMessage(JSON.stringify(xhr));
+        displayMessage(getAjaxErrorMessage(xhr));
     });
 
     return ajax;
@@ -149,7 +149,6 @@ var ajaxUpdateVal = function (url, data, targetControls) {
     };
 
     ajax.success(function (msg) {
-
         targetControls.each(function () {
             $(this).val(msg.d).trigger('change');
         });
@@ -245,6 +244,9 @@ var getAjaxErrorMessage = function (xhr) {
                         err = response.ExceptionMessage;
                     };
 
+                    if (response.InnerException) {
+                        err = response.InnerException.Message + " " + response.InnerException.ExceptionMessage;
+                    };
                 };
             };
         } catch (e) {

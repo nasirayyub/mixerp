@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Transactions
             }
         }
 
+        /// <summary>
+        ///     Returns collection of party item chart view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/transactions/party-item-chart-view/export")]
+        [Route("~/api/transactions/party-item-chart-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Transactions.PartyItemChartView> Get()
+        {
+            try
+            {
+                return this.PartyItemChartViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 party item chart views on each page, sorted by the property .

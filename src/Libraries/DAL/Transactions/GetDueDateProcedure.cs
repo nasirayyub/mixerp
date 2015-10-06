@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -79,6 +80,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.get_due_date".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public DateTime Execute()
         {
             if (!this.SkipValidation)
@@ -93,8 +95,19 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.get_due_date(@0::date, @1::integer);";
-            return Factory.Scalar<DateTime>(this._Catalog, query, this.ValueDate, this.PaymentTermId);
+            string query = "SELECT * FROM transactions.get_due_date(@ValueDate, @PaymentTermId);";
+
+            query = query.ReplaceWholeWord("@ValueDate", "@0::date");
+            query = query.ReplaceWholeWord("@PaymentTermId", "@1::integer");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.ValueDate);
+            parameters.Add(this.PaymentTermId);
+
+            return Factory.Scalar<DateTime>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

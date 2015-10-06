@@ -82,6 +82,7 @@ namespace MixERP.Net.Api.Core
             {
                 this.procedure.RecurringInvoiceId = annotation.RecurringInvoiceId;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

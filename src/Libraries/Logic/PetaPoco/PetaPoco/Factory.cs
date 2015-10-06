@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using MixERP.Net.Framework;
+using MixERP.Net.i18n;
 using MixERP.Net.i18n.Resources;
 using Npgsql;
 
@@ -170,9 +171,9 @@ namespace PetaPoco
 
         public static string GetDBErrorResource(NpgsqlException ex)
         {
-            string message = DbErrors.Get(ex.Code);
+            string message = ResourceManager.TryGetResourceFromCache("DbErrors", ex.Code);
 
-            if (message == ex.Code)
+            if (string.IsNullOrWhiteSpace(message) || message == ex.Code)
             {
                 return ex.Message;
             }

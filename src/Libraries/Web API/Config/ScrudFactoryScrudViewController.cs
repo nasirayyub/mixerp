@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Config
             }
         }
 
+        /// <summary>
+        ///     Returns collection of scrud factory scrud view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/config/scrud-factory-scrud-view/export")]
+        [Route("~/api/config/scrud-factory-scrud-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Config.ScrudFactoryScrudView> Get()
+        {
+            try
+            {
+                return this.ScrudFactoryScrudViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 scrud factory scrud views on each page, sorted by the property .

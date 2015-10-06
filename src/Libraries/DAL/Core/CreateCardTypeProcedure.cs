@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Core;
 using Npgsql;
@@ -85,6 +86,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <summary>
         /// Prepares and executes the function "core.create_card_type".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public void Execute()
         {
             if (!this.SkipValidation)
@@ -99,8 +101,21 @@ namespace MixERP.Net.Schemas.Core.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM core.create_card_type(@0::integer, @1::character varying, @2::character varying);";
-            Factory.NonQuery(this._Catalog, query, this.CardTypeId, this.CardTypeCode, this.CardTypeName);
+            string query = "SELECT * FROM core.create_card_type(@CardTypeId, @CardTypeCode, @CardTypeName);";
+
+            query = query.ReplaceWholeWord("@CardTypeId", "@0::integer");
+            query = query.ReplaceWholeWord("@CardTypeCode", "@1::character varying");
+            query = query.ReplaceWholeWord("@CardTypeName", "@2::character varying");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.CardTypeId);
+            parameters.Add(this.CardTypeCode);
+            parameters.Add(this.CardTypeName);
+
+            Factory.NonQuery(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

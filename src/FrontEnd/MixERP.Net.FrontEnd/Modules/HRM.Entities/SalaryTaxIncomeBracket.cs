@@ -41,8 +41,8 @@ namespace MixERP.Net.Entities.HRM
         public decimal SalaryFrom { get; set; }
 
         [Column("salary_to")]
-        [ColumnDbType("money_strict", 0, false, "")]
-        public decimal SalaryTo { get; set; }
+        [ColumnDbType("money_strict", 0, true, "")]
+        public decimal? SalaryTo { get; set; }
 
         [Column("income_tax_rate")]
         [ColumnDbType("decimal_strict", 0, false, "")]

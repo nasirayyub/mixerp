@@ -60,5 +60,7 @@
                 targetEl.val("0");
             };
         });
+
+        $("#overtime_applicable").trigger("change");
     });
 </script>

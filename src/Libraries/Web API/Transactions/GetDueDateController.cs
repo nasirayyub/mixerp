@@ -84,6 +84,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.ValueDate = annotation.ValueDate;
                 this.procedure.PaymentTermId = annotation.PaymentTermId;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

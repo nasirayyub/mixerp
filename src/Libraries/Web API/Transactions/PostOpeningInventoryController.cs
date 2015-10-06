@@ -62,7 +62,7 @@ namespace MixERP.Net.Api.Transactions
             public DateTime ValueDate { get; set; }
             public string ReferenceNumber { get; set; }
             public string StatementReference { get; set; }
-            public MixERP.Net.Entities.Transactions.OpeningStockType[][] Details { get; set; }
+            public MixERP.Net.Entities.Transactions.OpeningStockType[] Details { get; set; }
         }
 
         public PostOpeningInventoryController()
@@ -93,6 +93,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.ReferenceNumber = annotation.ReferenceNumber;
                 this.procedure.StatementReference = annotation.StatementReference;
                 this.procedure.Details = annotation.Details;
+
 
                 return this.procedure.Execute();
             }

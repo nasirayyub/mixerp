@@ -82,6 +82,7 @@ namespace MixERP.Net.Api.Office
             {
                 this.procedure.RoleName = annotation.RoleName;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

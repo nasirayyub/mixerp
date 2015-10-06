@@ -82,6 +82,7 @@ namespace MixERP.Net.Api.Office
             {
                 this.procedure.StoreTypeCode = annotation.StoreTypeCode;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

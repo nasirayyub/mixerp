@@ -82,6 +82,7 @@ namespace MixERP.Net.Api.Core
             {
                 this.procedure.Book = annotation.Book;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

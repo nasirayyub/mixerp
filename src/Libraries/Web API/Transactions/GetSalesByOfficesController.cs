@@ -84,6 +84,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.OfficeId = annotation.OfficeId;
                 this.procedure.DivideBy = annotation.DivideBy;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

@@ -88,6 +88,7 @@ namespace MixERP.Net.Api.Core
                 this.procedure.KanbanName = annotation.KanbanName;
                 this.procedure.Description = annotation.Description;
 
+
                 this.procedure.Execute();
             }
             catch (UnauthorizedException)

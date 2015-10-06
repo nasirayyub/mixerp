@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Core;
 using Npgsql;
@@ -79,7 +80,8 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <summary>
         /// Prepares and executes the function "core.get_periods".
         /// </summary>
-        public IEnumerable<MixERP.Net.Entities.Core.Period[]> Execute()
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<MixERP.Net.Entities.Core.Period> Execute()
         {
             if (!this.SkipValidation)
             {
@@ -93,8 +95,19 @@ namespace MixERP.Net.Schemas.Core.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM core.get_periods(@0::date, @1::date);";
-            return Factory.Get<MixERP.Net.Entities.Core.Period[]>(this._Catalog, query, this.DateFrom, this.DateTo);
+            string query = "SELECT * FROM core.get_periods(@DateFrom, @DateTo);";
+
+            query = query.ReplaceWholeWord("@DateFrom", "@0::date");
+            query = query.ReplaceWholeWord("@DateTo", "@1::date");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.DateFrom);
+            parameters.Add(this.DateTo);
+
+            return Factory.Get<MixERP.Net.Entities.Core.Period>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

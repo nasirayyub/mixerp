@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Audit;
 using Npgsql;
@@ -73,6 +74,7 @@ namespace MixERP.Net.Schemas.Audit.Data
         /// <summary>
         /// Prepares and executes the function "audit.get_user_id_by_login_id".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public int Execute()
         {
             if (!this.SkipValidation)
@@ -87,8 +89,17 @@ namespace MixERP.Net.Schemas.Audit.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM audit.get_user_id_by_login_id(@0::bigint);";
-            return Factory.Scalar<int>(this._Catalog, query, this.PgArg0);
+            string query = "SELECT * FROM audit.get_user_id_by_login_id(@PgArg0);";
+
+            query = query.ReplaceWholeWord("@PgArg0", "@0::bigint");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.PgArg0);
+
+            return Factory.Scalar<int>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

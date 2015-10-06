@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -97,6 +98,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.get_net_profit".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public decimal Execute()
         {
             if (!this.SkipValidation)
@@ -111,8 +113,25 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.get_net_profit(@0::date, @1::date, @2::integer, @3::integer, @4::boolean);";
-            return Factory.Scalar<decimal>(this._Catalog, query, this.DateFrom, this.DateTo, this.OfficeId, this.Factor, this.NoProvison);
+            string query = "SELECT * FROM transactions.get_net_profit(@DateFrom, @DateTo, @OfficeId, @Factor, @NoProvison);";
+
+            query = query.ReplaceWholeWord("@DateFrom", "@0::date");
+            query = query.ReplaceWholeWord("@DateTo", "@1::date");
+            query = query.ReplaceWholeWord("@OfficeId", "@2::integer");
+            query = query.ReplaceWholeWord("@Factor", "@3::integer");
+            query = query.ReplaceWholeWord("@NoProvison", "@4::boolean");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.DateFrom);
+            parameters.Add(this.DateTo);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.Factor);
+            parameters.Add(this.NoProvison);
+
+            return Factory.Scalar<decimal>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

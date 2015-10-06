@@ -73,8 +73,8 @@ namespace MixERP.Net.Api.Transactions
             public string ShippingAddressCode { get; set; }
             public int StoreId { get; set; }
             public bool IsNonTaxableSales { get; set; }
-            public MixERP.Net.Entities.Transactions.StockDetailType[][] Details { get; set; }
-            public MixERP.Net.Entities.Core.AttachmentType[][] Attachments { get; set; }
+            public MixERP.Net.Entities.Transactions.StockDetailType[] Details { get; set; }
+            public MixERP.Net.Entities.Core.AttachmentType[] Attachments { get; set; }
             public long[] NonGlTranIds { get; set; }
         }
 
@@ -119,6 +119,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.Details = annotation.Details;
                 this.procedure.Attachments = annotation.Attachments;
                 this.procedure.NonGlTranIds = annotation.NonGlTranIds;
+
 
                 return this.procedure.Execute();
             }

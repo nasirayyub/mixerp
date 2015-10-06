@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Office;
 using Npgsql;
@@ -115,6 +116,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <summary>
         /// Prepares and executes the function "office.sign_in".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<DbSignInResult> Execute()
         {
             if (!this.SkipValidation)
@@ -129,8 +131,31 @@ namespace MixERP.Net.Schemas.Office.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM office.sign_in(@0::integer_strict, @1::text, @2::text, @3::text, @4::text, @5::text, @6::text, @7::text);";
-            return Factory.Get<DbSignInResult>(this._Catalog, query, this.OfficeId, this.UserName, this.Password, this.Browser, this.IpAddress, this.RemoteUser, this.Culture, this.Challenge);
+            string query = "SELECT * FROM office.sign_in(@OfficeId, @UserName, @Password, @Browser, @IpAddress, @RemoteUser, @Culture, @Challenge);";
+
+            query = query.ReplaceWholeWord("@OfficeId", "@0::integer_strict");
+            query = query.ReplaceWholeWord("@UserName", "@1::text");
+            query = query.ReplaceWholeWord("@Password", "@2::text");
+            query = query.ReplaceWholeWord("@Browser", "@3::text");
+            query = query.ReplaceWholeWord("@IpAddress", "@4::text");
+            query = query.ReplaceWholeWord("@RemoteUser", "@5::text");
+            query = query.ReplaceWholeWord("@Culture", "@6::text");
+            query = query.ReplaceWholeWord("@Challenge", "@7::text");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.UserName);
+            parameters.Add(this.Password);
+            parameters.Add(this.Browser);
+            parameters.Add(this.IpAddress);
+            parameters.Add(this.RemoteUser);
+            parameters.Add(this.Culture);
+            parameters.Add(this.Challenge);
+
+            return Factory.Get<DbSignInResult>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

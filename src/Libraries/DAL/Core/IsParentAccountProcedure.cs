@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Core;
 using Npgsql;
@@ -79,6 +80,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <summary>
         /// Prepares and executes the function "core.is_parent_account".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public bool Execute()
         {
             if (!this.SkipValidation)
@@ -93,8 +95,19 @@ namespace MixERP.Net.Schemas.Core.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM core.is_parent_account(@0::bigint, @1::bigint);";
-            return Factory.Scalar<bool>(this._Catalog, query, this.Parent, this.Child);
+            string query = "SELECT * FROM core.is_parent_account(@Parent, @Child);";
+
+            query = query.ReplaceWholeWord("@Parent", "@0::bigint");
+            query = query.ReplaceWholeWord("@Child", "@1::bigint");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.Parent);
+            parameters.Add(this.Child);
+
+            return Factory.Scalar<bool>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

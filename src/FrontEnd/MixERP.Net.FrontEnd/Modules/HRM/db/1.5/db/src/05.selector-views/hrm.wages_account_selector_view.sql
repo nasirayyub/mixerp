@@ -3,6 +3,5 @@ DROP VIEW IF EXISTS hrm.wages_account_selector_view;
 CREATE VIEW hrm.wages_account_selector_view
 AS
 SELECT * FROM core.account_scrud_view
---Accounts Receivable, Accounts Payable
-WHERE account_master_id = ANY(ARRAY[10110, 15010])
-ORDER BY account_id;
+WHERE account_master_id >= 20400
+ORDER BY account_id; --Expenses

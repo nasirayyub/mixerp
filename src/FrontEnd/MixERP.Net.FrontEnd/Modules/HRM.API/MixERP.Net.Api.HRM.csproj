@@ -120,7 +120,9 @@
     <Compile Include="ExitController.cs" />
     <Compile Include="ExitScrudViewController.cs" />
     <Compile Include="ExitTypeController.cs" />
-    <Compile Include="HolidayController.cs" />
+    <Compile Include="GetSalaryTaxIdBySalaryTaxCodeController.cs" />
+    <Compile Include="GetWageAttendanceController.cs" />
+    <Compile Include="HrmHolidayController.cs" />
     <Compile Include="JobTitleController.cs" />
     <Compile Include="LeaveApplicationController.cs" />
     <Compile Include="LeaveApplicationScrudViewController.cs" />
@@ -130,6 +132,7 @@
     <Compile Include="OfficeHourController.cs" />
     <Compile Include="OfficeHourScrudViewController.cs" />
     <Compile Include="PayGradeController.cs" />
+    <Compile Include="PostWageController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvidentFundController.cs" />
     <Compile Include="ProvidentFundExpenseAccountSelectorViewController.cs" />
@@ -151,6 +154,9 @@
     <Compile Include="TerminationController.cs" />
     <Compile Include="TerminationScrudViewController.cs" />
     <Compile Include="TerminationVerificationScrudViewController.cs" />
+    <Compile Include="WagePostingAccountSelectorViewController.cs" />
+    <Compile Include="WageProcessingController.cs" />
+    <Compile Include="WageProcessingDetailController.cs" />
     <Compile Include="WagesAccountSelectorViewController.cs" />
     <Compile Include="WagesSetupController.cs" />
   </ItemGroup>

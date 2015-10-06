@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Core;
 using Npgsql;
@@ -79,6 +80,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <summary>
         /// Prepares and executes the function "core.get_frequency_start_date".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public DateTime Execute()
         {
             if (!this.SkipValidation)
@@ -93,8 +95,19 @@ namespace MixERP.Net.Schemas.Core.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM core.get_frequency_start_date(@0::integer, @1::date);";
-            return Factory.Scalar<DateTime>(this._Catalog, query, this.FrequencyId, this.ValueDate);
+            string query = "SELECT * FROM core.get_frequency_start_date(@FrequencyId, @ValueDate);";
+
+            query = query.ReplaceWholeWord("@FrequencyId", "@0::integer");
+            query = query.ReplaceWholeWord("@ValueDate", "@1::date");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.FrequencyId);
+            parameters.Add(this.ValueDate);
+
+            return Factory.Scalar<DateTime>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

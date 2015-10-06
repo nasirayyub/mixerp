@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -73,6 +74,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.create_recurring_invoices".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public void Execute()
         {
             if (!this.SkipValidation)
@@ -87,8 +89,17 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.create_recurring_invoices(@0::bigint);";
-            Factory.NonQuery(this._Catalog, query, this.PgArg0);
+            string query = "SELECT * FROM transactions.create_recurring_invoices(@PgArg0);";
+
+            query = query.ReplaceWholeWord("@PgArg0", "@0::bigint");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.PgArg0);
+
+            Factory.NonQuery(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

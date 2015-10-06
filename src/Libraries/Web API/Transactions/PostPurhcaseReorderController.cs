@@ -60,7 +60,7 @@ namespace MixERP.Net.Api.Transactions
             public long LoginId { get; set; }
             public int UserId { get; set; }
             public int OfficeId { get; set; }
-            public MixERP.Net.Entities.Transactions.PurchaseReorderType[][] Details { get; set; }
+            public MixERP.Net.Entities.Transactions.PurchaseReorderType[] Details { get; set; }
         }
 
         public PostPurhcaseReorderController()
@@ -89,6 +89,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.UserId = annotation.UserId;
                 this.procedure.OfficeId = annotation.OfficeId;
                 this.procedure.Details = annotation.Details;
+
 
                 return this.procedure.Execute();
             }

@@ -82,6 +82,7 @@ namespace MixERP.Net.Api.Localization
             {
                 this.procedure.CultureCode = annotation.CultureCode;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

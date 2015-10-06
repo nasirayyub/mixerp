@@ -27,22 +27,22 @@ using Npgsql;
 using PetaPoco;
 using Serilog;
 
-namespace MixERP.Net.Schemas.Office.Data
+namespace MixERP.Net.Core.Modules.HRM.Data
 {
     /// <summary>
-    /// Provides simplified data access features to perform SCRUD operation on the database table "office.holidays".
+    /// Provides simplified data access features to perform SCRUD operation on the database table "hrm.wage_processing".
     /// </summary>
-    public class Holiday : DbAccess
+    public class WageProcessing : DbAccess
     {
         /// <summary>
-        /// The schema of this table. Returns literal "office".
+        /// The schema of this table. Returns literal "hrm".
         /// </summary>
-        public override string _ObjectNamespace => "office";
+        public override string _ObjectNamespace => "hrm";
 
         /// <summary>
-        /// The schema unqualified name of this table. Returns literal "holidays".
+        /// The schema unqualified name of this table. Returns literal "wage_processing".
         /// </summary>
-        public override string _ObjectName => "holidays";
+        public override string _ObjectName => "wage_processing";
 
         /// <summary>
         /// Login id of application user accessing this table.
@@ -60,9 +60,9 @@ namespace MixERP.Net.Schemas.Office.Data
         public string _Catalog { get; set; }
 
         /// <summary>
-        /// Performs SQL count on the table "office.holidays".
+        /// Performs SQL count on the table "hrm.wage_processing".
         /// </summary>
-        /// <returns>Returns the number of rows of the table "office.holidays".</returns>
+        /// <returns>Returns the number of rows of the table "hrm.wage_processing".</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public long Count()
         {
@@ -79,21 +79,21 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to count entity \"Holiday\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    Log.Information("Access to count entity \"WageProcessing\" was denied to the user with Login ID {LoginId}", this._LoginId);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            const string sql = "SELECT COUNT(*) FROM office.holidays;";
+            const string sql = "SELECT COUNT(*) FROM hrm.wage_processing;";
             return Factory.Scalar<long>(this._Catalog, sql);
         }
 
         /// <summary>
-        /// Executes a select query on the table "office.holidays" to return a all instances of the "Holiday" class to export. 
+        /// Executes a select query on the table "hrm.wage_processing" to return a all instances of the "WageProcessing" class to export. 
         /// </summary>
-        /// <returns>Returns a non-live, non-mapped instances of "Holiday" class.</returns>
+        /// <returns>Returns a non-live, non-mapped instances of "WageProcessing" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Office.Holiday> Get()
+        public IEnumerable<MixERP.Net.Entities.HRM.WageProcessing> Get()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -108,22 +108,22 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to the export entity \"Holiday\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    Log.Information("Access to the export entity \"WageProcessing\" was denied to the user with Login ID {LoginId}", this._LoginId);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            const string sql = "SELECT * FROM office.holidays ORDER BY holiday_id;";
-            return Factory.Get<MixERP.Net.Entities.Office.Holiday>(this._Catalog, sql);
+            const string sql = "SELECT * FROM hrm.wage_processing ORDER BY wage_processing_id;";
+            return Factory.Get<MixERP.Net.Entities.HRM.WageProcessing>(this._Catalog, sql);
         }
 
         /// <summary>
-        /// Executes a select query on the table "office.holidays" with a where filter on the column "holiday_id" to return a single instance of the "Holiday" class. 
+        /// Executes a select query on the table "hrm.wage_processing" with a where filter on the column "wage_processing_id" to return a single instance of the "WageProcessing" class. 
         /// </summary>
-        /// <param name="holidayId">The column "holiday_id" parameter used on where filter.</param>
-        /// <returns>Returns a non-live, non-mapped instance of "Holiday" class mapped to the database row.</returns>
+        /// <param name="wageProcessingId">The column "wage_processing_id" parameter used on where filter.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "WageProcessing" class mapped to the database row.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public MixERP.Net.Entities.Office.Holiday Get(int holidayId)
+        public MixERP.Net.Entities.HRM.WageProcessing Get(long wageProcessingId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -138,22 +138,22 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to the get entity \"Holiday\" filtered by \"HolidayId\" with value {HolidayId} was denied to the user with Login ID {_LoginId}", holidayId, this._LoginId);
+                    Log.Information("Access to the get entity \"WageProcessing\" filtered by \"WageProcessingId\" with value {WageProcessingId} was denied to the user with Login ID {_LoginId}", wageProcessingId, this._LoginId);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            const string sql = "SELECT * FROM office.holidays WHERE holiday_id=@0;";
-            return Factory.Get<MixERP.Net.Entities.Office.Holiday>(this._Catalog, sql, holidayId).FirstOrDefault();
+            const string sql = "SELECT * FROM hrm.wage_processing WHERE wage_processing_id=@0;";
+            return Factory.Get<MixERP.Net.Entities.HRM.WageProcessing>(this._Catalog, sql, wageProcessingId).FirstOrDefault();
         }
 
         /// <summary>
-        /// Executes a select query on the table "office.holidays" with a where filter on the column "holiday_id" to return a multiple instances of the "Holiday" class. 
+        /// Executes a select query on the table "hrm.wage_processing" with a where filter on the column "wage_processing_id" to return a multiple instances of the "WageProcessing" class. 
         /// </summary>
-        /// <param name="holidayIds">Array of column "holiday_id" parameter used on where filter.</param>
-        /// <returns>Returns a non-live, non-mapped collection of "Holiday" class mapped to the database row.</returns>
+        /// <param name="wageProcessingIds">Array of column "wage_processing_id" parameter used on where filter.</param>
+        /// <returns>Returns a non-live, non-mapped collection of "WageProcessing" class mapped to the database row.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Office.Holiday> Get(int[] holidayIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.WageProcessing> Get(long[] wageProcessingIds)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -168,20 +168,20 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to entity \"Holiday\" was denied to the user with Login ID {LoginId}. holidayIds: {holidayIds}.", this._LoginId, holidayIds);
+                    Log.Information("Access to entity \"WageProcessing\" was denied to the user with Login ID {LoginId}. wageProcessingIds: {wageProcessingIds}.", this._LoginId, wageProcessingIds);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            const string sql = "SELECT * FROM office.holidays WHERE holiday_id IN (@0);";
+            const string sql = "SELECT * FROM hrm.wage_processing WHERE wage_processing_id IN (@0);";
 
-            return Factory.Get<MixERP.Net.Entities.Office.Holiday>(this._Catalog, sql, holidayIds);
+            return Factory.Get<MixERP.Net.Entities.HRM.WageProcessing>(this._Catalog, sql, wageProcessingIds);
         }
 
         /// <summary>
-        /// Custom fields are user defined form elements for office.holidays.
+        /// Custom fields are user defined form elements for hrm.wage_processing.
         /// </summary>
-        /// <returns>Returns an enumerable custom field collection for the table office.holidays</returns>
+        /// <returns>Returns an enumerable custom field collection for the table hrm.wage_processing</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<PetaPoco.CustomField> GetCustomFields(string resourceId)
         {
@@ -198,7 +198,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to get custom fields for entity \"Holiday\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    Log.Information("Access to get custom fields for entity \"WageProcessing\" was denied to the user with Login ID {LoginId}", this._LoginId);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
@@ -206,18 +206,18 @@ namespace MixERP.Net.Schemas.Office.Data
             string sql;
             if (string.IsNullOrWhiteSpace(resourceId))
             {
-                sql = "SELECT * FROM core.custom_field_definition_view WHERE table_name='office.holidays' ORDER BY field_order;";
+                sql = "SELECT * FROM core.custom_field_definition_view WHERE table_name='hrm.wage_processing' ORDER BY field_order;";
                 return Factory.Get<PetaPoco.CustomField>(this._Catalog, sql);
             }
 
-            sql = "SELECT * from core.get_custom_field_definition('office.holidays'::text, @0::text) ORDER BY field_order;";
+            sql = "SELECT * from core.get_custom_field_definition('hrm.wage_processing'::text, @0::text) ORDER BY field_order;";
             return Factory.Get<PetaPoco.CustomField>(this._Catalog, sql, resourceId);
         }
 
         /// <summary>
-        /// Displayfields provide a minimal name/value context for data binding the row collection of office.holidays.
+        /// Displayfields provide a minimal name/value context for data binding the row collection of hrm.wage_processing.
         /// </summary>
-        /// <returns>Returns an enumerable name and value collection for the table office.holidays</returns>
+        /// <returns>Returns an enumerable name and value collection for the table hrm.wage_processing</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<DisplayField> GetDisplayFields()
         {
@@ -236,12 +236,12 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to get display field for entity \"Holiday\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    Log.Information("Access to get display field for entity \"WageProcessing\" was denied to the user with Login ID {LoginId}", this._LoginId);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            const string sql = "SELECT holiday_id AS key, holiday_name as value FROM office.holidays;";
+            const string sql = "SELECT wage_processing_id AS key, wage_processing_id as value FROM hrm.wage_processing;";
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
             {
                 using (DataTable table = DbOperation.GetDataTable(this._Catalog, command))
@@ -271,12 +271,12 @@ namespace MixERP.Net.Schemas.Office.Data
         }
 
         /// <summary>
-        /// Inserts or updates the instance of Holiday class on the database table "office.holidays".
+        /// Inserts or updates the instance of WageProcessing class on the database table "hrm.wage_processing".
         /// </summary>
-        /// <param name="holiday">The instance of "Holiday" class to insert or update.</param>
+        /// <param name="wageProcessing">The instance of "WageProcessing" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Office.Holiday holiday, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(MixERP.Net.Entities.HRM.WageProcessing wageProcessing, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -285,23 +285,23 @@ namespace MixERP.Net.Schemas.Office.Data
 
             object primaryKeyValue;
 
-            holiday.AuditUserId = this._UserId;
-            holiday.AuditTs = System.DateTime.UtcNow;
+            wageProcessing.AuditUserId = this._UserId;
+            wageProcessing.AuditTs = System.DateTime.UtcNow;
 
-            if (holiday.HolidayId > 0)
+            if (wageProcessing.WageProcessingId > 0)
             {
-                primaryKeyValue = holiday.HolidayId;
-                this.Update(holiday, holiday.HolidayId);
+                primaryKeyValue = wageProcessing.WageProcessingId;
+                this.Update(wageProcessing, wageProcessing.WageProcessingId);
             }
             else
             {
-                primaryKeyValue = this.Add(holiday);
+                primaryKeyValue = this.Add(wageProcessing);
             }
 
             string sql = "DELETE FROM core.custom_fields WHERE custom_field_setup_id IN(" +
                          "SELECT custom_field_setup_id " +
                          "FROM core.custom_field_setup " +
-                         "WHERE form_name=core.get_custom_field_form_name('office.holidays')" +
+                         "WHERE form_name=core.get_custom_field_form_name('hrm.wage_processing')" +
                          ");";
 
             Factory.NonQuery(this._Catalog, sql);
@@ -314,7 +314,7 @@ namespace MixERP.Net.Schemas.Office.Data
             foreach (var field in customFields)
             {
                 sql = "INSERT INTO core.custom_fields(custom_field_setup_id, resource_id, value) " +
-                      "SELECT core.get_custom_field_setup_id_by_table_name('office.holidays', @0::character varying(100)), " +
+                      "SELECT core.get_custom_field_setup_id_by_table_name('hrm.wage_processing', @0::character varying(100)), " +
                       "@1, @2;";
 
                 Factory.NonQuery(this._Catalog, sql, field.FieldName, primaryKeyValue, field.Value);
@@ -324,11 +324,11 @@ namespace MixERP.Net.Schemas.Office.Data
         }
 
         /// <summary>
-        /// Inserts the instance of Holiday class on the database table "office.holidays".
+        /// Inserts the instance of WageProcessing class on the database table "hrm.wage_processing".
         /// </summary>
-        /// <param name="holiday">The instance of "Holiday" class to insert.</param>
+        /// <param name="wageProcessing">The instance of "WageProcessing" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Office.Holiday holiday)
+        public object Add(MixERP.Net.Entities.HRM.WageProcessing wageProcessing)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -343,20 +343,20 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to add entity \"Holiday\" was denied to the user with Login ID {LoginId}. {Holiday}", this._LoginId, holiday);
+                    Log.Information("Access to add entity \"WageProcessing\" was denied to the user with Login ID {LoginId}. {WageProcessing}", this._LoginId, wageProcessing);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            return Factory.Insert(this._Catalog, holiday);
+            return Factory.Insert(this._Catalog, wageProcessing);
         }
 
         /// <summary>
-        /// Inserts or updates multiple instances of Holiday class on the database table "office.holidays";
+        /// Inserts or updates multiple instances of WageProcessing class on the database table "hrm.wage_processing";
         /// </summary>
-        /// <param name="holidays">List of "Holiday" class to import.</param>
+        /// <param name="wageProcessings">List of "WageProcessing" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Office.Holiday> holidays)
+        public List<object> BulkImport(List<MixERP.Net.Entities.HRM.WageProcessing> wageProcessings)
         {
             if (!this.SkipValidation)
             {
@@ -367,7 +367,7 @@ namespace MixERP.Net.Schemas.Office.Data
 
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to import entity \"Holiday\" was denied to the user with Login ID {LoginId}. {holidays}", this._LoginId, holidays);
+                    Log.Information("Access to import entity \"WageProcessing\" was denied to the user with Login ID {LoginId}. {wageProcessings}", this._LoginId, wageProcessings);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
@@ -380,21 +380,21 @@ namespace MixERP.Net.Schemas.Office.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var holiday in holidays)
+                        foreach (var wageProcessing in wageProcessings)
                         {
                             line++;
 
-                            holiday.AuditUserId = this._UserId;
-                            holiday.AuditTs = System.DateTime.UtcNow;
+                            wageProcessing.AuditUserId = this._UserId;
+                            wageProcessing.AuditTs = System.DateTime.UtcNow;
 
-                            if (holiday.HolidayId > 0)
+                            if (wageProcessing.WageProcessingId > 0)
                             {
-                                result.Add(holiday.HolidayId);
-                                db.Update(holiday, holiday.HolidayId);
+                                result.Add(wageProcessing.WageProcessingId);
+                                db.Update(wageProcessing, wageProcessing.WageProcessingId);
                             }
                             else
                             {
-                                result.Add(db.Insert(holiday));
+                                result.Add(db.Insert(wageProcessing));
                             }
                         }
 
@@ -426,12 +426,12 @@ namespace MixERP.Net.Schemas.Office.Data
         }
 
         /// <summary>
-        /// Updates the row of the table "office.holidays" with an instance of "Holiday" class against the primary key value.
+        /// Updates the row of the table "hrm.wage_processing" with an instance of "WageProcessing" class against the primary key value.
         /// </summary>
-        /// <param name="holiday">The instance of "Holiday" class to update.</param>
-        /// <param name="holidayId">The value of the column "holiday_id" which will be updated.</param>
+        /// <param name="wageProcessing">The instance of "WageProcessing" class to update.</param>
+        /// <param name="wageProcessingId">The value of the column "wage_processing_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Office.Holiday holiday, int holidayId)
+        public void Update(MixERP.Net.Entities.HRM.WageProcessing wageProcessing, long wageProcessingId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -446,20 +446,20 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to edit entity \"Holiday\" with Primary Key {PrimaryKey} was denied to the user with Login ID {LoginId}. {Holiday}", holidayId, this._LoginId, holiday);
+                    Log.Information("Access to edit entity \"WageProcessing\" with Primary Key {PrimaryKey} was denied to the user with Login ID {LoginId}. {WageProcessing}", wageProcessingId, this._LoginId, wageProcessing);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            Factory.Update(this._Catalog, holiday, holidayId);
+            Factory.Update(this._Catalog, wageProcessing, wageProcessingId);
         }
 
         /// <summary>
-        /// Deletes the row of the table "office.holidays" against the primary key value.
+        /// Deletes the row of the table "hrm.wage_processing" against the primary key value.
         /// </summary>
-        /// <param name="holidayId">The value of the column "holiday_id" which will be deleted.</param>
+        /// <param name="wageProcessingId">The value of the column "wage_processing_id" which will be deleted.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Delete(int holidayId)
+        public void Delete(long wageProcessingId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -474,21 +474,21 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to delete entity \"Holiday\" with Primary Key {PrimaryKey} was denied to the user with Login ID {LoginId}.", holidayId, this._LoginId);
+                    Log.Information("Access to delete entity \"WageProcessing\" with Primary Key {PrimaryKey} was denied to the user with Login ID {LoginId}.", wageProcessingId, this._LoginId);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            const string sql = "DELETE FROM office.holidays WHERE holiday_id=@0;";
-            Factory.NonQuery(this._Catalog, sql, holidayId);
+            const string sql = "DELETE FROM hrm.wage_processing WHERE wage_processing_id=@0;";
+            Factory.NonQuery(this._Catalog, sql, wageProcessingId);
         }
 
         /// <summary>
-        /// Performs a select statement on table "office.holidays" producing a paginated result of 10.
+        /// Performs a select statement on table "hrm.wage_processing" producing a paginated result of 10.
         /// </summary>
-        /// <returns>Returns the first page of collection of "Holiday" class.</returns>
+        /// <returns>Returns the first page of collection of "WageProcessing" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Office.Holiday> GetPaginatedResult()
+        public IEnumerable<MixERP.Net.Entities.HRM.WageProcessing> GetPaginatedResult()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -503,22 +503,22 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to the first page of the entity \"Holiday\" was denied to the user with Login ID {LoginId}.", this._LoginId);
+                    Log.Information("Access to the first page of the entity \"WageProcessing\" was denied to the user with Login ID {LoginId}.", this._LoginId);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            const string sql = "SELECT * FROM office.holidays ORDER BY holiday_id LIMIT 10 OFFSET 0;";
-            return Factory.Get<MixERP.Net.Entities.Office.Holiday>(this._Catalog, sql);
+            const string sql = "SELECT * FROM hrm.wage_processing ORDER BY wage_processing_id LIMIT 10 OFFSET 0;";
+            return Factory.Get<MixERP.Net.Entities.HRM.WageProcessing>(this._Catalog, sql);
         }
 
         /// <summary>
-        /// Performs a select statement on table "office.holidays" producing a paginated result of 10.
+        /// Performs a select statement on table "hrm.wage_processing" producing a paginated result of 10.
         /// </summary>
         /// <param name="pageNumber">Enter the page number to produce the paginated result.</param>
-        /// <returns>Returns collection of "Holiday" class.</returns>
+        /// <returns>Returns collection of "WageProcessing" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Office.Holiday> GetPaginatedResult(long pageNumber)
+        public IEnumerable<MixERP.Net.Entities.HRM.WageProcessing> GetPaginatedResult(long pageNumber)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -533,28 +533,28 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to Page #{Page} of the entity \"Holiday\" was denied to the user with Login ID {LoginId}.", pageNumber, this._LoginId);
+                    Log.Information("Access to Page #{Page} of the entity \"WageProcessing\" was denied to the user with Login ID {LoginId}.", pageNumber, this._LoginId);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
             long offset = (pageNumber - 1) * 10;
-            const string sql = "SELECT * FROM office.holidays ORDER BY holiday_id LIMIT 10 OFFSET @0;";
+            const string sql = "SELECT * FROM hrm.wage_processing ORDER BY wage_processing_id LIMIT 10 OFFSET @0;";
 
-            return Factory.Get<MixERP.Net.Entities.Office.Holiday>(this._Catalog, sql, offset);
+            return Factory.Get<MixERP.Net.Entities.HRM.WageProcessing>(this._Catalog, sql, offset);
         }
 
         private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
-            const string sql = "SELECT * FROM core.filters WHERE object_name='office.holidays' AND lower(filter_name)=lower(@0);";
+            const string sql = "SELECT * FROM core.filters WHERE object_name='hrm.wage_processing' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();
         }
 
         /// <summary>
-        /// Performs a filtered count on table "office.holidays".
+        /// Performs a filtered count on table "hrm.wage_processing".
         /// </summary>
         /// <param name="filters">The list of filter conditions.</param>
-        /// <returns>Returns number of rows of "Holiday" class using the filter.</returns>
+        /// <returns>Returns number of rows of "WageProcessing" class using the filter.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public long CountWhere(List<EntityParser.Filter> filters)
         {
@@ -571,25 +571,25 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to count entity \"Holiday\" was denied to the user with Login ID {LoginId}. Filters: {Filters}.", this._LoginId, filters);
+                    Log.Information("Access to count entity \"WageProcessing\" was denied to the user with Login ID {LoginId}. Filters: {Filters}.", this._LoginId, filters);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            Sql sql = Sql.Builder.Append("SELECT COUNT(*) FROM office.holidays WHERE 1 = 1");
-            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.Office.Holiday(), filters);
+            Sql sql = Sql.Builder.Append("SELECT COUNT(*) FROM hrm.wage_processing WHERE 1 = 1");
+            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.HRM.WageProcessing(), filters);
 
             return Factory.Scalar<long>(this._Catalog, sql);
         }
 
         /// <summary>
-        /// Performs a filtered select statement on table "office.holidays" producing a paginated result of 10.
+        /// Performs a filtered select statement on table "hrm.wage_processing" producing a paginated result of 10.
         /// </summary>
         /// <param name="pageNumber">Enter the page number to produce the paginated result. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filters">The list of filter conditions.</param>
-        /// <returns>Returns collection of "Holiday" class.</returns>
+        /// <returns>Returns collection of "WageProcessing" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Office.Holiday> GetWhere(long pageNumber, List<EntityParser.Filter> filters)
+        public IEnumerable<MixERP.Net.Entities.HRM.WageProcessing> GetWhere(long pageNumber, List<EntityParser.Filter> filters)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -604,17 +604,17 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to Page #{Page} of the filtered entity \"Holiday\" was denied to the user with Login ID {LoginId}. Filters: {Filters}.", pageNumber, this._LoginId, filters);
+                    Log.Information("Access to Page #{Page} of the filtered entity \"WageProcessing\" was denied to the user with Login ID {LoginId}. Filters: {Filters}.", pageNumber, this._LoginId, filters);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
             long offset = (pageNumber - 1) * 10;
-            Sql sql = Sql.Builder.Append("SELECT * FROM office.holidays WHERE 1 = 1");
+            Sql sql = Sql.Builder.Append("SELECT * FROM hrm.wage_processing WHERE 1 = 1");
 
-            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.Office.Holiday(), filters);
+            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.HRM.WageProcessing(), filters);
 
-            sql.OrderBy("holiday_id");
+            sql.OrderBy("wage_processing_id");
 
             if (pageNumber > 0)
             {
@@ -622,14 +622,14 @@ namespace MixERP.Net.Schemas.Office.Data
                 sql.Append("OFFSET @0", offset);
             }
 
-            return Factory.Get<MixERP.Net.Entities.Office.Holiday>(this._Catalog, sql);
+            return Factory.Get<MixERP.Net.Entities.HRM.WageProcessing>(this._Catalog, sql);
         }
 
         /// <summary>
-        /// Performs a filtered count on table "office.holidays".
+        /// Performs a filtered count on table "hrm.wage_processing".
         /// </summary>
         /// <param name="filterName">The named filter.</param>
-        /// <returns>Returns number of rows of "Holiday" class using the filter.</returns>
+        /// <returns>Returns number of rows of "WageProcessing" class using the filter.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public long CountFiltered(string filterName)
         {
@@ -646,26 +646,26 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to count entity \"Holiday\" was denied to the user with Login ID {LoginId}. Filter: {Filter}.", this._LoginId, filterName);
+                    Log.Information("Access to count entity \"WageProcessing\" was denied to the user with Login ID {LoginId}. Filter: {Filter}.", this._LoginId, filterName);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
             List<EntityParser.Filter> filters = this.GetFilters(this._Catalog, filterName);
-            Sql sql = Sql.Builder.Append("SELECT COUNT(*) FROM office.holidays WHERE 1 = 1");
-            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.Office.Holiday(), filters);
+            Sql sql = Sql.Builder.Append("SELECT COUNT(*) FROM hrm.wage_processing WHERE 1 = 1");
+            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.HRM.WageProcessing(), filters);
 
             return Factory.Scalar<long>(this._Catalog, sql);
         }
 
         /// <summary>
-        /// Performs a filtered select statement on table "office.holidays" producing a paginated result of 10.
+        /// Performs a filtered select statement on table "hrm.wage_processing" producing a paginated result of 10.
         /// </summary>
         /// <param name="pageNumber">Enter the page number to produce the paginated result. If you provide a negative number, the result will not be paginated.</param>
         /// <param name="filterName">The named filter.</param>
-        /// <returns>Returns collection of "Holiday" class.</returns>
+        /// <returns>Returns collection of "WageProcessing" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Office.Holiday> GetFiltered(long pageNumber, string filterName)
+        public IEnumerable<MixERP.Net.Entities.HRM.WageProcessing> GetFiltered(long pageNumber, string filterName)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -680,7 +680,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to Page #{Page} of the filtered entity \"Holiday\" was denied to the user with Login ID {LoginId}. Filter: {Filter}.", pageNumber, this._LoginId, filterName);
+                    Log.Information("Access to Page #{Page} of the filtered entity \"WageProcessing\" was denied to the user with Login ID {LoginId}. Filter: {Filter}.", pageNumber, this._LoginId, filterName);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
@@ -688,11 +688,11 @@ namespace MixERP.Net.Schemas.Office.Data
             List<EntityParser.Filter> filters = this.GetFilters(this._Catalog, filterName);
 
             long offset = (pageNumber - 1) * 10;
-            Sql sql = Sql.Builder.Append("SELECT * FROM office.holidays WHERE 1 = 1");
+            Sql sql = Sql.Builder.Append("SELECT * FROM hrm.wage_processing WHERE 1 = 1");
 
-            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.Office.Holiday(), filters);
+            MixERP.Net.EntityParser.Data.Service.AddFilters(ref sql, new MixERP.Net.Entities.HRM.WageProcessing(), filters);
 
-            sql.OrderBy("holiday_id");
+            sql.OrderBy("wage_processing_id");
 
             if (pageNumber > 0)
             {
@@ -700,7 +700,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 sql.Append("OFFSET @0", offset);
             }
 
-            return Factory.Get<MixERP.Net.Entities.Office.Holiday>(this._Catalog, sql);
+            return Factory.Get<MixERP.Net.Entities.HRM.WageProcessing>(this._Catalog, sql);
         }
 
 

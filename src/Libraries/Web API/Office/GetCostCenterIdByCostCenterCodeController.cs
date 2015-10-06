@@ -82,6 +82,7 @@ namespace MixERP.Net.Api.Office
             {
                 this.procedure.CostCenterCode = annotation.CostCenterCode;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

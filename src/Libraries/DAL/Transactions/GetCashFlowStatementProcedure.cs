@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -97,6 +98,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.get_cash_flow_statement".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public string Execute()
         {
             if (!this.SkipValidation)
@@ -111,8 +113,25 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.get_cash_flow_statement(@0::date, @1::date, @2::integer, @3::integer, @4::integer);";
-            return Factory.Scalar<string>(this._Catalog, query, this.DateFrom, this.DateTo, this.UserId, this.OfficeId, this.Factor);
+            string query = "SELECT * FROM transactions.get_cash_flow_statement(@DateFrom, @DateTo, @UserId, @OfficeId, @Factor);";
+
+            query = query.ReplaceWholeWord("@DateFrom", "@0::date");
+            query = query.ReplaceWholeWord("@DateTo", "@1::date");
+            query = query.ReplaceWholeWord("@UserId", "@2::integer");
+            query = query.ReplaceWholeWord("@OfficeId", "@3::integer");
+            query = query.ReplaceWholeWord("@Factor", "@4::integer");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.DateFrom);
+            parameters.Add(this.DateTo);
+            parameters.Add(this.UserId);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.Factor);
+
+            return Factory.Scalar<string>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

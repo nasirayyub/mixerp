@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -91,6 +92,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.get_transaction_code".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public string Execute()
         {
             if (!this.SkipValidation)
@@ -105,8 +107,23 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.get_transaction_code(@0::date, @1::integer, @2::integer, @3::bigint);";
-            return Factory.Scalar<string>(this._Catalog, query, this.ValueDate, this.OfficeId, this.UserId, this.LoginId);
+            string query = "SELECT * FROM transactions.get_transaction_code(@ValueDate, @OfficeId, @UserId, @LoginId);";
+
+            query = query.ReplaceWholeWord("@ValueDate", "@0::date");
+            query = query.ReplaceWholeWord("@OfficeId", "@1::integer");
+            query = query.ReplaceWholeWord("@UserId", "@2::integer");
+            query = query.ReplaceWholeWord("@LoginId", "@3::bigint");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.ValueDate);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.UserId);
+            parameters.Add(this.LoginId);
+
+            return Factory.Scalar<string>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

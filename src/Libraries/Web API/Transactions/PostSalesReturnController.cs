@@ -66,8 +66,8 @@ namespace MixERP.Net.Api.Transactions
             public int PriceTypeId { get; set; }
             public string ReferenceNumber { get; set; }
             public string StatementReference { get; set; }
-            public MixERP.Net.Entities.Transactions.StockDetailType[][] Details { get; set; }
-            public MixERP.Net.Entities.Core.AttachmentType[][] Attachments { get; set; }
+            public MixERP.Net.Entities.Transactions.StockDetailType[] Details { get; set; }
+            public MixERP.Net.Entities.Core.AttachmentType[] Attachments { get; set; }
         }
 
         public PostSalesReturnController()
@@ -103,6 +103,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.StatementReference = annotation.StatementReference;
                 this.procedure.Details = annotation.Details;
                 this.procedure.Attachments = annotation.Attachments;
+
 
                 return this.procedure.Execute();
             }

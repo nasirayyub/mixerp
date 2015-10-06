@@ -65,6 +65,7 @@
     <Compile Include="Contract.cs" />
     <Compile Include="ContractScrudView.cs" />
     <Compile Include="ContractVerificationScrudView.cs" />
+    <Compile Include="DbGetWageAttendanceResult.cs" />
     <Compile Include="DeductionAccountSelectorView.cs" />
     <Compile Include="DeductionSetup.cs" />
     <Compile Include="DeductionSetupScrudView.cs" />
@@ -123,6 +124,9 @@
     <Compile Include="Termination.cs" />
     <Compile Include="TerminationScrudView.cs" />
     <Compile Include="TerminationVerificationScrudView.cs" />
+    <Compile Include="WagePostingAccountSelectorView.cs" />
+    <Compile Include="WageProcessing.cs" />
+    <Compile Include="WageProcessingDetail.cs" />
     <Compile Include="WagesAccountSelectorView.cs" />
     <Compile Include="WagesSetup.cs" />
   </ItemGroup>

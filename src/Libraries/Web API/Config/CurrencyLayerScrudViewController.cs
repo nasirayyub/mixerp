@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Config
             }
         }
 
+        /// <summary>
+        ///     Returns collection of currency layer scrud view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/config/currency-layer-scrud-view/export")]
+        [Route("~/api/config/currency-layer-scrud-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Config.CurrencyLayerScrudView> Get()
+        {
+            try
+            {
+                return this.CurrencyLayerScrudViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 currency layer scrud views on each page, sorted by the property .

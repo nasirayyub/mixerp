@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -73,6 +74,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.are_purchase_orders_already_merged".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public bool Execute()
         {
             if (!this.SkipValidation)
@@ -87,8 +89,51 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.are_purchase_orders_already_merged(@0::bigint[]);";
-            return Factory.Scalar<bool>(this._Catalog, query, this.Arr);
+            string query = "SELECT * FROM transactions.are_purchase_orders_already_merged(@Arr);";
+
+
+            int arrOffset = 0;
+            query = query.ReplaceWholeWord("@Arr", "ARRAY[" + this.SqlForArr(this.Arr, arrOffset, 0) + "]");
+
+
+            List<object> parameters = new List<object>();
+            parameters.AddRange(this.ParamsForArr(this.Arr));
+
+            return Factory.Scalar<bool>(this._Catalog, query, parameters.ToArray());
+        }
+
+        private string SqlForArr(long[] arrs, int offset, int memberCount)
+        {
+            if (arrs == null)
+            {
+                return "NULL::bigint";
+            }
+            List<string> parameters = new List<string>();
+            for (int i = 0; i < arrs.Count(); i++)
+            {
+                List<string> args = new List<string>();
+                args.Add("@" + offset);
+                offset++;
+                string parameter = "{0}::bigint";
+                parameter = string.Format(System.Globalization.CultureInfo.InvariantCulture, parameter,
+                    string.Join(",", args));
+                parameters.Add(parameter);
+            }
+            return string.Join(",", parameters);
+        }
+
+        private List<object> ParamsForArr(long[] arrs)
+        {
+            List<object> collection = new List<object>();
+
+            if (arrs != null && arrs.Count() > 0)
+            {
+                foreach (long arr in arrs)
+                {
+
+                }
+            }
+            return collection;
         }
     }
 }

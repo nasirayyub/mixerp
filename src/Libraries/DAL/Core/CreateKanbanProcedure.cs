@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Core;
 using Npgsql;
@@ -91,6 +92,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <summary>
         /// Prepares and executes the function "core.create_kanban".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public void Execute()
         {
             if (!this.SkipValidation)
@@ -105,8 +107,23 @@ namespace MixERP.Net.Schemas.Core.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM core.create_kanban(@0::character varying, @1::integer, @2::character varying, @3::text);";
-            Factory.NonQuery(this._Catalog, query, this.ObjectName, this.UserId, this.KanbanName, this.Description);
+            string query = "SELECT * FROM core.create_kanban(@ObjectName, @UserId, @KanbanName, @Description);";
+
+            query = query.ReplaceWholeWord("@ObjectName", "@0::character varying");
+            query = query.ReplaceWholeWord("@UserId", "@1::integer");
+            query = query.ReplaceWholeWord("@KanbanName", "@2::character varying");
+            query = query.ReplaceWholeWord("@Description", "@3::text");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.ObjectName);
+            parameters.Add(this.UserId);
+            parameters.Add(this.KanbanName);
+            parameters.Add(this.Description);
+
+            Factory.NonQuery(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

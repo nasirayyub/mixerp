@@ -82,6 +82,7 @@ namespace MixERP.Net.Api.Transactions
             {
                 this.procedure.Arr = annotation.Arr;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

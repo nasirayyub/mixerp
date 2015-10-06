@@ -92,6 +92,7 @@ namespace MixERP.Net.Api.Transactions
                 this.procedure.VerificationStatusId = annotation.VerificationStatusId;
                 this.procedure.Reason = annotation.Reason;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

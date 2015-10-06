@@ -86,6 +86,7 @@ namespace MixERP.Net.Api.Core
                 this.procedure.Profit = annotation.Profit;
                 this.procedure.Balance = annotation.Balance;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)

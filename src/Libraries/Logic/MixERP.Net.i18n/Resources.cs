@@ -1836,6 +1836,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for hrs
+		/// </summary>
+		public static string HoursAbbreviated 
+		{
+			get
+			{
+				return Get("HoursAbbreviated");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Successfully imported {0} items.
 		/// </summary>
 		public static string ImportedNItems 
@@ -1880,6 +1891,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for mins
+		/// </summary>
+		public static string MinutesAbbreviate 
+		{
+			get
+			{
+				return Get("MinutesAbbreviate");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for There are {0} cash repositories in this office.
 		/// </summary>
 		public static string NCashRepositoriesInThisOffice 
@@ -1898,6 +1920,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("NCountySalesTaxesDefined");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for {0} hours
+		/// </summary>
+		public static string NHours 
+		{
+			get
+			{
+				return Get("NHours");
 			}
 		}
 		
@@ -10532,6 +10565,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Adjustment
+		/// </summary>
+		public static string Adjustment 
+		{
+			get
+			{
+				return Get("Adjustment");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Ageing Slabs
 		/// </summary>
 		public static string AgeingSlabs 
@@ -11588,6 +11632,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Create Payslips
+		/// </summary>
+		public static string CreatePayslips 
+		{
+			get
+			{
+				return Get("CreatePayslips");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Create Sales Tax Form
 		/// </summary>
 		public static string CreateSalesTaxForm 
@@ -12633,6 +12688,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Employee
+		/// </summary>
+		public static string Employee 
+		{
+			get
+			{
+				return Get("Employee");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Employee Experience
 		/// </summary>
 		public static string EmployeeExperience 
@@ -13315,6 +13381,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Gender
+		/// </summary>
+		public static string Gender 
+		{
+			get
+			{
+				return Get("Gender");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Global Parameters
 		/// </summary>
 		public static string GlobalParameters 
@@ -13432,6 +13509,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("HomeCurrency");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Hours Worked
+		/// </summary>
+		public static string HoursWorked 
+		{
+			get
+			{
+				return Get("HoursWorked");
 			}
 		}
 		
@@ -14195,6 +14283,17 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Lunch Deduction
+		/// </summary>
+		public static string LunchDeduction 
+		{
+			get
+			{
+				return Get("LunchDeduction");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Moving Average Cost (MAVCO)
 		/// </summary>
 		public static string MAVCO 
@@ -14235,6 +14334,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("ManageProfile");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Marital Status
+		/// </summary>
+		public static string MaritalStatus 
+		{
+			get
+			{
+				return Get("MaritalStatus");
 			}
 		}
 		
@@ -14789,6 +14899,28 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Overtime Hours
+		/// </summary>
+		public static string OvertimeHours 
+		{
+			get
+			{
+				return Get("OvertimeHours");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Overtime Wage
+		/// </summary>
+		public static string OvertimeWage 
+		{
+			get
+			{
+				return Get("OvertimeWage");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for PAN Number
 		/// </summary>
 		public static string PANNumber 
@@ -14950,6 +15082,28 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("PayGrades");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Pay Hours
+		/// </summary>
+		public static string PayHours 
+		{
+			get
+			{
+				return Get("PayHours");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Pay Rate
+		/// </summary>
+		public static string PayRate 
+		{
+			get
+			{
+				return Get("PayRate");
 			}
 		}
 		
@@ -15269,6 +15423,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("PrintReceipt");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Process Wage
+		/// </summary>
+		public static string ProcessWage 
+		{
+			get
+			{
+				return Get("ProcessWage");
 			}
 		}
 		
@@ -15665,6 +15830,28 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("RegistrationDate");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Regular Hours
+		/// </summary>
+		public static string RegularHours 
+		{
+			get
+			{
+				return Get("RegularHours");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Regular Wage
+		/// </summary>
+		public static string RegularWage 
+		{
+			get
+			{
+				return Get("RegularWage");
 			}
 		}
 		
@@ -18151,6 +18338,28 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("VoucherVerificationPolicy");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Wage
+		/// </summary>
+		public static string Wage 
+		{
+			get
+			{
+				return Get("Wage");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Wage Processing
+		/// </summary>
+		public static string WageProcessing 
+		{
+			get
+			{
+				return Get("WageProcessing");
 			}
 		}
 		

@@ -266,7 +266,7 @@ CREATE TABLE hrm.wages_setup
     hourly_rate                             public.money_strict NOT NULL,
     overtime_applicable                     boolean NOT NULL DEFAULT(true),
     overtime_hourly_rate                    public.money_strict2 NOT NULL,
-    account_id                              bigint NOT NULL REFERENCES core.accounts(account_id),
+    expense_account_id                      bigint NOT NULL REFERENCES core.accounts(account_id),
     description                             text,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),
     
@@ -285,6 +285,7 @@ CREATE TABLE hrm.employee_wages
     hourly_rate                             public.money_strict NOT NULL,
     overtime_applicable                     boolean NOT NULL,
     overtime_hourly_rate                    public.money_strict2 DEFAULT(0),
+    posting_account_id                      bigint NOT NULL REFERENCES core.accounts(account_id),
     valid_till                              date NOT NULL,
     is_active                               boolean,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),    
@@ -324,7 +325,7 @@ CREATE TABLE hrm.salary_tax_income_brackets
     salary_tax_income_bracket_id            SERIAL NOT NULL PRIMARY KEY,
     salary_tax_id                           integer NOT NULL REFERENCES hrm.salary_taxes(salary_tax_id),
     salary_from                             public.money_strict NOT NULL,
-    salary_to                               public.money_strict NOT NULL
+    salary_to                               public.money_strict NULL
                                             CHECK (salary_to > salary_from),
     income_tax_rate                         public.decimal_strict NOT NULL,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),    
@@ -555,6 +556,62 @@ CREATE TABLE hrm.salary_deductions
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
                                             DEFAULT(NOW())    
 );
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_salary_tax_id_by_salary_tax_code.sql --<--<--
+DROP FUNCTION IF EXISTS hrm.get_salary_tax_id_by_salary_tax_code(_salary_tax_code national character varying(12));
+CREATE FUNCTION hrm.get_salary_tax_id_by_salary_tax_code(_salary_tax_code national character varying(12))
+RETURNS integer
+AS
+$$
+BEGIN
+    RETURN salary_tax_id
+    FROM hrm.salary_taxes
+    WHERE salary_tax_code = $1;
+END
+$$
+LANGUAGE plpgsql;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/logic/hrm.get_wage_attendance.sql --<--<--
+DROP FUNCTION IF EXISTS hrm.get_wage_attendance
+(
+    _employee_id            integer,
+    _as_of                  date
+);
+
+CREATE FUNCTION hrm.get_wage_attendance
+(
+    _employee_id            integer,
+    _as_of                  date
+)
+RETURNS TABLE
+(
+    employee_id             integer,
+    employee                text,
+    photo                   text,
+    attendance_date         date,
+    hours_worked            numeric
+)
+AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT
+        hrm.employees.employee_id,
+        hrm.employees.employee_code || ' (' || hrm.employees.employee_name || ')' AS employee,
+        hrm.employees.photo::text,
+        hrm.attendances.attendance_date,
+        ROUND((EXTRACT(EPOCH FROM hrm.attendances.check_out_time - check_in_time)/3600)::numeric, 2) AS hours_worked
+    FROM hrm.attendances
+    INNER JOIN hrm.employees
+    ON hrm.employees.employee_id = hrm.attendances.employee_id
+    WHERE hrm.attendances.attendance_date <= _as_of
+    AND was_present
+    AND hrm.employees.employee_id = _employee_id;
+END
+$$
+LANGUAGE plpgsql;
+
+--SELECT * FROM hrm.get_wage_attendance(1, (NOW() + INTERVAL '10 days')::date);
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/triggers/employee_dismissal.sql --<--<--
 DROP FUNCTION IF EXISTS hrm.dismiss_employee() CASCADE;
@@ -1228,15 +1285,24 @@ WHERE account_master_id = ANY(ARRAY[10110, 15010])
 ORDER BY account_id;
 
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.selector-views/hrm.wage_posting_account_selector_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.wage_posting_account_selector_view;
+
+CREATE VIEW hrm.wage_posting_account_selector_view
+AS
+SELECT * FROM core.account_scrud_view
+--Accounts Receivable, Accounts Payable
+WHERE account_master_id = ANY(ARRAY[10110, 15010])
+ORDER BY account_id;
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.selector-views/hrm.wages_account_selector_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.wages_account_selector_view;
 
 CREATE VIEW hrm.wages_account_selector_view
 AS
 SELECT * FROM core.account_scrud_view
---Accounts Receivable, Accounts Payable
-WHERE account_master_id = ANY(ARRAY[10110, 15010])
-ORDER BY account_id;
+WHERE account_master_id >= 20400
+ORDER BY account_id; --Expenses
 
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.views/hrm.attendance_view.sql --<--<--

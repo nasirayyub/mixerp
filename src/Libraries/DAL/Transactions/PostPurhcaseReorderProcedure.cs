@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Transactions;
 using Npgsql;
@@ -69,7 +70,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Maps to "_details" argument of the function "transactions.post_purhcase_reorder".
         /// </summary>
-        public MixERP.Net.Entities.Transactions.PurchaseReorderType[][] Details { get; set; }
+        public MixERP.Net.Entities.Transactions.PurchaseReorderType[] Details { get; set; }
 
         /// <summary>
         /// Prepares, validates, and executes the function "transactions.post_purhcase_reorder(_value_date date, _login_id bigint, _user_id integer, _office_id integer, _details transactions.purchase_reorder_type[])" on the database.
@@ -86,7 +87,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="userId">Enter argument value for "_user_id" parameter of the function "transactions.post_purhcase_reorder".</param>
         /// <param name="officeId">Enter argument value for "_office_id" parameter of the function "transactions.post_purhcase_reorder".</param>
         /// <param name="details">Enter argument value for "_details" parameter of the function "transactions.post_purhcase_reorder".</param>
-        public PostPurhcaseReorderProcedure(DateTime valueDate, long loginId, int userId, int officeId, MixERP.Net.Entities.Transactions.PurchaseReorderType[][] details)
+        public PostPurhcaseReorderProcedure(DateTime valueDate, long loginId, int userId, int officeId, MixERP.Net.Entities.Transactions.PurchaseReorderType[] details)
         {
             this.ValueDate = valueDate;
             this.LoginId = loginId;
@@ -97,6 +98,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <summary>
         /// Prepares and executes the function "transactions.post_purhcase_reorder".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public bool Execute()
         {
             if (!this.SkipValidation)
@@ -111,8 +113,68 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM transactions.post_purhcase_reorder(@0::date, @1::bigint, @2::integer, @3::integer, @4::transactions.purchase_reorder_type[]);";
-            return Factory.Scalar<bool>(this._Catalog, query, this.ValueDate, this.LoginId, this.UserId, this.OfficeId, this.Details);
+            string query = "SELECT * FROM transactions.post_purhcase_reorder(@ValueDate, @LoginId, @UserId, @OfficeId, @Details);";
+
+            query = query.ReplaceWholeWord("@ValueDate", "@0::date");
+            query = query.ReplaceWholeWord("@LoginId", "@1::bigint");
+            query = query.ReplaceWholeWord("@UserId", "@2::integer");
+            query = query.ReplaceWholeWord("@OfficeId", "@3::integer");
+
+            int detailsOffset = 4;
+            query = query.ReplaceWholeWord("@Details", "ARRAY[" + this.SqlForDetails(this.Details, detailsOffset, 6) + "]");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.ValueDate);
+            parameters.Add(this.LoginId);
+            parameters.Add(this.UserId);
+            parameters.Add(this.OfficeId);
+            parameters.AddRange(this.ParamsForDetails(this.Details));
+
+            return Factory.Scalar<bool>(this._Catalog, query, parameters.ToArray());
+        }
+
+        private string SqlForDetails(MixERP.Net.Entities.Transactions.PurchaseReorderType[] details, int offset, int memberCount)
+        {
+            if (details == null)
+            {
+                return "NULL::transactions.purchase_reorder_type";
+            }
+            List<string> parameters = new List<string>();
+            for (int i = 0; i < details.Count(); i++)
+            {
+                List<string> args = new List<string>();
+                for (int j = 0; j < memberCount; j++)
+                {
+                    args.Add("@" + offset);
+                    offset++;
+                }
+
+                string parameter = "ROW({0})::transactions.purchase_reorder_type";
+                parameter = string.Format(System.Globalization.CultureInfo.InvariantCulture, parameter,
+                    string.Join(",", args));
+                parameters.Add(parameter);
+            }
+            return string.Join(",", parameters);
+        }
+
+        private List<object> ParamsForDetails(MixERP.Net.Entities.Transactions.PurchaseReorderType[] details)
+        {
+            List<object> collection = new List<object>();
+
+            if (details != null && details.Count() > 0)
+            {
+                foreach (MixERP.Net.Entities.Transactions.PurchaseReorderType detail in details)
+                {
+                    collection.Add(detail.ItemId);
+                    collection.Add(detail.SupplierCode);
+                    collection.Add(detail.UnitId);
+                    collection.Add(detail.Price);
+                    collection.Add(detail.TaxCode);
+                    collection.Add(detail.OrderQuantity);
+                }
+            }
+            return collection;
         }
     }
 }

@@ -82,6 +82,7 @@ namespace MixERP.Net.Api.Core
             {
                 this.procedure.FlagTypeId = annotation.FlagTypeId;
 
+
                 return this.procedure.Execute();
             }
             catch (UnauthorizedException)
