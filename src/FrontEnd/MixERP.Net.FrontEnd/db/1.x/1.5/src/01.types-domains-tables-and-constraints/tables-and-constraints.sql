@@ -476,3 +476,21 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+DO
+$$
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM   pg_attribute 
+        WHERE  attrelid = 'core.salespersons'::regclass
+        AND    attname = 'photo'
+        AND    NOT attisdropped
+    ) THEN
+        ALTER TABLE core.salespersons
+        ADD COLUMN photo image;
+    END IF;
+END
+$$
+LANGUAGE plpgsql;

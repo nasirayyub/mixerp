@@ -154,11 +154,11 @@
     <Compile Include="TerminationController.cs" />
     <Compile Include="TerminationScrudViewController.cs" />
     <Compile Include="TerminationVerificationScrudViewController.cs" />
+    <Compile Include="WageAccountSelectorViewController.cs" />
     <Compile Include="WagePostingAccountSelectorViewController.cs" />
     <Compile Include="WageProcessingController.cs" />
     <Compile Include="WageProcessingDetailController.cs" />
-    <Compile Include="WagesAccountSelectorViewController.cs" />
-    <Compile Include="WagesSetupController.cs" />
+    <Compile Include="WageSetupController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mix Open Foundation.snk" />

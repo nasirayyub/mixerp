@@ -65,6 +65,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\MixERP.Net.i18n.dll</HintPath>
     </Reference>
+    <Reference Include="MixERP.Net.WebControls.ReportEngine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=a724a47a0879d02f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\MixERP.Net.WebControls.ReportEngine.dll</HintPath>
+    </Reference>
     <Reference Include="PetaPoco, Version=1.4.0.0, Culture=neutral, PublicKeyToken=a724a47a0879d02f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\PetaPoco.dll</HintPath>
@@ -96,6 +100,8 @@
   <ItemGroup>
     <Content Include="Payroll\Deduction.ascx" />
     <Content Include="Reports\Attendances.ascx" />
+    <Content Include="Reports\PaySlip.ascx" />
+    <Content Include="Reports\Source\HRM.Payroll.PaySlip.xml" />
     <Content Include="Setup\Deductions.ascx" />
     <Content Include="Setup\EmploymentTaxDetails.ascx" />
     <Content Include="Setup\EmploymentTaxes.ascx" />
@@ -155,6 +161,13 @@
     </Compile>
     <Compile Include="Reports\Attendances.ascx.designer.cs">
       <DependentUpon>Attendances.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PaySlip.ascx.cs">
+      <DependentUpon>PaySlip.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\PaySlip.ascx.designer.cs">
+      <DependentUpon>PaySlip.ascx</DependentUpon>
     </Compile>
     <Compile Include="Setup\Deductions.ascx.cs">
       <DependentUpon>Deductions.ascx</DependentUpon>

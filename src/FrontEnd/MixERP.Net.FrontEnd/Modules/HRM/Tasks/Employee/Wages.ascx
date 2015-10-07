@@ -31,8 +31,8 @@
             textField: "Value"
         },
         {
-            property: "WagesSetupId",
-            url: '/api/hrm/wages-setup/display-fields',
+            property: "WageSetupId",
+            url: '/api/hrm/wage-setup/display-fields',
             data: null,
             valueField: "Key",
             textField: "Value"
@@ -72,17 +72,17 @@
             };
         });
 
-        function getWagesSetup(wagesSetupId){
-            var url = "/api/hrm/wages-setup/" + wagesSetupId;
+        function getWageSetup(wageSetupId){
+            var url = "/api/hrm/wage-setup/" + wageSetupId;
             return window.getAjaxRequest(url);
         }
 
-        $("#wages_setup_id").change(function(){
-            var wagesSetupId = $(this).val();
+        $("#wage_setup_id").change(function(){
+            var wageSetupId = $(this).val();
 
-            var getWagesSetupAajx = getWagesSetup(wagesSetupId);
+            var getWageSetupAajx = getWageSetup(wageSetupId);
 
-            getWagesSetupAajx.success(function (response) {
+            getWageSetupAajx.success(function (response) {
                 $("#currency_code").dropdown("set selected", response.CurrencyCode);
                 $("#max_week_hours").val(response.MaxWeekHours);
                 $("#hourly_rate").val(response.HourlyRate);

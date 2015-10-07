@@ -26,7 +26,7 @@ using System.Linq;
 namespace MixERP.Net.Core.Modules.HRM.Data
 {
     /// <summary>
-    /// Prepares, validates, and executes the function "hrm.post_wage(_user_id integer, _as_of date, _employee_id integer, _statement_reference text, _regular_pay_rate numeric, _overtime_pay_rate numeric, _details hrm.wage_processing_details[])" on the database.
+    /// Prepares, validates, and executes the function "hrm.post_wage(_user_id integer, _office_id integer, _login_id bigint, _as_of date, _employee_id integer, _statement_reference text, _regular_hours numeric, _regular_pay_rate numeric, _overtime_hours numeric, _overtime_pay_rate numeric, _details hrm.wage_processing_details[])" on the database.
     /// </summary>
     public class PostWageProcedure : DbAccess
     {
@@ -56,6 +56,14 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         public int UserId { get; set; }
         /// <summary>
+        /// Maps to "_office_id" argument of the function "hrm.post_wage".
+        /// </summary>
+        public int OfficeId { get; set; }
+        /// <summary>
+        /// Maps to "_login_id" argument of the function "hrm.post_wage".
+        /// </summary>
+        public long LoginId { get; set; }
+        /// <summary>
         /// Maps to "_as_of" argument of the function "hrm.post_wage".
         /// </summary>
         public DateTime AsOf { get; set; }
@@ -68,9 +76,17 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         public string StatementReference { get; set; }
         /// <summary>
+        /// Maps to "_regular_hours" argument of the function "hrm.post_wage".
+        /// </summary>
+        public decimal RegularHours { get; set; }
+        /// <summary>
         /// Maps to "_regular_pay_rate" argument of the function "hrm.post_wage".
         /// </summary>
         public decimal RegularPayRate { get; set; }
+        /// <summary>
+        /// Maps to "_overtime_hours" argument of the function "hrm.post_wage".
+        /// </summary>
+        public decimal OvertimeHours { get; set; }
         /// <summary>
         /// Maps to "_overtime_pay_rate" argument of the function "hrm.post_wage".
         /// </summary>
@@ -81,29 +97,37 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         public MixERP.Net.Entities.HRM.WageProcessingDetail[] Details { get; set; }
 
         /// <summary>
-        /// Prepares, validates, and executes the function "hrm.post_wage(_user_id integer, _as_of date, _employee_id integer, _statement_reference text, _regular_pay_rate numeric, _overtime_pay_rate numeric, _details hrm.wage_processing_details[])" on the database.
+        /// Prepares, validates, and executes the function "hrm.post_wage(_user_id integer, _office_id integer, _login_id bigint, _as_of date, _employee_id integer, _statement_reference text, _regular_hours numeric, _regular_pay_rate numeric, _overtime_hours numeric, _overtime_pay_rate numeric, _details hrm.wage_processing_details[])" on the database.
         /// </summary>
         public PostWageProcedure()
         {
         }
 
         /// <summary>
-        /// Prepares, validates, and executes the function "hrm.post_wage(_user_id integer, _as_of date, _employee_id integer, _statement_reference text, _regular_pay_rate numeric, _overtime_pay_rate numeric, _details hrm.wage_processing_details[])" on the database.
+        /// Prepares, validates, and executes the function "hrm.post_wage(_user_id integer, _office_id integer, _login_id bigint, _as_of date, _employee_id integer, _statement_reference text, _regular_hours numeric, _regular_pay_rate numeric, _overtime_hours numeric, _overtime_pay_rate numeric, _details hrm.wage_processing_details[])" on the database.
         /// </summary>
         /// <param name="userId">Enter argument value for "_user_id" parameter of the function "hrm.post_wage".</param>
+        /// <param name="officeId">Enter argument value for "_office_id" parameter of the function "hrm.post_wage".</param>
+        /// <param name="loginId">Enter argument value for "_login_id" parameter of the function "hrm.post_wage".</param>
         /// <param name="asOf">Enter argument value for "_as_of" parameter of the function "hrm.post_wage".</param>
         /// <param name="employeeId">Enter argument value for "_employee_id" parameter of the function "hrm.post_wage".</param>
         /// <param name="statementReference">Enter argument value for "_statement_reference" parameter of the function "hrm.post_wage".</param>
+        /// <param name="regularHours">Enter argument value for "_regular_hours" parameter of the function "hrm.post_wage".</param>
         /// <param name="regularPayRate">Enter argument value for "_regular_pay_rate" parameter of the function "hrm.post_wage".</param>
+        /// <param name="overtimeHours">Enter argument value for "_overtime_hours" parameter of the function "hrm.post_wage".</param>
         /// <param name="overtimePayRate">Enter argument value for "_overtime_pay_rate" parameter of the function "hrm.post_wage".</param>
         /// <param name="details">Enter argument value for "_details" parameter of the function "hrm.post_wage".</param>
-        public PostWageProcedure(int userId, DateTime asOf, int employeeId, string statementReference, decimal regularPayRate, decimal overtimePayRate, MixERP.Net.Entities.HRM.WageProcessingDetail[] details)
+        public PostWageProcedure(int userId, int officeId, long loginId, DateTime asOf, int employeeId, string statementReference, decimal regularHours, decimal regularPayRate, decimal overtimeHours, decimal overtimePayRate, MixERP.Net.Entities.HRM.WageProcessingDetail[] details)
         {
             this.UserId = userId;
+            this.OfficeId = officeId;
+            this.LoginId = loginId;
             this.AsOf = asOf;
             this.EmployeeId = employeeId;
             this.StatementReference = statementReference;
+            this.RegularHours = regularHours;
             this.RegularPayRate = regularPayRate;
+            this.OvertimeHours = overtimeHours;
             this.OvertimePayRate = overtimePayRate;
             this.Details = details;
         }
@@ -125,25 +149,33 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            string query = "SELECT * FROM hrm.post_wage(@UserId, @AsOf, @EmployeeId, @StatementReference, @RegularPayRate, @OvertimePayRate, @Details);";
+            string query = "SELECT * FROM hrm.post_wage(@UserId, @OfficeId, @LoginId, @AsOf, @EmployeeId, @StatementReference, @RegularHours, @RegularPayRate, @OvertimeHours, @OvertimePayRate, @Details);";
 
             query = query.ReplaceWholeWord("@UserId", "@0::integer");
-            query = query.ReplaceWholeWord("@AsOf", "@1::date");
-            query = query.ReplaceWholeWord("@EmployeeId", "@2::integer");
-            query = query.ReplaceWholeWord("@StatementReference", "@3::text");
-            query = query.ReplaceWholeWord("@RegularPayRate", "@4::numeric");
-            query = query.ReplaceWholeWord("@OvertimePayRate", "@5::numeric");
+            query = query.ReplaceWholeWord("@OfficeId", "@1::integer");
+            query = query.ReplaceWholeWord("@LoginId", "@2::bigint");
+            query = query.ReplaceWholeWord("@AsOf", "@3::date");
+            query = query.ReplaceWholeWord("@EmployeeId", "@4::integer");
+            query = query.ReplaceWholeWord("@StatementReference", "@5::text");
+            query = query.ReplaceWholeWord("@RegularHours", "@6::numeric");
+            query = query.ReplaceWholeWord("@RegularPayRate", "@7::numeric");
+            query = query.ReplaceWholeWord("@OvertimeHours", "@8::numeric");
+            query = query.ReplaceWholeWord("@OvertimePayRate", "@9::numeric");
 
-            int detailsOffset = 6;
+            int detailsOffset = 10;
             query = query.ReplaceWholeWord("@Details", "ARRAY[" + this.SqlForDetails(this.Details, detailsOffset, 9) + "]");
 
 
             List<object> parameters = new List<object>();
             parameters.Add(this.UserId);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.LoginId);
             parameters.Add(this.AsOf);
             parameters.Add(this.EmployeeId);
             parameters.Add(this.StatementReference);
+            parameters.Add(this.RegularHours);
             parameters.Add(this.RegularPayRate);
+            parameters.Add(this.OvertimeHours);
             parameters.Add(this.OvertimePayRate);
             parameters.AddRange(this.ParamsForDetails(this.Details));
 

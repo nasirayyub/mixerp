@@ -67,5 +67,9 @@ namespace MixERP.Net.Entities.Core
         [Column("audit_ts")]
         [ColumnDbType("timestamptz", 0, true, "")]
         public DateTime? AuditTs { get; set; }
+
+        [Column("photo")]
+        [ColumnDbType("image", 0, true, "")]
+        public string Photo { get; set; }
     }
 }

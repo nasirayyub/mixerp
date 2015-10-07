@@ -104,3 +104,87 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+
+DO
+$$
+    DECLARE this record;
+BEGIN
+    IF(CURRENT_USER = 'report_user') THEN
+        RETURN;
+    END IF;
+
+    FOR this IN 
+    SELECT * FROM pg_tables 
+    WHERE NOT schemaname = ANY(ARRAY['pg_catalog', 'information_schema'])
+    AND tableowner <> 'report_user'
+    LOOP
+        EXECUTE 'GRANT SELECT ON TABLE '|| this.schemaname || '.' || this.tablename ||' TO report_user;';
+    END LOOP;
+END
+$$
+LANGUAGE plpgsql;
+
+DO
+$$
+    DECLARE this record;
+BEGIN
+    IF(CURRENT_USER = 'report_user') THEN
+        RETURN;
+    END IF;
+
+    FOR this IN 
+    SELECT 'GRANT EXECUTE ON '
+        || CASE WHEN p.proisagg THEN 'AGGREGATE ' ELSE 'FUNCTION ' END
+        || quote_ident(n.nspname) || '.' || quote_ident(p.proname) || '(' 
+        || pg_catalog.pg_get_function_identity_arguments(p.oid) || ') TO report_user;' AS sql
+    FROM   pg_catalog.pg_proc p
+    JOIN   pg_catalog.pg_namespace n ON n.oid = p.pronamespace
+    WHERE  NOT n.nspname = ANY(ARRAY['pg_catalog', 'information_schema'])
+    LOOP        
+        EXECUTE this.sql;
+    END LOOP;
+END
+$$
+LANGUAGE plpgsql;
+
+
+DO
+$$
+    DECLARE this record;
+BEGIN
+    IF(CURRENT_USER = 'report_user') THEN
+        RETURN;
+    END IF;
+
+    FOR this IN 
+    SELECT * FROM pg_views
+    WHERE NOT schemaname = ANY(ARRAY['pg_catalog', 'information_schema'])
+    AND viewowner <> 'report_user'
+    LOOP
+        EXECUTE 'GRANT SELECT ON '|| this.schemaname || '.' || this.viewname ||' TO report_user;';
+    END LOOP;
+END
+$$
+LANGUAGE plpgsql;
+
+
+DO
+$$
+    DECLARE this record;
+BEGIN
+    IF(CURRENT_USER = 'report_user') THEN
+        RETURN;
+    END IF;
+
+    FOR this IN 
+    SELECT 'GRANT USAGE ON SCHEMA ' || nspname || ' TO report_user;' AS sql FROM pg_namespace
+    WHERE nspname NOT LIKE 'pg_%'
+    AND nspname <> 'information_schema'
+    LOOP
+        EXECUTE this.sql;
+    END LOOP;
+END
+$$
+LANGUAGE plpgsql;
+

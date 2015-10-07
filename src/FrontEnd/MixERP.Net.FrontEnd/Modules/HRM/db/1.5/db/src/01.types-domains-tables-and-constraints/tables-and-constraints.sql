@@ -255,11 +255,11 @@ CREATE TABLE hrm.salary_types
                                             DEFAULT(NOW())    
 );
 
-CREATE TABLE hrm.wages_setup
+CREATE TABLE hrm.wage_setup
 (
-    wages_setup_id                          SERIAL NOT NULL PRIMARY KEY,
-    wages_setup_code                        national character varying(12) NOT NULL UNIQUE,
-    wages_setup_name                        national character varying(128) NOT NULL,
+    wage_setup_id                           SERIAL NOT NULL PRIMARY KEY,
+    wage_setup_code                         national character varying(12) NOT NULL UNIQUE,
+    wage_setup_name                         national character varying(128) NOT NULL,
     currency_code                           national character varying(12) NOT NULL REFERENCES core.currencies(currency_code),
     max_week_hours                          integer NOT NULL DEFAULT(0),
     hourly_rate                             public.money_strict NOT NULL,
@@ -278,7 +278,7 @@ CREATE TABLE hrm.employee_wages
 (
     employee_wage_id                        BIGSERIAL NOT NULL PRIMARY KEY,
     employee_id                             integer NOT NULL REFERENCES hrm.employees(employee_id),
-    wages_setup_id                          integer NOT NULL REFERENCES hrm.wages_setup(wages_setup_id),
+    wage_setup_id                           integer NOT NULL REFERENCES hrm.wage_setup(wage_setup_id),
     currency_code                           national character varying(12) NOT NULL REFERENCES core.currencies(currency_code),
     max_week_hours                          integer NOT NULL,
     hourly_rate                             public.money_strict NOT NULL,
@@ -560,11 +560,15 @@ CREATE TABLE hrm.wage_processing
 (
     wage_processing_id                      BIGSERIAL NOT NULL PRIMARY KEY,
     employee_id                             integer NOT NULL REFERENCES hrm.employees(employee_id),
+    transaction_master_id                   bigint NOT NULL REFERENCES transactions.transaction_master(transaction_master_id),
     posted_till                             date NOT NULL,
-    regular_hours                           numeric NOT NULL,
-    regular_pay_rate                        numeric NOT NULL,
-    overtime_hours                          numeric NOT NULL,
-    overtime_pay_rate                       numeric NOT NULL,
+    regular_hours                           numeric(24, 4) NOT NULL,
+    regular_pay_rate                        numeric(24, 4) NOT NULL,
+    regular_pay                             public.money_strict NOT NULL,
+    overtime_hours                          numeric(24, 4) NOT NULL,
+    overtime_pay_rate                       numeric(24, 4) NOT NULL,
+    overtime_pay                            public.money_strict2 NOT NULL,
+    total_pay                               public.money_strict NOT NULL,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
                                             DEFAULT(NOW())    
@@ -575,10 +579,10 @@ CREATE TABLE hrm.wage_processing_details
     wage_processing_detail_id               BIGSERIAL NOT NULL PRIMARY KEY,
     wage_processing_id                      bigint NOT NULL REFERENCES hrm.wage_processing(wage_processing_id),
     for_date                                date,
-    hours_worked                            numeric NOT NULL,
+    hours_worked                            numeric(24, 4) NOT NULL,
     lunch_deduction_minutes                 integer,
     adjustment_minutes                      integer,
-    pay_hours                               numeric NOT NULL,
+    pay_hours                               numeric(24, 4) NOT NULL,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
                                             DEFAULT(NOW())    

@@ -146,11 +146,11 @@
     <Compile Include="Termination.cs" />
     <Compile Include="TerminationScrudView.cs" />
     <Compile Include="TerminationVerificationScrudView.cs" />
+    <Compile Include="WageAccountSelectorView.cs" />
     <Compile Include="WagePostingAccountSelectorView.cs" />
     <Compile Include="WageProcessing.cs" />
     <Compile Include="WageProcessingDetail.cs" />
-    <Compile Include="WagesAccountSelectorView.cs" />
-    <Compile Include="WagesSetup.cs" />
+    <Compile Include="WageSetup.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HRM.Entities\MixERP.Net.Entities.HRM.csproj">

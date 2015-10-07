@@ -28,17 +28,17 @@ th {
 .text.left {
   text-align: left;
 }
-.table,
+table.table,
 .report {
   border-collapse: collapse;
 }
-.table th,
-.table td,
+table.table th,
+table.table td,
 .report th,
 .report td {
   padding: 6px;
 }
-.table td,
+table.table td,
 .report td,
 .report th {
   border: 1px solid black;

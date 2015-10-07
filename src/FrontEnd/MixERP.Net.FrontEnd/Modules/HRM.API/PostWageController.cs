@@ -57,10 +57,14 @@ namespace MixERP.Net.Api.HRM
         public class Annotation
         {
             public int UserId { get; set; }
+            public int OfficeId { get; set; }
+            public long LoginId { get; set; }
             public DateTime AsOf { get; set; }
             public int EmployeeId { get; set; }
             public string StatementReference { get; set; }
+            public decimal RegularHours { get; set; }
             public decimal RegularPayRate { get; set; }
+            public decimal OvertimeHours { get; set; }
             public decimal OvertimePayRate { get; set; }
             public MixERP.Net.Entities.HRM.WageProcessingDetail[] Details { get; set; }
         }
@@ -87,10 +91,14 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 this.procedure.UserId = annotation.UserId;
+                this.procedure.OfficeId = annotation.OfficeId;
+                this.procedure.LoginId = annotation.LoginId;
                 this.procedure.AsOf = annotation.AsOf;
                 this.procedure.EmployeeId = annotation.EmployeeId;
                 this.procedure.StatementReference = annotation.StatementReference;
+                this.procedure.RegularHours = annotation.RegularHours;
                 this.procedure.RegularPayRate = annotation.RegularPayRate;
+                this.procedure.OvertimeHours = annotation.OvertimeHours;
                 this.procedure.OvertimePayRate = annotation.OvertimePayRate;
                 this.procedure.Details = annotation.Details;
 

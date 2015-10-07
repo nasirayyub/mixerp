@@ -155,5 +155,5 @@ SELECT 'REN', 'Rent', core.get_account_id_by_account_number('20100') UNION ALL
 SELECT 'BOR', 'Borrowings Deduction', core.get_account_id_by_account_number('10400') UNION ALL
 SELECT 'FIC', 'Fitness Club', core.get_account_id_by_account_number('20100');
 
-INSERT INTO hrm.wages_setup(wages_setup_code, wages_setup_name, currency_code, max_week_hours, hourly_rate, overtime_applicable, overtime_hourly_rate, expense_account_id)
+INSERT INTO hrm.wage_setup(wage_setup_code, wage_setup_name, currency_code, max_week_hours, hourly_rate, overtime_applicable, overtime_hourly_rate, expense_account_id)
 SELECT 'NY-LIW', 'New York Living Wage', 'USD', 40, 14.30, true, 28.60, core.get_account_id_by_account_number('43800');

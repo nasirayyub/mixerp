@@ -301,6 +301,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'api_access_poli
 SELECT localization.add_localized_resource('ScrudResource', '', 'api_access_policy_uix', 'Duplicate Entry for API Access Policy');
 SELECT localization.add_localized_resource('ScrudResource', '', 'applied_on', 'Applied On');
 SELECT localization.add_localized_resource('ScrudResource', '', 'applied_on_shipping_charge', 'Applied on Shipping Charge');
+SELECT localization.add_localized_resource('ScrudResource', '', 'as_of', 'As Of');
 SELECT localization.add_localized_resource('ScrudResource', '', 'audit_ts', 'Audit Timestamp');
 SELECT localization.add_localized_resource('ScrudResource', '', 'audit_user_id', 'Audit User Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'auto_deduction_based_on_attendance', 'Auto Deduction Based On Attendance');
@@ -665,6 +666,9 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'opportunity_sta
 SELECT localization.add_localized_resource('ScrudResource', '', 'opportunity_stage_id', 'Opportunity Stage Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'opportunity_stage_name', 'Opportunity Stage Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'organization_name', 'Organization Name');
+SELECT localization.add_localized_resource('ScrudResource', '', 'overtime', 'Overtime');
+SELECT localization.add_localized_resource('ScrudResource', '', 'overtime_hours', 'Overtime Hours');
+SELECT localization.add_localized_resource('ScrudResource', '', 'overtime_pay_rate', 'Overtime Pay Rate');
 SELECT localization.add_localized_resource('ScrudResource', '', 'pan_number', 'Pan Number');
 SELECT localization.add_localized_resource('ScrudResource', '', 'parent', 'Parent');
 SELECT localization.add_localized_resource('ScrudResource', '', 'parent_account_id', 'Parent Account Id');
@@ -751,6 +755,8 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'recurs_on_same_
 SELECT localization.add_localized_resource('ScrudResource', '', 'reference_number', 'Reference Number');
 SELECT localization.add_localized_resource('ScrudResource', '', 'registration_date', 'Registration Date');
 SELECT localization.add_localized_resource('ScrudResource', '', 'registration_number', 'Registration Number');
+SELECT localization.add_localized_resource('ScrudResource', '', 'regular_hours', 'Regular Hours');
+SELECT localization.add_localized_resource('ScrudResource', '', 'regular_pay_rate', 'Regular Pay Rate');
 SELECT localization.add_localized_resource('ScrudResource', '', 'relationship_officer_name', 'Relationship Officer Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'relname', 'Relation Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'remote_user', 'Remote User');
@@ -922,6 +928,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'verified_on', '
 SELECT localization.add_localized_resource('ScrudResource', '', 'verify_gl_transactions', 'Verify Gl Transactions');
 SELECT localization.add_localized_resource('ScrudResource', '', 'verify_purchase_transactions', 'Verify Purchase Transactions');
 SELECT localization.add_localized_resource('ScrudResource', '', 'verify_sales_transactions', 'Verify Sales Transactions');
+SELECT localization.add_localized_resource('ScrudResource', '', 'wage_processing_id', 'Wage Processing Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'website', 'Website');
 SELECT localization.add_localized_resource('ScrudResource', '', 'week_day_id', 'Week Day Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'week_start_day', 'Week Start Day');
@@ -1049,6 +1056,7 @@ SELECT localization.add_localized_resource('Titles', '', 'CreateItemOrService', 
 SELECT localization.add_localized_resource('Titles', '', 'CreateNew', 'Create New');
 SELECT localization.add_localized_resource('Titles', '', 'CreateNewFiscalYear', 'Create New Fiscal Year');
 SELECT localization.add_localized_resource('Titles', '', 'CreateParties', 'Create Party');
+SELECT localization.add_localized_resource('Titles', '', 'CreatePayslip', 'Create Payslip');
 SELECT localization.add_localized_resource('Titles', '', 'CreatePayslips', 'Create Payslips');
 SELECT localization.add_localized_resource('Titles', '', 'CreateSalesTaxForm', 'Create Sales Tax Form');
 SELECT localization.add_localized_resource('Titles', '', 'CreateSalespersons', 'Create Salespersons');
@@ -1349,6 +1357,7 @@ SELECT localization.add_localized_resource('Titles', '', 'OtherWidgets', 'Other 
 SELECT localization.add_localized_resource('Titles', '', 'OvertimeHours', 'Overtime Hours');
 SELECT localization.add_localized_resource('Titles', '', 'OvertimeWage', 'Overtime Wage');
 SELECT localization.add_localized_resource('Titles', '', 'PANNumber', 'PAN Number');
+SELECT localization.add_localized_resource('Titles', '', 'PaySlip', 'Pay Slip');
 SELECT localization.add_localized_resource('Titles', '', 'PLAppropriation', 'PL Appropriation');
 SELECT localization.add_localized_resource('Titles', '', 'PageN', 'Page {0}');
 SELECT localization.add_localized_resource('Titles', '', 'ParentAccount', 'Parent Account');

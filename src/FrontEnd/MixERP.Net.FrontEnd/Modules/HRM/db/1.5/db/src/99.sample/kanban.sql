@@ -13,7 +13,7 @@ BEGIN
         'hrm.employees', 
         'hrm.employment_statuses',
         'hrm.salaries',
-        'hrm.wages_setup',
+        'hrm.wage_setup',
         'hrm.employee_type_scrud_view',
         'hrm.employee_identification_detail_scrud_view',
         'hrm.employee_social_network_detail_scrud_view',

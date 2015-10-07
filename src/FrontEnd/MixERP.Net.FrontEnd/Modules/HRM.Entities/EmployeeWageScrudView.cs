@@ -40,9 +40,9 @@ namespace MixERP.Net.Entities.HRM
         [ColumnDbType("image", 0, true, "")]
         public string Photo { get; set; }
 
-        [Column("wages_setup")]
+        [Column("wage_setup")]
         [ColumnDbType("text", 0, true, "")]
-        public string WagesSetup { get; set; }
+        public string WageSetup { get; set; }
 
         [Column("currency_code")]
         [ColumnDbType("varchar", 12, true, "")]

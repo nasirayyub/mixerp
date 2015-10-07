@@ -57,7 +57,7 @@ form {
   font-size: 12px;
 }
 body {
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   margin: 0;
 }
 #RightMenu {
@@ -216,7 +216,7 @@ table .form-control label {
   font-weight: bold;
   font-size: 18px;
   padding-bottom: 8px;
-  color: #67238b;
+  color: #67238B;
   border-bottom: 1px dotted;
   margin-bottom: 16px;
 }
@@ -226,7 +226,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: #67238b;
+  color: #67238B;
   cursor: pointer;
   font-weight: lighter;
 }
@@ -317,7 +317,7 @@ h6:hover {
 .shade {
   padding: 12px;
   margin-bottom: 8px;
-  background-color: #fdfafe;
+  background-color: #FDFAFE;
   border: 1px solid transparent;
   -ms-border-radius: 8px;
   border-radius: 8px;
@@ -390,17 +390,17 @@ textarea {
 .jstree-hovered,
 .jstree-default .jstree-wholerow-clicked {
   background: #4E0572 !important;
-  background: -moz-linear-gradient(top, #4e0572 0%, #570680 100%) !important;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4e0572), color-stop(100%, #570680));
-  background: -webkit-linear-gradient(top, #4e0572 0%, #570680 100%);
-  background: -o-linear-gradient(top, #4e0572 0%, #570680 100%);
-  background: -ms-linear-gradient(top, #4e0572 0%, #570680 100%);
-  background: linear-gradient(to bottom, #4e0572 0%, #570680 100%);
+  background: -moz-linear-gradient(top, #4E0572 0%, #570680 100%) !important;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4E0572), color-stop(100%, #570680));
+  background: -webkit-linear-gradient(top, #4E0572 0%, #570680 100%);
+  background: -o-linear-gradient(top, #4E0572 0%, #570680 100%);
+  background: -ms-linear-gradient(top, #4E0572 0%, #570680 100%);
+  background: linear-gradient(to bottom, #4E0572 0%, #570680 100%);
   /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );*/
   color: #FFFFFF !important;
 }
 .jstree-search {
-  color: #67238b !important;
+  color: #67238B !important;
   font-style: normal !important;
 }
 /*jstree Override End*/
@@ -528,7 +528,7 @@ select optgroup {
   border-bottom: 1px dotted black;
 }
 .hint {
-  background-color: #f3f3f8;
+  background-color: #F3F3F8;
   font-weight: bold;
   font-size: 1.1rem;
 }
@@ -580,7 +580,7 @@ select optgroup {
   background: -ms-linear-gradient(top, #f2e7fa 0%, #ebd9f7 100%);
   background: linear-gradient(to bottom, #f2e7fa 0%, #ebd9f7 100%);
   /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color1', endColorstr='@color2',GradientType=0 );*/
-  color: #67238b !important;
+  color: #67238B !important;
 }
 #tree li,
 .jstree-search {

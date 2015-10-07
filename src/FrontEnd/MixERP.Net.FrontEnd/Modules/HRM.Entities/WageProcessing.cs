@@ -36,6 +36,10 @@ namespace MixERP.Net.Entities.HRM
         [ColumnDbType("int4", 0, false, "")]
         public int EmployeeId { get; set; }
 
+        [Column("transaction_master_id")]
+        [ColumnDbType("int8", 0, false, "")]
+        public long TransactionMasterId { get; set; }
+
         [Column("posted_till")]
         [ColumnDbType("date", 0, false, "")]
         public DateTime PostedTill { get; set; }
@@ -48,6 +52,10 @@ namespace MixERP.Net.Entities.HRM
         [ColumnDbType("numeric", 0, false, "")]
         public decimal RegularPayRate { get; set; }
 
+        [Column("regular_pay")]
+        [ColumnDbType("money_strict", 0, false, "")]
+        public decimal RegularPay { get; set; }
+
         [Column("overtime_hours")]
         [ColumnDbType("numeric", 0, false, "")]
         public decimal OvertimeHours { get; set; }
@@ -55,6 +63,14 @@ namespace MixERP.Net.Entities.HRM
         [Column("overtime_pay_rate")]
         [ColumnDbType("numeric", 0, false, "")]
         public decimal OvertimePayRate { get; set; }
+
+        [Column("overtime_pay")]
+        [ColumnDbType("money_strict2", 0, false, "")]
+        public decimal OvertimePay { get; set; }
+
+        [Column("total_pay")]
+        [ColumnDbType("money_strict", 0, false, "")]
+        public decimal TotalPay { get; set; }
 
         [Column("audit_user_id")]
         [ColumnDbType("int4", 0, true, "")]

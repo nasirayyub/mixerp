@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!--
+Copyright (C) MixERP Inc. (http://mixof.org).
+
+This file is part of MixERP.
+
+MixERP is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, version 2 of the License.
+
+
+MixERP is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with MixERP.  If not, see <http://www.gnu.org/licenses />.
+-->
+
+<MixERPReport>
+  <Title>{Resources.Titles.PaySlip}</Title>
+  <TopSection>
+    <style>
+      table:not(.table) th{
+      width:200px;
+      text-align:left;
+      }
+      .padded {
+      padding:24px;
+      }
+    </style>
+    
+    <table class="table horizontal">
+      <tr>
+        <td>
+          {Resources.ScrudResource.wage_processing_id}
+        </td>
+        <td>
+          {DataSource[0].wage_processing_id}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {Resources.ScrudResource.as_of}
+        </td>
+        <td>
+          {DataSource[0].as_of}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {Resources.ScrudResource.employee_id}
+        </td>
+        <td>
+          {DataSource[0].employee_id}
+        </td>
+      </tr>
+    </table>
+    <br />
+
+    <table border="1" style="width:900px;border-collapse:collapse;">
+      <tr>
+        <td class="padded">
+          <table>
+            <tr>
+              <th>
+                {Resources.ScrudResource.regular_hours}
+              </th>
+              <td>
+                {DataSource[0].regular_hours}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                {Resources.ScrudResource.regular_pay_rate}
+              </th>
+              <td>
+                <span class="currency"></span>{DataSource[0].regular_pay_rate}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                {Resources.ScrudResource.amount}
+              </th>
+              <td>
+                <span class="currency"></span>{DataSource[0].regular_pay}
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td class="padded">
+          <table>
+            <tr>
+              <th>
+                {Resources.ScrudResource.overtime_hours}
+              </th>
+              <td>
+                {DataSource[0].overtime_hours}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                {Resources.ScrudResource.overtime_pay_rate}
+              </th>
+              <td>
+                <span class="currency"></span>{DataSource[0].overtime_pay_rate}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                {Resources.ScrudResource.overtime}
+              </th>
+              <td>
+                <span class="currency"></span>{DataSource[0].overtime_pay}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="padded">
+          Total : <span class="currency"></span>{DataSource[0].total_pay} <strong>({DataSource[0].in_words})</strong>
+        </td>
+      </tr>
+    </table>
+
+    <br />
+    <script>
+      $(document).ready(function(){
+        $("span.currency").html(window.currencySymbol);
+      });
+    </script>
+  </TopSection>
+  <Body>
+  </Body>
+  <BottomSection>
+  </BottomSection>
+  <DataSources>
+    <DataSource>
+      <Query>
+        SELECT
+        hrm.wage_processing.wage_processing_id,
+        hrm.wage_processing.employee_id,
+        hrm.employees.employee_code,
+        hrm.employees.employee_name,
+        hrm.wage_processing.posted_till AS as_of,
+        hrm.wage_processing.regular_hours,
+        hrm.wage_processing.regular_pay_rate,
+        hrm.wage_processing.regular_pay,
+        hrm.wage_processing.overtime_hours,
+        hrm.wage_processing.overtime_pay_rate,
+        hrm.wage_processing.overtime_pay,
+        hrm.wage_processing.total_pay,
+        pg_catalog.cash_words(hrm.wage_processing.total_pay::money) AS in_words
+        FROM hrm.wage_processing
+        INNER JOIN hrm.employees
+        ON hrm.employees.employee_id = hrm.wage_processing.employee_id
+        WHERE hrm.wage_processing.wage_processing_id = @wage_processing_id;
+      </Query>
+      <Parameters>
+        <Parameter Name="@wage_processing_id" Type="Number" />
+      </Parameters>
+    </DataSource>
+  </DataSources>
+</MixERPReport>

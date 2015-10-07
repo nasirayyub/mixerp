@@ -36,9 +36,9 @@ namespace MixERP.Net.Entities.HRM
         [ColumnDbType("int4", 0, false, "")]
         public int EmployeeId { get; set; }
 
-        [Column("wages_setup_id")]
+        [Column("wage_setup_id")]
         [ColumnDbType("int4", 0, false, "")]
-        public int WagesSetupId { get; set; }
+        public int WageSetupId { get; set; }
 
         [Column("currency_code")]
         [ColumnDbType("varchar", 12, false, "")]

@@ -2,24 +2,24 @@
 <script>
     var scrudFactory = new Object();
 
-    scrudFactory.title = "Wages Setups";
+    scrudFactory.title = "Wage Setups";
     
-    scrudFactory.viewAPI = "/api/hrm/wages-setup";
-    scrudFactory.viewTableName = "hrm.wages_setup";
+    scrudFactory.viewAPI = "/api/hrm/wage-setup";
+    scrudFactory.viewTableName = "hrm.wage_setup";
 
-    scrudFactory.formAPI = "/api/hrm/wages-setup";
-    scrudFactory.formTableName = "hrm.wages_setup";
+    scrudFactory.formAPI = "/api/hrm/wage-setup";
+    scrudFactory.formTableName = "hrm.wage_setup";
 
     scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
 
     scrudFactory.allowDelete = true;
     scrudFactory.allowEdit = true;
 
-    scrudFactory.live = "WagesSetupName";
+    scrudFactory.live = "WageSetupName";
 
     scrudFactory.layout = [
-        ["WagesSetupId", ""],
-        ["WagesSetupCode", "WagesSetupName", "", ""],
+        ["WageSetupId", ""],
+        ["WageSetupCode", "WageSetupName", "", ""],
         ["CurrencyCode", "AccountId", "", ""],
         ["MaxWeekHours", "HourlyRate", "", ""],
         ["OvertimeApplicable", "OvertimeHourlyRate", "", ""],
@@ -36,7 +36,7 @@
         },
         {
             property: "AccountId",
-            url: '/api/hrm/wages-account-selector-view/display-fields',
+            url: '/api/hrm/wage-account-selector-view/display-fields',
             data: null,
             valueField: "Key",
             textField: "Value"

@@ -63,7 +63,7 @@ BEGIN
         FROM hrm.attendances
         WHERE hrm.attendances.employee_id = _employee_id;
     END IF;
-    
+
     SELECT
         COUNT(DISTINCT date_trunc('week', series))
     INTO
@@ -98,6 +98,7 @@ BEGIN
     INNER JOIN hrm.employees
     ON hrm.employees.employee_id = hrm.attendances.employee_id
     WHERE hrm.attendances.attendance_date <= _as_of
+    AND hrm.attendances.attendance_date > _last_paid_for
     AND was_present
     AND hrm.employees.employee_id = _employee_id;
 

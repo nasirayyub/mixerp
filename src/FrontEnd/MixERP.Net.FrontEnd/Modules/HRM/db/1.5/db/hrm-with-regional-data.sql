@@ -256,11 +256,11 @@ CREATE TABLE hrm.salary_types
                                             DEFAULT(NOW())    
 );
 
-CREATE TABLE hrm.wages_setup
+CREATE TABLE hrm.wage_setup
 (
-    wages_setup_id                          SERIAL NOT NULL PRIMARY KEY,
-    wages_setup_code                        national character varying(12) NOT NULL UNIQUE,
-    wages_setup_name                        national character varying(128) NOT NULL,
+    wage_setup_id                           SERIAL NOT NULL PRIMARY KEY,
+    wage_setup_code                         national character varying(12) NOT NULL UNIQUE,
+    wage_setup_name                         national character varying(128) NOT NULL,
     currency_code                           national character varying(12) NOT NULL REFERENCES core.currencies(currency_code),
     max_week_hours                          integer NOT NULL DEFAULT(0),
     hourly_rate                             public.money_strict NOT NULL,
@@ -279,7 +279,7 @@ CREATE TABLE hrm.employee_wages
 (
     employee_wage_id                        BIGSERIAL NOT NULL PRIMARY KEY,
     employee_id                             integer NOT NULL REFERENCES hrm.employees(employee_id),
-    wages_setup_id                          integer NOT NULL REFERENCES hrm.wages_setup(wages_setup_id),
+    wage_setup_id                           integer NOT NULL REFERENCES hrm.wage_setup(wage_setup_id),
     currency_code                           national character varying(12) NOT NULL REFERENCES core.currencies(currency_code),
     max_week_hours                          integer NOT NULL,
     hourly_rate                             public.money_strict NOT NULL,
@@ -557,6 +557,89 @@ CREATE TABLE hrm.salary_deductions
                                             DEFAULT(NOW())    
 );
 
+CREATE TABLE hrm.wage_processing
+(
+    wage_processing_id                      BIGSERIAL NOT NULL PRIMARY KEY,
+    employee_id                             integer NOT NULL REFERENCES hrm.employees(employee_id),
+    transaction_master_id                   bigint NOT NULL REFERENCES transactions.transaction_master(transaction_master_id),
+    posted_till                             date NOT NULL,
+    regular_hours                           numeric NOT NULL,
+    regular_pay_rate                        numeric NOT NULL,
+    regular_pay                             public.money_strict NOT NULL,
+    overtime_hours                          numeric NOT NULL,
+    overtime_pay_rate                       numeric NOT NULL,
+    overtime_pay                            public.money_strict2 NOT NULL,
+    total_pay                               public.money_strict NOT NULL,
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),
+    audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                            DEFAULT(NOW())    
+);
+
+CREATE TABLE hrm.wage_processing_details
+(
+    wage_processing_detail_id               BIGSERIAL NOT NULL PRIMARY KEY,
+    wage_processing_id                      bigint NOT NULL REFERENCES hrm.wage_processing(wage_processing_id),
+    for_date                                date,
+    hours_worked                            numeric NOT NULL,
+    lunch_deduction_minutes                 integer,
+    adjustment_minutes                      integer,
+    pay_hours                               numeric NOT NULL,
+    audit_user_id                           integer NULL REFERENCES office.users(user_id),
+    audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
+                                            DEFAULT(NOW())    
+);
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_employee_by_employee_id.sql --<--<--
+DROP FUNCTION IF EXISTS hrm.get_employee_by_employee_id(_employee_id integer);
+
+CREATE FUNCTION hrm.get_employee_by_employee_id(_employee_id integer)
+RETURNS text
+STABLE
+AS
+$$
+BEGIN
+    RETURN
+        employee_code || ' (' || employee_name || ')'      
+    FROM hrm.employees
+    WHERE employee_id = $1;    
+END
+$$
+LANGUAGE plpgsql;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_employee_code_by_employee_id.sql --<--<--
+DROP FUNCTION IF EXISTS hrm.get_employee_code_by_employee_id(_employee_id integer);
+
+CREATE FUNCTION hrm.get_employee_code_by_employee_id(_employee_id integer)
+RETURNS text
+STABLE
+AS
+$$
+BEGIN
+    RETURN
+        employee_code
+    FROM hrm.employees
+    WHERE employee_id = $1;    
+END
+$$
+LANGUAGE plpgsql;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_employee_name_by_employee_id.sql --<--<--
+DROP FUNCTION IF EXISTS hrm.get_employee_name_by_employee_id(_employee_id integer);
+
+CREATE FUNCTION hrm.get_employee_name_by_employee_id(_employee_id integer)
+RETURNS text
+STABLE
+AS
+$$
+BEGIN
+    RETURN
+        employee_name
+    FROM hrm.employees
+    WHERE employee_id = $1;    
+END
+$$
+LANGUAGE plpgsql;
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_salary_tax_id_by_salary_tax_code.sql --<--<--
 DROP FUNCTION IF EXISTS hrm.get_salary_tax_id_by_salary_tax_code(_salary_tax_code national character varying(12));
 CREATE FUNCTION hrm.get_salary_tax_id_by_salary_tax_code(_salary_tax_code national character varying(12))
@@ -587,14 +670,81 @@ RETURNS TABLE
 (
     employee_id             integer,
     employee                text,
+    regular_hours           integer,
+    regular_pay             numeric,
+    overtime_pay            numeric,
     photo                   text,
     attendance_date         date,
     hours_worked            numeric
 )
 AS
 $$
+    DECLARE _regular_hours  numeric;
+    DECLARE _regular_pay    numeric;
+    DECLARE _overtime_pay   numeric;
+    DECLARE _last_paid_for  date;
+    DECLARE _total_weeks    integer;
 BEGIN
-    RETURN QUERY
+    SELECT
+        max_week_hours,
+        hourly_rate,
+        overtime_hourly_rate
+    INTO
+        _regular_hours,
+        _regular_pay,
+        _overtime_pay
+    FROM hrm.employee_wages
+    WHERE hrm.employee_wages.employee_id = _employee_id
+    AND valid_till >= _as_of
+    AND is_active;
+
+    IF(_regular_hours IS NULL) THEN
+        RAISE EXCEPTION 'Cannot process wage. This employee does not have wage information setup.'
+        USING ERRCODE='P2001';
+    END IF;
+
+    SELECT
+        MAX(for_date)
+    INTO
+        _last_paid_for
+    FROM hrm.wage_processing_details
+    INNER JOIN hrm.wage_processing
+    ON hrm.wage_processing.wage_processing_id = hrm.wage_processing_details.wage_processing_id
+    WHERE hrm.wage_processing.employee_id = _employee_id;
+
+    IF(_last_paid_for IS NULL) THEN
+        SELECT
+            MIN(hrm.attendances.attendance_date)
+        INTO
+            _last_paid_for
+        FROM hrm.attendances
+        WHERE hrm.attendances.employee_id = _employee_id;
+    END IF;
+    
+    SELECT
+        COUNT(DISTINCT date_trunc('week', series))
+    INTO
+        _total_weeks
+    FROM generate_series(_last_paid_for, _as_of,interval '1 day') series;
+
+    IF(_total_weeks > 0) THEN
+        _regular_hours := _regular_hours * _total_weeks;
+    END IF;
+
+    DROP TABLE IF EXISTS _temp_wage_attendance;
+    CREATE TEMPORARY TABLE _temp_wage_attendance
+    (
+        employee_id             integer,
+        employee                text,
+        regular_hours           integer,
+        regular_pay             numeric,
+        overtime_pay            numeric,
+        photo                   text,
+        attendance_date         date,
+        hours_worked            numeric
+    ) ON COMMIT DROP;
+
+    INSERT INTO _temp_wage_attendance(employee_id, employee, photo, attendance_date, hours_worked)
     SELECT
         hrm.employees.employee_id,
         hrm.employees.employee_code || ' (' || hrm.employees.employee_name || ')' AS employee,
@@ -607,11 +757,139 @@ BEGIN
     WHERE hrm.attendances.attendance_date <= _as_of
     AND was_present
     AND hrm.employees.employee_id = _employee_id;
+
+    UPDATE _temp_wage_attendance
+    SET
+        regular_hours = _regular_hours,
+        regular_pay = _regular_pay,
+        overtime_pay = _overtime_pay;
+
+    RETURN QUERY
+    SELECT * FROM _temp_wage_attendance;
 END
 $$
 LANGUAGE plpgsql;
 
---SELECT * FROM hrm.get_wage_attendance(1, (NOW() + INTERVAL '10 days')::date);
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/logic/hrm.post_wage.sql --<--<--
+DROP FUNCTION IF EXISTS hrm.post_wage
+(
+    _user_id                                integer,
+    _office_id                              integer,
+    _login_id                               bigint,
+    _as_of                                  date,
+    _employee_id                            integer,
+    _statement_reference                    text,
+    _regular_hours                          numeric,
+    _regular_pay_rate                       numeric,
+    _overtime_hours                         numeric,
+    _overtime_pay_rate                      numeric,
+    _details                                hrm.wage_processing_details[]
+);
+
+CREATE FUNCTION hrm.post_wage
+(
+    _user_id                                integer,
+    _office_id                              integer,
+    _login_id                               bigint,
+    _as_of                                  date,
+    _employee_id                            integer,
+    _statement_reference                    text,
+    _regular_hours                          numeric,
+    _regular_pay_rate                       numeric,
+    _overtime_hours                         numeric,
+    _overtime_pay_rate                      numeric,
+    _details                                hrm.wage_processing_details[]
+)
+RETURNS bigint 
+AS
+$$
+    DECLARE _value_date                     date;
+    DECLARE _transaction_master_id          bigint;
+    DECLARE _wage_processing_id             bigint;
+    DECLARE _regular_pay                    numeric;
+    DECLARE _overtime_pay                   numeric;
+    DECLARE _total_pay                      numeric;
+    DECLARE _expense_account_id             integer;
+    DECLARE _posting_account_id             integer;
+    DECLARE _wage_setup_id                  integer;
+    DECLARE _currency_code                  varchar;
+BEGIN    
+    SELECT
+        posting_account_id,
+        wage_setup_id
+    INTO
+        _posting_account_id,
+        _wage_setup_id
+    FROM hrm.employee_wages
+    WHERE employee_id = _employee_id;
+
+
+    SELECT
+        expense_account_id
+    INTO
+        _expense_account_id
+    FROM hrm.wage_setup
+    WHERE wage_setup_id = _wage_setup_id;
+
+
+    DROP TABLE IF EXISTS temp_wage_processing_details;
+    CREATE TEMPORARY TABLE temp_wage_processing_details
+    ON COMMIT DROP
+    AS
+    SELECT * FROM unnest(_details);
+
+    UPDATE temp_wage_processing_details
+    SET pay_hours = hours_worked + (adjustment_minutes - lunch_deduction_minutes) / 60;
+
+    _value_date             :=  transactions.get_value_date(_office_id);
+    _regular_pay            := _regular_hours * _regular_pay_rate;
+    _overtime_pay           := _overtime_hours * _overtime_pay_rate;
+    _total_pay              := _regular_pay + _overtime_pay;
+    _currency_code          :=  core.get_currency_code_by_office_id(_office_id);
+    _transaction_master_id  :=  nextval(pg_get_serial_sequence('transactions.transaction_master', 'transaction_master_id'));
+    
+    INSERT INTO transactions.transaction_master
+    (
+        transaction_master_id, 
+        transaction_counter, 
+        transaction_code, 
+        book, 
+        value_date, 
+        user_id, 
+        login_id, 
+        office_id, 
+        reference_number, 
+        statement_reference
+    )
+    SELECT 
+        _transaction_master_id, 
+        transactions.get_new_transaction_counter(_value_date), 
+        transactions.get_transaction_code(_value_date, _office_id, _user_id, _login_id),
+        'Wages',
+        _value_date,
+        _user_id,
+        _login_id,
+        _office_id,
+        '',
+        _statement_reference;
+
+    INSERT INTO transactions.transaction_details(value_date, transaction_master_id, tran_type, account_id, statement_reference, currency_code, amount_in_currency, local_currency_code, er, amount_in_local_currency)
+    SELECT _value_date, transaction_master_id, 'Dr', _expense_account_id, statement_reference, _currency_code, _total_pay, _currency_code, 1 AS exchange_rate, _total_pay UNION ALL
+    SELECT _value_date, transaction_master_id, 'Cr', _posting_account_id, statement_reference, _currency_code, _total_pay, _currency_code, 1 AS exchange_rate, _total_pay;
+    
+    
+    INSERT INTO hrm.wage_processing(transaction_master_id, employee_id, posted_till, regular_hours, regular_pay_rate, regular_pay, overtime_hours, overtime_pay_rate, overtime_pay, total_pay, audit_user_id)
+    SELECT _transaction_master_id, _employee_id, _as_of, _regular_hours, _regular_pay_rate, _regular_pay, _overtime_hours, _overtime_pay_rate, _overtime_pay, _total_pay, _user_id
+    RETURNING wage_processing_id INTO _wage_processing_id;
+
+    INSERT INTO hrm.wage_processing_details(wage_processing_id, for_date, hours_worked, lunch_deduction_minutes, adjustment_minutes, pay_hours, audit_user_id)
+    SELECT _wage_processing_id, for_date, hours_worked, lunch_deduction_minutes, adjustment_minutes, pay_hours, audit_user_id
+    FROM temp_wage_processing_details;
+    
+    RETURN _wage_processing_id;
+END
+$$
+LANGUAGE plpgsql;
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/triggers/employee_dismissal.sql --<--<--
 DROP FUNCTION IF EXISTS hrm.dismiss_employee() CASCADE;
@@ -932,7 +1210,7 @@ SELECT
     hrm.employee_wages.employee_wage_id,
     hrm.employees.employee_code || ' (' || hrm.employees.employee_name || ')' AS employee,
     hrm.employees.photo,
-    hrm.wages_setup.wages_setup_code || ' (' || hrm.wages_setup.wages_setup_name || ')' AS wages_setup,
+    hrm.wage_setup.wage_setup_code || ' (' || hrm.wage_setup.wage_setup_name || ')' AS wage_setup,
     hrm.employee_wages.currency_code,
     hrm.employee_wages.max_week_hours,
     hrm.employee_wages.hourly_rate,
@@ -943,8 +1221,8 @@ SELECT
 FROM hrm.employee_wages
 INNER JOIN hrm.employees
 ON hrm.employee_wages.employee_id = hrm.employees.employee_id
-INNER JOIN hrm.wages_setup
-ON hrm.wages_setup.wages_setup_id = hrm.employee_wages.wages_setup_id;
+INNER JOIN hrm.wage_setup
+ON hrm.wage_setup.wage_setup_id = hrm.employee_wages.wage_setup_id;
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employment_tax_detail_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employment_tax_detail_scrud_view;
@@ -1190,22 +1468,6 @@ FROM hrm.salary_taxes
 INNER JOIN core.tax_authorities
 ON hrm.salary_taxes.tax_authority_id = core.tax_authorities.tax_authority_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.salary_tax_scurd_view.sql --<--<--
-DROP VIEW IF EXISTS hrm.salary_tax_scurd_view;
-
-CREATE VIEW hrm.salary_tax_scurd_view
-AS
-SELECT
-    hrm.salary_taxes.salary_tax_id,
-    hrm.salary_taxes.salary_tax_code,
-    hrm.salary_taxes.salary_tax_name,
-    core.tax_authorities.tax_authority_code || ' (' || core.tax_authorities.tax_authority_name || ')' AS tax_authority,
-    hrm.salary_taxes.standard_deduction,
-    hrm.salary_taxes.personal_exemption
-FROM hrm.salary_taxes
-INNER JOIN core.tax_authorities
-ON hrm.salary_taxes.tax_authority_id = core.tax_authorities.tax_authority_id;
-
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.termination_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.termination_scrud_view;
 
@@ -1285,6 +1547,16 @@ WHERE account_master_id = ANY(ARRAY[10110, 15010])
 ORDER BY account_id;
 
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.selector-views/hrm.wage_account_selector_view.sql --<--<--
+DROP VIEW IF EXISTS hrm.wage_account_selector_view;
+
+CREATE VIEW hrm.wage_account_selector_view
+AS
+SELECT * FROM core.account_scrud_view
+WHERE account_master_id >= 20400
+ORDER BY account_id; --Expenses
+
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.selector-views/hrm.wage_posting_account_selector_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.wage_posting_account_selector_view;
 
@@ -1294,16 +1566,6 @@ SELECT * FROM core.account_scrud_view
 --Accounts Receivable, Accounts Payable
 WHERE account_master_id = ANY(ARRAY[10110, 15010])
 ORDER BY account_id;
-
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.selector-views/hrm.wages_account_selector_view.sql --<--<--
-DROP VIEW IF EXISTS hrm.wages_account_selector_view;
-
-CREATE VIEW hrm.wages_account_selector_view
-AS
-SELECT * FROM core.account_scrud_view
-WHERE account_master_id >= 20400
-ORDER BY account_id; --Expenses
-
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/05.views/hrm.attendance_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.attendance_view;
@@ -1688,7 +1950,7 @@ SELECT 'REN', 'Rent', core.get_account_id_by_account_number('20100') UNION ALL
 SELECT 'BOR', 'Borrowings Deduction', core.get_account_id_by_account_number('10400') UNION ALL
 SELECT 'FIC', 'Fitness Club', core.get_account_id_by_account_number('20100');
 
-INSERT INTO hrm.wages_setup(wages_setup_code, wages_setup_name, currency_code, max_week_hours, hourly_rate, overtime_applicable, overtime_hourly_rate, expense_account_id)
+INSERT INTO hrm.wage_setup(wage_setup_code, wage_setup_name, currency_code, max_week_hours, hourly_rate, overtime_applicable, overtime_hourly_rate, expense_account_id)
 SELECT 'NY-LIW', 'New York Living Wage', 'USD', 40, 14.30, true, 28.60, core.get_account_id_by_account_number('43800');
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/MixERP.Net.FrontEnd/Modules/HRM/db/1.5/db/src/99.sample/kanban.sql --<--<--
@@ -1707,7 +1969,7 @@ BEGIN
         'hrm.employees', 
         'hrm.employment_statuses',
         'hrm.salaries',
-        'hrm.wages_setup',
+        'hrm.wage_setup',
         'hrm.employee_type_scrud_view',
         'hrm.employee_identification_detail_scrud_view',
         'hrm.employee_social_network_detail_scrud_view',

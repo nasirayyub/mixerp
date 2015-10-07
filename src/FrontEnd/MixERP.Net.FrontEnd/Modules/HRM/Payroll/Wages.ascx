@@ -9,7 +9,6 @@
         }
     </style>
     <div class="ui divider"></div>
-
     <div class="ui form bpad8">
         <div class="fields">
             <div class="two wide field">
@@ -35,7 +34,7 @@
                     <th colspan="5">
                         <div class="ui grey header">
                             <img class="ui tiny middle aligned bordered rounded circular image"
-                                data-ng-src="/api/core/attachment/document/272/272/{{Photo}}" />
+                                data-ng-show="Photo" data-ng-src="{{Photo}}" />
                             {{Employee}}
                         </div>
                     </th>
@@ -192,7 +191,7 @@
                     <th colspan="4">
                         <div class="ui tiny fluid input">
                             <input type="text" id="StatementReferenceInputText" class="statement reference" placeholder="{{getResource('Resources.Titles.StatementReference')}}" />
-                        </div>                        
+                        </div>
                     </th>
                     <th class="right aligned">
                         <div class="ui grand total huge grey header"></div>
@@ -201,11 +200,13 @@
             </tfoot>
         </table>
 
+
+        <div class="ui pink header">{{Message}}</div>
         <div class="bpad8"></div>
         <div class="ui buttons">
             <a href="javascript:void(0);" class="ui teal button" data-ng-click="processWage();">{{getResource('Resources.Titles.ProcessWage')}}
             </a>
-            <a href="javascript:void(0);" class="ui basic teal button">{{getResource('Resources.Titles.CreatePayslips')}}
+            <a href="javascript:void(0);" class="ui basic teal button" data-wage-processing-id="{{WageProcessingId}}" data-ng-click="showPayslip(this)">{{getResource('Resources.Titles.CreatePayslip')}}
             </a>
         </div>
         {{success()}}
@@ -227,7 +228,7 @@
 
     MixERPApp.controller("WageController", function ($scope, $sce, $window, $timeout) {
         $window.ajaxDataBind("/api/hrm/employee-view/display-fields", $("#EmployeeSelect"), null, null, null, function () {
-            $timeout(function() {
+            $timeout(function () {
                 $("#EmployeeSelect").dropdown("set selected", "2");
                 $scope.show();
             });
@@ -244,20 +245,30 @@
             $window.removeDirty($("#EmployeeSelect"));
 
             var asOf = $window.parseLocalizedDate($("#AsOfDateInputText").val());
-            var getWageAttendanceAjax = getWageAttendance(employeeId, asOf);
 
+
+            $scope.Message = null;
+            $scope.attendances = null;
+            $scope.EmployeeId = null;
+            $scope.Employee = null;
+            $scope.Photo = null;
+            $scope.RegularHours = null;
+            $scope.RegularPay = null;
+            $scope.OvertimePay = null;
+
+            var getWageAttendanceAjax = getWageAttendance(employeeId, asOf);
             getWageAttendanceAjax.success(function (msg) {
                 $scope.$apply(function () {
                     $scope.EmployeeId = msg[0].EmployeeId;
                     $scope.Employee = msg[0].Employee;
-                    $scope.Photo = msg[0].Photo;
+                    $scope.Photo = "/api/core/attachment/document/272/272/" + msg[0].Photo;
                     $scope.RegularHours = msg[0].RegularHours;
                     $scope.RegularPay = msg[0].RegularPay;
                     $scope.OvertimePay = msg[0].OvertimePay;
 
                     $scope.attendances = msg;
-                    $("#WagePanel").fadeIn(1000);
                 });
+                $("#WagePanel").fadeIn(1000);
             });
         };
 
@@ -348,7 +359,22 @@
             }, 500);
         };
 
-        $scope.processWage = function() {            
+        $scope.showPayslip = function (el) {
+            var wageProcessingId = $scope.WageProcessingId;
+
+            if (!wageProcessingId) {
+                return;
+            };
+
+            window.showWindow("/Modules/HRM/Reports/PaySlip.mix?WageProcessingId=" + wageProcessingId);
+        };
+
+        $scope.processWage = function () {
+            var confirmed = $window.confirmAction();
+            if (!confirmed) {
+                return;
+            };
+
             function ajax(annotation) {
                 var url = "/api/hrm/procedures/post-wage/execute";
                 var data = JSON.stringify(annotation);
@@ -359,11 +385,13 @@
             var asOf = window.parseLocalizedDate($("#AsOfDateInputText").val());
             var employeeId = $("#EmployeeSelect").val();
             var statementReference = $("#StatementReferenceInputText").val();
+            var regularHours = $("input.regular.hours").val();
             var regularPayRate = $("input.regular.pay").val();
+            var overtimeHours = $("input.overtime.hours").val();
             var overtimePayRate = $("input.overtime.pay").val();
 
             var details = [];
-            $("#WagePanel table tbody tr").each(function() {
+            $("#WagePanel table tbody tr").each(function () {
                 var el = $(this);
                 var hoursWorked = parseFloat(el.find("td:nth-child(2)").attr("data-hours-worked") || 0);
                 var lunchDeductionMinutes = parseFloat(el.find("td:nth-child(3) input").val() || 0);
@@ -379,28 +407,36 @@
                     PayHours: payHours
                 };
 
-                
-
                 details.push(detail);
             });
-    
+
             var annotation = {
                 UserId: $window.userId,
+                OfficeId: $window.metaView.OfficeId,
+                LoginId: $window.metaView.LoginId,
                 AsOf: asOf,
                 EmployeeId: employeeId,
                 StatementReference: statementReference,
+                RegularHours: regularHours,
                 RegularPayRate: regularPayRate,
+                OvertimeHours: overtimeHours,
                 OvertimePayRate: overtimePayRate,
                 Details: details
             };
 
             var request = ajax(annotation);
 
-            request.success(function(msg) {
-                alert(msg);
+            request.success(function (msg) {
+                $scope.WageProcessingId = msg;
+                $scope.Message = $window.stringFormat("Wage was successfully posted to account. Wage Processing Id #{0}.", msg);
+                $scope.attendances = null;
+                $scope.EmployeeId = null;
+                $scope.Employee = null;
+                $scope.Photo = null;
+                $scope.RegularHours = null;
+                $scope.RegularPay = null;
+                $scope.OvertimePay = null;
             });
-
-
         };
     });
 </script>
