@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.FrontEnd", "FrontEnd\MixERP.net.FrontEnd\MixERP.Net.FrontEnd.csproj", "{ACE1017D-71BC-4417-A906-72C4B9C55823}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.FrontEnd", "FrontEnd\MixERP.Net.FrontEnd.csproj", "{ACE1017D-71BC-4417-A906-72C4B9C55823}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5A14E96A-3807-4109-B0C7-4B23D151FD14} = {5A14E96A-3807-4109-B0C7-4B23D151FD14}
 	EndProjectSection
@@ -50,43 +50,41 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core Modules (UI)", "Core M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.WebControls.PartyControl", "Libraries\Server Controls\Project\MixERP.Net.WebControls.PartyControl\MixERP.Net.WebControls.PartyControl.csproj", "{E566553C-218F-460D-B1A9-C441F01F8FDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Sales", "FrontEnd\MixERP.Net.FrontEnd\Modules\Sales\MixERP.Net.Core.Modules.Sales.csproj", "{1D592C04-FCF8-4955-AEFB-43B33A58FAA1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Sales", "FrontEnd\Modules\Sales\MixERP.Net.Core.Modules.Sales.csproj", "{1D592C04-FCF8-4955-AEFB-43B33A58FAA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Purchase", "FrontEnd\MixERP.Net.FrontEnd\Modules\Purchase\MixERP.Net.Core.Modules.Purchase.csproj", "{1B957616-95F4-4911-957E-C12B21E7C5B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Purchase", "FrontEnd\Modules\Purchase\MixERP.Net.Core.Modules.Purchase.csproj", "{1B957616-95F4-4911-957E-C12B21E7C5B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Inventory", "FrontEnd\MixERP.Net.FrontEnd\Modules\Inventory\MixERP.Net.Core.Modules.Inventory.csproj", "{005F98DB-6410-47B4-A8AF-0C2883174E55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Inventory", "FrontEnd\Modules\Inventory\MixERP.Net.Core.Modules.Inventory.csproj", "{005F98DB-6410-47B4-A8AF-0C2883174E55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Finance", "FrontEnd\MixERP.Net.FrontEnd\Modules\Finance\MixERP.Net.Core.Modules.Finance.csproj", "{06F14FA5-7B5B-4951-B59B-A8DA3C468C3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Finance", "FrontEnd\Modules\Finance\MixERP.Net.Core.Modules.Finance.csproj", "{06F14FA5-7B5B-4951-B59B-A8DA3C468C3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.CRM", "FrontEnd\MixERP.Net.FrontEnd\Modules\CRM\MixERP.Net.Core.Modules.CRM.csproj", "{6E0AED64-2654-4C7B-94CB-F32A2D2A75E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.CRM", "FrontEnd\Modules\CRM\MixERP.Net.Core.Modules.CRM.csproj", "{6E0AED64-2654-4C7B-94CB-F32A2D2A75E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.BackOffice", "FrontEnd\MixERP.Net.FrontEnd\Modules\BackOffice\MixERP.Net.Core.Modules.BackOffice.csproj", "{81F9EE96-AD4A-4B6A-A411-DE9B2FC34A3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.BackOffice", "FrontEnd\Modules\BackOffice\MixERP.Net.Core.Modules.BackOffice.csproj", "{81F9EE96-AD4A-4B6A-A411-DE9B2FC34A3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.POS", "FrontEnd\MixERP.Net.FrontEnd\Modules\POS\MixERP.Net.Core.Modules.POS.csproj", "{585CFF1D-806D-49B6-BBAA-865FF2976204}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.POS", "FrontEnd\Modules\POS\MixERP.Net.Core.Modules.POS.csproj", "{585CFF1D-806D-49B6-BBAA-865FF2976204}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend (UI)", "Frontend (UI)", "{87C7000F-A7DC-42BA-A578-DD090513BB66}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{C615459A-CAF8-4802-A187-C746853A5D82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.BackOffice.Data", "FrontEnd\MixERP.Net.FrontEnd\Modules\BackOffice.Data\MixERP.Net.Core.Modules.BackOffice.Data.csproj", "{19A6C0BB-7737-486C-B2BF-DF1F9290DFE9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.BackOffice.Data", "FrontEnd\Modules\BackOffice.Data\MixERP.Net.Core.Modules.BackOffice.Data.csproj", "{19A6C0BB-7737-486C-B2BF-DF1F9290DFE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.CRM.data", "FrontEnd\MixERP.Net.FrontEnd\Modules\CRM.data\MixERP.Net.Core.Modules.CRM.data.csproj", "{CBB57F23-B95E-4328-A786-8D1248EEA525}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.CRM.data", "FrontEnd\Modules\CRM.data\MixERP.Net.Core.Modules.CRM.data.csproj", "{CBB57F23-B95E-4328-A786-8D1248EEA525}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Sales.Data", "FrontEnd\MixERP.Net.FrontEnd\Modules\Sales.Data\MixERP.Net.Core.Modules.Sales.Data.csproj", "{DC4BD356-F8CF-4D06-8C2B-007A0E737F40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Sales.Data", "FrontEnd\Modules\Sales.Data\MixERP.Net.Core.Modules.Sales.Data.csproj", "{DC4BD356-F8CF-4D06-8C2B-007A0E737F40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Purchase.Data", "FrontEnd\MixERP.Net.FrontEnd\Modules\Purchase.Data\MixERP.Net.Core.Modules.Purchase.Data.csproj", "{AF16EA95-9B7E-44E0-8BBA-7C2A3895AFBF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Purchase.Data", "FrontEnd\Modules\Purchase.Data\MixERP.Net.Core.Modules.Purchase.Data.csproj", "{AF16EA95-9B7E-44E0-8BBA-7C2A3895AFBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.POS.Data", "FrontEnd\MixERP.Net.FrontEnd\Modules\POS.Data\MixERP.Net.Core.Modules.POS.Data.csproj", "{25F71631-0892-42C3-B209-6329F4AACECA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.POS.Data", "FrontEnd\Modules\POS.Data\MixERP.Net.Core.Modules.POS.Data.csproj", "{25F71631-0892-42C3-B209-6329F4AACECA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Manufacturing.Data", "FrontEnd\MixERP.Net.FrontEnd\Modules\Manufacturing.Data\MixERP.Net.Core.Modules.Manufacturing.Data.csproj", "{71676CBA-E060-4EBA-A50B-7EB8A7BEEE1C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Manufacturing.Data", "FrontEnd\Modules\Manufacturing.Data\MixERP.Net.Core.Modules.Manufacturing.Data.csproj", "{71676CBA-E060-4EBA-A50B-7EB8A7BEEE1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Inventory.Data", "FrontEnd\MixERP.Net.FrontEnd\Modules\Inventory.Data\MixERP.Net.Core.Modules.Inventory.Data.csproj", "{599DD5FD-DBF7-48B1-86FC-73B5EA70AA59}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Inventory.Data", "FrontEnd\Modules\Inventory.Data\MixERP.Net.Core.Modules.Inventory.Data.csproj", "{599DD5FD-DBF7-48B1-86FC-73B5EA70AA59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Finance.Data", "FrontEnd\MixERP.Net.FrontEnd\Modules\Finance.Data\MixERP.Net.Core.Modules.Finance.Data.csproj", "{8027734A-20B1-42E5-ADDE-5F51BF5BBC08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Core.Modules.Finance.Data", "FrontEnd\Modules\Finance.Data\MixERP.Net.Core.Modules.Finance.Data.csproj", "{8027734A-20B1-42E5-ADDE-5F51BF5BBC08}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module Projects (UI)", "Module Projects (UI)", "{EE97E3B1-0DD0-453B-A0AA-4AF12099B0CA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.FrontEnd.Data", "FrontEnd\MixERP.Net.FrontEnd.Data\MixERP.Net.FrontEnd.Data.csproj", "{A84ED536-8E44-4D32-A22D-26D9924A9481}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.TransactionGovernor", "Libraries\Logic\MixERP.Net.TransactionGovernor\MixERP.Net.TransactionGovernor.csproj", "{0AACF4DB-8332-4C4B-96DF-2BF6AEA68473}"
 EndProject
@@ -207,6 +205,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Api.Transactions", "Libraries\Web API\Transactions\MixERP.Net.Api.Transactions.csproj", "{324B6D7F-6782-49D5-AB80-09F6251B13D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.Api.Framework", "Libraries\Web API\Framework\MixERP.Net.Api.Framework.csproj", "{2ED31492-84C8-4C84-94AE-1818EB641A9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixERP.Net.FrontEnd.Data", "Libraries\DAL\MixERP.Net.FrontEnd.Data\MixERP.Net.FrontEnd.Data.csproj", "{A84ED536-8E44-4D32-A22D-26D9924A9481}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -944,30 +944,6 @@ Global
 		{8027734A-20B1-42E5-ADDE-5F51BF5BBC08}.Release-net40|Any CPU.Build.0 = Release|Any CPU
 		{8027734A-20B1-42E5-ADDE-5F51BF5BBC08}.Release-net45|Any CPU.ActiveCfg = Release|Any CPU
 		{8027734A-20B1-42E5-ADDE-5F51BF5BBC08}.Release-net45|Any CPU.Build.0 = Release|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net20|Any CPU.ActiveCfg = Debug|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net20|Any CPU.Build.0 = Debug|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net35|Any CPU.ActiveCfg = Debug|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net35|Any CPU.Build.0 = Debug|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net40|Any CPU.ActiveCfg = Debug|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net40|Any CPU.Build.0 = Debug|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net45|Any CPU.ActiveCfg = Debug|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net45|Any CPU.Build.0 = Debug|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Mono-Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Mono-Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Mono-Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Mono-Release|Any CPU.Build.0 = Release|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net20|Any CPU.ActiveCfg = Release|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net20|Any CPU.Build.0 = Release|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net35|Any CPU.ActiveCfg = Release|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net35|Any CPU.Build.0 = Release|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net40|Any CPU.ActiveCfg = Release|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net40|Any CPU.Build.0 = Release|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net45|Any CPU.ActiveCfg = Release|Any CPU
-		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net45|Any CPU.Build.0 = Release|Any CPU
 		{0AACF4DB-8332-4C4B-96DF-2BF6AEA68473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0AACF4DB-8332-4C4B-96DF-2BF6AEA68473}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AACF4DB-8332-4C4B-96DF-2BF6AEA68473}.Debug-net20|Any CPU.ActiveCfg = Debug|Any CPU
@@ -2048,6 +2024,30 @@ Global
 		{2ED31492-84C8-4C84-94AE-1818EB641A9A}.Release-net40|Any CPU.Build.0 = Release|Any CPU
 		{2ED31492-84C8-4C84-94AE-1818EB641A9A}.Release-net45|Any CPU.ActiveCfg = Release|Any CPU
 		{2ED31492-84C8-4C84-94AE-1818EB641A9A}.Release-net45|Any CPU.Build.0 = Release|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net20|Any CPU.ActiveCfg = Debug|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net20|Any CPU.Build.0 = Debug|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net35|Any CPU.ActiveCfg = Debug|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net35|Any CPU.Build.0 = Debug|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net40|Any CPU.ActiveCfg = Debug|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net40|Any CPU.Build.0 = Debug|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net45|Any CPU.ActiveCfg = Debug|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Debug-net45|Any CPU.Build.0 = Debug|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Mono-Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Mono-Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Mono-Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Mono-Release|Any CPU.Build.0 = Release|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net20|Any CPU.ActiveCfg = Release|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net20|Any CPU.Build.0 = Release|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net35|Any CPU.ActiveCfg = Release|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net35|Any CPU.Build.0 = Release|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net40|Any CPU.ActiveCfg = Release|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net40|Any CPU.Build.0 = Release|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net45|Any CPU.ActiveCfg = Release|Any CPU
+		{A84ED536-8E44-4D32-A22D-26D9924A9481}.Release-net45|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2089,7 +2089,6 @@ Global
 		{599DD5FD-DBF7-48B1-86FC-73B5EA70AA59} = {C615459A-CAF8-4802-A187-C746853A5D82}
 		{8027734A-20B1-42E5-ADDE-5F51BF5BBC08} = {C615459A-CAF8-4802-A187-C746853A5D82}
 		{EE97E3B1-0DD0-453B-A0AA-4AF12099B0CA} = {817B9B9C-EFB6-42DF-A8C7-C0389B346A07}
-		{A84ED536-8E44-4D32-A22D-26D9924A9481} = {87C7000F-A7DC-42BA-A578-DD090513BB66}
 		{0AACF4DB-8332-4C4B-96DF-2BF6AEA68473} = {ADD35728-15DC-4939-98B8-2823E6F22E8A}
 		{4FB50AA0-EEFB-497C-A5F8-E79249EE3895} = {ADD35728-15DC-4939-98B8-2823E6F22E8A}
 		{D29B7B60-76B2-4A00-A8FA-7654519AFCD4} = {79537F4D-F481-458C-98BA-71937D32E2E2}
@@ -2143,5 +2142,6 @@ Global
 		{4900CBE3-7E5A-4A04-8B7E-89C0D6773354} = {30FCC0EC-28EC-40B5-B9E0-54F54E7AFBB0}
 		{324B6D7F-6782-49D5-AB80-09F6251B13D2} = {30FCC0EC-28EC-40B5-B9E0-54F54E7AFBB0}
 		{2ED31492-84C8-4C84-94AE-1818EB641A9A} = {79537F4D-F481-458C-98BA-71937D32E2E2}
+		{A84ED536-8E44-4D32-A22D-26D9924A9481} = {87C7000F-A7DC-42BA-A578-DD090513BB66}
 	EndGlobalSection
 EndGlobal
