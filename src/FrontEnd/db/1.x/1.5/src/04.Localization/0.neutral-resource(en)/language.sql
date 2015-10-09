@@ -608,6 +608,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'is_flat_amount'
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_frequency', 'Is Frequency');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_legally_recognized_marriage', 'Is Legally Recognized Marriage');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_merchant_account', 'Is Merchant Account');
+SELECT localization.add_localized_resource('ScrudResource', '', 'is_overtime', 'Is Overtime');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_party', 'Is Party');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_purchase', 'Is Purchase');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_rectangular', 'Is Rectangular');
@@ -783,11 +784,11 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'price_type_id',
 SELECT localization.add_localized_resource('ScrudResource', '', 'price_type_name', 'Price Type Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'primary_sales_tax_is_vat', 'Primary Sales Tax Is Vat?');
 SELECT localization.add_localized_resource('ScrudResource', '', 'priority', 'Priority');
-SELECT localization.add_localized_resource('ScrudResource', '', 'provident_fund', 'Provident Fund');
-SELECT localization.add_localized_resource('ScrudResource', '', 'provident_fund_code', 'Provident Fund Code');
-SELECT localization.add_localized_resource('ScrudResource', '', 'provident_fund_expense_account_id', 'Provident Fund Expense Account Id');
-SELECT localization.add_localized_resource('ScrudResource', '', 'provident_fund_id', 'Provident Fund Id');
-SELECT localization.add_localized_resource('ScrudResource', '', 'provident_fund_name', 'Provident Fund Name');
+SELECT localization.add_localized_resource('ScrudResource', '', 'pension_fund', 'Pension Fund');
+SELECT localization.add_localized_resource('ScrudResource', '', 'pension_fund_code', 'Pension Fund Code');
+SELECT localization.add_localized_resource('ScrudResource', '', 'pension_fund_expense_account_id', 'Pension Fund Expense Account Id');
+SELECT localization.add_localized_resource('ScrudResource', '', 'pension_fund_id', 'Pension Fund Id');
+SELECT localization.add_localized_resource('ScrudResource', '', 'pension_fund_name', 'Pension Fund Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'purchase_account_id', 'Purchase Account Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'purchase_discount_account_id', 'Purchase Discount Account Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'purchase_verification_limit', 'Purchase Verification Limit');
@@ -1519,8 +1520,8 @@ SELECT localization.add_localized_resource('Titles', '', 'ProfitAndLossStatement
 SELECT localization.add_localized_resource('Titles', '', 'ProfitBeforeTax', 'Profit Before Tax');
 SELECT localization.add_localized_resource('Titles', '', 'ProfitOrLoss', 'Profit or Loss');
 SELECT localization.add_localized_resource('Titles', '', 'Progress', 'Progress');
-SELECT localization.add_localized_resource('Titles', '', 'ProvidentFund', 'Provident Fund');
-SELECT localization.add_localized_resource('Titles', '', 'ProvidentFunds', 'Provident Funds');
+SELECT localization.add_localized_resource('Titles', '', 'PensionFund', 'Pension Fund');
+SELECT localization.add_localized_resource('Titles', '', 'PensionFunds', 'Pension Funds');
 SELECT localization.add_localized_resource('Titles', '', 'PublishedOn', 'Published On');
 SELECT localization.add_localized_resource('Titles', '', 'PurchaseInvoice', 'Purchase Invoice');
 SELECT localization.add_localized_resource('Titles', '', 'PurchaseOrder', 'Purchase Order');

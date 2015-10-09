@@ -1510,8 +1510,8 @@
         function displayEdit(items) {
             for (var id in items) {
                 var value = items[id];
-                if (value) {
-                    editFormElement(toUnderscoreCase(id), value);
+                if (value != null) {
+                    editFormElement(toUnderscoreCase(id), value.toString());
                 };
             };
         };
@@ -1550,7 +1550,7 @@
                         value = value ? "yes" : "no";
                     };
 
-                    targetEl.dropdown("set selected", value);
+                    targetEl.dropdown("set selected", value.toString());
                     targetEl.trigger("blur");
                     targetEl.trigger("change");
                     return;

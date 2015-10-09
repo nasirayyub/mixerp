@@ -32,7 +32,7 @@
                     };
 
                     if (this.url) {
-                        ajaxDataBind(this.url, el, this.data, selectedValue, null, null, this.valueField, this.textField, this.isArray);
+                        ajaxDataBind(this.url, el, this.data, selectedValue.toString(), null, null, this.valueField, this.textField, this.isArray);
                     };
                 };
             });
@@ -392,13 +392,13 @@
                 dropdowns.each(function (i, v) {
                     var dropdown = $(v);
 
-                    var selectedValue = (dropdown.getSelectedValue() || "");
+                    var selectedValue = (dropdown.getSelectedValue().toString() || "");
 
                     if (!selectedValue) {
                         selectedValue = dropdown.attr("data-value");
 
                         if (selectedValue) {
-                            dropdown.val(selectedValue);
+                            dropdown.val(selectedValue.toString());
                         };
                     };
 
