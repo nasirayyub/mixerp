@@ -119,7 +119,6 @@
     <Content Include="Tasks\Employee\LeaveApplication.ascx" />
     <Content Include="Tasks\Employee\Qualifications.ascx" />
     <Content Include="Tasks\Employee\SocialNetworks.ascx" />
-    <Content Include="Tasks\Employee\Wages.ascx" />
     <Content Include="Tasks\Entry\Employees.ascx" />
     <Content Include="Tasks\Exits.ascx" />
     <Content Include="Tasks\LeaveApplications.ascx" />
@@ -281,13 +280,6 @@
     </Compile>
     <Compile Include="Tasks\Employee\SocialNetworks.ascx.designer.cs">
       <DependentUpon>SocialNetworks.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Tasks\Employee\Wages.ascx.cs">
-      <DependentUpon>Wages.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Tasks\Employee\Wages.ascx.designer.cs">
-      <DependentUpon>Wages.ascx</DependentUpon>
     </Compile>
     <Compile Include="Tasks\Entry\Employees.ascx.cs">
       <DependentUpon>Employees.ascx</DependentUpon>

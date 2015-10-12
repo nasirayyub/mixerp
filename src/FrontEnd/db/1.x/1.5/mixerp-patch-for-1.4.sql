@@ -490,7 +490,7 @@ BEGIN
         AND    NOT attisdropped
     ) THEN
         ALTER TABLE core.salespersons
-        ADD COLUMN photo pubic.image;
+        ADD COLUMN photo public.image;
     END IF;
 END
 $$

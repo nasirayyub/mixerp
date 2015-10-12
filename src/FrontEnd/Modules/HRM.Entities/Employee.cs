@@ -112,6 +112,22 @@ namespace MixERP.Net.Entities.HRM
         [ColumnDbType("image", 0, true, "")]
         public string Photo { get; set; }
 
+        [Column("bank_account_number")]
+        [ColumnDbType("varchar", 128, true, "")]
+        public string BankAccountNumber { get; set; }
+
+        [Column("bank_name")]
+        [ColumnDbType("varchar", 128, true, "")]
+        public string BankName { get; set; }
+
+        [Column("bank_branch_name")]
+        [ColumnDbType("varchar", 128, true, "")]
+        public string BankBranchName { get; set; }
+
+        [Column("bank_reference_number")]
+        [ColumnDbType("varchar", 128, true, "")]
+        public string BankReferenceNumber { get; set; }
+
         [Column("zip_code")]
         [ColumnDbType("varchar", 128, true, "")]
         public string ZipCode { get; set; }

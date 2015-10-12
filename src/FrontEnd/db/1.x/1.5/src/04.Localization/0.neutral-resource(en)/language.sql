@@ -29,6 +29,8 @@ SELECT localization.add_localized_resource('DbErrors', '', 'P3202', 'Tax form mi
 SELECT localization.add_localized_resource('DbErrors', '', 'P3301', 'Invalid quantity.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P3302', 'Invalid transaction id.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P3501', 'The column account_id cannot be null.');
+SELECT localization.add_localized_resource('DbErrors', '', 'P4001', 'Cannot process salary when the employee has multiple salary taxes.');
+SELECT localization.add_localized_resource('DbErrors', '', 'P4002', 'Cannot process salary when the employee has multiple employment taxes.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P4010', 'Exchange rate between the currencies was not found.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P4020', 'This item is not associated with this transaction.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P4030', 'No verification policy found for this user.');
@@ -449,6 +451,8 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'current_role_id
 SELECT localization.add_localized_resource('ScrudResource', '', 'current_shift_id', 'Current Shift Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'customer_pays_fee', 'Customer Pays Fee');
 SELECT localization.add_localized_resource('ScrudResource', '', 'date_of_birth', 'Date Of Birth');
+SELECT localization.add_localized_resource('ScrudResource', '', 'day_of_month', 'Day of Month');
+SELECT localization.add_localized_resource('ScrudResource', '', 'day_of_week', 'Day of Week');
 SELECT localization.add_localized_resource('ScrudResource', '', 'debit', 'Debit');
 SELECT localization.add_localized_resource('ScrudResource', '', 'deduction_applicable', 'Deduction Applicable');
 SELECT localization.add_localized_resource('ScrudResource', '', 'deduction_setup_code', 'Deduction Setup Code');
@@ -548,6 +552,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'flagged_on', 'F
 SELECT localization.add_localized_resource('ScrudResource', '', 'foreground_color', 'Foreground Color');
 SELECT localization.add_localized_resource('ScrudResource', '', 'foreign_currency_code', 'Foreign Currency Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'forward_to', 'Forward To');
+SELECT localization.add_localized_resource('ScrudResource', '', 'frequency', 'Frequency');
 SELECT localization.add_localized_resource('ScrudResource', '', 'frequency_code', 'Frequency Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'frequency_id', 'Frequency Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'frequency_name', 'Frequency Name');
@@ -617,6 +622,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'is_smoker', 'Is
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_summary', 'Is Summary');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_supplier', 'Is Supplier');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_system', 'Is System');
+SELECT localization.add_localized_resource('ScrudResource', '', 'is_taxable', 'Is Taxable');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_transaction_node', 'Is Transaction Node');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_vat', 'Is Vat');
 SELECT localization.add_localized_resource('ScrudResource', '', 'item', 'Item');
@@ -842,6 +848,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'salary_frequenc
 SELECT localization.add_localized_resource('ScrudResource', '', 'salary_frequency_name', 'Salary Frequency Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'salary_from', 'Salary From');
 SELECT localization.add_localized_resource('ScrudResource', '', 'salary_id', 'Salary Id');
+SELECT localization.add_localized_resource('ScrudResource', '', 'salary_name', 'Salary Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'salary_tax', 'Salary Tax');
 SELECT localization.add_localized_resource('ScrudResource', '', 'salary_tax_code', 'Salary Tax Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'salary_tax_id', 'Salary Tax Id');
@@ -1592,6 +1599,7 @@ SELECT localization.add_localized_resource('Titles', '', 'Salaries', 'Salaries')
 SELECT localization.add_localized_resource('Titles', '', 'Salary', 'Salary');
 SELECT localization.add_localized_resource('Titles', '', 'SalaryDeductions', 'Salary Deductions');
 SELECT localization.add_localized_resource('Titles', '', 'SalaryFrequencies', 'Salary Frequencies');
+SELECT localization.add_localized_resource('Titles', '', 'SalarySetup', 'Salary Setup');
 SELECT localization.add_localized_resource('Titles', '', 'SalaryTax', 'Salary Tax');
 SELECT localization.add_localized_resource('Titles', '', 'SalaryTaxIncomeBracket', 'Salary Tax Income Bracket');
 SELECT localization.add_localized_resource('Titles', '', 'SalaryTaxIncomeBrackets', 'Salary Tax Income Brackets');

@@ -132,7 +132,7 @@
             var entity = new Object();
             var customFields = [];
 
-            bigError.removeClass("bpad16").html("");
+            bigError.removeClass("vpad16").html("");
 
             function getFormValue(columnName, dataType, isSerial) {
                 var el = $("#" + columnName);
@@ -216,7 +216,7 @@
                 var error = getAjaxErrorMessage(xhr);
 
                 saveButton.removeClass("loading");
-                bigError.addClass("bpad16").text(error);
+                bigError.addClass("vpad16").text(error);
             });
 
         });
@@ -252,7 +252,7 @@
         };
 
         function validate() {
-            var required = $(".form.factory #scrud [required]:not(:disabled):not([readonly])");
+            var required = $(".form.factory [required]:not(:disabled):not([readonly])");
             required.trigger("blur");
 
             var errorFields = window.scrudForm.find(".error:not(.big.error)");
@@ -265,7 +265,6 @@
             var errorCount = errorFields.length;
 
             if (!errorCount) {
-
                 if (typeof (window.customFormValidator) === "function") {
                     var isValid = window.customFormValidator();
 
@@ -392,7 +391,12 @@
                 dropdowns.each(function (i, v) {
                     var dropdown = $(v);
 
-                    var selectedValue = (dropdown.getSelectedValue().toString() || "");
+
+                    var selectedValue = "";
+
+                    if (dropdown.val()) {
+                        selectedValue = (dropdown.val().toString() || "");
+                    };
 
                     if (!selectedValue) {
                         selectedValue = dropdown.attr("data-value");

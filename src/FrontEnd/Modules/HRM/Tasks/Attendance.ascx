@@ -75,7 +75,7 @@
 
     MixERPApp.controller("AttendanceController", function ($timeout, $scope, $sce, $window) {
         function requestEmployees() {
-            var url = "/api/hrm/employee-view";//get-all
+            var url = "/api/hrm/employee-view/all";
             return window.getAjaxRequest(url);
         };
 
@@ -106,7 +106,6 @@
 
                         a.CheckInTime = (a.CheckInTime || "").toString().toTime();
                         a.CheckOutTime = (a.CheckOutTime || "").toString().toTime();
-
                         employees[i].Attendance = a;
                     });
 
@@ -160,7 +159,6 @@
     };
 
     function getAttendance(card) {
-
         var attendanceId = (card.attr("data-attendance-id") || null);
         var employeeId = card.attr("data-employee-id");
         var isPresent = card.find("input:checkbox").is(":checked");

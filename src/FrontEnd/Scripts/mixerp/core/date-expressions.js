@@ -161,7 +161,7 @@ function loadDatepicker() {
         };
     });
 
-    $('[data-type="time"], .time').timepicker({ showPeriodLabels: false });
+    $('[data-type="time"], .time').timepicker({ timeFormat: "G:i" });
 
     candidates.trigger("blur");
 };
