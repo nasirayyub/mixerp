@@ -159,6 +159,7 @@ CREATE TABLE hrm.employees
     bank_name                               national character varying(128) DEFAULT(''),
     bank_branch_name                        national character varying(128) DEFAULT(''),
     bank_reference_number                   national character varying(128) DEFAULT(''),
+    account_id                              bigint NULL REFERENCES core.account(account_id),
     zip_code                                national character varying(128) DEFAULT(''),
     address_line_1                          national character varying(128) DEFAULT(''),
     address_line_2                          national character varying(128) DEFAULT(''),
