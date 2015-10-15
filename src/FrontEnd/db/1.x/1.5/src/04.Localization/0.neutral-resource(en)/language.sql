@@ -604,6 +604,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'is_autistic', '
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_cash', 'Is Cash');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_cognitively_disabled', 'Is Cognitively Disabled');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_contract', 'Is Contract');
+SELECT localization.add_localized_resource('ScrudResource', '', 'is_credit', 'Is Credit');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_debit', 'Is Debit');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_default', 'Is Default');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_default_admin', 'Is Default (Admin)');
@@ -791,6 +792,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'previous_period
 SELECT localization.add_localized_resource('ScrudResource', '', 'price', 'Price');
 SELECT localization.add_localized_resource('ScrudResource', '', 'price_from', 'Price From');
 SELECT localization.add_localized_resource('ScrudResource', '', 'price_to', 'Price To');
+SELECT localization.add_localized_resource('ScrudResource', '', 'price_type', 'Price Type');
 SELECT localization.add_localized_resource('ScrudResource', '', 'price_type_code', 'Price Type Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'price_type_id', 'Price Type Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'price_type_name', 'Price Type Name');
@@ -902,6 +904,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'shift', 'Shift'
 SELECT localization.add_localized_resource('ScrudResource', '', 'shift_code', 'Shift Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'shift_id', 'Shift Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'shift_name', 'Shift Name');
+SELECT localization.add_localized_resource('ScrudResource', '', 'shipper', 'Shipper');
 SELECT localization.add_localized_resource('ScrudResource', '', 'shipper_code', 'Shipper Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'shipper_id', 'Shipper Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'shipper_name', 'Shipper Name');
@@ -988,6 +991,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'total_years', '
 SELECT localization.add_localized_resource('ScrudResource', '', 'tran_code', 'Tran Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'tran_type', 'Tran Type');
 SELECT localization.add_localized_resource('ScrudResource', '', 'transaction_start_date', 'Transaction Start Date');
+SELECT localization.add_localized_resource('ScrudResource', '', 'transaction_ts', 'Transaction Timestamp');
 SELECT localization.add_localized_resource('ScrudResource', '', 'unit', 'Unit');
 SELECT localization.add_localized_resource('ScrudResource', '', 'unit_code', 'Unit Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'unit_id', 'Unit Id');
@@ -995,6 +999,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'unit_name', 'Un
 SELECT localization.add_localized_resource('ScrudResource', '', 'url', 'Url');
 SELECT localization.add_localized_resource('ScrudResource', '', 'use_tax_collecting_account', 'Use Tax Collecting Account');
 SELECT localization.add_localized_resource('ScrudResource', '', 'use_tax_collecting_account_id', 'Use Tax Collecting Account Id');
+SELECT localization.add_localized_resource('ScrudResource', '', 'user', 'User');
 SELECT localization.add_localized_resource('ScrudResource', '', 'user_id', 'User Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'user_name', 'User Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'uses_wheelchair', 'Uses Wheelchair');
@@ -1708,7 +1713,6 @@ SELECT localization.add_localized_resource('Titles', '', 'TableSchemaEmptyExcept
 SELECT localization.add_localized_resource('Titles', '', 'TagName', 'Tag Name');
 SELECT localization.add_localized_resource('Titles', '', 'TaskCompletedSuccessfully', 'The task was completed successfully.');
 SELECT localization.add_localized_resource('Titles', '', 'Tax', 'Tax');
-SELECT localization.add_localized_resource('Titles', '', 'TaxableEarning', 'Taxable Earning');
 SELECT localization.add_localized_resource('Titles', '', 'TaxAuthorities', 'Tax Authorities');
 SELECT localization.add_localized_resource('Titles', '', 'TaxExemptTypes', 'Tax Exempt Types');
 SELECT localization.add_localized_resource('Titles', '', 'TaxForm', 'Tax Form');
@@ -1717,6 +1721,7 @@ SELECT localization.add_localized_resource('Titles', '', 'TaxRate', 'Tax Rate');
 SELECT localization.add_localized_resource('Titles', '', 'TaxSetup', 'Tax Setup');
 SELECT localization.add_localized_resource('Titles', '', 'TaxTotal', 'Tax Total');
 SELECT localization.add_localized_resource('Titles', '', 'TaxTypes', 'Tax Types');
+SELECT localization.add_localized_resource('Titles', '', 'TaxableEarning', 'Taxable Earning');
 SELECT localization.add_localized_resource('Titles', '', 'TaxableSales', 'Taxable Sales');
 SELECT localization.add_localized_resource('Titles', '', 'Tel', 'Tel');
 SELECT localization.add_localized_resource('Titles', '', 'Termination', 'Termination');

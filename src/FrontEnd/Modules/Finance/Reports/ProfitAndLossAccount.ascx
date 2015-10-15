@@ -26,12 +26,12 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
     }
 </style>
 <script type="text/javascript">
-    var grid = $("#PLAccountGridView");
+    var semanticGrid = $("#PLAccountGridView");
     var compactCheckBox = $("#CompactCheckBox");
     var isCompactHiddenField = $("#IsCompactHidden");
 
     $(document).ready(function () {
-        grid.find("tr").each(function () {
+        semanticGrid.find("tr").each(function () {
             var isSummation = $(this).find("td:last, th:last");
 
             if (isSummation.find("input").is(":checked") === true) {
@@ -50,7 +50,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
             isProfit.hide();
         });
 
-        grid.find("tr").each(function () {
+        semanticGrid.find("tr").each(function () {
             if ($(this).is(".positive, .negative") === false) {
                 var cell = $(this).find("td:first-child");
                 cell.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + cell.html());

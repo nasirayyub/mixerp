@@ -23,7 +23,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
     var showButotn = $("#ShowButton");
     var storeHidden = $("#StoreHidden");
     var storeSelect = $("#StoreSelect");
-    var grid = $("#grid");
+    var semanticGrid = $("#grid");
     var actualInputText = $(".actual");
     var differenceInputText = $(".difference");
     var saveButton = $("#SaveButton");
@@ -91,9 +91,9 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
 
     function createControls() {
         var header = String.format("<th>{0}</th><th>{1}</th>", Resources.Titles.Actual(), Resources.Titles.Difference());
-        grid.find("thead tr").append(header);
+        semanticGrid.find("thead tr").append(header);
 
-        var rows = grid.find("tbody tr");
+        var rows = semanticGrid.find("tbody tr");
 
         var actual = "<td><input type='text' tabindex='{0}' class='actual' /></td>";
         var difference = "<td><input type='text' tabindex='{0}' class='difference' /></td>";
@@ -130,7 +130,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
 
         var models = new Array();
 
-        grid.find("tbody tr").each(function () {
+        semanticGrid.find("tbody tr").each(function () {
             var itemCode = $(this).find("td:nth-child(2)").html();
             var itemName = $(this).find("td:nth-child(3)").html();
             var quantity = parseInt2($(this).find("td:nth-child(8)").find("input").val());

@@ -48,7 +48,6 @@
         var cancelButton = $("#CancelButton");
         var scrudForm = $(".form.factory");
         var scrudView = $(".view.factory");
-        var grid = [undefined, "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen"];
         var editData;
         var dropdownsLoaded = false;
         var defaultValuesLoaded = false;
@@ -430,14 +429,6 @@
             });
         };
 
-
-        function chunk_array(arr, len) {
-            return arr.map(function (e, i) {
-                return i % len === 0 ? arr.slice(i, i + len) : null;
-            })
-                .filter(function (e) { return e; });
-        };
-
         function getCustomFieldDataType(customField) {
             var type = "varchar";
 
@@ -525,7 +516,7 @@
                                 return x + (y === propertyName);
                             }, 0);
 
-                            var cssClass = grid[fieldWith * weight] + " wide field";
+                            var cssClass = semanticGrid[fieldWith * weight] + " wide field";
 
                             createColumn(fields, collection[value], cssClass);
                         };
@@ -542,7 +533,7 @@
             var range = _.range(collection.length);
             var missing = $(range).not(skip).get();
 
-            missing = chunk_array(missing, 2);
+            missing = window.chunk_array(missing, 2);
 
 
             $.each(missing, function () {

@@ -43,6 +43,7 @@ namespace MixERP.Net.FrontEnd.Application
                 "~/Scripts/mixerp/core/libraries/jquery-notify.js",
                 "~/Scripts/mixerp/core/libraries/semantic-ui.js",
                 "~/Scripts/mixerp/core/prototype/string.js",
+                "~/Scripts/mixerp/core/array.js",
                 "~/Scripts/mixerp/core/aspnet-validation.js",
                 "~/Scripts/mixerp/core/conversion.js",
                 "~/Scripts/mixerp/core/date-expressions.js",

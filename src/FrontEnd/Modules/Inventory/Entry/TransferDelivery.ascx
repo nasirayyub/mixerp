@@ -21,10 +21,10 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
      %>
 <asp:PlaceHolder runat="server" ID="Placeholder1"></asp:PlaceHolder>
 <script type="text/javascript">
-    var grid = $("#TransferGridView");
+    var semanticGrid = $("#TransferGridView");
 
     $(document).ready(function() {
-        grid.addClass("loading");
+        semanticGrid.addClass("loading");
         var requestId = parseFloat(getQueryStringByName("RequestId") || 0);
 
         if (!requestId) {
@@ -56,7 +56,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
             appendToTable("Cr", storeName, itemCode, itemName, unitName, quantity);
         };
 
-        grid.removeClass("loading");
+        semanticGrid.removeClass("loading");
     };
 
     function GetModel(requestId) {

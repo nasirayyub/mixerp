@@ -19,10 +19,10 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="CashFlow.ascx.cs" Inherits="MixERP.Net.Core.Modules.Finance.Reports.CashFlow" %>
 <asp:PlaceHolder runat="server" ID="Placeholder1"></asp:PlaceHolder>
 <script type="text/javascript">
-    var grid = $("#CashFlowStatementGridView");
+    var semanticGrid = $("#CashFlowStatementGridView");
 
     $(document).ready(function () {
-        grid.find("tr").each(function () {
+        semanticGrid.find("tr").each(function () {
             var isSummation = $(this).find("td:last, th:last");
 
             if (isSummation.find("input").is(":checked") === true) {
@@ -42,14 +42,14 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
 
         });
 
-        grid.find("tr").each(function () {
+        semanticGrid.find("tr").each(function () {
             if ($(this).is(".positive, .negative") === false) {
                 var cell = $(this).find("td:first-child");
                 cell.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + cell.html());
             };
         });
 
-        grid.find("tr:nth-child(1), tr:last-child").each(function () {
+        semanticGrid.find("tr:nth-child(1), tr:last-child").each(function () {
             $(this).addClass("positive");
         });
 

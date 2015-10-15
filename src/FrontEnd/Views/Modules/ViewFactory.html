@@ -111,7 +111,6 @@
     </div>
 
 
-
     <div class="ui stackable grid">
         <div class="ui left floated ten wide column">
             <div class="title ui huge grey header"></div>
@@ -218,35 +217,19 @@
                 <a class="ui active basic button" data-target="kanban" title="Kanban View">
                     <i class="block layout icon"></i>
                 </a>
-                <a class="ui basic button" data-target="view" title="Grid View">
+                <a class="ui basic button" data-target="grid" title="Grid View">
                     <i class="grid layout icon"></i>
                 </a>
             </div>
         </div>
     </div>
 
-    <!--<div class="ui load stackable grid unstyled segment">
-        <div class="left aligned six wide column">
-            <div class="ui breadcrumb">
-                <a class="section current page anchor"></a>
-                <div class="divider">/ </div>
-                <a class="section total pages anchor"></a>
-            </div>
-        </div>
-        <div class="right aligned ten wide column">
-            <a class="ui left attached labeled icon button" onclick="showPreviousPage();">
-                <i class="left arrow icon"></i>
-                <span data-localize="Titles.Previous"></span>
-            </a>
-            <a class="ui right attached right labeled icon button" onclick="showNextPage();">
-                <span data-localize="Titles.Next"></span>
-                <i class="right arrow icon"></i>
-            </a>
-        </div>
-    </div>-->
+    <div class="ui stackable form segment" ID="Annotation" style="display: none;">
+        <div class="ui green button" id="ShowButton">Show</div>
+    </div>
 
 
-    <div data-target="view" style="display: none;">
+    <div data-target="grid" style="display: none;">
         <div id="json" class="vpad8" style="width: 100%; overflow: auto;">
         </div>
     </div>
@@ -268,32 +251,32 @@
             <div class="five fields">
                 <div class="field">
                     <label for="ColumnSelect">
-                        <span data-localize="Titles.SelectAColumn"></span>                        
+                        <span data-localize="Titles.SelectAColumn"></span>
                     </label>
                     <select class="ui search dropdown" id="ColumnSelect" required></select>
                 </div>
                 <div class="field">
                     <label for="FilterConditionSelect">
-                        <span data-localize="Titles.FilterCondition"></span>                        
+                        <span data-localize="Titles.FilterCondition"></span>
                     </label>
                     <select class="ui search dropdown" id="FilterConditionSelect" required></select>
                 </div>
                 <div class="field">
                     <label for="ValueInputText">
-                        <span data-localize="Titles.Value"></span>                        
+                        <span data-localize="Titles.Value"></span>
                     </label>
                     <input id="ValueInputText" required />
                 </div>
                 <div class="field">
                     <label for="AndInputText">
-                        <span data-localize="Titles.And"></span>                        
+                        <span data-localize="Titles.And"></span>
                     </label>
                     <input id="AndInputText" readonly="readonly" />
                 </div>
                 <div class="field">
                     <label>&nbsp;</label>
                     <a href="javascript:void(0);" class="ui button" id="AddFilterButton">
-                        <span data-localize="Titles.Add"></span>                        
+                        <span data-localize="Titles.Add"></span>
                     </a>
                 </div>
             </div>
@@ -303,46 +286,46 @@
             <thead>
                 <tr>
                     <th style="width: 100px;">
-                        <span data-localize="Titles.Actions"></span>                        
+                        <span data-localize="Titles.Actions"></span>
                     </th>
                     <th>
-                        <span data-localize="Titles.ColumnName"></span>                        
+                        <span data-localize="Titles.ColumnName"></span>
                     </th>
                     <th>
-                        <span data-localize="Titles.Condition"></span>                        
+                        <span data-localize="Titles.Condition"></span>
                     </th>
                     <th>
-                        <span data-localize="Titles.Value"></span>                        
+                        <span data-localize="Titles.Value"></span>
                     </th>
                     <th>
-                        <span data-localize="Titles.And"></span>                        
+                        <span data-localize="Titles.And"></span>
                     </th>
                 </tr>
             </thead>
             <tbody></tbody>
         </table>
         <div class="ui large header">
-            <span data-localize="Titles.SaveThisFilter"></span>            
+            <span data-localize="Titles.SaveThisFilter"></span>
         </div>
         <div class="ui divider"></div>
         <div class="ui form">
             <div class="fields">
                 <div class="four wide field">
                     <label>
-                        <span data-localize="Titles.FilterName"></span>                        
+                        <span data-localize="Titles.FilterName"></span>
                     </label>
                     <input id="FilterNameInputText" />
                 </div>
             </div>
             <div class="ui basic buttons">
                 <div class="ui basic button" id="SaveFilterButton">
-                    <span data-localize="Titles.Save"></span>                    
+                    <span data-localize="Titles.Save"></span>
                 </div>
                 <div class="ui basic button" id="ManageFiltersButton">
-                    <span data-localize="Titles.ManageFilters"></span>                    
+                    <span data-localize="Titles.ManageFilters"></span>
                 </div>
                 <div class="ui basic button">
-                    <span data-localize="Titles.Cancel"></span>                    
+                    <span data-localize="Titles.Cancel"></span>
                 </div>
             </div>
         </div>
@@ -360,13 +343,13 @@
                     </div>
                     <div class="ui basic buttons">
                         <a class="ui close button" onclick="loadFilter();">
-                            <span data-localize="Titles.Edit"></span>                            
+                            <span data-localize="Titles.Edit"></span>
                         </a>
                         <a class="ui close button" onclick="loadFilter();">
-                            <span data-localize="Titles.Delete"></span>                            
+                            <span data-localize="Titles.Delete"></span>
                         </a>
                         <a class="ui close button">
-                            <span data-localize="Titles.Close"></span>                            
+                            <span data-localize="Titles.Close"></span>
                         </a>
                     </div>
 
@@ -375,10 +358,10 @@
             <div class="actions">
                 <div class="ui basic buttons">
                     <a class="ui basic close button">
-                        <span data-localize="Titles.RemoveAsDefault"></span>                        
+                        <span data-localize="Titles.RemoveAsDefault"></span>
                     </a>
                     <a class="ui basic button" id="MakeUserDefaultFilterButton">
-                        <span data-localize="Titles.MakeAsDefault"></span>                        
+                        <span data-localize="Titles.MakeAsDefault"></span>
                     </a>
                 </div>
             </div>
@@ -387,16 +370,16 @@
 
     <div class="ui hidden segment" data-target="import">
         <div class="ui huge header">
-            <span data-localize="Titles.DataImport"></span>            
+            <span data-localize="Titles.DataImport"></span>
         </div>
 
         <div class="ui basic buttons">
             <a class="ui basic button" id="DownloadTemplateButton">
-                <span data-localize="Titles.ExportData"></span>                
+                <span data-localize="Titles.ExportData"></span>
             </a>
             <div class="ui basic button">
                 <label for="file">
-                    <span data-localize="Titles.ImportData"></span>                    
+                    <span data-localize="Titles.ImportData"></span>
                 </label>
                 <input type="file" id="file" style="display:none;">
             </div>
@@ -414,7 +397,7 @@
 
 
 
-    <div class="ui load stackable grid unstyled segment">
+    <div class="ui load stackable grid unstyled segment" id="Pager">
         <div class="left aligned six wide column">
             <div class="ui breadcrumb">
                 <a class="section current page anchor"></a>
@@ -483,6 +466,15 @@
         if (!scrudFactory.card) {
             scrudFactory.card = new Object();
         };
+
+        function checkIfProcedure() {
+            if ((typeof (scrudFactory.isProcedure) === "undefined")) {
+                return scrudFactory.viewAPI.indexOf("/procedures") !== -1;
+            };
+
+            return scrudFactory.isProcedure;
+        };
+
     </script>
 
     <script>
@@ -548,7 +540,7 @@
                 return null;
             };
 
-            var el = $('<table class="ui striped nowrap definition table" id="ScrudView">');
+            var el = $('<table class="ui striped nowrap scrudview table" id="ScrudView">');
             var header = "<thead><tr>";
 
             var index = 0;
@@ -662,6 +654,15 @@
     <script>
         function loadPageCount(callback) {
             $(".view.dimmer").addClass("active");
+
+            if (checkIfProcedure()) {
+                if (typeof callback === "function") {
+                    callback();
+                };
+
+                return;
+            };
+
             var filterName = getFilter();
 
             var countTotalItemsAjax = countTotalItems(filterName, false);
@@ -875,27 +876,37 @@
         function loadGrid() {
             var pageNumber = getPageNumber();
             var filterName = getFilter();
+
+            if (checkIfProcedure()) {
+                $(".view.dimmer").removeClass("active");
+                $("#Pager").remove();
+                loadAnnotation();
+                return;
+            };
+
             $(".current.page.anchor").text(pageNumber);
-
-
             var getViewAjax = getView(pageNumber, filterName, false);
 
             getViewAjax.success(function (response) {
-                window.json = response;
-                var el = $("#json");
-                createGridView(el, window.json);
-                localizeHeaders(el);
-                loadColumns();
-                loadActions();
-                loadButtons();
-                triggerViewReadyEvent();
-                $(".view.dimmer").removeClass("active");
-                createCards();
+                onViewSuccess(response);
             });
 
             getViewAjax.fail(function (xhr) {
                 logAjaxErrorMessage(xhr);
             });
+        };
+
+        function onViewSuccess(response) {
+            window.json = response;
+            var el = $("#json");
+            createGridView(el, window.json);
+            localizeHeaders(el);
+            loadColumns();
+            loadActions();
+            loadButtons();
+            triggerViewReadyEvent();
+            $(".view.dimmer").removeClass("active");
+            createCards();
         };
 
         function triggerViewReadyEvent() {
@@ -923,6 +934,10 @@
             createVerificationButton();
         };
 
+        function executeProcedure() {
+            //alert("executing");
+        };
+
         function getView(pageNumber, filterName, byOffice) {
             if (getFilterQueryStringCount()) {
                 var qs = getQueryStrings();
@@ -945,7 +960,13 @@
         };
 
         function getMeta() {
-            var url = scrudFactory.formAPI + "/meta";
+            var api = scrudFactory.formAPI;
+
+            if (typeof (api) === "undefined") {
+                api = scrudFactory.viewAPI;
+            };
+
+            var url = api + "/meta";
             return getAjaxRequest(url);
         };
     </script>
@@ -1097,10 +1118,10 @@
                     .Where(function (x) { return x.text === columnName }).ToArray()[0].name;
 
                 filter.FilterCondition = parseInt(
-                                            Enumerable.From(filterConditions)
-                                            .Where(function (x) { return x.text === condition })
-                                             .ToArray()[0].value
-                                         || 0);
+                    Enumerable.From(filterConditions)
+                    .Where(function (x) { return x.text === condition })
+                    .ToArray()[0].value
+                    || 0);
 
                 filter.FilterValue = el.find("td:nth-child(4)").text();
                 filter.FilterAndValue = el.find("td:nth-child(5)").text();
@@ -1370,57 +1391,120 @@
             el.find(".label").text(percentage.toString() + "% - " + message);
         };
     </script>
-    <script>
-        function loadActions() {
-            var deleteTemplate = "";
-            var editTemplate = "";
+<script>
 
-            if (scrudFactory.allowDelete) {
-                deleteTemplate = stringFormat("<a onclick='deleteRow(this);' title='{0}'><i class='delete icon'></i></a>", Resources.Titles.Delete());
+    function getActions(actions) {
+        if (!actions.length) {
+            return "";
+        };
+
+        var els = $("<div />");
+
+        $.each(actions, function(i, v) {
+            var anchor = $("<a />");
+            var href = "javascript:void(0);";//Without href, anchors do not interact with keyboard events such as spacebar or return key. 
+
+            if (v.title) {
+                anchor.attr("title", v.title);
             };
 
-            if (scrudFactory.allowEdit) {
-                editTemplate = stringFormat("<a onclick='editRow(this);' title='{0}'><i class='edit icon'></i></a>", Resources.Titles.Edit());
+            if (v.href) {
+                href = v.href;
             };
 
-            var grid = $(".definition.table");
-            var header = stringFormat("<th style='width:{0}px;'></th>", 25 * (!isNullOrWhiteSpace(editTemplate) + !isNullOrWhiteSpace(deleteTemplate)));
-            header += "<th class='action' style='cursor:pointer;'>" + Resources.Titles.Select() + "</th>";
-            var selectTemplate = '<div class="ui toggle checkbox"> \
+            anchor.attr("href", href);
+
+            if (v.onclick) {
+                anchor.attr("onclick", v.onclick);
+            };
+
+            if (v.icon) {
+                var icon = $("<i />");
+                icon.addClass(v.icon);
+                anchor.append(icon);
+            };
+
+            els.append(anchor);
+        });
+
+        return els.html();
+    };
+
+    function loadActions() {
+        var deleteTemplate = "";
+        var editTemplate = "";
+
+        if (scrudFactory.allowDelete) {
+            deleteTemplate = stringFormat("<a onclick='deleteRow(this);' title='{0}'><i class='delete icon'></i></a>", Resources.Titles.Delete());
+        };
+
+        if (scrudFactory.allowEdit) {
+            editTemplate = stringFormat("<a onclick='editRow(this);' title='{0}'><i class='edit icon'></i></a>", Resources.Titles.Edit());
+        };
+
+        var grid = $(".scrudview.table");
+
+        var actionCount = (!isNullOrWhiteSpace(editTemplate) + !isNullOrWhiteSpace(deleteTemplate));
+
+        if (scrudFactory.customActions) {
+            actionCount += scrudFactory.customActions.length;
+        };
+
+
+        var header = stringFormat("<th style='width:{0}px;'>{1}</th>", actionCount * 25, Resources.Titles.Actions());
+        header += "<th class='action' style='cursor:pointer;'>" + Resources.Titles.Select() + "</th>";
+        var selectTemplate = '<div class="ui toggle checkbox"> \
                                       <input type="checkbox">\
                                       <label></label>\
                                     </div>';
 
-            var column = stringFormat("<td>{0}{1}</td><td>{2}</td>", editTemplate, deleteTemplate, selectTemplate);
+        var actions = editTemplate + deleteTemplate;
+            
+        if (scrudFactory.customActions) {
+            var preActions = Enumerable.From(scrudFactory.customActions).Where(function (x) { return x.position === "before"; }).ToArray();
+            var postActions = Enumerable.From(scrudFactory.customActions).Where(function (x) { return x.position !== "before"; }).ToArray();
 
-            grid.find("th:first-child").before(header);
-            grid.find("td:first-child").before(column);
-
-            $(".definition.table tr").click(function (sender) {
-                var row = $(this);
-                var cell = $(sender.target).closest('td');
-
-                if (cell.index() > 1) {
-                    var el = row.find("input:checkbox");
-                    toogleSelection(el);
-                };
-            });
-
-            var isSelectionToggler = true;
-
-            $("th.action").click(function () {
-                if (isSelectionToggler) {
-                    $(".definition.table input:checkbox").prop("checked", "checked");
-                }
-                else {
-                    $(".definition.table input:checkbox").removeProp("checked");
-                };
-
-                isSelectionToggler = !isSelectionToggler;
-            });
+            actions = getActions(preActions) + actions + getActions(postActions);
         };
 
-    </script>
+
+
+        var actionTemplate = stringFormat("<td>{0}</td><td>{1}</td>", actions, selectTemplate);
+
+        grid.find("th:first-child").before(header);
+
+
+        grid.find("tbody tr").each(function() {
+            var el = $(this);
+            var vallue = el.find("td:first-child").html();
+            el.find("td:first-child").before(actionTemplate.replace(/{id}/g, vallue));
+        });
+
+        $(".scrudview.table tr").click(function (sender) {
+            var row = $(this);
+            var cell = $(sender.target).closest('td');
+
+            if (cell.index() > 1) {
+                var el = row.find("input:checkbox");
+                toogleSelection(el);
+            };
+        });
+
+        var isSelectionToggler = true;
+
+        $("th.action").click(function () {
+            if (isSelectionToggler) {
+                $(".scrudview.table input:checkbox").prop("checked", "checked");
+            }
+            else {
+                $(".scrudview.table input:checkbox").removeProp("checked");
+            };
+
+            isSelectionToggler = !isSelectionToggler;
+        });
+    };
+
+</script>
     <script>
         function deleteRow(el, isCard) {
             var confirmed = confirmAction();
@@ -1492,6 +1576,10 @@
 
             var tableName = scrudFactory.formTableName;
 
+            if (checkIfProcedure()) {
+                return;
+            };
+
             var getViewForEditAjax = getViewForEdit(primaryKeyValue);
 
             getViewForEditAjax.success(function (data) {
@@ -1521,7 +1609,7 @@
                 var id = v.FieldName;
                 var value = v.Value;
 
-                    editFormElement(id, value);
+                editFormElement(id, value);
             });
         };
 
@@ -2554,5 +2642,195 @@
 
         return getAjaxRequest(url, "PUT");
     };
+</script>
+
+<script>
+    //Annotation
+    function getAnnotation() {
+        var els = $("#Annotation .fields .field .data-member");
+
+        var annotation = new Object();
+
+        els.each(function() {
+            var el = $(this);
+            var key = el.attr("data-model");
+            var value = el.val();
+
+            annotation[key] = value;
+        });
+
+        return annotation;
+    };
+
+    function loadAnnotation() {
+        function request() {
+            var url = scrudFactory.viewAPI + "/annotation";
+            return getAjaxRequest(url);
+        };
+
+        if (!checkIfProcedure()) {
+            return;
+        };
+
+        var ajax = request();
+        ajax.success(function (msg) {
+            createAnnotationFields(msg);
+        });
+    };
+
+    function createAnnotationFields(annotation) {
+        $.each(annotation.Columns, function (i, v) {
+            if (scrudFactory.hiddenAnnotation) {
+                var isHidden = Enumerable.From(scrudFactory.hiddenAnnotation).Where(function (x) { return x === v.PropertyName; }).Count() === 1;
+                annotation.Columns[i].IsHidden = isHidden;
+            };
+        });
+
+        var visible = Enumerable.From(annotation.Columns).Where(function (x) { return !x.IsHidden; }).ToArray();
+        var groups = window.chunk_array(visible, 6);
+
+        var fields;
+
+        $.each(groups, function (i, group) {
+            fields = $('<div class="six fields" />');
+
+            $.each(group, function (i, item) {
+                addAnnotationField(item, fields);
+            });
+
+            $("#ShowButton").before(fields);
+        });
+
+        var hidden = Enumerable.From(annotation.Columns).Where(function (x) { return x.IsHidden; }).ToArray();
+
+        $.each(hidden, function (i, item) {
+            addAnnotationField(item, fields, true);
+        });
+
+
+        $("#ShowButton").before(fields);
+        $("#ShowButton").insertAfter($("#Annotation .fields").last().find(".field").last());
+
+        setRegionalFormat();
+        loadDatepicker();
+        $("#Annotation").fadeIn();
+        executeFunction();
+    };
+
+    $("#ShowButton").click(function() {
+        executeFunction();
+    });
+
+    function simplifyAnnotationType(dbType) {
+        var type = dbType.toString().toLowerCase();
+
+        if (type === "text") {
+            type = "string";
+        };
+
+        return type;
+    };
+
+    function addAnnotationField(item, fields, hidden) {
+        var field = $('<div class="field" />');
+
+        var type = simplifyAnnotationType(item.DbDataType);
+
+        var el = getField(item.PropertyName, type, true);
+        el.attr("placeholder", item.PropertyName);
+
+        if (scrudFactory.defaultAnnotation) {
+            var defaultValue = Enumerable.From(scrudFactory.defaultAnnotation).Where(function (x) { return x.key === item.PropertyName; }).FirstOrDefault();
+
+            if (defaultValue) {
+                el.val(defaultValue.value);
+            };
+        };
+
+        el.addClass("data-member");
+        el.attr("id", "Annotation" + item.PropertyName);
+        el.attr("title", item.PropertyName);
+        el.attr("data-model", item.PropertyName);
+
+        if (hidden) {
+            field.addClass("hidden");
+        };
+
+        field.append(el);
+        fields.append(field);
+    };
+
+    function executeFunction() {
+        function request(annotation) {
+            var url = scrudFactory.viewAPI + "/execute";
+            var data = JSON.stringify(annotation);
+
+            return getAjaxRequest(url, "POST", data);
+        };
+
+        var annotation = getAnnotation();
+        var ajax = request(annotation);
+
+        ajax.success(function (response) {
+            onViewSuccess(response);
+        });
+    };
+
+
+    //Todo: Merge this function with formfactory
+    function getField(propertyName, dataType, nullable) {
+        if (typeof (scrudFactory.keys) === "undefined") {
+            scrudFactory.keys = [];
+        };
+
+        var hasKey = Enumerable.From(scrudFactory.keys || [])
+            .Where(function (x) { return x.property === propertyName }).ToArray()[0];
+
+        if (hasKey) {
+            return $("<select class='ui search fluid dropdown' />");
+        };
+
+        switch (dataType) {
+        case "image":
+            return $("<input type='text' class='image' />");
+        case "int4":
+        case "int8":
+        case "integer_strict":
+        case "integer_strict2":
+            return $("<input type='text' class='integer' />");
+        case "float8":
+        case "decimal":
+        case "decimal_strict":
+        case "numeric":
+            return $("<input type='text' class='decimal' />");
+        case "money_strict2":
+        case "money_strict":
+            return $("<input type='text' class='currency' />");
+        case "text":
+            return $("<textarea />");
+        case "date":
+            return $("<input type='text' class='date' />");
+        case "bool":
+            var el = $("<select class='ui search dropdown' />");
+            var option = "<option";
+
+            if (nullable) {
+                option += " value='Select'>";
+            } else {
+                option += " value=''>";
+            };
+
+            option += Resources.Titles.Select() + "</option>";
+            option += "<option value='yes'>" + Resources.Titles.Yes() + "</option>";
+            option += "<option value='no'>" + Resources.Titles.No() + "</option>";
+
+            el.append(option);
+
+            return el;
+        default:
+            return $("<input type='text' />");
+        };
+    };
+
 </script>
 <script src="/Scripts/mixerp/utitlities/localizable.js"></script>

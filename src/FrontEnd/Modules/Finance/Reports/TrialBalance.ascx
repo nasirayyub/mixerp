@@ -37,7 +37,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
         closingLocalized = "Closing";
     };
 
-    var grid = $("#TrialBalanceGridView");
+    var semanticGrid = $("#TrialBalanceGridView");
     var fromDateTextBox = $("#FromDateTextBox");
     var toDateTextBox = $("#ToDateTextBox");
     var compactCheckBox = $("#CompactCheckBox");
@@ -55,7 +55,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
 
     $(document).ready(function () {
         var html = "<tr><th></th><th></th><th colspan='2'>" + perviousPeriodLocalized + "</th><th colspan='2'>" + currentPeriodLocalized + "</th><th colspan='2'>" + closingLocalized + "</th></tr>";
-        var thead = grid.find("thead");
+        var thead = semanticGrid.find("thead");
         thead.prepend(html);
 
         var accountNumberCell = thead.find("tr:nth-child(2)").find("th:first-child");
@@ -67,19 +67,19 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
         accountNumberCell.remove();
         accountCell.remove();
 
-        var previousDebit = sumOfColumn(grid, 2);
-        var previousCredit = sumOfColumn(grid, 3);
+        var previousDebit = sumOfColumn(semanticGrid, 2);
+        var previousCredit = sumOfColumn(semanticGrid, 3);
 
-        var debit = sumOfColumn(grid, 4);
-        var credit = sumOfColumn(grid, 5);
+        var debit = sumOfColumn(semanticGrid, 4);
+        var credit = sumOfColumn(semanticGrid, 5);
 
-        var closingDebit = sumOfColumn(grid, 6);
-        var closingCredit = sumOfColumn(grid, 7);
+        var closingDebit = sumOfColumn(semanticGrid, 6);
+        var closingCredit = sumOfColumn(semanticGrid, 7);
 
         var tfoot = "<tr class='active strong text-right'><td colspan='2'>Total</td><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>";
         tfoot = String.format(tfoot, previousDebit, previousCredit, debit, credit, closingDebit, closingCredit);
 
-        grid.append(tfoot);
+        semanticGrid.append(tfoot);
 
     });
 

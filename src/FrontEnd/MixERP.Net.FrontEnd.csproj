@@ -518,6 +518,7 @@
     <Content Include="Scripts\linq.js\test\testrunner.jquery.htm" />
     <Content Include="Scripts\linq.js\test\testrunner.jquery.min.htm" />
     <Content Include="Scripts\linq.js\test\testrunner.min.htm" />
+    <Content Include="Scripts\mixerp\core\array.js" />
     <Content Include="Scripts\mixerp\core\browser.js" />
     <Content Include="Scripts\mixerp\core\dom\frame.js" />
     <Content Include="Scripts\mixerp\core\dom\uploader.js" />
