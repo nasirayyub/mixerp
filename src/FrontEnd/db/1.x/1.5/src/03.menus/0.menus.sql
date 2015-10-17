@@ -41,3 +41,7 @@ UPDATE core.menus SET sort = 2, icon = 'rocket' WHERE menu_code ='STD';
 UPDATE core.menus SET sort = 3, icon = 'flipped rocket' WHERE menu_code ='STK';
 UPDATE core.menus SET sort = 4, icon = 'shipping' WHERE menu_code ='STJ';
 UPDATE core.menus SET sort = 5, icon = 'desktop' WHERE menu_code ='STA';
+
+DELETE FROM policy.menu_access WHERE menu_id = core.get_menu_id_by_menu_code('SAA');
+DELETE FROM core.menu_locale WHERE menu_id = core.get_menu_id_by_menu_code('SAA');
+DELETE FROM core.menus WHERE menu_code = 'SAA';

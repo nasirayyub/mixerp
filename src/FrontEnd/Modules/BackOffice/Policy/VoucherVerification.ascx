@@ -35,8 +35,6 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
     scrudFactory.allowDelete = true;
     scrudFactory.allowEdit = true;
 
-    scrudFactory.live = "ShiftName";
-
     scrudFactory.keys = [
         {
             property: "OfficeId",

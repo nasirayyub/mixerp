@@ -112,11 +112,10 @@
 
 
     <div class="ui stackable grid">
-        <div class="ui left floated ten wide column">
+        <div class="ui sixteen wide column">
             <div class="title ui huge grey header"></div>
-            <div id="description" style="display: none;"></div>
-        </div>
-        <div class="ui right floated six wide column">
+            <div id="description" class="ui warning description message" style="display: none;">
+            </div>
         </div>
     </div>
 
@@ -500,7 +499,8 @@
             var localized = executeFunctionByName("Resources.Titles." + text, window);
 
             if (!localized) {
-                localized = executeFunctionByName("Resources.ScrudResource." + text, window);
+                var underscoreCase = toUnderscoreCase(text);
+                localized = executeFunctionByName("Resources.ScrudResource." + underscoreCase, window);
             };
 
             if (localized) {
@@ -517,9 +517,7 @@
         function localizeHeaders(el) {
             el.find("thead tr th").each(function () {
                 var cell = $(this);
-
-                var name = toUnderscoreCase(cell.text());
-                var text = tryParseLocalizedResource(name);
+                var text = tryParseLocalizedResource(cell.text());
                 cell.text(text);
 
                 var column = new Object();

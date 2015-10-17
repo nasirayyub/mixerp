@@ -135,7 +135,6 @@
     <Content Include="OTS\ScrudFactoryParameters.ascx" />
     <Content Include="OTS\SMTP.ascx" />
     <Content Include="OTS\Switches.ascx" />
-    <Content Include="Policy\ApiAccess.ascx" />
     <Content Include="Policy\DefaultEntityAccess.ascx" />
     <Content Include="Policy\EntityAccess.ascx" />
     <Content Include="Scripts\Admin\ReportWriter.ascx..js" />
@@ -449,13 +448,6 @@
     </Compile>
     <Compile Include="OTS\Switches.ascx.designer.cs">
       <DependentUpon>Switches.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Policy\ApiAccess.ascx.cs">
-      <DependentUpon>ApiAccess.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Policy\ApiAccess.ascx.designer.cs">
-      <DependentUpon>ApiAccess.ascx</DependentUpon>
     </Compile>
     <Compile Include="Policy\AutoVerification.ascx.cs">
       <DependentUpon>AutoVerification.ascx</DependentUpon>

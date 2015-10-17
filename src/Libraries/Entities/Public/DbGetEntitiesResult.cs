@@ -1,3 +1,4 @@
+// ReSharper disable All
 /********************************************************************************
 Copyright (C) MixERP Inc. (http://mixof.org).
 
@@ -22,21 +23,25 @@ using System;
 
 namespace MixERP.Net.Entities.Public
 {
-    [PrimaryKey("", autoIncrement=false)]
-    [FunctionName("public.crosstab2")]
+    [PrimaryKey("", autoIncrement = false)]
+    [FunctionName("public.get_entities")]
     [ExplicitColumns]
-    public sealed class DbCrosstab2Result : PetaPocoDB.Record<DbCrosstab2Result>, IPoco
+    public sealed class DbGetEntitiesResult : PetaPocoDB.Record<DbGetEntitiesResult>, IPoco
     {
-        [Column("row_name")]
-        [ColumnDbType("text", 0, false, "")] 
-        public string RowName { get; set; }
-    
-        [Column("category_1")]
-        [ColumnDbType("text", 0, false, "")] 
-        public string Category1 { get; set; }
-    
-        [Column("category_2")]
-        [ColumnDbType("text", 0, false, "")] 
-        public string Category2 { get; set; }
+        [Column("table_schema")]
+        [ColumnDbType("name", 0, false, "")]
+        public string TableSchema { get; set; }
+
+        [Column("table_name")]
+        [ColumnDbType("name", 0, false, "")]
+        public string TableName { get; set; }
+
+        [Column("table_type")]
+        [ColumnDbType("text", 0, false, "")]
+        public string TableType { get; set; }
+
+        [Column("has_duplicate")]
+        [ColumnDbType("boolean", 0, false, "")]
+        public bool HasDuplicate { get; set; }
     }
 }

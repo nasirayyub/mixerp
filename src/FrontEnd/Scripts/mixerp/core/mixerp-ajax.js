@@ -20,58 +20,6 @@ var getData = function (data) {
     return null;
 };
 
-jQuery.fn.bindAjaxData = function (ajaxData, skipSelect, selectedValue, dataValueField, dataTextField, isArray) {
-    "use strict";
-    var selected;
-    var targetControl = $(this);
-    targetControl.empty();
-
-
-    if (ajaxData.length === 0) {
-        appendItem(targetControl, "", Resources.Titles.None());
-        return;
-    };
-
-    if (!skipSelect) {
-        appendItem(targetControl, "", Resources.Titles.Select());
-    }
-   
-    if (!dataValueField) {
-        dataValueField = "Value";
-    };
-
-    if (!dataTextField) {
-        dataTextField = "Text";
-    };
-
-    $.each(ajaxData, function () {
-        var text;
-        var value;
-        selected = false;
-
-        if (typeof(isArray) === "undefined") {
-            isArray = false;
-        };
-
-        if (isArray) {
-            text = this;
-            value = this;
-        };
-    
-        if(!isArray){
-            text = this[dataTextField].toString();
-            value = this[dataValueField].toString();
-        };
-
-        if (selectedValue) {
-            if (value === selectedValue.toString()) {
-                selected = true;
-            };
-        };
-
-        appendItem(targetControl, value, text, selected);
-    });
-};
 
 var appendItem = function (dropDownList, value, text, selected) {
     var option = $("<option></option>");
@@ -163,8 +111,79 @@ var ajaxUpdateVal = function (url, data, targetControls) {
     });
 };
 
+jQuery.fn.bindAjaxData = function (ajaxData, skipSelect, selectedValue, dataValueField, dataTextField, isArray) {
+    "use strict";
+    var selected;
+
+    var valueIsExpression = dataValueField.substring(2, 0) === "{{" && dataValueField.slice(-2) === "}}";
+    var textIsExpression = dataTextField.substring(2, 0) === "{{" && dataTextField.slice(-2) === "}}";
+
+    var targetControl = $(this);
+    targetControl.empty();
+
+
+    if (ajaxData.length === 0) {
+        appendItem(targetControl, "", window.Resources.Titles.None());
+        return;
+    };
+
+    if (!skipSelect) {
+        appendItem(targetControl, "", window.Resources.Titles.Select());
+    }
+
+    if (!dataValueField) {
+        dataValueField = "Value";
+    };
+
+    if (!dataTextField) {
+        dataTextField = "Text";
+    };
+
+    $.each(ajaxData, function (i, v) {
+        var text;
+        var value;
+        selected = false;
+
+        if (typeof (isArray) === "undefined") {
+            isArray = false;
+        };
+
+        if (isArray) {
+            text = this;
+            value = this;
+        };
+
+        if (!isArray) {
+            var expression;
+
+            if (textIsExpression) {
+                expression = dataTextField.replace("{{", "").replace("}}", "");
+                text = eval(expression);
+            } else {
+                text = this[dataTextField].toString();
+            };
+
+            if (valueIsExpression) {
+                expression = dataValueField.replace("{{", "").replace("}}", "");
+                value = eval(expression);
+            } else {
+                value = this[dataValueField].toString();
+            };
+        };
+
+        if (selectedValue) {
+            if (value === selectedValue.toString()) {
+                selected = true;
+            };
+        };
+
+        appendItem(targetControl, value, text, selected);
+    });
+};
+
 var ajaxDataBind = function (url, targetControl, data, selectedValue, associatedControl, callback, dataValueField, dataTextField, isArray) {
     var isWebApiRequest = url.substring(5, 0) === "/api/";
+    var isProcedure = url.slice(-7) === "execute";
 
     if (!targetControl) {
         return;
@@ -177,11 +196,16 @@ var ajaxDataBind = function (url, targetControl, data, selectedValue, associated
     var ajax;
 
     if (isWebApiRequest) {
-        ajax = new getAjaxRequest(url, data);
+        var type = "GET";
+
+        if (isProcedure) {
+            type = "POST";
+        };
+
+        ajax = new getAjaxRequest(url, type, data);
     } else {
         ajax = new getAjax(url, data);
     };
-
 
     ajax.success(function (msg) {
         var result = msg.d;
