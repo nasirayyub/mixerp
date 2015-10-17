@@ -25,6 +25,7 @@ using System.Web.Http;
 using MixERP.Net.ApplicationState.Cache;
 using MixERP.Net.Common.Extensions;
 using PetaPoco;
+using MixERP.Net.EntityParser;
 namespace MixERP.Net.Api.Policy
 {
     /// <summary>
@@ -74,6 +75,50 @@ namespace MixERP.Net.Api.Policy
                 _UserId = this._UserId
             };
         }
+        /// <summary>
+        ///     Creates meta information of "get menu" annotation.
+        /// </summary>
+        /// <returns>Returns the "get menu" annotation meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("annotation")]
+        [Route("~/api/policy/procedures/get-menu/annotation")]
+        public EntityView GetAnnotation()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                                {
+                                        new EntityColumn { ColumnName = "_user_id",  PropertyName = "UserId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "_office_id",  PropertyName = "OfficeId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "_culture_",  PropertyName = "Culture",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                }
+            };
+        }
+
+        /// <summary>
+        ///     Creates meta information of "get menu" entity.
+        /// </summary>
+        /// <returns>Returns the "get menu" meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("meta")]
+        [Route("~/api/policy/procedures/get-menu/meta")]
+        public EntityView GetEntityView()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                                {
+                                        new EntityColumn { ColumnName = "menu_id",  PropertyName = "MenuId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "menu_text",  PropertyName = "MenuText",  DataType = "string",  DbDataType = "character varying",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "url",  PropertyName = "Url",  DataType = "string",  DbDataType = "character varying",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "menu_code",  PropertyName = "MenuCode",  DataType = "string",  DbDataType = "character varying",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "sort",  PropertyName = "Sort",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "icon",  PropertyName = "Icon",  DataType = "string",  DbDataType = "character varying",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "level",  PropertyName = "Level",  DataType = "short",  DbDataType = "smallint",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "parent_menu_id",  PropertyName = "ParentMenuId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                }
+            };
+        }
 
         [AcceptVerbs("POST")]
         [Route("execute")]
@@ -85,6 +130,7 @@ namespace MixERP.Net.Api.Policy
                 this.procedure.UserId = annotation.UserId;
                 this.procedure.OfficeId = annotation.OfficeId;
                 this.procedure.Culture = annotation.Culture;
+
 
                 return this.procedure.Execute();
             }

@@ -211,6 +211,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     collection.Add(detail.ItemCode);
                     collection.Add(detail.UnitName);
                     collection.Add(detail.Quantity);
+                    collection.Add(detail);
                 }
             }
             return collection;

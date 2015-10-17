@@ -90,6 +90,7 @@
     <Compile Include="GetJournalViewController.cs" />
     <Compile Include="GetLastReceiptDateController.cs" />
     <Compile Include="GetMavcogsController.cs" />
+    <Compile Include="GetMergeModelController.cs" />
     <Compile Include="GetNetProfitController.cs" />
     <Compile Include="GetNewTransactionCounterController.cs" />
     <Compile Include="GetNonGlProductViewController.cs" />

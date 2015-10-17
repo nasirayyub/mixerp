@@ -17,4 +17,50 @@ You should have received a copy of the GNU General Public License
 along with MixERP.  If not, see <http://www.gnu.org/licenses />.
 --%>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Receipt.ascx.cs" Inherits="MixERP.Net.Core.Modules.Sales.Receipt" %>
-<asp:PlaceHolder runat="server" ID="Placeholder1"></asp:PlaceHolder>
+<script>
+    var scrudFactory = new Object();
+    scrudFactory.title = Resources.Titles.SalesReceipt();
+
+    scrudFactory.hiddenAnnotation = ["UserId", "OfficeId"];
+    
+    scrudFactory.addNewUrl = "/Modules/Sales/Entry/Receipt.mix";
+
+    scrudFactory.defaultAnnotation = [
+    	{ 
+    		key : "UserId",
+    		value: window.userId
+    	},
+    	{ 
+    		key : "OfficeId",
+    		value: window.metaView.OfficeId
+    	},
+    	{ 
+    		key : "DateFrom",
+    		value: "bom"
+    	},
+    	{ 
+    		key : "DateTo",
+    		value: "eom"
+    	}
+    ];
+
+	scrudFactory.customActions = [
+		{
+			title: Resources.Labels.GoToChecklistWindow(),
+			href: "/Modules/Sales/Confirmation/Receipt.mix?TranId={id}",
+			icon : "list icon"
+		},
+		{
+			title: Resources.Titles.Print(),
+			onclick: "showWindow('/Modules/Sales/Reports/CustomerReceiptReport.mix?TranId={id}');",
+			icon : "print icon"
+		}
+	];
+
+
+	scrudFactory.viewAPI = "/api/transactions/procedures/get-receipt-view";
+	scrudFactory.viewTableName = "transactions.get_receipt_view";
+</script>
+
+
+<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>

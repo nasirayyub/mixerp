@@ -25,6 +25,7 @@ using System.Web.Http;
 using MixERP.Net.ApplicationState.Cache;
 using MixERP.Net.Common.Extensions;
 using PetaPoco;
+using MixERP.Net.EntityParser;
 namespace MixERP.Net.Api.Audit
 {
     /// <summary>
@@ -70,6 +71,48 @@ namespace MixERP.Net.Api.Audit
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
+            };
+        }
+        /// <summary>
+        ///     Creates meta information of "get office information model" annotation.
+        /// </summary>
+        /// <returns>Returns the "get office information model" annotation meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("annotation")]
+        [Route("~/api/audit/procedures/get-office-information-model/annotation")]
+        public EntityView GetAnnotation()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                                {
+                                        new EntityColumn { ColumnName = "integer",  PropertyName = "Integer",  DataType = "",  DbDataType = "",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                }
+            };
+        }
+
+        /// <summary>
+        ///     Creates meta information of "get office information model" entity.
+        /// </summary>
+        /// <returns>Returns the "get office information model" meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("meta")]
+        [Route("~/api/audit/procedures/get-office-information-model/meta")]
+        public EntityView GetEntityView()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                                {
+                                        new EntityColumn { ColumnName = "office",  PropertyName = "Office",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "logged_in_to",  PropertyName = "LoggedInTo",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "last_login_ip",  PropertyName = "LastLoginIp",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "last_login_on",  PropertyName = "LastLoginOn",  DataType = "DateTime",  DbDataType = "timestamp with time zone",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "current_ip",  PropertyName = "CurrentIp",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "current_login_on",  PropertyName = "CurrentLoginOn",  DataType = "DateTime",  DbDataType = "timestamp with time zone",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "role",  PropertyName = "Role",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "department",  PropertyName = "Department",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                }
             };
         }
 

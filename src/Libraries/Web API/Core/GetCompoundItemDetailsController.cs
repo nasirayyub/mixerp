@@ -25,6 +25,7 @@ using System.Web.Http;
 using MixERP.Net.ApplicationState.Cache;
 using MixERP.Net.Common.Extensions;
 using PetaPoco;
+using MixERP.Net.EntityParser;
 namespace MixERP.Net.Api.Core
 {
     /// <summary>
@@ -75,6 +76,57 @@ namespace MixERP.Net.Api.Core
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
+            };
+        }
+        /// <summary>
+        ///     Creates meta information of "get compound item details" annotation.
+        /// </summary>
+        /// <returns>Returns the "get compound item details" annotation meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("annotation")]
+        [Route("~/api/core/procedures/get-compound-item-details/annotation")]
+        public EntityView GetAnnotation()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                                {
+                                        new EntityColumn { ColumnName = "_compound_item_code",  PropertyName = "CompoundItemCode",  DataType = "string",  DbDataType = "character varying",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "_sales_tax_code",  PropertyName = "SalesTaxCode",  DataType = "string",  DbDataType = "character varying",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "_tran_book",  PropertyName = "TranBook",  DataType = "string",  DbDataType = "character varying",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "_store_id",  PropertyName = "StoreId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "_party_code",  PropertyName = "PartyCode",  DataType = "string",  DbDataType = "character varying",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "_price_type_id",  PropertyName = "PriceTypeId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                }
+            };
+        }
+
+        /// <summary>
+        ///     Creates meta information of "get compound item details" entity.
+        /// </summary>
+        /// <returns>Returns the "get compound item details" meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("meta")]
+        [Route("~/api/core/procedures/get-compound-item-details/meta")]
+        public EntityView GetEntityView()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                                {
+                                        new EntityColumn { ColumnName = "id",  PropertyName = "Id",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "item_id",  PropertyName = "ItemId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "item_code",  PropertyName = "ItemCode",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "item_name",  PropertyName = "ItemName",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "quantity",  PropertyName = "Quantity",  DataType = "int",  DbDataType = "integer_strict",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "unit_id",  PropertyName = "UnitId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "unit_name",  PropertyName = "UnitName",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "price",  PropertyName = "Price",  DataType = "decimal",  DbDataType = "money_strict2",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "discount",  PropertyName = "Discount",  DataType = "decimal",  DbDataType = "money_strict2",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "sales_tax_id",  PropertyName = "SalesTaxId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "sales_tax_code",  PropertyName = "SalesTaxCode",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "computed_tax",  PropertyName = "ComputedTax",  DataType = "decimal",  DbDataType = "money_strict2",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                }
             };
         }
 

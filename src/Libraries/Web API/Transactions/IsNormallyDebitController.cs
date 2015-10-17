@@ -86,7 +86,7 @@ namespace MixERP.Net.Api.Transactions
             {
                 Columns = new List<EntityColumn>()
                                 {
-                                        new EntityColumn { ColumnName = "_account_id",  PropertyName = "_accountId",  DataType = "long",  DbDataType = "bigint",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                        new EntityColumn { ColumnName = "_account_id",  PropertyName = "AccountId",  DataType = "long",  DbDataType = "bigint",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
                                 }
             };
         }

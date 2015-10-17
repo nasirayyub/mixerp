@@ -25,6 +25,7 @@ using System.Web.Http;
 using MixERP.Net.ApplicationState.Cache;
 using MixERP.Net.Common.Extensions;
 using PetaPoco;
+using MixERP.Net.EntityParser;
 namespace MixERP.Net.Api.Core
 {
     /// <summary>
@@ -72,6 +73,24 @@ namespace MixERP.Net.Api.Core
                 _UserId = this._UserId
             };
         }
+        /// <summary>
+        ///     Creates meta information of "get account id by party id" annotation.
+        /// </summary>
+        /// <returns>Returns the "get account id by party id" annotation meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("annotation")]
+        [Route("~/api/core/procedures/get-account-id-by-party-id/annotation")]
+        public EntityView GetAnnotation()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                                {
+                                        new EntityColumn { ColumnName = "party_id",  PropertyName = "PartyId",  DataType = "long",  DbDataType = "bigint",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                }
+            };
+        }
+
 
         [AcceptVerbs("POST")]
         [Route("execute")]

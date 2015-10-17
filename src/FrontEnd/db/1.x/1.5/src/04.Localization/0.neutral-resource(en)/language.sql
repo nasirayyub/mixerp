@@ -34,6 +34,9 @@ SELECT localization.add_localized_resource('DbErrors', '', 'P4002', 'Cannot proc
 SELECT localization.add_localized_resource('DbErrors', '', 'P4003', 'Cannot post salary because the net payment is less than zero.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P4010', 'Exchange rate between the currencies was not found.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P4020', 'This item is not associated with this transaction.');
+SELECT localization.add_localized_resource('DbErrors', '', 'P4021', 'Cannot merge transactions of different parties into a single batch. Please try again.');
+SELECT localization.add_localized_resource('DbErrors', '', 'P4022', 'The selected transactions contain items which have already been merged. Please try again.');
+SELECT localization.add_localized_resource('DbErrors', '', 'P4023', 'Cannot merge transactions having incompatible tax types. Please try again.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P4030', 'No verification policy found for this user.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P4031', 'Please ask someone else to verify your transaction.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P5000', 'Referencing sides are not equal.');

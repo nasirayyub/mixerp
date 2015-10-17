@@ -25,6 +25,7 @@ using System.Web.Http;
 using MixERP.Net.ApplicationState.Cache;
 using MixERP.Net.Common.Extensions;
 using PetaPoco;
+using MixERP.Net.EntityParser;
 namespace MixERP.Net.Api.Localization
 {
     /// <summary>
@@ -73,6 +74,43 @@ namespace MixERP.Net.Api.Localization
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
+            };
+        }
+        /// <summary>
+        ///     Creates meta information of "add localized resource" annotation.
+        /// </summary>
+        /// <returns>Returns the "add localized resource" annotation meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("annotation")]
+        [Route("~/api/localization/procedures/add-localized-resource/annotation")]
+        public EntityView GetAnnotation()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                                {
+                                        new EntityColumn { ColumnName = "_resource_class",  PropertyName = "ResourceClass",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "_culture_code",  PropertyName = "CultureCode",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "_key",  PropertyName = "Key",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "_value",  PropertyName = "Value",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                }
+            };
+        }
+
+        /// <summary>
+        ///     Creates meta information of "add localized resource" entity.
+        /// </summary>
+        /// <returns>Returns the "add localized resource" meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("meta")]
+        [Route("~/api/localization/procedures/add-localized-resource/meta")]
+        public EntityView GetEntityView()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                {
+                }
             };
         }
 

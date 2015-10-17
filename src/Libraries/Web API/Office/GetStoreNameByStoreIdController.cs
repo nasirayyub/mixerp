@@ -25,6 +25,7 @@ using System.Web.Http;
 using MixERP.Net.ApplicationState.Cache;
 using MixERP.Net.Common.Extensions;
 using PetaPoco;
+using MixERP.Net.EntityParser;
 namespace MixERP.Net.Api.Office
 {
     /// <summary>
@@ -72,6 +73,24 @@ namespace MixERP.Net.Api.Office
                 _UserId = this._UserId
             };
         }
+        /// <summary>
+        ///     Creates meta information of "get store name by store id" annotation.
+        /// </summary>
+        /// <returns>Returns the "get store name by store id" annotation meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("annotation")]
+        [Route("~/api/office/procedures/get-store-name-by-store-id/annotation")]
+        public EntityView GetAnnotation()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                                {
+                                        new EntityColumn { ColumnName = "_store_id",  PropertyName = "StoreId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                }
+            };
+        }
+
 
         [AcceptVerbs("POST")]
         [Route("execute")]

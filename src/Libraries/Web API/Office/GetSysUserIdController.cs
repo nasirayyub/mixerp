@@ -25,6 +25,7 @@ using System.Web.Http;
 using MixERP.Net.ApplicationState.Cache;
 using MixERP.Net.Common.Extensions;
 using PetaPoco;
+using MixERP.Net.EntityParser;
 namespace MixERP.Net.Api.Office
 {
     /// <summary>
@@ -71,6 +72,7 @@ namespace MixERP.Net.Api.Office
                 _UserId = this._UserId
             };
         }
+
 
         [AcceptVerbs("POST")]
         [Route("execute")]

@@ -90,6 +90,7 @@
     <Compile Include="GetJournalViewProcedure.cs" />
     <Compile Include="GetLastReceiptDateProcedure.cs" />
     <Compile Include="GetMavcogsProcedure.cs" />
+    <Compile Include="GetMergeModelProcedure.cs" />
     <Compile Include="GetNetProfitProcedure.cs" />
     <Compile Include="GetNewTransactionCounterProcedure.cs" />
     <Compile Include="GetNonGlProductViewProcedure.cs" />

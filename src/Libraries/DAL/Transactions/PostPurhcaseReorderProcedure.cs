@@ -172,6 +172,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     collection.Add(detail.Price);
                     collection.Add(detail.TaxCode);
                     collection.Add(detail.OrderQuantity);
+                    collection.Add(detail);
                 }
             }
             return collection;

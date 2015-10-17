@@ -25,6 +25,7 @@ using System.Web.Http;
 using MixERP.Net.ApplicationState.Cache;
 using MixERP.Net.Common.Extensions;
 using PetaPoco;
+using MixERP.Net.EntityParser;
 namespace MixERP.Net.Api.Policy
 {
     /// <summary>
@@ -73,6 +74,41 @@ namespace MixERP.Net.Api.Policy
                 _UserId = this._UserId
             };
         }
+        /// <summary>
+        ///     Creates meta information of "create access types" annotation.
+        /// </summary>
+        /// <returns>Returns the "create access types" annotation meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("annotation")]
+        [Route("~/api/policy/procedures/create-access-types/annotation")]
+        public EntityView GetAnnotation()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                                {
+                                        new EntityColumn { ColumnName = "_access_type_id",  PropertyName = "AccessTypeId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "_access_type_name",  PropertyName = "AccessTypeName",  DataType = "string",  DbDataType = "character varying",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                }
+            };
+        }
+
+        /// <summary>
+        ///     Creates meta information of "create access types" entity.
+        /// </summary>
+        /// <returns>Returns the "create access types" meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("meta")]
+        [Route("~/api/policy/procedures/create-access-types/meta")]
+        public EntityView GetEntityView()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                {
+                }
+            };
+        }
 
         [AcceptVerbs("POST")]
         [Route("execute")]
@@ -83,6 +119,7 @@ namespace MixERP.Net.Api.Policy
             {
                 this.procedure.AccessTypeId = annotation.AccessTypeId;
                 this.procedure.AccessTypeName = annotation.AccessTypeName;
+
 
                 this.procedure.Execute();
             }

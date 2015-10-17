@@ -25,6 +25,7 @@ using System.Web.Http;
 using MixERP.Net.ApplicationState.Cache;
 using MixERP.Net.Common.Extensions;
 using PetaPoco;
+using MixERP.Net.EntityParser;
 namespace MixERP.Net.Api.Office
 {
     /// <summary>
@@ -73,6 +74,25 @@ namespace MixERP.Net.Api.Office
                 _UserId = this._UserId
             };
         }
+        /// <summary>
+        ///     Creates meta information of "is parent office" annotation.
+        /// </summary>
+        /// <returns>Returns the "is parent office" annotation meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("annotation")]
+        [Route("~/api/office/procedures/is-parent-office/annotation")]
+        public EntityView GetAnnotation()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                                {
+                                        new EntityColumn { ColumnName = "parent",  PropertyName = "Parent",  DataType = "int",  DbDataType = "integer_strict",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "child",  PropertyName = "Child",  DataType = "int",  DbDataType = "integer_strict",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                }
+            };
+        }
+
 
         [AcceptVerbs("POST")]
         [Route("execute")]

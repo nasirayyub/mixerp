@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Policy;
 using Npgsql;
@@ -85,6 +86,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// <summary>
         /// Prepares and executes the function "policy.save_menu_policy".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public void Execute()
         {
             if (!this.SkipValidation)
@@ -99,8 +101,55 @@ namespace MixERP.Net.Schemas.Policy.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM policy.save_menu_policy(@0::integer, @1::integer, @2::integer[]);";
-            Factory.NonQuery(this._Catalog, query, this.UserId, this.OfficeId, this.MenuIds);
+            string query = "SELECT * FROM policy.save_menu_policy(@UserId, @OfficeId, @MenuIds);";
+
+            query = query.ReplaceWholeWord("@UserId", "@0::integer");
+            query = query.ReplaceWholeWord("@OfficeId", "@1::integer");
+
+            int menuIdsOffset = 2;
+            query = query.ReplaceWholeWord("@MenuIds", "ARRAY[" + this.SqlForMenuIds(this.MenuIds, menuIdsOffset, 1) + "]");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.UserId);
+            parameters.Add(this.OfficeId);
+            parameters.AddRange(this.ParamsForMenuIds(this.MenuIds));
+
+            Factory.NonQuery(this._Catalog, query, parameters.ToArray());
+        }
+
+        private string SqlForMenuIds(int[] menuIds, int offset, int memberCount)
+        {
+            if (menuIds == null)
+            {
+                return "NULL::integer";
+            }
+            List<string> parameters = new List<string>();
+            for (int i = 0; i < menuIds.Count(); i++)
+            {
+                List<string> args = new List<string>();
+                args.Add("@" + offset);
+                offset++;
+                string parameter = "{0}::integer";
+                parameter = string.Format(System.Globalization.CultureInfo.InvariantCulture, parameter,
+                    string.Join(",", args));
+                parameters.Add(parameter);
+            }
+            return string.Join(",", parameters);
+        }
+
+        private List<object> ParamsForMenuIds(int[] menuIds)
+        {
+            List<object> collection = new List<object>();
+
+            if (menuIds != null && menuIds.Count() > 0)
+            {
+                foreach (int menuId in menuIds)
+                {
+                    collection.Add(menuId);
+                }
+            }
+            return collection;
         }
     }
 }

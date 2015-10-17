@@ -39,7 +39,7 @@
 </style>
 
 
-<div class="view factory">
+<div class="view factory" style="display: none;">
     <div class="ui inverted active view dimmer">
         <div class="content">
             <div class="ui text loader">
@@ -225,7 +225,9 @@
     </div>
 
     <div class="ui stackable form segment" ID="Annotation" style="display: none;">
-        <div class="ui green button" id="ShowButton">Show</div>
+        <div class="field">
+            <div class="ui green button" id="ShowButton">Show</div>
+        </div>
     </div>
 
 
@@ -447,6 +449,7 @@
             };
 
             if (scrudFactory.addNewUrl) {
+                addNewButton.attr("href", scrudFactory.addNewUrl);
                 return true;
             };
 
@@ -821,8 +824,810 @@
         };
     </script>
     <script>
+        //Annotation
+        function getAnnotation() {
+            var els = $("#Annotation .fields .field .data-member");
+
+            var annotation = new Object();
+
+            els.each(function () {
+                var el = $(this);
+                var key = el.attr("data-model");
+                var value = el.val();
+
+                annotation[key] = value;
+            });
+
+            return annotation;
+        };
+
+        function loadAnnotation() {
+            function request() {
+                var url = scrudFactory.viewAPI + "/annotation";
+                return getAjaxRequest(url);
+            };
+
+            if (!checkIfProcedure()) {
+                return;
+            };
+
+            var ajax = request();
+            ajax.success(function (msg) {
+                createAnnotationFields(msg);
+            });
+        };
+
+        function createAnnotationFields(annotation) {
+            $.each(annotation.Columns, function (i, v) {
+                if (scrudFactory.hiddenAnnotation) {
+                    var isHidden = Enumerable.From(scrudFactory.hiddenAnnotation).Where(function (x) { return x === v.PropertyName; }).Count() === 1;
+                    annotation.Columns[i].IsHidden = isHidden;
+                };
+            });
+
+            var visible = Enumerable.From(annotation.Columns).Where(function (x) { return !x.IsHidden; }).ToArray();
+            var groups = window.chunk_array(visible, 6);
+
+            var fields;
+
+            $.each(groups, function (i, group) {
+                fields = $('<div class="six fields" />');
+
+                $.each(group, function (i, item) {
+                    addAnnotationField(item, fields);
+                });
+
+                $("#ShowButton").parent().before(fields);
+            });
+
+            var hidden = Enumerable.From(annotation.Columns).Where(function (x) { return x.IsHidden; }).ToArray();
+
+            $.each(hidden, function (i, item) {
+                addAnnotationField(item, fields, true);
+            });
+
+
+            $("#ShowButton").parent().before(fields);
+            $("#ShowButton").parent().insertAfter($("#Annotation .fields").last().find(".field").last());
+
+            setRegionalFormat();
+            loadDatepicker();
+            $("#Annotation").fadeIn();
+            executeFunction();
+        };
+
+        $("#ShowButton").click(function () {
+            executeFunction();
+        });
+
+        function simplifyAnnotationType(dbType) {
+            var type = dbType.toString().toLowerCase();
+
+            if (type === "text") {
+                type = "string";
+            };
+
+            return type;
+        };
+
+        function addAnnotationField(item, fields, hidden) {
+            var field = $('<div class="field" />');
+
+            var type = simplifyAnnotationType(item.DbDataType);
+
+            var el = getField(item.PropertyName, type, true);
+            el.attr("placeholder", item.PropertyName);
+
+            if (scrudFactory.defaultAnnotation) {
+                var defaultValue = Enumerable.From(scrudFactory.defaultAnnotation).Where(function (x) { return x.key === item.PropertyName; }).FirstOrDefault();
+                var queryValue = getQueryStringByName("Annotation" + item.PropertyName);
+
+                if (queryValue) {
+                    defaultValue.value = queryValue;
+                };
+
+                if (defaultValue) {
+                    el.val(defaultValue.value);
+                };
+            };
+
+            el.addClass("data-member");
+            el.attr("id", "Annotation" + item.PropertyName);
+            el.attr("title", item.PropertyName);
+            el.attr("data-model", item.PropertyName);
+
+            if (hidden) {
+                field.addClass("hidden");
+            };
+
+            field.append(el);
+            fields.append(field);
+        };
+
+        function executeFunction() {
+            function request(annotation) {
+                var url = scrudFactory.viewAPI + "/execute";
+                var data = JSON.stringify(annotation);
+
+                return getAjaxRequest(url, "POST", data);
+            };
+
+            var annotation = getAnnotation();
+            var ajax = request(annotation);
+
+            ajax.success(function (response) {
+                onViewSuccess(response);
+            });
+        };
+
+
+        //Todo: Merge this function with formfactory
+        function getField(propertyName, dataType, nullable) {
+            if (typeof (scrudFactory.keys) === "undefined") {
+                scrudFactory.keys = [];
+            };
+
+            var hasKey = Enumerable.From(scrudFactory.keys || [])
+                .Where(function (x) { return x.property === propertyName }).ToArray()[0];
+
+            if (hasKey) {
+                return $("<select class='ui search fluid dropdown' />");
+            };
+
+            switch (dataType) {
+                case "image":
+                    return $("<input type='text' class='image' />");
+                case "int4":
+                case "int8":
+                case "integer_strict":
+                case "integer_strict2":
+                    return $("<input type='text' class='integer' />");
+                case "float8":
+                case "decimal":
+                case "decimal_strict":
+                case "numeric":
+                    return $("<input type='text' class='decimal' />");
+                case "money_strict2":
+                case "money_strict":
+                    return $("<input type='text' class='currency' />");
+                case "text":
+                    return $("<textarea />");
+                case "date":
+                    return $("<input type='text' class='date' />");
+                case "bool":
+                    var el = $("<select class='ui search dropdown' />");
+                    var option = "<option";
+
+                    if (nullable) {
+                        option += " value='Select'>";
+                    } else {
+                        option += " value=''>";
+                    };
+
+                    option += Resources.Titles.Select() + "</option>";
+                    option += "<option value='yes'>" + Resources.Titles.Yes() + "</option>";
+                    option += "<option value='no'>" + Resources.Titles.No() + "</option>";
+
+                    el.append(option);
+
+                    return el;
+                default:
+                    return $("<input type='text' />");
+            };
+        };
+
     </script>
     <script>
+    function createCards() {
+        function getKanbanDetails(kanbanIds, resourceIds) {
+            var url = "/api/core/kanban-detail/get-by-resources/";
+            url += "?kanbanIds=";
+            url += kanbanIds.join("&kanbanIds=");
+
+            url += "&resourceIds=";
+            url += resourceIds.join("&resourceIds=");
+
+            return getAjaxRequest(url);
+        };
+
+        if (!window.json) {
+            return;
+        };
+
+        if (!window.kanbans) {
+            return;
+        };
+
+        var keyField = (scrudFactory.card.keyField || getIdField());
+        var resourceIds = Enumerable.From(window.json).Select(function (x) { return x[keyField]; }).ToArray();
+        var kanbanIds = Enumerable.From(window.kanbans).Select(function (x) { return x.KanbanId; }).ToArray();
+
+        var getKanbanDetailsAjax = getKanbanDetails(kanbanIds, resourceIds);
+
+        getKanbanDetailsAjax.success(function (msg) {
+            $(".kanban.holder").html("");
+
+            $.each(window.json, function (i, v) {
+                var key = getCardKey(v);
+                var kanbanDetail = (Enumerable.From(msg).Where(function (detail) { return detail.ResourceId.toString() === key.toString() }).ToArray()[0] || new Object());
+                createCard(v, key, kanbanDetail);
+            });
+
+            makeSortable();
+            makeRatable();
+            displayFlaggedCards();
+        });
+
+    };
+
+    function makeSortable() {
+        $(function () {
+            $("#kanban .segment .kanban.holder").sortable({
+                connectWith: "#kanban .segment .kanban.holder",
+                receive: function (event, ui) {
+                    var card = $(ui.item[0]);
+
+                    var kanbanDetail = new Object();
+                    kanbanDetail.KanbanDetailId = (card.attr("data-kanban-detail-id") || 0);
+                    kanbanDetail.KanbanId = parseInt(card.parent().parent().attr("id").replace("kanban", "") || 0);
+                    kanbanDetail.Rating = card.find(".rating .active.icon").length;
+                    kanbanDetail.ResourceId = card.attr("data-key");
+
+                    if (kanbanDetail.KanbanId) {
+                        var addOrEditKanbanDetailAjax = addOrEditKanbanDetail(kanbanDetail);
+
+                        addOrEditKanbanDetailAjax.success(function (msg) {
+                            card.attr("data-kanban-detail-id", msg);
+                        });
+                    } else {
+                        if (kanbanDetail.KanbanDetailId) {
+                            var deleteKanbanDetailAjax = deleteKanbanDetail(kanbanDetail.KanbanDetailId);
+
+                            deleteKanbanDetailAjax.success(function () {
+                                card.removeAttr("data-kanban-detail-id");
+                            });
+                        };
+                    };
+
+                }
+            }).disableSelection();
+        });
+    };
+
+    function makeRatable() {
+        $('.ui.rating').rating();
+
+        function updateRating(kanbanDetail) {
+            var url = "/api/core/kanban-detail/add-or-edit";
+
+            var form = [];
+            form.push(kanbanDetail);
+            form.push(null);
+
+            var data = JSON.stringify(form);
+
+            return getAjaxRequest(url, "PUT", data);
+        };
+
+        $('.ui.rating i').dblclick(function () {
+            var el = $(this);
+            var card = el.parent().parent().parent();
+            var kanbanDetailId = card.attr("data-kanban-detail-id");
+
+            if (kanbanDetailId) {
+
+                var kanbanDetail = new Object();
+                kanbanDetail.KanbanDetailId = kanbanDetailId;
+                kanbanDetail.KanbanId = card.closest(".segment").attr("id").replace("kanban", "");
+                kanbanDetail.ResourceId = card.attr("data-key");
+                kanbanDetail.Rating = el.parent().find("i.active").length;
+
+                updateRating(kanbanDetail);
+            };
+        });
+    };
+
+    function deleteKanbanDetail(kanbanDetailId) {
+        var url = "/api/core/kanban-detail/delete/" + kanbanDetailId;
+
+        return getAjaxRequest(url, "DELETE");
+    };
+
+    function addOrEditKanbanDetail(kanbanDetail) {
+        var url = "/api/core/kanban-detail/add-or-edit";
+
+        var form = [];
+        form.push(kanbanDetail);
+        form.push(null);
+
+        var data = JSON.stringify(form);
+
+        return getAjaxRequest(url, "PUT", data);
+    };
+
+    function getExtraContent(key) {
+        var extraContent = $('<div class="extra center content" />');
+
+        var buttons = $('<div class="ui small basic buttons" />');
+
+        if (scrudFactory.viewUrl) {
+            var url = scrudFactory.viewUrl.replace("{Key}", key);
+            var viewButton = $('<a class="ui basic button" />');
+            viewButton.attr("href", url);
+            viewButton.text(Resources.Titles.View());
+            buttons.append(viewButton);
+        };
+
+        if (scrudFactory.allowEdit) {
+            var editButton = $('<a class="ui basic button" href="javascript:void(0);" onclick="editRow(this, true);" />');
+            editButton.text(Resources.Titles.Edit());
+            buttons.append(editButton);
+        }
+
+        if (scrudFactory.allowDelete) {
+            var deleteButton = $('<a class="ui basic button" href="javascript:void(0);" onclick="deleteRow(this, true);" />');
+            deleteButton.text(Resources.Titles.Delete());
+            buttons.append(deleteButton);
+        };
+
+
+        extraContent.append(buttons);
+
+        return extraContent;
+    };
+
+    function getExtra(kanbanDetail) {
+        var extra = $('<div class="extra" />');
+
+        var text = $("<span />");
+        text.text(Resources.Titles.Rating());
+        extra.append(text);
+
+        var dataRating = (kanbanDetail.Rating || 0);
+
+        var rating = $('<div class="ui star rating" data-max-rating="5" />');
+        rating.attr("data-rating", dataRating);
+
+        extra.append(rating);
+
+
+        return extra;
+    };
+
+    function getClassName() {
+        var table = scrudFactory.formTableName;
+
+        if (!table) {
+            table = scrudFactory.viewTableName;
+        }
+
+        var plural = toProperCase(table.split(".")[1]);
+        return plural.singularize();
+    };
+
+    function getQualified(dynamic, prefix, suffixes) {
+        var qualified = "";
+
+        $.each(suffixes, function (i, v) {
+            if (!qualified) {
+                var candidate = prefix + v;
+
+                if (dynamic.hasOwnProperty(candidate)) {
+                    qualified = candidate;
+                    return false;
+                };
+            };
+        });
+
+        return qualified;
+    };
+
+    var candidates = {
+        primary: ["Code", "Number", "Name"],
+        secondary: [
+            "Party", "PartyName", "Item", "ItemName",
+            "NoticeDate", "ApprovedOn", "Reason", "Employee",
+            "EmployeeName", "EmployeeCode", "Office", "CurrencyCode"
+        ]
+    };
+
+    function getHeaderField(dynamic) {
+        var className = getClassName();
+
+        var primary = candidates.primary;
+        var qualified = getQualified(dynamic, className, primary);
+
+        if (!qualified) {
+            var secondary = candidates.secondary;
+
+            qualified = getQualified(dynamic, "", secondary);
+        };
+
+        return qualified;
+    };
+
+    function getMetaField(dynamic, headerField) {
+        var className = getClassName();
+
+        var primary = Enumerable.From(candidates.primary)
+            .Where(function (x) { return x !== headerField.replace(className, "") })
+            .ToArray();
+
+        var qualified = getQualified(dynamic, className, primary);
+
+        if (!qualified) {
+            var secondary = Enumerable.From(candidates.secondary)
+                .Where(function (x) { return x !== headerField })
+                .ToArray();
+
+            qualified = getQualified(dynamic, "", secondary);
+        };
+
+        return qualified;
+    };
+
+    function getIdField() {
+        var className = getClassName();
+        return className + "Id";
+    };
+
+    function getCardKey(dynamic) {
+        var keyField = (scrudFactory.card.keyField || getIdField());
+        return dynamic[keyField];
+    };
+
+    function getImageField(entity) {
+        var imageField;
+
+        $.each(entity, function (i) {
+            if (!imageField) {
+                if (i.toLowerCase().indexOf("image") !== -1) {
+                    imageField = i;
+                };
+            };
+
+            if (!imageField) {
+                if (i.toLowerCase().indexOf("photo") !== -1) {
+                    imageField = i;
+                };
+            };
+        });
+
+        return imageField;
+    };
+
+    function getDescriptionField(entity) {
+        var candidates = ["Email", "Url", "City", "Phone", "CompanyName", "Currency"];
+        return getQualified(entity, "", candidates);
+    };
+
+    function createCard(dynamic, key, kanbanDetail) {
+
+        var kanbanId = (kanbanDetail.KanbanId || 0);
+
+        var text;
+        var imageField = (scrudFactory.card.image || getImageField(dynamic));
+        var headerField = (scrudFactory.card.header || getHeaderField(dynamic));
+        var metaField = (scrudFactory.card.meta || getMetaField(dynamic, headerField));
+        var descriptionField = (scrudFactory.card.description || getDescriptionField(dynamic));
+
+        var card = $('<div class="ui card" />');
+        card.attr("data-kanban-detail-id", kanbanDetail.KanbanDetailId);
+        card.attr("data-key", key);
+
+
+        if (imageField) {
+            var src = dynamic[imageField];
+            if (src) {
+                var image = $('<div class="image" />');
+                var img = $("<img />");
+                img.attr("src", "/api/core/attachment/document/300/250/" + src);
+
+                image.append(img);
+                card.append(image);
+            };
+        };
+
+        var content = $('<div class="content" />');
+
+        var checkbox = $('<div class="ui toggle checkbox" />');
+        var input = $('<input name="public" type="checkbox">');
+
+        checkbox.append(input);
+
+        content.append(checkbox);
+
+        if (headerField) {
+            text = dynamic[headerField];
+            if (text) {
+                var header = $('<div class="header" />');
+
+                header.text(text);
+                content.append(header);
+            };
+        };
+
+        if (metaField) {
+            text = dynamic[metaField];
+            if (text) {
+                var meta = $('<div class="meta" />');
+
+                meta.text(text);
+                content.append(meta);
+            };
+        };
+
+        if (descriptionField) {
+            text = dynamic[descriptionField];
+            if (text) {
+                var description = $('<div class="meta" />');
+
+                description.text(text);
+                content.append(description);
+            };
+        };
+
+        card.append(content);
+        card.append(getExtraContent(key));
+        card.append(getExtra(kanbanDetail));
+
+        $("#kanban" + kanbanId + " .kanban.holder").append(card);
+        $(".checkbox").checkbox();
+    };
+
+
+
+
+    $("#ApproveButton").click(function () {
+        var primaryKey = getPrimaryKeyValue();
+
+        if (!hasVerfication() || !primaryKey) {
+            return;
+        };
+
+        var reason = reasonTextArea.val();
+        var verificationStatusId = 2; //2 -> Approved, -3 -> Rejected
+
+        var verifyAjax = verify(primaryKey, verificationStatusId, reason);
+
+        verifyAjax.success(function () {
+            displayMessage(Resources.Labels.TaskCompletedSuccessfully(), "success");
+        });
+    });
+
+    $("#RejectButton").click(function () {
+        var primaryKey = getPrimaryKeyValue();
+
+        if (!hasVerfication() || !primaryKey) {
+            return;
+        };
+
+        var reason = reasonTextArea.val();
+        var verificationStatusId = -3; //2 -> Approved, -3 -> Rejected
+
+        var verifyAjax = verify(primaryKey, verificationStatusId, reason);
+
+        verifyAjax.success(function () {
+            displayMessage(Resources.Labels.TaskCompletedSuccessfully(), "success");
+        });
+    });
+
+    function verify(primaryKey, verificationStatusId, reason) {
+        var url = scrudFactory.formAPI;
+        url += "/verify/";
+        url += primaryKey + "/";
+        url += verificationStatusId + "/";
+        url += reason;
+
+        return getAjaxRequest(url, "PUT");
+    };
+    </script>
+
+    <script>
+        function showTarget(target) {
+            $("div[data-target]").hide();
+            var targetEl = $('div[data-target="' + target.toLowerCase() + '"]');
+            targetEl.removeClass("hidden").fadeIn(500);
+
+            $('a[data-target]').removeClass("active");
+            $('a[data-target="' + target + '"]').addClass("active");
+        };
+
+        function initializeViews() {
+            if (scrudFactory.removeKanban || checkIfProcedure()) {
+                $('[data-target="kanban"]').remove();
+                showTarget("grid");
+            };
+
+            if (scrudFactory.removeFilter || checkIfProcedure()) {
+                $('[data-target="filter"]').remove();
+                $("#FilterButton").remove();
+                showTarget("grid");
+            };
+
+            if (scrudFactory.removeImport || checkIfProcedure()) {
+                $('[data-target="import"]').remove();
+                showTarget("grid");
+                $('a[data-target="grid"]').remove();
+            };
+        };
+
+        function initializeCustomButtons() {
+            if (!scrudFactory.customButtons) {
+                return;
+            };
+
+            var buttons = scrudFactory.customButtons;
+
+            $.each(buttons, function (i, v) {
+                var anchor = $("<a class='ui basic button' />");
+
+                if (v.id) {
+                    anchor.attr("id", v.id);
+                };
+
+                if (v.text) {
+                    anchor.text(v.text);
+                };
+
+                if (v.href) {
+                    anchor.attr("href", v.href);
+                };
+
+                if (v.onclick) {
+                    anchor.attr("onclick", v.onclick);
+                };
+
+                $("#FlagButton").before(anchor);
+            });
+
+
+        };
+
+        function hasVerfication() {
+            if (!scrudFactory.hasVerfication) {
+                return false;
+            };
+
+            if (!scrudFactory.formAPI) {
+                return false;
+            };
+
+            var candidates = ["verification_status_id", "verification_reason"];
+
+            var columns = Enumerable.From(metaDefinition.Columns).Select(function (x) { return x.ColumnName.toString() }).ToArray();
+            var result = Enumerable.From(candidates).Except(columns).ToArray();
+            return result.length === 0;
+        };
+
+        function createVerificationButton() {
+            if (!hasVerfication()) {
+                return;
+            };
+
+            var anchor = $("<a href='javascript:void(0);' id='VerifyButton' class='ui basic button' />");
+            anchor.html(window.Resources.Titles.Verify());
+
+            anchor.insertAfter(flagButton);
+
+            var verifyButton = $("#VerifyButton");
+
+            verifyButton.click(function () {
+                popUnder(verificationPopUnder, verifyButton);
+            });
+        };
+
+        function getActions(actions) {
+            if (!actions.length) {
+                return "";
+            };
+
+            var els = $("<div />");
+
+            $.each(actions, function (i, v) {
+                var anchor = $("<a />");
+                var href = "javascript:void(0);";//Without href, anchors do not interact with keyboard events such as spacebar or return key.
+
+                if (v.title) {
+                    anchor.attr("title", v.title);
+                };
+
+                if (v.href) {
+                    href = v.href;
+                };
+
+                anchor.attr("href", href);
+
+                if (v.onclick) {
+                    anchor.attr("onclick", v.onclick);
+                };
+
+                if (v.icon) {
+                    var icon = $("<i />");
+                    icon.addClass(v.icon);
+                    anchor.append(icon);
+                };
+
+                els.append(anchor);
+            });
+
+            return els.html();
+        };
+
+        function loadActions() {
+            var deleteTemplate = "";
+            var editTemplate = "";
+
+            if (scrudFactory.allowDelete) {
+                deleteTemplate = stringFormat("<a onclick='deleteRow(this);' title='{0}'><i class='delete icon'></i></a>", Resources.Titles.Delete());
+            };
+
+            if (scrudFactory.allowEdit) {
+                editTemplate = stringFormat("<a onclick='editRow(this);' title='{0}'><i class='edit icon'></i></a>", Resources.Titles.Edit());
+            };
+
+            var grid = $(".scrudview.table");
+
+            var actionCount = (!isNullOrWhiteSpace(editTemplate) + !isNullOrWhiteSpace(deleteTemplate));
+
+            if (scrudFactory.customActions) {
+                actionCount += scrudFactory.customActions.length;
+            };
+
+
+            var header = stringFormat("<th style='width:{0}px;'>{1}</th>", actionCount * 25, Resources.Titles.Actions());
+            header += "<th class='action' style='cursor:pointer;'>" + Resources.Titles.Select() + "</th>";
+            var selectTemplate = '<div class="ui toggle checkbox"> \
+                                      <input type="checkbox">\
+                                      <label></label>\
+                                    </div>';
+
+            var actions = editTemplate + deleteTemplate;
+
+            if (scrudFactory.customActions) {
+                var preActions = Enumerable.From(scrudFactory.customActions).Where(function (x) { return x.position === "before"; }).ToArray();
+                var postActions = Enumerable.From(scrudFactory.customActions).Where(function (x) { return x.position !== "before"; }).ToArray();
+
+                actions = getActions(preActions) + actions + getActions(postActions);
+            };
+
+
+
+            var actionTemplate = stringFormat("<td>{0}</td><td>{1}</td>", actions, selectTemplate);
+
+            grid.find("th:first-child").before(header);
+
+
+            grid.find("tbody tr").each(function () {
+                var el = $(this);
+                var vallue = el.find("td:first-child").html();
+                el.find("td:first-child").before(actionTemplate.replace(/{id}/g, vallue));
+            });
+
+            $(".scrudview.table tr").click(function (sender) {
+                var row = $(this);
+                var cell = $(sender.target).closest('td');
+
+                if (cell.index() > 1) {
+                    var el = row.find("input:checkbox");
+                    toogleSelection(el);
+                };
+            });
+
+            var isSelectionToggler = true;
+
+            $("th.action").click(function () {
+                if (isSelectionToggler) {
+                    $(".scrudview.table input:checkbox").prop("checked", "checked");
+                }
+                else {
+                    $(".scrudview.table input:checkbox").removeProp("checked");
+                };
+
+                isSelectionToggler = !isSelectionToggler;
+            });
+        };
+
         $(document).ready(function () {
             window.scrudForm = $(".form.factory");
             window.scrudView = $(".view.factory");
@@ -859,6 +1664,9 @@
 
                 $("#AddNewButton").before(anchor);
             };
+
+            initializeViews();
+            initializeCustomButtons();
         });
 
         function loadMeta(callback) {
@@ -907,6 +1715,7 @@
             triggerViewReadyEvent();
             $(".view.dimmer").removeClass("active");
             createCards();
+            $(".view.factory").fadeIn();
         };
 
         function triggerViewReadyEvent() {
@@ -1391,120 +2200,6 @@
             el.find(".label").text(percentage.toString() + "% - " + message);
         };
     </script>
-<script>
-
-    function getActions(actions) {
-        if (!actions.length) {
-            return "";
-        };
-
-        var els = $("<div />");
-
-        $.each(actions, function(i, v) {
-            var anchor = $("<a />");
-            var href = "javascript:void(0);";//Without href, anchors do not interact with keyboard events such as spacebar or return key. 
-
-            if (v.title) {
-                anchor.attr("title", v.title);
-            };
-
-            if (v.href) {
-                href = v.href;
-            };
-
-            anchor.attr("href", href);
-
-            if (v.onclick) {
-                anchor.attr("onclick", v.onclick);
-            };
-
-            if (v.icon) {
-                var icon = $("<i />");
-                icon.addClass(v.icon);
-                anchor.append(icon);
-            };
-
-            els.append(anchor);
-        });
-
-        return els.html();
-    };
-
-    function loadActions() {
-        var deleteTemplate = "";
-        var editTemplate = "";
-
-        if (scrudFactory.allowDelete) {
-            deleteTemplate = stringFormat("<a onclick='deleteRow(this);' title='{0}'><i class='delete icon'></i></a>", Resources.Titles.Delete());
-        };
-
-        if (scrudFactory.allowEdit) {
-            editTemplate = stringFormat("<a onclick='editRow(this);' title='{0}'><i class='edit icon'></i></a>", Resources.Titles.Edit());
-        };
-
-        var grid = $(".scrudview.table");
-
-        var actionCount = (!isNullOrWhiteSpace(editTemplate) + !isNullOrWhiteSpace(deleteTemplate));
-
-        if (scrudFactory.customActions) {
-            actionCount += scrudFactory.customActions.length;
-        };
-
-
-        var header = stringFormat("<th style='width:{0}px;'>{1}</th>", actionCount * 25, Resources.Titles.Actions());
-        header += "<th class='action' style='cursor:pointer;'>" + Resources.Titles.Select() + "</th>";
-        var selectTemplate = '<div class="ui toggle checkbox"> \
-                                      <input type="checkbox">\
-                                      <label></label>\
-                                    </div>';
-
-        var actions = editTemplate + deleteTemplate;
-            
-        if (scrudFactory.customActions) {
-            var preActions = Enumerable.From(scrudFactory.customActions).Where(function (x) { return x.position === "before"; }).ToArray();
-            var postActions = Enumerable.From(scrudFactory.customActions).Where(function (x) { return x.position !== "before"; }).ToArray();
-
-            actions = getActions(preActions) + actions + getActions(postActions);
-        };
-
-
-
-        var actionTemplate = stringFormat("<td>{0}</td><td>{1}</td>", actions, selectTemplate);
-
-        grid.find("th:first-child").before(header);
-
-
-        grid.find("tbody tr").each(function() {
-            var el = $(this);
-            var vallue = el.find("td:first-child").html();
-            el.find("td:first-child").before(actionTemplate.replace(/{id}/g, vallue));
-        });
-
-        $(".scrudview.table tr").click(function (sender) {
-            var row = $(this);
-            var cell = $(sender.target).closest('td');
-
-            if (cell.index() > 1) {
-                var el = row.find("input:checkbox");
-                toogleSelection(el);
-            };
-        });
-
-        var isSelectionToggler = true;
-
-        $("th.action").click(function () {
-            if (isSelectionToggler) {
-                $(".scrudview.table input:checkbox").prop("checked", "checked");
-            }
-            else {
-                $(".scrudview.table input:checkbox").removeProp("checked");
-            };
-
-            isSelectionToggler = !isSelectionToggler;
-        });
-    };
-
-</script>
     <script>
         function deleteRow(el, isCard) {
             var confirmed = confirmAction();
@@ -1784,8 +2479,6 @@
     var updateButton = $("#UpdateButton");
     var verificationPopUnder = $("#VerificationPopUnder");
     var reasonTextArea = $("#ReasonTextArea");
-    var approveButton = $("#ApproveButton");
-    var rejectButton = $("#RejectButton");
 
     $(document).on("viewready", function () {
         initializeFlag();
@@ -2032,14 +2725,6 @@
         window.history.pushState({ path: url }, '', url);
     });
 
-    function showTarget(target) {
-        $("div[data-target]").hide();
-        var targetEl = $('div[data-target="' + target.toLowerCase() + '"]');
-        targetEl.removeClass("hidden").fadeIn(500);
-
-        $('a[data-target]').removeClass("active");
-        $('a[data-target="' + target + '"]').addClass("active");
-    };
 
     $(document).ready(function () {
         var view = getQueryStringByName("View");
@@ -2203,634 +2888,7 @@
             refreshKanbans();
         });
     };
-
-
 </script>
 
-<script>
-    function createCards() {
-        function getKanbanDetails(kanbanIds, resourceIds) {
-            var url = "/api/core/kanban-detail/get-by-resources/";
-            url += "?kanbanIds=";
-            url += kanbanIds.join("&kanbanIds=");
 
-            url += "&resourceIds=";
-            url += resourceIds.join("&resourceIds=");
-
-            return getAjaxRequest(url);
-        };
-
-        if (!window.json) {
-            return;
-        };
-
-        if (!window.kanbans) {
-            return;
-        };
-
-        var keyField = (scrudFactory.card.keyField || getIdField());
-        var resourceIds = Enumerable.From(window.json).Select(function (x) { return x[keyField]; }).ToArray();
-        var kanbanIds = Enumerable.From(window.kanbans).Select(function (x) { return x.KanbanId; }).ToArray();
-
-        var getKanbanDetailsAjax = getKanbanDetails(kanbanIds, resourceIds);
-
-        getKanbanDetailsAjax.success(function (msg) {
-            $(".kanban.holder").html("");
-
-            $.each(window.json, function (i, v) {
-                var key = getCardKey(v);
-                var kanbanDetail = (Enumerable.From(msg).Where(function (detail) { return detail.ResourceId.toString() === key.toString() }).ToArray()[0] || new Object());
-                createCard(v, key, kanbanDetail);
-            });
-
-            makeSortable();
-            makeRatable();
-            displayFlaggedCards();
-        });
-
-    };
-
-    function makeSortable() {
-        $(function () {
-            $("#kanban .segment .kanban.holder").sortable({
-                connectWith: "#kanban .segment .kanban.holder",
-                receive: function (event, ui) {
-                    var card = $(ui.item[0]);
-
-                    var kanbanDetail = new Object();
-                    kanbanDetail.KanbanDetailId = (card.attr("data-kanban-detail-id") || 0);
-                    kanbanDetail.KanbanId = parseInt(card.parent().parent().attr("id").replace("kanban", "") || 0);
-                    kanbanDetail.Rating = card.find(".rating .active.icon").length;
-                    kanbanDetail.ResourceId = card.attr("data-key");
-
-                    if (kanbanDetail.KanbanId) {
-                        var addOrEditKanbanDetailAjax = addOrEditKanbanDetail(kanbanDetail);
-
-                        addOrEditKanbanDetailAjax.success(function (msg) {
-                            card.attr("data-kanban-detail-id", msg);
-                        });
-                    } else {
-                        if (kanbanDetail.KanbanDetailId) {
-                            var deleteKanbanDetailAjax = deleteKanbanDetail(kanbanDetail.KanbanDetailId);
-
-                            deleteKanbanDetailAjax.success(function () {
-                                card.removeAttr("data-kanban-detail-id");
-                            });
-                        };
-                    };
-
-                }
-            }).disableSelection();
-        });
-    };
-
-    function makeRatable() {
-        $('.ui.rating').rating();
-
-        function updateRating(kanbanDetail) {
-            var url = "/api/core/kanban-detail/add-or-edit";
-
-            var form = [];
-            form.push(kanbanDetail);
-            form.push(null);
-
-            var data = JSON.stringify(form);
-
-            return getAjaxRequest(url, "PUT", data);
-        };
-
-        $('.ui.rating i').dblclick(function () {
-            var el = $(this);
-            var card = el.parent().parent().parent();
-            var kanbanDetailId = card.attr("data-kanban-detail-id");
-
-            if (kanbanDetailId) {
-
-                var kanbanDetail = new Object();
-                kanbanDetail.KanbanDetailId = kanbanDetailId;
-                kanbanDetail.KanbanId = card.closest(".segment").attr("id").replace("kanban", "");
-                kanbanDetail.ResourceId = card.attr("data-key");
-                kanbanDetail.Rating = el.parent().find("i.active").length;
-
-                updateRating(kanbanDetail);
-            };
-        });
-    };
-
-    function deleteKanbanDetail(kanbanDetailId) {
-        var url = "/api/core/kanban-detail/delete/" + kanbanDetailId;
-
-        return getAjaxRequest(url, "DELETE");
-    };
-
-    function addOrEditKanbanDetail(kanbanDetail) {
-        var url = "/api/core/kanban-detail/add-or-edit";
-
-        var form = [];
-        form.push(kanbanDetail);
-        form.push(null);
-
-        var data = JSON.stringify(form);
-
-        return getAjaxRequest(url, "PUT", data);
-    };
-
-    function getExtraContent(key) {
-        var extraContent = $('<div class="extra center content" />');
-
-        var buttons = $('<div class="ui small basic buttons" />');
-
-        if (scrudFactory.viewUrl) {
-            var url = scrudFactory.viewUrl.replace("{Key}", key);
-            var viewButton = $('<a class="ui basic button" />');
-            viewButton.attr("href", url);
-            viewButton.text(Resources.Titles.View());
-            buttons.append(viewButton);
-        };
-
-        if (scrudFactory.allowEdit) {
-            var editButton = $('<a class="ui basic button" href="javascript:void(0);" onclick="editRow(this, true);" />');
-            editButton.text(Resources.Titles.Edit());
-            buttons.append(editButton);
-        }
-
-        if (scrudFactory.allowDelete) {
-            var deleteButton = $('<a class="ui basic button" href="javascript:void(0);" onclick="deleteRow(this, true);" />');
-            deleteButton.text(Resources.Titles.Delete());
-            buttons.append(deleteButton);
-        };
-
-
-        extraContent.append(buttons);
-
-        return extraContent;
-    };
-
-    function getExtra(kanbanDetail) {
-        var extra = $('<div class="extra" />');
-
-        var text = $("<span />");
-        text.text(Resources.Titles.Rating());
-        extra.append(text);
-
-        var dataRating = (kanbanDetail.Rating || 0);
-
-        var rating = $('<div class="ui star rating" data-max-rating="5" />');
-        rating.attr("data-rating", dataRating);
-
-        extra.append(rating);
-
-
-        return extra;
-    };
-
-    function getClassName() {
-        var table = scrudFactory.formTableName;
-
-        if (!table) {
-            table = scrudFactory.viewTableName;
-        }
-
-        var plural = toProperCase(table.split(".")[1]);
-        return plural.singularize();
-    };
-
-    function getQualified(dynamic, prefix, suffixes) {
-        var qualified = "";
-
-        $.each(suffixes, function (i, v) {
-            if (!qualified) {
-                var candidate = prefix + v;
-
-                if (dynamic.hasOwnProperty(candidate)) {
-                    qualified = candidate;
-                    return false;
-                };
-            };
-        });
-
-        return qualified;
-    };
-
-    var candidates = {
-        primary: ["Code", "Number", "Name"],
-        secondary: [
-            "Party", "PartyName", "Item", "ItemName",
-            "NoticeDate", "ApprovedOn", "Reason", "Employee",
-            "EmployeeName", "EmployeeCode", "Office", "CurrencyCode"
-        ]
-    };
-
-    function getHeaderField(dynamic) {
-        var className = getClassName();
-
-        var primary = candidates.primary;
-        var qualified = getQualified(dynamic, className, primary);
-
-        if (!qualified) {
-            var secondary = candidates.secondary;
-
-            qualified = getQualified(dynamic, "", secondary);
-        };
-
-        return qualified;
-    };
-
-    function getMetaField(dynamic, headerField) {
-        var className = getClassName();
-
-        var primary = Enumerable.From(candidates.primary)
-            .Where(function (x) { return x !== headerField.replace(className, "") })
-            .ToArray();
-
-        var qualified = getQualified(dynamic, className, primary);
-
-        if (!qualified) {
-            var secondary = Enumerable.From(candidates.secondary)
-                .Where(function (x) { return x !== headerField })
-                .ToArray();
-
-            qualified = getQualified(dynamic, "", secondary);
-        };
-
-        return qualified;
-    };
-
-    function getIdField() {
-        var className = getClassName();
-        return className + "Id";
-    };
-
-    function getCardKey(dynamic) {
-        var keyField = (scrudFactory.card.keyField || getIdField());
-        return dynamic[keyField];
-    };
-
-    function getImageField(entity) {
-        var imageField;
-
-        $.each(entity, function (i) {
-            if (!imageField) {
-                if (i.toLowerCase().indexOf("image") !== -1) {
-                    imageField = i;
-                };
-            };
-
-            if (!imageField) {
-                if (i.toLowerCase().indexOf("photo") !== -1) {
-                    imageField = i;
-                };
-            };
-        });
-
-        return imageField;
-    };
-
-    function getDescriptionField(entity) {
-        var candidates = ["Email", "Url", "City", "Phone", "CompanyName", "Currency"];
-        return getQualified(entity, "", candidates);
-    };
-
-    function createCard(dynamic, key, kanbanDetail) {
-
-        var kanbanId = (kanbanDetail.KanbanId || 0);
-
-        var text;
-        var imageField = (scrudFactory.card.image || getImageField(dynamic));
-        var headerField = (scrudFactory.card.header || getHeaderField(dynamic));
-        var metaField = (scrudFactory.card.meta || getMetaField(dynamic, headerField));
-        var descriptionField = (scrudFactory.card.description || getDescriptionField(dynamic));
-
-        var card = $('<div class="ui card" />');
-        card.attr("data-kanban-detail-id", kanbanDetail.KanbanDetailId);
-        card.attr("data-key", key);
-
-
-        if (imageField) {
-            var src = dynamic[imageField];
-            if (src) {
-                var image = $('<div class="image" />');
-                var img = $("<img />");
-                img.attr("src", "/api/core/attachment/document/300/250/" + src);
-
-                image.append(img);
-                card.append(image);
-            };
-        };
-
-        var content = $('<div class="content" />');
-
-        var checkbox = $('<div class="ui toggle checkbox" />');
-        var input = $('<input name="public" type="checkbox">');
-
-        checkbox.append(input);
-
-        content.append(checkbox);
-
-        if (headerField) {
-            text = dynamic[headerField];
-            if (text) {
-                var header = $('<div class="header" />');
-
-                header.text(text);
-                content.append(header);
-            };
-        };
-
-        if (metaField) {
-            text = dynamic[metaField];
-            if (text) {
-                var meta = $('<div class="meta" />');
-
-                meta.text(text);
-                content.append(meta);
-            };
-        };
-
-        if (descriptionField) {
-            text = dynamic[descriptionField];
-            if (text) {
-                var description = $('<div class="meta" />');
-
-                description.text(text);
-                content.append(description);
-            };
-        };
-
-        card.append(content);
-        card.append(getExtraContent(key));
-        card.append(getExtra(kanbanDetail));
-
-        $("#kanban" + kanbanId + " .kanban.holder").append(card);
-        $(".checkbox").checkbox();
-    };
-
-    function hasVerfication() {
-        if (!scrudFactory.hasVerfication) {
-            return false;
-        };
-
-        if (!scrudFactory.formAPI) {
-            return false;
-        };
-
-        var candidates = ["verification_status_id", "verification_reason"];
-
-        var columns = Enumerable.From(metaDefinition.Columns).Select(function (x) { return x.ColumnName.toString() }).ToArray();
-        var result = Enumerable.From(candidates).Except(columns).ToArray();
-        return result.length === 0;
-    };
-
-    function createVerificationButton() {
-        if (!hasVerfication()) {
-            return;
-        };
-
-        var anchor = $("<a href='javascript:void(0);' id='VerifyButton' class='ui basic button' />");
-        anchor.html(window.Resources.Titles.Verify());
-
-        anchor.insertAfter(flagButton);
-
-        var verifyButton = $("#VerifyButton");
-
-        verifyButton.click(function () {
-            popUnder(verificationPopUnder, verifyButton);
-        });
-    };
-
-
-    approveButton.click(function () {
-        var primaryKey = getPrimaryKeyValue();
-
-        if (!hasVerfication() || !primaryKey) {
-            return;
-        };
-
-        var reason = reasonTextArea.val();
-        var verificationStatusId = 2; //2 -> Approved, -3 -> Rejected
-
-        var verifyAjax = verify(primaryKey, verificationStatusId, reason);
-
-        verifyAjax.success(function () {
-            displayMessage(Resources.Labels.TaskCompletedSuccessfully(), "success");
-        });
-    });
-
-    rejectButton.click(function () {
-        var primaryKey = getPrimaryKeyValue();
-
-        if (!hasVerfication() || !primaryKey) {
-            return;
-        };
-
-        var reason = reasonTextArea.val();
-        var verificationStatusId = -3; //2 -> Approved, -3 -> Rejected
-
-        var verifyAjax = verify(primaryKey, verificationStatusId, reason);
-
-        verifyAjax.success(function () {
-            displayMessage(Resources.Labels.TaskCompletedSuccessfully(), "success");
-        });
-    });
-
-    function verify(primaryKey, verificationStatusId, reason) {
-        var url = scrudFactory.formAPI;
-        url += "/verify/";
-        url += primaryKey + "/";
-        url += verificationStatusId + "/";
-        url += reason;
-
-        return getAjaxRequest(url, "PUT");
-    };
-</script>
-
-<script>
-    //Annotation
-    function getAnnotation() {
-        var els = $("#Annotation .fields .field .data-member");
-
-        var annotation = new Object();
-
-        els.each(function() {
-            var el = $(this);
-            var key = el.attr("data-model");
-            var value = el.val();
-
-            annotation[key] = value;
-        });
-
-        return annotation;
-    };
-
-    function loadAnnotation() {
-        function request() {
-            var url = scrudFactory.viewAPI + "/annotation";
-            return getAjaxRequest(url);
-        };
-
-        if (!checkIfProcedure()) {
-            return;
-        };
-
-        var ajax = request();
-        ajax.success(function (msg) {
-            createAnnotationFields(msg);
-        });
-    };
-
-    function createAnnotationFields(annotation) {
-        $.each(annotation.Columns, function (i, v) {
-            if (scrudFactory.hiddenAnnotation) {
-                var isHidden = Enumerable.From(scrudFactory.hiddenAnnotation).Where(function (x) { return x === v.PropertyName; }).Count() === 1;
-                annotation.Columns[i].IsHidden = isHidden;
-            };
-        });
-
-        var visible = Enumerable.From(annotation.Columns).Where(function (x) { return !x.IsHidden; }).ToArray();
-        var groups = window.chunk_array(visible, 6);
-
-        var fields;
-
-        $.each(groups, function (i, group) {
-            fields = $('<div class="six fields" />');
-
-            $.each(group, function (i, item) {
-                addAnnotationField(item, fields);
-            });
-
-            $("#ShowButton").before(fields);
-        });
-
-        var hidden = Enumerable.From(annotation.Columns).Where(function (x) { return x.IsHidden; }).ToArray();
-
-        $.each(hidden, function (i, item) {
-            addAnnotationField(item, fields, true);
-        });
-
-
-        $("#ShowButton").before(fields);
-        $("#ShowButton").insertAfter($("#Annotation .fields").last().find(".field").last());
-
-        setRegionalFormat();
-        loadDatepicker();
-        $("#Annotation").fadeIn();
-        executeFunction();
-    };
-
-    $("#ShowButton").click(function() {
-        executeFunction();
-    });
-
-    function simplifyAnnotationType(dbType) {
-        var type = dbType.toString().toLowerCase();
-
-        if (type === "text") {
-            type = "string";
-        };
-
-        return type;
-    };
-
-    function addAnnotationField(item, fields, hidden) {
-        var field = $('<div class="field" />');
-
-        var type = simplifyAnnotationType(item.DbDataType);
-
-        var el = getField(item.PropertyName, type, true);
-        el.attr("placeholder", item.PropertyName);
-
-        if (scrudFactory.defaultAnnotation) {
-            var defaultValue = Enumerable.From(scrudFactory.defaultAnnotation).Where(function (x) { return x.key === item.PropertyName; }).FirstOrDefault();
-
-            if (defaultValue) {
-                el.val(defaultValue.value);
-            };
-        };
-
-        el.addClass("data-member");
-        el.attr("id", "Annotation" + item.PropertyName);
-        el.attr("title", item.PropertyName);
-        el.attr("data-model", item.PropertyName);
-
-        if (hidden) {
-            field.addClass("hidden");
-        };
-
-        field.append(el);
-        fields.append(field);
-    };
-
-    function executeFunction() {
-        function request(annotation) {
-            var url = scrudFactory.viewAPI + "/execute";
-            var data = JSON.stringify(annotation);
-
-            return getAjaxRequest(url, "POST", data);
-        };
-
-        var annotation = getAnnotation();
-        var ajax = request(annotation);
-
-        ajax.success(function (response) {
-            onViewSuccess(response);
-        });
-    };
-
-
-    //Todo: Merge this function with formfactory
-    function getField(propertyName, dataType, nullable) {
-        if (typeof (scrudFactory.keys) === "undefined") {
-            scrudFactory.keys = [];
-        };
-
-        var hasKey = Enumerable.From(scrudFactory.keys || [])
-            .Where(function (x) { return x.property === propertyName }).ToArray()[0];
-
-        if (hasKey) {
-            return $("<select class='ui search fluid dropdown' />");
-        };
-
-        switch (dataType) {
-        case "image":
-            return $("<input type='text' class='image' />");
-        case "int4":
-        case "int8":
-        case "integer_strict":
-        case "integer_strict2":
-            return $("<input type='text' class='integer' />");
-        case "float8":
-        case "decimal":
-        case "decimal_strict":
-        case "numeric":
-            return $("<input type='text' class='decimal' />");
-        case "money_strict2":
-        case "money_strict":
-            return $("<input type='text' class='currency' />");
-        case "text":
-            return $("<textarea />");
-        case "date":
-            return $("<input type='text' class='date' />");
-        case "bool":
-            var el = $("<select class='ui search dropdown' />");
-            var option = "<option";
-
-            if (nullable) {
-                option += " value='Select'>";
-            } else {
-                option += " value=''>";
-            };
-
-            option += Resources.Titles.Select() + "</option>";
-            option += "<option value='yes'>" + Resources.Titles.Yes() + "</option>";
-            option += "<option value='no'>" + Resources.Titles.No() + "</option>";
-
-            el.append(option);
-
-            return el;
-        default:
-            return $("<input type='text' />");
-        };
-    };
-
-</script>
 <script src="/Scripts/mixerp/utitlities/localizable.js"></script>

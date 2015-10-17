@@ -493,10 +493,6 @@
       <Project>{969d7960-52e2-40fc-91e5-1393b71e23b0}</Project>
       <Name>PetaPoco</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\Server Controls\Data\MixERP.Net.WebControls.TransactionViewFactory.Data\MixERP.Net.WebControls.TransactionViewFactory.Data.csproj">
-      <Project>{b4c85dab-0500-4d83-802e-d7d4d9dcd84a}</Project>
-      <Name>MixERP.Net.WebControls.TransactionViewFactory.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\Server Controls\Project\MixERP.Net.WebControls.AttachmentFactory\MixERP.Net.WebControls.AttachmentFactory.csproj">
       <Project>{403f308d-10e7-4c70-9360-1027ee541495}</Project>
       <Name>MixERP.Net.WebControls.AttachmentFactory</Name>
@@ -521,17 +517,9 @@
       <Project>{1C84E528-87ED-4B69-BFC3-81D675CB153E}</Project>
       <Name>MixERP.Net.WebControls.StockTransactionFactory</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\Server Controls\Project\MixERP.Net.WebControls.StockTransactionView\MixERP.Net.WebControls.StockTransactionViewFactory.csproj">
-      <Project>{E82752DA-F0D2-4987-B011-6B2623937DEA}</Project>
-      <Name>MixERP.Net.WebControls.StockTransactionViewFactory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\Server Controls\Project\MixERP.Net.WebControls.TransactionChecklist\MixERP.Net.WebControls.TransactionChecklist.csproj">
       <Project>{64490b89-b228-4188-8235-71744a94c9ae}</Project>
       <Name>MixERP.Net.WebControls.TransactionChecklist</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\Server Controls\Project\MixERP.Net.WebControls.TransactionViewFactory\MixERP.Net.WebControls.TransactionViewFactory.csproj">
-      <Project>{844654c8-df5b-42a6-98de-a1f43cd24804}</Project>
-      <Name>MixERP.Net.WebControls.TransactionViewFactory</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\MixERP.Net.FrontEnd.csproj">
       <Project>{ace1017d-71bc-4417-a906-72c4b9c55823}</Project>

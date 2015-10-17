@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Policy;
 using Npgsql;
@@ -97,6 +98,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// <summary>
         /// Prepares and executes the function "policy.can_post_transaction".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public bool Execute()
         {
             if (!this.SkipValidation)
@@ -111,8 +113,25 @@ namespace MixERP.Net.Schemas.Policy.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM policy.can_post_transaction(@0::bigint, @1::integer, @2::integer, @3::text, @4::date);";
-            return Factory.Scalar<bool>(this._Catalog, query, this.LoginId, this.UserId, this.OfficeId, this.TransactionBook, this.ValueDate);
+            string query = "SELECT * FROM policy.can_post_transaction(@LoginId, @UserId, @OfficeId, @TransactionBook, @ValueDate);";
+
+            query = query.ReplaceWholeWord("@LoginId", "@0::bigint");
+            query = query.ReplaceWholeWord("@UserId", "@1::integer");
+            query = query.ReplaceWholeWord("@OfficeId", "@2::integer");
+            query = query.ReplaceWholeWord("@TransactionBook", "@3::text");
+            query = query.ReplaceWholeWord("@ValueDate", "@4::date");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.LoginId);
+            parameters.Add(this.UserId);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.TransactionBook);
+            parameters.Add(this.ValueDate);
+
+            return Factory.Scalar<bool>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

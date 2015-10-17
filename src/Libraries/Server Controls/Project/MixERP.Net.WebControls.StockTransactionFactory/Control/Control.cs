@@ -30,8 +30,8 @@ namespace MixERP.Net.WebControls.StockTransactionFactory
         {
             this.placeHolder = new PlaceHolder();
 
-            this.CreateTitle(placeHolder);
-            this.CreateTopFormPanel(placeHolder);
+            this.CreateTitle(this.placeHolder);
+            this.CreateTopFormPanel(this.placeHolder);
 
             if (!this.Page.IsPostBack)
             {
@@ -47,9 +47,6 @@ namespace MixERP.Net.WebControls.StockTransactionFactory
             CreateErrorLabelBottom(this.placeHolder);
             this.AddJavascript();
             this.RegisterJavascript();
-            this.LoadValuesFromSession();
-            this.BindGridView();
-            this.ClearSession();
 
             this.Controls.Add(this.placeHolder);
         }

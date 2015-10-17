@@ -67,12 +67,6 @@ namespace MixERP.Net.WebControls.StockTransactionFactory
             items.Add(new ListItem(Titles.TaxableSales, "1"));
             items.Add(new ListItem(Titles.NonTaxableSales, "0"));
 
-
-            if (this.model.NonTaxableSales)
-            {
-                items[1].Selected = true;
-            }
-
             return items;
         }
     }

@@ -76,6 +76,38 @@ namespace MixERP.Net.Api.Policy
             }
         }
 
+        /// <summary>
+        ///     Returns collection of entity access scrud view for export.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("export")]
+        [Route("all")]
+        [Route("~/api/policy/entity-access-scrud-view/export")]
+        [Route("~/api/policy/entity-access-scrud-view/all")]
+        public IEnumerable<MixERP.Net.Entities.Policy.EntityAccessScrudView> Get()
+        {
+            try
+            {
+                return this.EntityAccessScrudViewContext.Get();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
         /// <summary>
         ///     Creates a paginated collection containing 10 entity access scrud views on each page, sorted by the property .

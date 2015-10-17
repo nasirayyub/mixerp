@@ -79,13 +79,5 @@ namespace MixERP.Net.Entities.Transactions
         [Column("transaction_ts")]
         [ColumnDbType("timestamp with time zone", 0, false, "")]
         public DateTime TransactionTs { get; set; }
-
-        [Column("flag_bg")]
-        [ColumnDbType("text", 0, false, "")]
-        public string FlagBg { get; set; }
-
-        [Column("flag_fg")]
-        [ColumnDbType("text", 0, false, "")]
-        public string FlagFg { get; set; }
     }
 }

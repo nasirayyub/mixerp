@@ -56,6 +56,7 @@
     <Compile Include="DbGetIncomeExpenditureStatementResult.cs" />
     <Compile Include="DbGetInventoryTransferRequestViewResult.cs" />
     <Compile Include="DbGetJournalViewResult.cs" />
+    <Compile Include="DbGetMergeModelResult.cs" />
     <Compile Include="DbGetNonGlProductViewResult.cs" />
     <Compile Include="DbGetPartyTransactionSummaryResult.cs" />
     <Compile Include="DbGetPlAppropriationDataResult.cs" />

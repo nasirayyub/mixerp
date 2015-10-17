@@ -89,6 +89,35 @@ namespace MixERP.Net.Schemas.Policy.Data
         }
 
         /// <summary>
+        /// Executes a select query on the view "policy.default_entity_access_scrud_view" to return a all instances of the "DefaultEntityAccessScrudView" class. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "DefaultEntityAccessScrudView" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<MixERP.Net.Entities.Policy.DefaultEntityAccessScrudView> Get()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"DefaultEntityAccessScrudView\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.default_entity_access_scrud_view ORDER BY 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.DefaultEntityAccessScrudView>(this._Catalog, sql);
+        }
+
+        /// <summary>
         /// Displayfields provide a minimal name/value context for data binding the row collection of policy.default_entity_access_scrud_view.
         /// </summary>
         /// <returns>Returns an enumerable name and value collection for the view policy.default_entity_access_scrud_view</returns>

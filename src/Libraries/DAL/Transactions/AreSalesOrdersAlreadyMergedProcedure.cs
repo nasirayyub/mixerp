@@ -93,7 +93,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
 
             int arrOffset = 0;
-            query = query.ReplaceWholeWord("@Arr", "ARRAY[" + this.SqlForArr(this.Arr, arrOffset, 0) + "]");
+            query = query.ReplaceWholeWord("@Arr", "ARRAY[" + this.SqlForArr(this.Arr, arrOffset, 1) + "]");
 
 
             List<object> parameters = new List<object>();
@@ -130,7 +130,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
             {
                 foreach (long arr in arrs)
                 {
-
+                    collection.Add(arr);
                 }
             }
             return collection;

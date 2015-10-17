@@ -25,6 +25,7 @@ using System.Web.Http;
 using MixERP.Net.ApplicationState.Cache;
 using MixERP.Net.Common.Extensions;
 using PetaPoco;
+using MixERP.Net.EntityParser;
 namespace MixERP.Net.Api.Audit
 {
     /// <summary>
@@ -72,6 +73,24 @@ namespace MixERP.Net.Api.Audit
                 _UserId = this._UserId
             };
         }
+        /// <summary>
+        ///     Creates meta information of "get user id by login id" annotation.
+        /// </summary>
+        /// <returns>Returns the "get user id by login id" annotation meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("annotation")]
+        [Route("~/api/audit/procedures/get-user-id-by-login-id/annotation")]
+        public EntityView GetAnnotation()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                                {
+                                        new EntityColumn { ColumnName = "bigint",  PropertyName = "Bigint",  DataType = "",  DbDataType = "",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                }
+            };
+        }
+
 
         [AcceptVerbs("POST")]
         [Route("execute")]

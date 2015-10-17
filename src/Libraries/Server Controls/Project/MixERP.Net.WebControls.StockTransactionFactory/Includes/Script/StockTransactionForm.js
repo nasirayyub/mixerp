@@ -115,25 +115,6 @@ var url;
 
 var valueDate;
 
-//Page Load Event
-$(document).ready(function () {
-    $(".form-table td").each(function () {
-        var content = $(this).html();
-        if (!content.trim()) {
-            $(this).html("");
-            $(this).hide();
-        };
-    });
-
-    if (cashTransactionInputCheckBox.length === 1) {
-        if (cashTransactionInputCheckBox.is(':checked')) {
-            paymentTermSelect.hide();
-        };
-    };
-
-    addShortcuts();
-    initializeAjaxData();
-});
 
 function initializeAjaxData() {
 
@@ -957,7 +938,7 @@ var addRowToTable = function (itemCode, itemName, quantity, unitName, price, dis
 
         if (editMode) {
             var target = $("#ProductGridView").find("tbody tr:nth-child(" + updateIndex + ")");
-        
+
             var deleteAnchor = target.find("a:has(> .delete.icon)");
             deleteAnchor.removeClass("no-pointer-events");
 
@@ -1253,3 +1234,73 @@ function editRow(el) {
 
     addButton.attr("data-update-index", selectedIndex);
 };
+
+function getMergeModel() {
+    function updateval(selector, value) {
+        var el = $(selector);
+
+        if (!el.length) {
+            return;
+        };
+
+        if (!el.is(":visible")) {
+            return;
+        };
+
+        if (typeof (value) === "undefined") {
+            return;
+        };
+
+        el.val(value).trigger("change");
+    };
+
+    var mergeModel = window.localStorage.getItem('MergeModel');
+    mergeModel = JSON.parse(mergeModel);
+
+    updateval("#PartyCodeInputText", mergeModel[0].PartyCode);
+    updateval("#PartySelect", mergeModel[0].PartyCode);
+    updateval("#PriceTypeSelect", mergeModel[0].PriceTypeId);
+    updateval("#ReferenceNumberInputText", mergeModel[0].ReferenceNumber);
+    updateval("#SalesPersonSelect", mergeModel[0].SalespersonId);
+    updateval("#ShippingCompanySelect", mergeModel[0].ShipperId);
+    updateval("#StoreSelect", mergeModel[0].StoreId);
+    updateval("#ShippingAddressSelect", mergeModel[0].ShippingAddresssCode);
+    updateval("#StatementReferenceTextArea", mergeModel[0].StatementReference);
+
+    $.each(mergeModel, function (i, v) {
+        addRowToTable(v.ItemCode, v.ItemName, v.Quantity, v.UnitName, v.Price, v.Discount, v.ShippingCharge, v.TaxCode, v.Tax);
+    });
+
+    tranIdCollectionHiddenField.val(window.localStorage.getItem('TranIds'));
+    localStorage.removeItem('MergeModel');
+    localStorage.removeItem('TranIds');
+
+};
+
+//Page Load Event
+$(document).ready(function () {
+    $(".form-table td").each(function () {
+        var content = $(this).html();
+        if (!content.trim()) {
+            $(this).html("");
+            $(this).hide();
+        };
+    });
+
+    if (cashTransactionInputCheckBox.length === 1) {
+        if (cashTransactionInputCheckBox.is(':checked')) {
+            paymentTermSelect.hide();
+        };
+    };
+
+    addShortcuts();
+    initializeAjaxData();
+});
+
+var gotMergeModel = false;
+$(document).ajaxStop(function () {
+    if (!gotMergeModel) {
+        getMergeModel();
+        gotMergeModel = true;
+    };
+});

@@ -25,6 +25,7 @@ using System.Web.Http;
 using MixERP.Net.ApplicationState.Cache;
 using MixERP.Net.Common.Extensions;
 using PetaPoco;
+using MixERP.Net.EntityParser;
 namespace MixERP.Net.Api.Policy
 {
     /// <summary>
@@ -74,6 +75,42 @@ namespace MixERP.Net.Api.Policy
                 _UserId = this._UserId
             };
         }
+        /// <summary>
+        ///     Creates meta information of "change password" annotation.
+        /// </summary>
+        /// <returns>Returns the "change password" annotation meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("annotation")]
+        [Route("~/api/policy/procedures/change-password/annotation")]
+        public EntityView GetAnnotation()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                                {
+                                        new EntityColumn { ColumnName = "_admin_user_id",  PropertyName = "AdminUserId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "_user_name",  PropertyName = "UserName",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "_new_password",  PropertyName = "NewPassword",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                }
+            };
+        }
+
+        /// <summary>
+        ///     Creates meta information of "change password" entity.
+        /// </summary>
+        /// <returns>Returns the "change password" meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("meta")]
+        [Route("~/api/policy/procedures/change-password/meta")]
+        public EntityView GetEntityView()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                {
+                }
+            };
+        }
 
         [AcceptVerbs("POST")]
         [Route("execute")]
@@ -85,6 +122,7 @@ namespace MixERP.Net.Api.Policy
                 this.procedure.AdminUserId = annotation.AdminUserId;
                 this.procedure.UserName = annotation.UserName;
                 this.procedure.NewPassword = annotation.NewPassword;
+
 
                 this.procedure.Execute();
             }

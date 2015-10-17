@@ -23,7 +23,6 @@ using MixERP.Net.Common.Helpers;
 using MixERP.Net.Entities;
 using MixERP.Net.FrontEnd.Base;
 using MixERP.Net.i18n.Resources;
-using MixERP.Net.WebControls.TransactionViewFactory;
 using System;
 using System.Web.UI.HtmlControls;
 using MixERP.Net.Framework.Contracts;
@@ -34,32 +33,7 @@ namespace MixERP.Net.Core.Modules.Finance
     {
         public override void OnControlLoad(object sender, EventArgs e)
         {
-            using (TransactionView view = new TransactionView())
-            {
-                view.DisplayFlagButton = true;
-                view.DisplayApproveButton = true;
-                view.DisplayRejectButton = true;
-                view.DisplayPrintButton = true;
-
-                view.GridViewCssClass = "ui table nowrap";
-                view.Text = Titles.VoucherVerification;
-
-                //Default Values
-                view.DateFromFromFrequencyType = FrequencyType.Today;
-                view.DateToFrequencyType = FrequencyType.Today;
-                view.Status = "Unverified";
-
-                view.OfficeName = AppUsers.GetCurrent().View.OfficeName;
-
-                view.UserId = AppUsers.GetCurrent().View.UserId.ToInt();
-                view.OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
-                view.Catalog = AppUsers.GetCurrentUserDB();
-
-                this.Controls.Add(view);
-            }
-
-            this.AddModal();
-            
+            this.AddModal();            
         }
 
         #region Modal

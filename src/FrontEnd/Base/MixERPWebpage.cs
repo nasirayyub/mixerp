@@ -37,6 +37,7 @@ using MixERP.Net.Common.Helpers;
 using MixERP.Net.Common.jQueryHelper;
 using MixERP.Net.FrontEnd.Models;
 using MixERP.Net.i18n;
+using MixERP.Net.WebControls.Common.Helpers;
 using Newtonsoft.Json;
 
 namespace MixERP.Net.FrontEnd.Base
@@ -256,7 +257,7 @@ namespace MixERP.Net.FrontEnd.Base
             script += JSUtility.GetVar("officeCode", AppUsers.GetCurrent().View.OfficeCode);
             script += JSUtility.GetVar("office", AppUsers.GetCurrent().View.OfficeName);
 
-
+            script += JSUtility.GetVar("applicationDates", JsonConvert.SerializeObject(DatePersister.GetFrequencyDates(AppUsers.GetCurrentUserDB(), AppUsers.GetCurrent().View.OfficeId.ToInt())), false);
             script += JSUtility.GetVar("metaView", JsonConvert.SerializeObject(AppUsers.GetCurrent().View), false);
             script += JSUtility.GetVar("overridePath", this.OverridePath);
 
@@ -304,11 +305,11 @@ namespace MixERP.Net.FrontEnd.Base
             return 0;
         }
 
+
         private void CheckForceLogOffFlags()
         {
             int officeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
-            Collection<FrequencyDates> applicationDates =
-                Dates.GetFrequencyDates(AppUsers.GetCurrentUserDB());
+            Collection<FrequencyDates> applicationDates = Dates.GetFrequencyDates(AppUsers.GetCurrentUserDB());
 
             FrequencyDates model = applicationDates?.FirstOrDefault(c => c.OfficeId.Equals(officeId));
 

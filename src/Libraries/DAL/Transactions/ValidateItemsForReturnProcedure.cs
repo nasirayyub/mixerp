@@ -151,6 +151,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     collection.Add(detail.ShippingCharge);
                     collection.Add(detail.TaxForm);
                     collection.Add(detail.Tax);
+                    collection.Add(detail);
                 }
             }
             return collection;

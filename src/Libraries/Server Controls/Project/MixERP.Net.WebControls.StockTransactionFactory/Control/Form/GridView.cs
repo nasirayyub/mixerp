@@ -17,15 +17,10 @@ You should have received a copy of the GNU General Public License
 along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using MixERP.Net.Common.Helpers;
-using MixERP.Net.Entities.Transactions.Models;
-using MixERP.Net.i18n;
 
 namespace MixERP.Net.WebControls.StockTransactionFactory
 {
@@ -51,41 +46,6 @@ namespace MixERP.Net.WebControls.StockTransactionFactory
                 }
 
                 container.Controls.Add(div);
-            }
-        }
-
-        private void BindGridView()
-        {
-            Collection<ProductDetail> table = this.GetTable();
-
-            if (table.Count > 0)
-            {
-                List<string[]> rowData = new List<string[]>();
-
-                foreach (ProductDetail row in table)
-                {
-                    string[] colData = new string[12];
-
-                    colData[0] = row.ItemCode;
-                    colData[1] = row.ItemName;
-                    colData[2] = row.Quantity.ToString(CultureManager.GetCurrent());
-                    colData[3] = row.Unit;
-                    colData[4] = row.Price.ToString(CultureManager.GetCurrent());
-                    colData[5] = row.Amount.ToString(CultureManager.GetCurrent());
-                    colData[6] = row.Discount.ToString(CultureManager.GetCurrent());
-                    colData[7] = row.ShippingCharge.ToString(CultureManager.GetCurrent());
-                    colData[8] = row.Subtotal.ToString(CultureManager.GetCurrent());
-                    colData[9] = row.TaxCode.ToString(CultureManager.GetCurrent());
-                    colData[10] = row.Tax.ToString(CultureManager.GetCurrent());
-                    colData[11] = row.Total.ToString(CultureManager.GetCurrent());
-
-                    rowData.Add(colData);
-                }
-
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                string data = serializer.Serialize(rowData);
-
-                this.productGridViewDataHidden.Value = data;
             }
         }
     }

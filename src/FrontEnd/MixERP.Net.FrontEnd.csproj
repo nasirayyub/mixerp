@@ -1300,6 +1300,10 @@
       <Project>{403f308d-10e7-4c70-9360-1027ee541495}</Project>
       <Name>MixERP.Net.WebControls.AttachmentFactory</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\Server Controls\Project\MixERP.Net.WebControls.Common\MixERP.Net.WebControls.Common.csproj">
+      <Project>{2D961540-6597-4E7B-969C-974D71D820DD}</Project>
+      <Name>MixERP.Net.WebControls.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Libraries\Server Controls\Project\MixERP.Net.WebControls.ReportEngine\MixERP.Net.WebControls.ReportEngine.csproj">
       <Project>{81f04b78-6194-4f86-a795-5f186c602eee}</Project>
       <Name>MixERP.Net.WebControls.ReportEngine</Name>

@@ -15,6 +15,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
 ***********************************************************************************/
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using PetaPoco;
 using MixERP.Net.Entities.Policy;
 using Npgsql;
@@ -85,6 +86,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// <summary>
         /// Prepares and executes the function "policy.get_menu_policy".
         /// </summary>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
         public IEnumerable<DbGetMenuPolicyResult> Execute()
         {
             if (!this.SkipValidation)
@@ -99,8 +101,21 @@ namespace MixERP.Net.Schemas.Policy.Data
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
-            const string query = "SELECT * FROM policy.get_menu_policy(@0::integer, @1::integer, @2::text);";
-            return Factory.Get<DbGetMenuPolicyResult>(this._Catalog, query, this.UserId, this.OfficeId, this.Culture);
+            string query = "SELECT * FROM policy.get_menu_policy(@UserId, @OfficeId, @Culture);";
+
+            query = query.ReplaceWholeWord("@UserId", "@0::integer");
+            query = query.ReplaceWholeWord("@OfficeId", "@1::integer");
+            query = query.ReplaceWholeWord("@Culture", "@2::text");
+
+
+            List<object> parameters = new List<object>();
+            parameters.Add(this.UserId);
+            parameters.Add(this.OfficeId);
+            parameters.Add(this.Culture);
+
+            return Factory.Get<DbGetMenuPolicyResult>(this._Catalog, query, parameters.ToArray());
         }
+
+
     }
 }

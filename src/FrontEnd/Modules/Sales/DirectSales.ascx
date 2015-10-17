@@ -17,14 +17,14 @@ You should have received a copy of the GNU General Public License
 along with MixERP.  If not, see <http://www.gnu.org/licenses />.
 --%>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="DirectSales.ascx.cs" Inherits="MixERP.Net.Core.Modules.Sales.DirectSales" %>
-<asp:PlaceHolder runat="server" ID="Placeholder1"></asp:PlaceHolder>
-
-
 <script>
     var scrudFactory = new Object();
     scrudFactory.title = Resources.Titles.DirectSales();
 
     scrudFactory.hiddenAnnotation = ["UserId", "Book", "OfficeId"];
+    
+    scrudFactory.addNewUrl = "/Modules/Sales/Entry/DirectSales.mix";
+
     scrudFactory.defaultAnnotation = [
     	{ 
     		key : "UserId",
@@ -40,40 +40,53 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
     	},
     	{ 
     		key : "DateFrom",
-    		value: "-1y"
+    		value: "bom"
     	},
     	{ 
     		key : "DateTo",
-    		value: "1y"
+    		value: "eom"
     	}
     ];
 
-	scrudFactory.card = {
-		header: "Party",
-		meta: "StatementReference",
-		description:"Office"
-	}; 
-
 	scrudFactory.customActions = [
 		{
-			title: "Go to checklist window.",
+
+			title: Resources.Labels.GoToChecklistWindow(),
 			href : "/Modules/Sales/Confirmation/DirectSales.mix?TranId={id}",
 			icon : "list icon"
 		},
 		{
-			title: "Print",
+			title: Resources.Titles.Print(),
 			onclick : "showWindow('/Modules/Sales/Reports/DirectSalesInvoiceReport.mix?TranId={id}');",
 			icon : "print icon"
 		}
 	];
 
+    scrudFactory.customButtons = [
+        {
+            id: "ReturnButton",
+            text: Resources.Titles.Return(),
+            href : "",
+            onclick : "onReturn();"
+        }
+    ];
+
 
     scrudFactory.viewAPI = "/api/transactions/procedures/get-product-view";
-    scrudFactory.viewTableName = "transactions.get_product_view";
-
-    scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
-    
+    scrudFactory.viewTableName = "transactions.get_product_view";    
 </script>
 
+<script>
+    function onReturn(){
+        var id = getSelectedCheckBoxItemIds(2, 3, $("#ScrudView"))[0];
+        if(!id){
+            displayMessage(Resources.Titles.NothingSelected());
+            return;
+        };
+
+        var url = "/Modules/Sales/Entry/Return.mix?TranId=" + id;
+        window.location = url;
+    };
+</script>
 
 <div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>

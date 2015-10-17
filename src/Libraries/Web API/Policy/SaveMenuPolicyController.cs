@@ -25,6 +25,7 @@ using System.Web.Http;
 using MixERP.Net.ApplicationState.Cache;
 using MixERP.Net.Common.Extensions;
 using PetaPoco;
+using MixERP.Net.EntityParser;
 namespace MixERP.Net.Api.Policy
 {
     /// <summary>
@@ -74,6 +75,42 @@ namespace MixERP.Net.Api.Policy
                 _UserId = this._UserId
             };
         }
+        /// <summary>
+        ///     Creates meta information of "save menu policy" annotation.
+        /// </summary>
+        /// <returns>Returns the "save menu policy" annotation meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("annotation")]
+        [Route("~/api/policy/procedures/save-menu-policy/annotation")]
+        public EntityView GetAnnotation()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                                {
+                                        new EntityColumn { ColumnName = "_user_id",  PropertyName = "UserId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "_office_id",  PropertyName = "OfficeId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "_menu_ids",  PropertyName = "MenuIds",  DataType = "int",  DbDataType = "integer[]",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                }
+            };
+        }
+
+        /// <summary>
+        ///     Creates meta information of "save menu policy" entity.
+        /// </summary>
+        /// <returns>Returns the "save menu policy" meta information to perform CRUD operation.</returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("meta")]
+        [Route("~/api/policy/procedures/save-menu-policy/meta")]
+        public EntityView GetEntityView()
+        {
+            return new EntityView
+            {
+                Columns = new List<EntityColumn>()
+                {
+                }
+            };
+        }
 
         [AcceptVerbs("POST")]
         [Route("execute")]
@@ -85,6 +122,7 @@ namespace MixERP.Net.Api.Policy
                 this.procedure.UserId = annotation.UserId;
                 this.procedure.OfficeId = annotation.OfficeId;
                 this.procedure.MenuIds = annotation.MenuIds;
+
 
                 this.procedure.Execute();
             }

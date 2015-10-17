@@ -71,13 +71,5 @@ namespace MixERP.Net.Entities.Transactions
         [Column("book")]
         [ColumnDbType("text", 0, false, "")]
         public string Book { get; set; }
-
-        [Column("flag_background_color")]
-        [ColumnDbType("text", 0, false, "")]
-        public string FlagBackgroundColor { get; set; }
-
-        [Column("flag_foreground_color")]
-        [ColumnDbType("text", 0, false, "")]
-        public string FlagForegroundColor { get; set; }
     }
 }

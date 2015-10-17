@@ -118,7 +118,6 @@
     <Compile Include="Control\Form\Title.cs" />
     <Compile Include="Control\Stylesheet.cs" />
     <Compile Include="Control\Javascript.cs" />
-    <Compile Include="Control\Session.cs" />
     <Compile Include="Control\Properties.cs" />
     <Compile Include="Helpers\CollectionHelper.cs" />
     <Compile Include="Helpers\TableHelper.cs" />
@@ -159,10 +158,6 @@
     <ProjectReference Include="..\..\..\Logic\PetaPoco\PetaPoco.csproj">
       <Project>{969d7960-52e2-40fc-91e5-1393b71e23b0}</Project>
       <Name>PetaPoco</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Data\MixERP.Net.WebControls.StockTransactionView.Data\MixERP.Net.WebControls.StockTransactionViewFactory.Data.csproj">
-      <Project>{F8499D93-CED5-4A3D-A22B-CF21171EDE6B}</Project>
-      <Name>MixERP.Net.WebControls.StockTransactionViewFactory.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\MixERP.Net.WebControls.AttachmentFactory\MixERP.Net.WebControls.AttachmentFactory.csproj">
       <Project>{403F308D-10E7-4C70-9360-1027EE541495}</Project>

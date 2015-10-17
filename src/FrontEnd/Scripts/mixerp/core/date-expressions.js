@@ -8,7 +8,14 @@ function convertDate(d) {
 };
 
 function parseLocalizedDate(dateString) {
-    return removeTimezone(Date.parseExact(dateString, window.shortDateFormat).toISOString());
+    if (!dateString) {
+        return "";
+    };
+
+    var date = Date.parseExact(dateString, window.shortDateFormat);
+    var offset = date.getTimezoneOffset() * 60000;
+
+    return removeTimezone(new Date(date.getTime() - offset).toISOString());
 };
 
 function removeTimezone(dateTime) {
@@ -77,87 +84,37 @@ function loadDatepicker() {
         var result;
         var number;
 
-        if (value === "d") {
-            result = dateAdd(today, "d", 0);
+        if (value === "bom") { result = applicationDates.MonthStartDate.toFormattedDate(); };
+        if (value === "eom") { result = applicationDates.MonthEndDate.toFormattedDate(); };
+        if (value === "boq") { result = applicationDates.QuarterStartDate.toFormattedDate(); };
+        if (value === "eoq") { result = applicationDates.QuarterEndDate.toFormattedDate(); };
+        if (value === "boh") { result = applicationDates.FiscalHalfStartDate.toFormattedDate(); };
+        if (value === "eoh") { result = applicationDates.FiscalHalfEndDate.toFormattedDate(); };
+        if (value === "boy") { result = applicationDates.FiscalYearStartDate.toFormattedDate(); };
+        if (value === "eoy") { result = applicationDates.FiscalYearEndDate.toFormattedDate(); };
+
+        if (value === "d") { result = dateAdd(today, "d", 0); }; //Today
+        if (value === "w" || value === "+w") { result = dateAdd(today, "d", 7); }; //Next Week
+        if (value === "m" || value === "+m") { result = dateAdd(today, "m", 1); }; //Next Month
+        if (value === "y" || value === "+y") { result = dateAdd(today, "y", 1); }; //Next Year
+
+
+        if (value === "-d") { result = dateAdd(today, "d", -1); };  //YesterDay      
+        if (value === "+d") { result = dateAdd(today, "d", 1); };//Tomorrow
+        if (value === "-w") { result = dateAdd(today, "d", -7); }; //Last Week
+        if (value === "-m") { result = dateAdd(today, "m", -1); }; //Last Month
+        if (value === "-y") { result = dateAdd(today, "y", -1); };
+
+        if (!result) {
+            if (value.indexOf("d") >= 0) { number = parseInt(value.replace("d")); result = dateAdd(today, "d", number); };
+            if (value.indexOf("w") >= 0) { number = parseInt(value.replace("w")); result = dateAdd(today, "d", number * 7); };
+            if (value.indexOf("m") >= 0) { number = parseInt(value.replace("m")); result = dateAdd(today, "m", number); };
+            if (value.indexOf("y") >= 0) { number = parseInt(value.replace("y")); result = dateAdd(today, "y", number); };
+        };
+
+        if (result) {
             control.val(result).trigger('change');
             validateByControlId(control.attr("id"));
-            return;
-        };
-
-        if (value === "m" || value === "+m") {
-            control.val(dateAdd(today, "m", 1)).trigger('change');
-            validateByControlId(control.attr("id"));
-            return;
-        };
-
-        if (value === "w" || value === "+w") {
-            control.val(dateAdd(today, "d", 7)).trigger('change');
-            validateByControlId(control.attr("id"));
-            return;
-        };
-
-        if (value === "y" || value === "+y") {
-            control.val(dateAdd(today, "y", 1)).trigger('change');
-            validateByControlId(control.attr("id"));
-            return;
-        };
-
-        if (value === "-d") {
-            control.val(dateAdd(today, "d", -1)).trigger('change');
-            validateByControlId(control.attr("id"));
-            return;
-        };
-
-        if (value === "+d") {
-            control.val(dateAdd(today, "d", 1)).trigger('change');
-            validateByControlId(control.attr("id"));
-            return;
-        };
-
-        if (value === "-w") {
-            control.val(dateAdd(today, "d", -7)).trigger('change');
-            validateByControlId(control.attr("id"));
-            return;
-        };
-
-        if (value === "-m") {
-            control.val(dateAdd(today, "m", -1)).trigger('change');
-            validateByControlId(control.attr("id"));
-            return;
-        };
-
-        if (value === "-y") {
-            control.val(dateAdd(today, "y", -1)).trigger('change');
-            validateByControlId(control.attr("id"));
-            return;
-        };
-
-        if (value.indexOf("d") >= 0) {
-            number = parseInt(value.replace("d"));
-            control.val(dateAdd(today, "d", number)).trigger('change');
-            validateByControlId(control.attr("id"));
-            return;
-        };
-
-        if (value.indexOf("w") >= 0) {
-            number = parseInt(value.replace("w"));
-            control.val(dateAdd(today, "d", number * 7)).trigger('change');
-            validateByControlId(control.attr("id"));
-            return;
-        };
-
-        if (value.indexOf("m") >= 0) {
-            number = parseInt(value.replace("m"));
-            control.val(dateAdd(today, "m", number)).trigger('change');
-            validateByControlId(control.attr("id"));
-            return;
-        };
-
-        if (value.indexOf("y") >= 0) {
-            number = parseInt(value.replace("y"));
-            control.val(dateAdd(today, "y", number)).trigger('change');
-            validateByControlId(control.attr("id"));
-            return;
         };
     });
 

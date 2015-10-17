@@ -226,11 +226,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
             int detailsOffset = 17;
             query = query.ReplaceWholeWord("@Details", "ARRAY[" + this.SqlForDetails(this.Details, detailsOffset, 9) + "]");
 
-            int attachmentsOffset = detailsOffset + (this.Details == null ? 0 : this.Details.Count() * 9)/*The poco object Details has 9 columns.*/;
+            int attachmentsOffset = detailsOffset + (this.Details == null ? 0 : this.Details.Count() * 9)/*The object Details has 9 member(s).*/;
             query = query.ReplaceWholeWord("@Attachments", "ARRAY[" + this.SqlForAttachments(this.Attachments, attachmentsOffset, 4) + "]");
 
-            int nonGlTranIdsOffset = attachmentsOffset + (this.Attachments == null ? 0 : this.Attachments.Count() * 4)/*The poco object Attachments has 4 columns.*/;
-            query = query.ReplaceWholeWord("@NonGlTranIds", "ARRAY[" + this.SqlForNonGlTranIds(this.NonGlTranIds, nonGlTranIdsOffset, 0) + "]");
+            int nonGlTranIdsOffset = attachmentsOffset + (this.Attachments == null ? 0 : this.Attachments.Count() * 4)/*The object Attachments has 4 member(s).*/;
+            query = query.ReplaceWholeWord("@NonGlTranIds", "ARRAY[" + this.SqlForNonGlTranIds(this.NonGlTranIds, nonGlTranIdsOffset, 1) + "]");
 
 
             List<object> parameters = new List<object>();
@@ -299,6 +299,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     collection.Add(detail.ShippingCharge);
                     collection.Add(detail.TaxForm);
                     collection.Add(detail.Tax);
+                    collection.Add(detail);
                 }
             }
             return collection;
@@ -339,6 +340,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                     collection.Add(attachment.FilePath);
                     collection.Add(attachment.OriginalFileName);
                     collection.Add(attachment.FileExtension);
+                    collection.Add(attachment);
                 }
             }
             return collection;
@@ -371,7 +373,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
             {
                 foreach (long nonGlTranId in nonGlTranIds)
                 {
-
+                    collection.Add(nonGlTranId);
                 }
             }
             return collection;

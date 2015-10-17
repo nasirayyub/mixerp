@@ -93,7 +93,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
 
             int stockMasterIdOffset = 0;
-            query = query.ReplaceWholeWord("@StockMasterId", "ARRAY[" + this.SqlForStockMasterId(this.StockMasterId, stockMasterIdOffset, 0) + "]");
+            query = query.ReplaceWholeWord("@StockMasterId", "ARRAY[" + this.SqlForStockMasterId(this.StockMasterId, stockMasterIdOffset, 1) + "]");
 
 
             List<object> parameters = new List<object>();
@@ -130,7 +130,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
             {
                 foreach (long stockMasterId in stockMasterIds)
                 {
-
+                    collection.Add(stockMasterId);
                 }
             }
             return collection;
