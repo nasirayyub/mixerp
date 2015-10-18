@@ -12,20 +12,6 @@ namespace MixERP.Net.Core.Modules.BackOffice.Tax
     {
         public override void OnControlLoad(object sender, EventArgs e)
         {
-            using (Scrud scrud = new Scrud())
-            {
-                scrud.KeyColumn = "sales_tax_id";
-                scrud.TableSchema = "core";
-                scrud.Table = "sales_taxes";
-                scrud.ViewSchema = "core";
-                scrud.View = "sales_tax_scrud_view";
-                scrud.Text = Titles.SalesTaxes;
-
-                scrud.DisplayFields = GetDisplayFields();
-                scrud.DisplayViews = GetDisplayViews();
-
-                this.ScrudPlaceholder.Controls.Add(scrud);
-            }
         }
 
         private static string GetDisplayFields()

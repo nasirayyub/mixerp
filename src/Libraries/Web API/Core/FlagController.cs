@@ -481,44 +481,6 @@ namespace MixERP.Net.Api.Core
             }
         }
 
-        /// <summary>
-        ///     Adds or edits your instance of Flag class.
-        /// </summary>
-        /// <param name="flag">Your instance of flags class to add or edit.</param>
-        [AcceptVerbs("PUT")]
-        [Route("add-or-edit")]
-        [Route("~/api/core/flag/add-or-edit")]
-        public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
-        {
-            MixERP.Net.Entities.Core.Flag flag = form[0].ToObject<MixERP.Net.Entities.Core.Flag>(JsonHelper.GetJsonSerializer());
-            List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
-
-            if (flag == null)
-            {
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MethodNotAllowed));
-            }
-
-            try
-            {
-                return this.FlagContext.AddOrEdit(flag, customFields);
-            }
-            catch (UnauthorizedException)
-            {
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
-            }
-            catch (MixERPException ex)
-            {
-                throw new HttpResponseException(new HttpResponseMessage
-                {
-                    Content = new StringContent(ex.Message),
-                    StatusCode = HttpStatusCode.InternalServerError
-                });
-            }
-            catch
-            {
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
-            }
-        }
 
         private List<MixERP.Net.Entities.Core.Flag> ParseCollection(dynamic collection)
         {

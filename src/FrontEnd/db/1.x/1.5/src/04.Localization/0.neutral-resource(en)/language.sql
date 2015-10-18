@@ -148,6 +148,7 @@ SELECT localization.add_localized_resource('Labels', '', 'CreateTaxMasterDescrip
 SELECT localization.add_localized_resource('Labels', '', 'DatabaseBackupSuccessful', 'The database backup was successful.');
 SELECT localization.add_localized_resource('Labels', '', 'DateFormatYYYYMMDD', 'yyyy-mm-dd');
 SELECT localization.add_localized_resource('Labels', '', 'DaysLowerCase', 'days');
+SELECT localization.add_localized_resource('Labels', '', 'DefaultEntityAccessPolicy', 'Create default entity access policy based on user roles. By default, users have right to access an entity if a menu acesss policy is granted. A negative policy defined here is applicable for all users of the selected role. The explicit <a href="{0}">entity access policy</a> takes precedence over this policy.');
 SELECT localization.add_localized_resource('Labels', '', 'DeletedApplicationFiles', 'Existing application files were deleted successfully.');
 SELECT localization.add_localized_resource('Labels', '', 'DeletingApplicationFiles', 'Deleting application files.');
 SELECT localization.add_localized_resource('Labels', '', 'DeletingApplicationFilesSucessMessage', 'Existing application files were deleted successfully.');
@@ -158,6 +159,7 @@ SELECT localization.add_localized_resource('Labels', '', 'DownloadingUpdateFrom'
 SELECT localization.add_localized_resource('Labels', '', 'EODBegunSaveYourWork', 'Please close this window and save your existing work before you will be signed off automatically.');
 SELECT localization.add_localized_resource('Labels', '', 'EmailBody', '<h2>Hi,</h2><p>Please find the attached document.</p><p>Thank you.<br />MixERP</p>');
 SELECT localization.add_localized_resource('Labels', '', 'EmailSentConfirmation', 'An email was sent to {0}.');
+SELECT localization.add_localized_resource('Labels', '', 'EntityAccessPolicy', 'Create entity access policy for individual users. By default, users have right to access an entity if a menu acesss policy is granted. If a <a href="{0}">default entity access policy</a> was created to restrict access to a group of users, you can still override that policy and provide access permission to a particular user.');
 SELECT localization.add_localized_resource('Labels', '', 'ExtractingDownloadedFile', 'Extracting the downloaded file.');
 SELECT localization.add_localized_resource('Labels', '', 'ExtractionCompleted', 'Extraction completed.');
 SELECT localization.add_localized_resource('Labels', '', 'FlagDescription', 'You can mark this item with a flag, however you will not be able to see the flags created by other users.');
@@ -1209,6 +1211,7 @@ SELECT localization.add_localized_resource('Titles', '', 'DeductionSetups', 'Ded
 SELECT localization.add_localized_resource('Titles', '', 'Deductions', 'Deductions');
 SELECT localization.add_localized_resource('Titles', '', 'DefaultAddress', 'Default Address');
 SELECT localization.add_localized_resource('Titles', '', 'DefaultCurrency', 'Default Currency');
+SELECT localization.add_localized_resource('Titles', '', 'DefaultEntityAccessPolicy', 'Default Entity Access Policy');
 SELECT localization.add_localized_resource('Titles', '', 'DefaultReorderQuantityAbbreviated', 'Default Reorder Qty');
 SELECT localization.add_localized_resource('Titles', '', 'Definition', 'Definition');
 SELECT localization.add_localized_resource('Titles', '', 'Delete', 'Delete');
@@ -1282,6 +1285,7 @@ SELECT localization.add_localized_resource('Titles', '', 'EnterBackupName', 'Ent
 SELECT localization.add_localized_resource('Titles', '', 'EnterNewPassword', 'Enter a New Password');
 SELECT localization.add_localized_resource('Titles', '', 'EnteredBy', 'Entered By');
 SELECT localization.add_localized_resource('Titles', '', 'Entities', 'Entities');
+SELECT localization.add_localized_resource('Titles', '', 'EntityAccessPolicy', 'Entity Access Policy');
 SELECT localization.add_localized_resource('Titles', '', 'ExchangeRate', 'Exchange Rate');
 SELECT localization.add_localized_resource('Titles', '', 'ExchangeRates', 'Exchange Rates');
 SELECT localization.add_localized_resource('Titles', '', 'Execute', 'Execute');

@@ -1113,7 +1113,6 @@
             var kanbanDetailId = card.attr("data-kanban-detail-id");
 
             if (kanbanDetailId) {
-
                 var kanbanDetail = new Object();
                 kanbanDetail.KanbanDetailId = kanbanDetailId;
                 kanbanDetail.KanbanId = card.closest(".segment").attr("id").replace("kanban", "");
@@ -1681,13 +1680,22 @@
         });
 
         function loadMeta(callback) {
+            if (scrudFactory.ignoreMeta) {
+                metaDefinition = [];
+                if (typeof (callback) === "function") {
+                    callback();
+                };
+
+                return;
+            };
+
             var getMetaAjax = getMeta();
 
             getMetaAjax.success(function (msg) {
                 metaDefinition = msg;
                 if (typeof (callback) === "function") {
                     callback();
-                }
+                };
             });
         };
 

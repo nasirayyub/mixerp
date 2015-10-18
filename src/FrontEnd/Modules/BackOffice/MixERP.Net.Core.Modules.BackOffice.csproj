@@ -133,7 +133,6 @@
     <Content Include="OTS\MixERPParameters.ascx" />
     <Content Include="OTS\OpenExchangeRatesParameters.ascx" />
     <Content Include="OTS\OpeningInventory.ascx" />
-    <Content Include="OTS\ScrudFactoryParameters.ascx" />
     <Content Include="OTS\SMTP.ascx" />
     <Content Include="OTS\Switches.ascx" />
     <Content Include="Policy\DefaultEntityAccess.ascx" />
@@ -435,13 +434,6 @@
     </Compile>
     <Compile Include="OTS\OpeningInventory.ascx.designer.cs">
       <DependentUpon>OpeningInventory.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="OTS\ScrudFactoryParameters.ascx.cs">
-      <DependentUpon>ScrudFactoryParameters.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OTS\ScrudFactoryParameters.ascx.designer.cs">
-      <DependentUpon>ScrudFactoryParameters.ascx</DependentUpon>
     </Compile>
     <Compile Include="OTS\SMTP.ascx.cs">
       <DependentUpon>SMTP.ascx</DependentUpon>

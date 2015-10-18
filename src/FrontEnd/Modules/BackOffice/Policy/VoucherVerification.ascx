@@ -16,6 +16,11 @@
     scrudFactory.allowDelete = true;
     scrudFactory.allowEdit = true;
 
+    scrudFactory.card = {
+        keyField : "PolicyId",
+        header: "UserName"
+    };
+
     scrudFactory.keys = [
         {
             property: "OfficeId",

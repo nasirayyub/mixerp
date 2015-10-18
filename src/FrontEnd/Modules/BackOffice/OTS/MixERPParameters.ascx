@@ -1,2 +1,28 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="MixERPParameters.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.OTS.MixERPParameters" %>
-<asp:PlaceHolder runat="server" ID="ScrudPlaceholder"/>
+<script>
+    var scrudFactory = new Object();
+
+    scrudFactory.title = Resources.Titles.MixERPParameters();
+
+    scrudFactory.viewAPI = "/api/config/mixerp-scrud-view";
+    scrudFactory.viewTableName = "config.mixerp_scrud_view";
+
+    scrudFactory.formAPI = "/api/config/mixerp";
+    scrudFactory.formTableName = "config.mixerp";
+    scrudFactory.removeKanban = true;
+    scrudFactory.removeFilter = true;
+    scrudFactory.removeImport = true;
+
+    scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
+
+    scrudFactory.allowDelete = true;
+    scrudFactory.allowEdit = true;
+
+    scrudFactory.layout = [
+        ["Key", ""],
+        ["Value", ""],
+        ["Description", ""]
+    ];
+</script>
+<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
+<div data-ng-include="'/Views/Modules/FormFactory.html'"></div>

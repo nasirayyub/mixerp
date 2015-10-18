@@ -10,10 +10,7 @@ namespace MixERP.Net.Core.Modules.BackOffice.Admin
 {
     public partial class DatabaseStatistics : MixERPUserControl
     {
-        public override AccessLevel AccessLevel
-        {
-            get { return AccessLevel.AdminOnly; }
-        }
+        public override AccessLevel AccessLevel => AccessLevel.AdminOnly;
 
         public override void OnControlLoad(object sender, EventArgs e)
         {
@@ -24,8 +21,6 @@ namespace MixERP.Net.Core.Modules.BackOffice.Admin
             this.VacuumButton.Text = Titles.VacuumDatabase;
             this.FullVacuumButton.Text = Titles.VacuumFullDatabase;
             this.AnalyzeButton.Text = Titles.AnalyzeDatabse;
-
-            this.AddScrud();
         }
 
         protected void AnalyzeButton_Click(object sender, EventArgs e)
@@ -52,31 +47,9 @@ namespace MixERP.Net.Core.Modules.BackOffice.Admin
             this.DisplaySuccess();
         }
 
-        private void AddScrud()
-        {
-            using (Scrud scrud = new Scrud())
-            {
-                scrud.DenyAdd = true;
-                scrud.DenyDelete = true;
-                scrud.DenyEdit = true;
-
-                scrud.KeyColumn = "relname";
-                scrud.PageSize = 500;
-
-                scrud.TableSchema = "public";
-                scrud.Table = "db_stat";
-                scrud.ViewSchema = "public";
-                scrud.View = "db_stat";
-
-                scrud.Text = Titles.DatabaseStatistics;
-
-                this.ScrudPlaceholder.Controls.Add(scrud);
-            }
-        }
-
         private void DisplaySuccess()
         {
-            this.MessageLiteral.Text = @"<div class='success'>" + Labels.TaskCompletedSuccessfully + @"</div>";
+            this.MessageLiteral.Text = @"<div class='ui positive message'>" + Labels.TaskCompletedSuccessfully + @"</div>";
         }
     }
 }

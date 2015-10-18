@@ -46,3 +46,7 @@ UPDATE core.menus SET sort = 5, icon = 'desktop' WHERE menu_code ='STA';
 DELETE FROM policy.menu_access WHERE menu_id = core.get_menu_id_by_menu_code('SAA');
 DELETE FROM core.menu_locale WHERE menu_id = core.get_menu_id_by_menu_code('SAA');
 DELETE FROM core.menus WHERE menu_code = 'SAA';
+
+DELETE FROM policy.menu_access WHERE menu_id = core.get_menu_id_by_menu_code('OTSSFP');
+DELETE FROM core.menu_locale WHERE menu_id = core.get_menu_id_by_menu_code('OTSSFP');
+DELETE FROM core.menus WHERE menu_code = 'OTSSFP';
