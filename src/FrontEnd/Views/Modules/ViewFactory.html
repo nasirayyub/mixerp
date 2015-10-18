@@ -114,7 +114,7 @@
     <div class="ui stackable grid">
         <div class="ui sixteen wide column">
             <div class="title ui huge grey header"></div>
-            <div id="description" class="ui warning description message" style="display: none;">
+            <div id="description" class="ui info description message" style="display: none;">
             </div>
         </div>
     </div>
@@ -1193,6 +1193,10 @@
     };
 
     function getClassName() {
+        if (scrudFactory.className) {
+            return scrudFactory.className;
+        };
+
         var table = scrudFactory.formTableName;
 
         if (!table) {
@@ -1299,8 +1303,17 @@
         return getQualified(entity, "", candidates);
     };
 
-    function createCard(dynamic, key, kanbanDetail) {
+    function getCardField(card, field) {
+        var isExpression = field.substring(2, 0) === "{{" && field.slice(-2) === "}}";
+        if (isExpression) {
+            var expression = field.replace("{{", "").replace("}}", "");
+            return eval(expression);
+        };
 
+        return card[field];
+    };
+
+    function createCard(dynamic, key, kanbanDetail) {
         var kanbanId = (kanbanDetail.KanbanId || 0);
 
         var text;
@@ -1315,7 +1328,7 @@
 
 
         if (imageField) {
-            var src = dynamic[imageField];
+            var src = getCardField(dynamic, imageField);
             if (src) {
                 var image = $('<div class="image" />');
                 var img = $("<img />");
@@ -1336,7 +1349,7 @@
         content.append(checkbox);
 
         if (headerField) {
-            text = dynamic[headerField];
+            text = getCardField(dynamic, headerField);
             if (text) {
                 var header = $('<div class="header" />');
 
@@ -1346,7 +1359,7 @@
         };
 
         if (metaField) {
-            text = dynamic[metaField];
+            text = getCardField(dynamic, metaField);
             if (text) {
                 var meta = $('<div class="meta" />');
 
@@ -1356,7 +1369,7 @@
         };
 
         if (descriptionField) {
-            text = dynamic[descriptionField];
+            text = getCardField(dynamic, descriptionField);
             if (text) {
                 var description = $('<div class="meta" />');
 
@@ -1739,10 +1752,6 @@
             };
 
             createVerificationButton();
-        };
-
-        function executeProcedure() {
-            //alert("executing");
         };
 
         function getView(pageNumber, filterName, byOffice) {

@@ -7,11 +7,12 @@
     scrudFactory.description = "Create default entity access policy based on user roles. By default, users have right to access an entity if a menu acesss policy is granted. A negative policy defined here is applicable for all users of the selected role. The explicit <a href='{0}'>entity access policy</a> takes precedence over this policy.";
     scrudFactory.description = stringFormat(scrudFactory.description, "EntityAccess.mix");
 
-    scrudFactory.viewAPI = "/api/policy/default-entity-access";
-    scrudFactory.viewTableName = "policy.default_entity_access";
+    scrudFactory.viewAPI = "/api/policy/default-entity-access-scrud-view";
+    scrudFactory.viewTableName = "policy.default_entity_access_scrud_view";
 
     scrudFactory.formAPI = "/api/policy/default-entity-access";
     scrudFactory.formTableName = "policy.default_entity_access";
+    scrudFactory.className = "DefaultEntityAccess";
 
     scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
 
@@ -22,6 +23,11 @@
     + " (" + this["TableSchema"].toString().split("_").join(" ").toPascalCase() + ")"\
     }}';
 
+    scrudFactory.card = {
+        header: "EntityName",
+        meta:"RoleName",
+        description: "{{card.AccessTypeName + ' (' + card.AllowAccess + ')'}}"
+    };
 
     scrudFactory.keys = [
         {

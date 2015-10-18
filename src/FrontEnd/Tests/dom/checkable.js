@@ -1,4 +1,7 @@
 ///<reference path="/Scripts/jquery-1.9.1.js" />
+
+
+
 ///<reference path="/Scripts/mixerp/mixerp-core.js" />
 QUnit.test("checkable.js -> toogleSelection", function (assert) {
     var input = $('<input type="checkbox" checked="checked" />').hide();
