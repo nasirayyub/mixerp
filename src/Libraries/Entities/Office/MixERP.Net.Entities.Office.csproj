@@ -68,6 +68,7 @@
     <Compile Include="Department.cs" />
     <Compile Include="DepartmentScrudView.cs" />
     <Compile Include="GlobalLogin.cs" />
+    <Compile Include="Holiday.cs" />
     <Compile Include="Office.cs" />
     <Compile Include="OfficeScrudView.cs" />
     <Compile Include="OfficeSelectorView.cs" />

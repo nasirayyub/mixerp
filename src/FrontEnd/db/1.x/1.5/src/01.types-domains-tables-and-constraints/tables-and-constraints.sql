@@ -427,8 +427,6 @@ END
 $$
 LANGUAGE plpgsql;
 
-DROP TABLE IF EXISTS office.holiday;
-
 DROP VIEW IF EXISTS core.item_cost_price_scrud_view;
 DROP VIEW IF EXISTS core.item_scrud_view;
 DROP VIEW IF EXISTS core.item_view;
@@ -490,6 +488,65 @@ BEGIN
     ) THEN
         ALTER TABLE core.salespersons
         ADD COLUMN photo public.image;
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+ALTER TABLE office.holidays
+DROP COLUMN IF EXISTS falls_on;
+
+ALTER TABLE office.holidays
+DROP COLUMN IF EXISTS recurs_next_year;
+
+
+DO
+$$
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM   pg_attribute 
+        WHERE  attrelid = 'office.holidays'::regclass
+        AND    attname = 'occurs_on'
+        AND    NOT attisdropped
+    ) THEN
+        ALTER TABLE office.holidays
+        ADD COLUMN occurs_on date NOT NULL;
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+DO
+$$
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM   pg_attribute 
+        WHERE  attrelid = 'office.holidays'::regclass
+        AND    attname = 'ends_on'
+        AND    NOT attisdropped
+    ) THEN
+        ALTER TABLE office.holidays
+        ADD COLUMN ends_on date NOT NULL CHECK(ends_on >= occurs_on);
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+DO
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 0 FROM pg_class where oid::regclass::text = 'office.holidays_holiday_id_seq') THEN
+        CREATE SEQUENCE office.holidays_holiday_id_seq;
+        ALTER SEQUENCE office.holidays_holiday_id_seq OWNER TO mix_erp;
+
+        ALTER TABLE office.holidays
+        ALTER COLUMN holiday_id SET DEFAULT(nextval('office.holidays_holiday_id_seq'));
+
+        ALTER SEQUENCE office.holidays_holiday_id_seq OWNED BY office.holidays.holiday_id;
     END IF;
 END
 $$

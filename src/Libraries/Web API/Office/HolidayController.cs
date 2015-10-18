@@ -18,14 +18,14 @@ namespace MixERP.Net.Api.Office
     ///     Provides a direct HTTP access to perform various tasks such as adding, editing, and removing Holidays.
     /// </summary>
     [RoutePrefix("api/v1.5/office/holiday")]
-    public class OfficeHolidayController : ApiController
+    public class HolidayController : ApiController
     {
         /// <summary>
         ///     The Holiday data context.
         /// </summary>
         private readonly MixERP.Net.Schemas.Office.Data.Holiday HolidayContext;
 
-        public OfficeHolidayController()
+        public HolidayController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
@@ -59,14 +59,14 @@ namespace MixERP.Net.Api.Office
                 PrimaryKey = "holiday_id",
                 Columns = new List<EntityColumn>()
                                 {
-                                        new EntityColumn { ColumnName = "holiday_id",  PropertyName = "HolidayId",  DataType = "int",  DbDataType = "int4",  IsNullable = false,  IsPrimaryKey = true,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "holiday_id",  PropertyName = "HolidayId",  DataType = "int",  DbDataType = "int4",  IsNullable = false,  IsPrimaryKey = true,  IsSerial = true,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "office_id",  PropertyName = "OfficeId",  DataType = "int",  DbDataType = "int4",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
-                                        new EntityColumn { ColumnName = "falls_on",  PropertyName = "FallsOn",  DataType = "DateTime",  DbDataType = "date",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "holiday_name",  PropertyName = "HolidayName",  DataType = "string",  DbDataType = "varchar",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 100 },
                                         new EntityColumn { ColumnName = "description",  PropertyName = "Description",  DataType = "string",  DbDataType = "text",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
-                                        new EntityColumn { ColumnName = "recurs_next_year",  PropertyName = "RecursNextYear",  DataType = "bool",  DbDataType = "bool",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "audit_user_id",  PropertyName = "AuditUserId",  DataType = "int",  DbDataType = "int4",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
-                                        new EntityColumn { ColumnName = "audit_ts",  PropertyName = "AuditTs",  DataType = "DateTime",  DbDataType = "timestamptz",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                        new EntityColumn { ColumnName = "audit_ts",  PropertyName = "AuditTs",  DataType = "DateTime",  DbDataType = "timestamptz",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "occurs_on",  PropertyName = "OccursOn",  DataType = "DateTime",  DbDataType = "date",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "ends_on",  PropertyName = "EndsOn",  DataType = "DateTime",  DbDataType = "date",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
                                 }
             };
         }

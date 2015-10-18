@@ -1,3 +1,4 @@
+// ReSharper disable All
 using MixERP.Net.Framework;
 using MixERP.Net.Entities.Localization;
 using MixERP.Net.Schemas.Localization.Data;

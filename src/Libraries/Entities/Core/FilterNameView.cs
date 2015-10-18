@@ -1,3 +1,4 @@
+// ReSharper disable All
 using PetaPoco;
 using System;
 

@@ -1,3 +1,4 @@
+// ReSharper disable All
 using MixERP.Net.Framework;
 using MixERP.Net.Entities.HRM;
 using MixERP.Net.Core.Modules.HRM.Data;

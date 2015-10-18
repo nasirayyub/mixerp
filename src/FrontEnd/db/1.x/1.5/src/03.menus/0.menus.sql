@@ -7,6 +7,7 @@ SELECT * FROM core.create_menu('Marital Statuses', '~/Modules/BackOffice/Other/M
 
 SELECT * FROM core.create_menu('Default Entity Access Policy', '~/Modules/BackOffice/Policy/DefaultEntityAccess.mix', 'DEFEAPOL', 2, core.get_menu_id('SPM'));
 SELECT * FROM core.create_menu('Entity Access Policy', '~/Modules/BackOffice/Policy/EntityAccess.mix', 'EAPOL', 2, core.get_menu_id('SPM'));
+SELECT * FROM core.create_menu('Holiday Setup', '~/Modules/BackOffice/Other/HolidaySetup.mix', 'HOLIDAY', 2, core.get_menu_id('OTHR'));
 
 
 UPDATE core.menus SET menu_text = 'Inventory' WHERE menu_code = 'ITM';

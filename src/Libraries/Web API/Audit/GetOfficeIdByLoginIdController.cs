@@ -1,3 +1,4 @@
+// ReSharper disable All
 using MixERP.Net.Framework;
 using MixERP.Net.Entities.Audit;
 using MixERP.Net.Schemas.Audit.Data;

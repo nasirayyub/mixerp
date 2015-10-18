@@ -1,3 +1,4 @@
+// ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -56,7 +57,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -85,7 +86,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -115,7 +116,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -145,7 +146,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -175,7 +176,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -213,7 +214,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -320,7 +321,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Create, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Create, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -343,7 +344,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.ImportData, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.ImportData, this._LoginId, this._Catalog, false);
                 }
 
                 if (!this.HasAccess)
@@ -423,7 +424,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Edit, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Edit, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -451,7 +452,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Delete, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Delete, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -480,7 +481,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -510,7 +511,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -548,7 +549,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -581,7 +582,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -623,7 +624,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -657,7 +658,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {

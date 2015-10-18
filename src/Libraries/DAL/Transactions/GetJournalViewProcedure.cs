@@ -1,3 +1,4 @@
+// ReSharper disable All
 using MixERP.Net.DbFactory;
 using MixERP.Net.Framework;
 using MixERP.Net.Framework.Extensions;
@@ -144,7 +145,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Execute, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Execute, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {

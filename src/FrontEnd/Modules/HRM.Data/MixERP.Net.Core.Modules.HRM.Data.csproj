@@ -106,7 +106,6 @@
     <Compile Include="GetEmployeeByEmployeeIdProcedure.cs" />
     <Compile Include="GetEmployeeCodeByEmployeeIdProcedure.cs" />
     <Compile Include="GetEmployeeNameByEmployeeIdProcedure.cs" />
-    <Compile Include="Holiday.cs" />
     <Compile Include="JobTitle.cs" />
     <Compile Include="LeaveApplication.cs" />
     <Compile Include="LeaveApplicationScrudView.cs" />

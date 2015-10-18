@@ -11,6 +11,7 @@
 
     scrudFactory.formAPI = "/api/policy/entity-access";
     scrudFactory.formTableName = "policy.entity_access";
+    scrudFactory.className = "EntityAccess";
 
     scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
 
@@ -21,6 +22,11 @@
     + " (" + this["TableSchema"].toString().split("_").join(" ").toPascalCase() + ")"\
     }}';
 
+    scrudFactory.card = {
+        header: "EntityName",
+        meta: "UserName",
+        description: "{{card.AccessTypeName + ' (' + card.AllowAccess + ')'}}"
+    };
 
     scrudFactory.keys = [
         {

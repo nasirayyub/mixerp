@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MixERP.Net.Core.Modules.HRM.Setup
+namespace MixERP.Net.Core.Modules.BackOffice.Other
 {
 
 

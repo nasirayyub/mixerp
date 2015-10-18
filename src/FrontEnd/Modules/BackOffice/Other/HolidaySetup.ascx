@@ -1,15 +1,15 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="HolidaySetup.ascx.cs" Inherits="MixERP.Net.Core.Modules.HRM.Setup.HolidaySetup" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="HolidaySetup.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.Other.HolidaySetup" %>
 <script>
     var scrudFactory = new Object();
 
     scrudFactory.title =  window.Resources.Titles.HolidaySetup();
 
-    scrudFactory.viewAPI = "/api/hrm/holiday";
-    scrudFactory.viewTableName = "hrm.holidays";
+    scrudFactory.viewAPI = "/api/office/holiday";
+    scrudFactory.viewTableName = "office.holidays";
     scrudFactory.description = "";
 
-    scrudFactory.formAPI = "/api/hrm/holiday";
-    scrudFactory.formTableName = "hrm.holidays";
+    scrudFactory.formAPI = "/api/office/holiday";
+    scrudFactory.formTableName = "office.holidays";
 
     scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
 
@@ -22,7 +22,7 @@
         ["HolidayId", ""],
         ["OfficeId", "HolidayName", "", ""],
         ["OccursOn", "EndsOn", "", ""],
-        ["Comment", ""]
+        ["Description", ""]
     ];
 
     scrudFactory.keys = [

@@ -1,3 +1,4 @@
+// ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -56,7 +57,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -85,7 +86,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -116,7 +117,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -172,7 +173,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -202,7 +203,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -240,7 +241,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -273,7 +274,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -315,7 +316,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -349,7 +350,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {

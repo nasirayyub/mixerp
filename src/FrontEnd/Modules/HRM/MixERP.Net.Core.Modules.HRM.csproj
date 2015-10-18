@@ -103,7 +103,6 @@
     <Content Include="Setup\EmployeeTypes.ascx" />
     <Content Include="Setup\EmploymentStatuses.ascx" />
     <Content Include="Setup\ExitTypes.ascx" />
-    <Content Include="Setup\HolidaySetup.ascx" />
     <Content Include="Setup\JobTitles.ascx" />
     <Content Include="Setup\LeaveBenefits.ascx" />
     <Content Include="Setup\LeaveTypes.ascx" />
@@ -168,13 +167,6 @@
     </Compile>
     <Compile Include="Setup\ExitTypes.ascx.designer.cs">
       <DependentUpon>ExitTypes.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Setup\HolidaySetup.ascx.cs">
-      <DependentUpon>HolidaySetup.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Setup\HolidaySetup.ascx.designer.cs">
-      <DependentUpon>HolidaySetup.ascx</DependentUpon>
     </Compile>
     <Compile Include="Setup\JobTitles.ascx.cs">
       <DependentUpon>JobTitles.ascx</DependentUpon>

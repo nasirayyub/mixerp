@@ -123,6 +123,7 @@
     <Content Include="Industries.ascx" />
     <Content Include="Mix Open Foundation.snk" />
     <Content Include="Other\Genders.ascx" />
+    <Content Include="Other\HolidaySetup.ascx" />
     <Content Include="Other\IdentificationTypes.ascx" />
     <Content Include="Other\MaritalStatuses.ascx" />
     <Content Include="Other\Nationalities.ascx" />
@@ -364,6 +365,13 @@
     </Compile>
     <Compile Include="Other\Genders.ascx.designer.cs">
       <DependentUpon>Genders.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Other\HolidaySetup.ascx.cs">
+      <DependentUpon>HolidaySetup.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Other\HolidaySetup.ascx.designer.cs">
+      <DependentUpon>HolidaySetup.ascx</DependentUpon>
     </Compile>
     <Compile Include="Other\IdentificationTypes.ascx.cs">
       <DependentUpon>IdentificationTypes.ascx</DependentUpon>
