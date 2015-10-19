@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Audit.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "audit.logins" to return a all instances of the "Login" class to export. 
+        /// Executes a select query on the table "audit.logins" to return a all instances of the "Login" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Login" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Audit.Login> Get()
+        public IEnumerable<MixERP.Net.Entities.Audit.Login> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Audit.Data
 
             const string sql = "SELECT * FROM audit.logins ORDER BY login_id;";
             return Factory.Get<MixERP.Net.Entities.Audit.Login>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "audit.logins" to return a all instances of the "Login" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Login" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Login\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM audit.logins ORDER BY login_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Audit.Data
         /// <param name="login">The instance of "Login" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Audit.Login login, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic login, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Audit.Data
 
 
 
-            if (login.LoginId > 0)
+            if (Cast.To<long>(login.login_id) > 0)
             {
-                primaryKeyValue = login.LoginId;
-                this.Update(login, login.LoginId);
+                primaryKeyValue = login.login_id;
+                this.Update(login, long.Parse(login.login_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Audit.Data
         /// </summary>
         /// <param name="login">The instance of "Login" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Audit.Login login)
+        public object Add(dynamic login)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Audit.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, login);
+            return Factory.Insert(this._Catalog, login, "audit.logins", "login_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Audit.Data
         /// </summary>
         /// <param name="logins">List of "Login" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Audit.Login> logins)
+        public List<object> BulkImport(List<ExpandoObject> logins)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Audit.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var login in logins)
+                        foreach (dynamic login in logins)
                         {
                             line++;
 
 
 
-                            if (login.LoginId > 0)
+                            if (Cast.To<long>(login.login_id) > 0)
                             {
-                                result.Add(login.LoginId);
-                                db.Update(login, login.LoginId);
+                                result.Add(login.login_id);
+                                db.Update("audit.logins", "login_id", login, login.login_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(login));
+                                result.Add(db.Insert("audit.logins", "login_id", login));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Audit.Data
         /// <param name="login">The instance of "Login" class to update.</param>
         /// <param name="loginId">The value of the column "login_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Audit.Login login, long loginId)
+        public void Update(dynamic login, long loginId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Audit.Data
                 }
             }
 
-            Factory.Update(this._Catalog, login, loginId);
+            Factory.Update(this._Catalog, login, loginId, "audit.logins", "login_id");
         }
 
         /// <summary>

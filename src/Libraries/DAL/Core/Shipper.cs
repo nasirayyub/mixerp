@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.shippers" to return a all instances of the "Shipper" class to export. 
+        /// Executes a select query on the table "core.shippers" to return a all instances of the "Shipper" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Shipper" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.Shipper> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.Shipper> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.shippers ORDER BY shipper_id;";
             return Factory.Get<MixERP.Net.Entities.Core.Shipper>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.shippers" to return a all instances of the "Shipper" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Shipper" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Shipper\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.shippers ORDER BY shipper_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="shipper">The instance of "Shipper" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.Shipper shipper, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic shipper, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            shipper.AuditUserId = this._UserId;
-            shipper.AuditTs = System.DateTime.UtcNow;
+            shipper.audit_user_id = this._UserId;
+            shipper.audit_ts = System.DateTime.UtcNow;
 
-            if (shipper.ShipperId > 0)
+            if (Cast.To<int>(shipper.shipper_id) > 0)
             {
-                primaryKeyValue = shipper.ShipperId;
-                this.Update(shipper, shipper.ShipperId);
+                primaryKeyValue = shipper.shipper_id;
+                this.Update(shipper, int.Parse(shipper.shipper_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="shipper">The instance of "Shipper" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.Shipper shipper)
+        public object Add(dynamic shipper)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, shipper);
+            return Factory.Insert(this._Catalog, shipper, "core.shippers", "shipper_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="shippers">List of "Shipper" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.Shipper> shippers)
+        public List<object> BulkImport(List<ExpandoObject> shippers)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var shipper in shippers)
+                        foreach (dynamic shipper in shippers)
                         {
                             line++;
 
-                            shipper.AuditUserId = this._UserId;
-                            shipper.AuditTs = System.DateTime.UtcNow;
+                            shipper.audit_user_id = this._UserId;
+                            shipper.audit_ts = System.DateTime.UtcNow;
 
-                            if (shipper.ShipperId > 0)
+                            if (Cast.To<int>(shipper.shipper_id) > 0)
                             {
-                                result.Add(shipper.ShipperId);
-                                db.Update(shipper, shipper.ShipperId);
+                                result.Add(shipper.shipper_id);
+                                db.Update("core.shippers", "shipper_id", shipper, shipper.shipper_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(shipper));
+                                result.Add(db.Insert("core.shippers", "shipper_id", shipper));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="shipper">The instance of "Shipper" class to update.</param>
         /// <param name="shipperId">The value of the column "shipper_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.Shipper shipper, int shipperId)
+        public void Update(dynamic shipper, int shipperId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, shipper, shipperId);
+            Factory.Update(this._Catalog, shipper, shipperId, "core.shippers", "shipper_id");
         }
 
         /// <summary>

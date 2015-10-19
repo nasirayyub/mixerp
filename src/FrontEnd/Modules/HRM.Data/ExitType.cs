@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.exit_types" to return a all instances of the "ExitType" class to export. 
+        /// Executes a select query on the table "hrm.exit_types" to return a all instances of the "ExitType" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "ExitType" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.ExitType> Get()
+        public IEnumerable<MixERP.Net.Entities.HRM.ExitType> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             const string sql = "SELECT * FROM hrm.exit_types ORDER BY exit_type_id;";
             return Factory.Get<MixERP.Net.Entities.HRM.ExitType>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "hrm.exit_types" to return a all instances of the "ExitType" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "ExitType" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"ExitType\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.exit_types ORDER BY exit_type_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="exitType">The instance of "ExitType" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.HRM.ExitType exitType, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic exitType, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             object primaryKeyValue;
 
-            exitType.AuditUserId = this._UserId;
-            exitType.AuditTs = System.DateTime.UtcNow;
+            exitType.audit_user_id = this._UserId;
+            exitType.audit_ts = System.DateTime.UtcNow;
 
-            if (exitType.ExitTypeId > 0)
+            if (Cast.To<int>(exitType.exit_type_id) > 0)
             {
-                primaryKeyValue = exitType.ExitTypeId;
-                this.Update(exitType, exitType.ExitTypeId);
+                primaryKeyValue = exitType.exit_type_id;
+                this.Update(exitType, int.Parse(exitType.exit_type_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="exitType">The instance of "ExitType" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.HRM.ExitType exitType)
+        public object Add(dynamic exitType)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, exitType);
+            return Factory.Insert(this._Catalog, exitType, "hrm.exit_types", "exit_type_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="exitTypes">List of "ExitType" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.HRM.ExitType> exitTypes)
+        public List<object> BulkImport(List<ExpandoObject> exitTypes)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var exitType in exitTypes)
+                        foreach (dynamic exitType in exitTypes)
                         {
                             line++;
 
-                            exitType.AuditUserId = this._UserId;
-                            exitType.AuditTs = System.DateTime.UtcNow;
+                            exitType.audit_user_id = this._UserId;
+                            exitType.audit_ts = System.DateTime.UtcNow;
 
-                            if (exitType.ExitTypeId > 0)
+                            if (Cast.To<int>(exitType.exit_type_id) > 0)
                             {
-                                result.Add(exitType.ExitTypeId);
-                                db.Update(exitType, exitType.ExitTypeId);
+                                result.Add(exitType.exit_type_id);
+                                db.Update("hrm.exit_types", "exit_type_id", exitType, exitType.exit_type_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(exitType));
+                                result.Add(db.Insert("hrm.exit_types", "exit_type_id", exitType));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="exitType">The instance of "ExitType" class to update.</param>
         /// <param name="exitTypeId">The value of the column "exit_type_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.HRM.ExitType exitType, int exitTypeId)
+        public void Update(dynamic exitType, int exitTypeId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            Factory.Update(this._Catalog, exitType, exitTypeId);
+            Factory.Update(this._Catalog, exitType, exitTypeId, "hrm.exit_types", "exit_type_id");
         }
 
         /// <summary>

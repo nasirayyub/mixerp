@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.leave_benefits" to return a all instances of the "LeaveBenefit" class to export. 
+        /// Executes a select query on the table "hrm.leave_benefits" to return a all instances of the "LeaveBenefit" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "LeaveBenefit" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.LeaveBenefit> Get()
+        public IEnumerable<MixERP.Net.Entities.HRM.LeaveBenefit> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             const string sql = "SELECT * FROM hrm.leave_benefits ORDER BY leave_benefit_id;";
             return Factory.Get<MixERP.Net.Entities.HRM.LeaveBenefit>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "hrm.leave_benefits" to return a all instances of the "LeaveBenefit" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "LeaveBenefit" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"LeaveBenefit\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.leave_benefits ORDER BY leave_benefit_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="leaveBenefit">The instance of "LeaveBenefit" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.HRM.LeaveBenefit leaveBenefit, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic leaveBenefit, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             object primaryKeyValue;
 
-            leaveBenefit.AuditUserId = this._UserId;
-            leaveBenefit.AuditTs = System.DateTime.UtcNow;
+            leaveBenefit.audit_user_id = this._UserId;
+            leaveBenefit.audit_ts = System.DateTime.UtcNow;
 
-            if (leaveBenefit.LeaveBenefitId > 0)
+            if (Cast.To<int>(leaveBenefit.leave_benefit_id) > 0)
             {
-                primaryKeyValue = leaveBenefit.LeaveBenefitId;
-                this.Update(leaveBenefit, leaveBenefit.LeaveBenefitId);
+                primaryKeyValue = leaveBenefit.leave_benefit_id;
+                this.Update(leaveBenefit, int.Parse(leaveBenefit.leave_benefit_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="leaveBenefit">The instance of "LeaveBenefit" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.HRM.LeaveBenefit leaveBenefit)
+        public object Add(dynamic leaveBenefit)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, leaveBenefit);
+            return Factory.Insert(this._Catalog, leaveBenefit, "hrm.leave_benefits", "leave_benefit_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="leaveBenefits">List of "LeaveBenefit" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.HRM.LeaveBenefit> leaveBenefits)
+        public List<object> BulkImport(List<ExpandoObject> leaveBenefits)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var leaveBenefit in leaveBenefits)
+                        foreach (dynamic leaveBenefit in leaveBenefits)
                         {
                             line++;
 
-                            leaveBenefit.AuditUserId = this._UserId;
-                            leaveBenefit.AuditTs = System.DateTime.UtcNow;
+                            leaveBenefit.audit_user_id = this._UserId;
+                            leaveBenefit.audit_ts = System.DateTime.UtcNow;
 
-                            if (leaveBenefit.LeaveBenefitId > 0)
+                            if (Cast.To<int>(leaveBenefit.leave_benefit_id) > 0)
                             {
-                                result.Add(leaveBenefit.LeaveBenefitId);
-                                db.Update(leaveBenefit, leaveBenefit.LeaveBenefitId);
+                                result.Add(leaveBenefit.leave_benefit_id);
+                                db.Update("hrm.leave_benefits", "leave_benefit_id", leaveBenefit, leaveBenefit.leave_benefit_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(leaveBenefit));
+                                result.Add(db.Insert("hrm.leave_benefits", "leave_benefit_id", leaveBenefit));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="leaveBenefit">The instance of "LeaveBenefit" class to update.</param>
         /// <param name="leaveBenefitId">The value of the column "leave_benefit_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.HRM.LeaveBenefit leaveBenefit, int leaveBenefitId)
+        public void Update(dynamic leaveBenefit, int leaveBenefitId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            Factory.Update(this._Catalog, leaveBenefit, leaveBenefitId);
+            Factory.Update(this._Catalog, leaveBenefit, leaveBenefitId, "hrm.leave_benefits", "leave_benefit_id");
         }
 
         /// <summary>

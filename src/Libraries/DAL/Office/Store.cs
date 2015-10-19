@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Office.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "office.stores" to return a all instances of the "Store" class to export. 
+        /// Executes a select query on the table "office.stores" to return a all instances of the "Store" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Store" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Office.Store> Get()
+        public IEnumerable<MixERP.Net.Entities.Office.Store> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Office.Data
 
             const string sql = "SELECT * FROM office.stores ORDER BY store_id;";
             return Factory.Get<MixERP.Net.Entities.Office.Store>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "office.stores" to return a all instances of the "Store" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Store" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Store\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM office.stores ORDER BY store_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <param name="store">The instance of "Store" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Office.Store store, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic store, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Office.Data
 
             object primaryKeyValue;
 
-            store.AuditUserId = this._UserId;
-            store.AuditTs = System.DateTime.UtcNow;
+            store.audit_user_id = this._UserId;
+            store.audit_ts = System.DateTime.UtcNow;
 
-            if (store.StoreId > 0)
+            if (Cast.To<int>(store.store_id) > 0)
             {
-                primaryKeyValue = store.StoreId;
-                this.Update(store, store.StoreId);
+                primaryKeyValue = store.store_id;
+                this.Update(store, int.Parse(store.store_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// </summary>
         /// <param name="store">The instance of "Store" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Office.Store store)
+        public object Add(dynamic store)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, store);
+            return Factory.Insert(this._Catalog, store, "office.stores", "store_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// </summary>
         /// <param name="stores">List of "Store" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Office.Store> stores)
+        public List<object> BulkImport(List<ExpandoObject> stores)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Office.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var store in stores)
+                        foreach (dynamic store in stores)
                         {
                             line++;
 
-                            store.AuditUserId = this._UserId;
-                            store.AuditTs = System.DateTime.UtcNow;
+                            store.audit_user_id = this._UserId;
+                            store.audit_ts = System.DateTime.UtcNow;
 
-                            if (store.StoreId > 0)
+                            if (Cast.To<int>(store.store_id) > 0)
                             {
-                                result.Add(store.StoreId);
-                                db.Update(store, store.StoreId);
+                                result.Add(store.store_id);
+                                db.Update("office.stores", "store_id", store, store.store_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(store));
+                                result.Add(db.Insert("office.stores", "store_id", store));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <param name="store">The instance of "Store" class to update.</param>
         /// <param name="storeId">The value of the column "store_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Office.Store store, int storeId)
+        public void Update(dynamic store, int storeId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
             }
 
-            Factory.Update(this._Catalog, store, storeId);
+            Factory.Update(this._Catalog, store, storeId, "office.stores", "store_id");
         }
 
         /// <summary>

@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.employment_status_codes" to return a all instances of the "EmploymentStatusCode" class to export. 
+        /// Executes a select query on the table "hrm.employment_status_codes" to return a all instances of the "EmploymentStatusCode" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "EmploymentStatusCode" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.EmploymentStatusCode> Get()
+        public IEnumerable<MixERP.Net.Entities.HRM.EmploymentStatusCode> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             const string sql = "SELECT * FROM hrm.employment_status_codes ORDER BY employment_status_code_id;";
             return Factory.Get<MixERP.Net.Entities.HRM.EmploymentStatusCode>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "hrm.employment_status_codes" to return a all instances of the "EmploymentStatusCode" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "EmploymentStatusCode" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"EmploymentStatusCode\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.employment_status_codes ORDER BY employment_status_code_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="employmentStatusCode">The instance of "EmploymentStatusCode" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.HRM.EmploymentStatusCode employmentStatusCode, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic employmentStatusCode, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             object primaryKeyValue;
 
-            employmentStatusCode.AuditUserId = this._UserId;
-            employmentStatusCode.AuditTs = System.DateTime.UtcNow;
+            employmentStatusCode.audit_user_id = this._UserId;
+            employmentStatusCode.audit_ts = System.DateTime.UtcNow;
 
-            if (employmentStatusCode.EmploymentStatusCodeId > 0)
+            if (Cast.To<int>(employmentStatusCode.employment_status_code_id) > 0)
             {
-                primaryKeyValue = employmentStatusCode.EmploymentStatusCodeId;
-                this.Update(employmentStatusCode, employmentStatusCode.EmploymentStatusCodeId);
+                primaryKeyValue = employmentStatusCode.employment_status_code_id;
+                this.Update(employmentStatusCode, int.Parse(employmentStatusCode.employment_status_code_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="employmentStatusCode">The instance of "EmploymentStatusCode" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.HRM.EmploymentStatusCode employmentStatusCode)
+        public object Add(dynamic employmentStatusCode)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, employmentStatusCode);
+            return Factory.Insert(this._Catalog, employmentStatusCode, "hrm.employment_status_codes", "employment_status_code_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="employmentStatusCodes">List of "EmploymentStatusCode" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.HRM.EmploymentStatusCode> employmentStatusCodes)
+        public List<object> BulkImport(List<ExpandoObject> employmentStatusCodes)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var employmentStatusCode in employmentStatusCodes)
+                        foreach (dynamic employmentStatusCode in employmentStatusCodes)
                         {
                             line++;
 
-                            employmentStatusCode.AuditUserId = this._UserId;
-                            employmentStatusCode.AuditTs = System.DateTime.UtcNow;
+                            employmentStatusCode.audit_user_id = this._UserId;
+                            employmentStatusCode.audit_ts = System.DateTime.UtcNow;
 
-                            if (employmentStatusCode.EmploymentStatusCodeId > 0)
+                            if (Cast.To<int>(employmentStatusCode.employment_status_code_id) > 0)
                             {
-                                result.Add(employmentStatusCode.EmploymentStatusCodeId);
-                                db.Update(employmentStatusCode, employmentStatusCode.EmploymentStatusCodeId);
+                                result.Add(employmentStatusCode.employment_status_code_id);
+                                db.Update("hrm.employment_status_codes", "employment_status_code_id", employmentStatusCode, employmentStatusCode.employment_status_code_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(employmentStatusCode));
+                                result.Add(db.Insert("hrm.employment_status_codes", "employment_status_code_id", employmentStatusCode));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="employmentStatusCode">The instance of "EmploymentStatusCode" class to update.</param>
         /// <param name="employmentStatusCodeId">The value of the column "employment_status_code_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.HRM.EmploymentStatusCode employmentStatusCode, int employmentStatusCodeId)
+        public void Update(dynamic employmentStatusCode, int employmentStatusCodeId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            Factory.Update(this._Catalog, employmentStatusCode, employmentStatusCodeId);
+            Factory.Update(this._Catalog, employmentStatusCode, employmentStatusCodeId, "hrm.employment_status_codes", "employment_status_code_id");
         }
 
         /// <summary>

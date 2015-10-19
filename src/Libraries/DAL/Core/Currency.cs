@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.currencies" to return a all instances of the "Currency" class to export. 
+        /// Executes a select query on the table "core.currencies" to return a all instances of the "Currency" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Currency" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.Currency> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.Currency> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.currencies ORDER BY currency_code;";
             return Factory.Get<MixERP.Net.Entities.Core.Currency>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.currencies" to return a all instances of the "Currency" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Currency" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Currency\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.currencies ORDER BY currency_code;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="currency">The instance of "Currency" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.Currency currency, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic currency, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            currency.AuditUserId = this._UserId;
-            currency.AuditTs = System.DateTime.UtcNow;
+            currency.audit_user_id = this._UserId;
+            currency.audit_ts = System.DateTime.UtcNow;
 
-            if (!string.IsNullOrWhiteSpace(currency.CurrencyCode))
+            if (!string.IsNullOrWhiteSpace(currency.currency_code))
             {
-                primaryKeyValue = currency.CurrencyCode;
-                this.Update(currency, currency.CurrencyCode);
+                primaryKeyValue = currency.currency_code;
+                this.Update(currency, currency.currency_code);
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="currency">The instance of "Currency" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.Currency currency)
+        public object Add(dynamic currency)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, currency);
+            return Factory.Insert(this._Catalog, currency, "core.currencies", "currency_code");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="currencies">List of "Currency" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.Currency> currencies)
+        public List<object> BulkImport(List<ExpandoObject> currencies)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var currency in currencies)
+                        foreach (dynamic currency in currencies)
                         {
                             line++;
 
-                            currency.AuditUserId = this._UserId;
-                            currency.AuditTs = System.DateTime.UtcNow;
+                            currency.audit_user_id = this._UserId;
+                            currency.audit_ts = System.DateTime.UtcNow;
 
-                            if (!string.IsNullOrWhiteSpace(currency.CurrencyCode))
+                            if (!string.IsNullOrWhiteSpace(currency.currency_code))
                             {
-                                result.Add(currency.CurrencyCode);
-                                db.Update(currency, currency.CurrencyCode);
+                                result.Add(currency.currency_code);
+                                db.Update("core.currencies", "currency_code", currency, currency.currency_code);
                             }
                             else
                             {
-                                result.Add(db.Insert(currency));
+                                result.Add(db.Insert("core.currencies", "currency_code", currency));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="currency">The instance of "Currency" class to update.</param>
         /// <param name="currencyCode">The value of the column "currency_code" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.Currency currency, string currencyCode)
+        public void Update(dynamic currency, string currencyCode)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, currency, currencyCode);
+            Factory.Update(this._Catalog, currency, currencyCode, "core.currencies", "currency_code");
         }
 
         /// <summary>

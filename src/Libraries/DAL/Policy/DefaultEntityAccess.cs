@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Policy.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "policy.default_entity_access" to return a all instances of the "DefaultEntityAccess" class to export. 
+        /// Executes a select query on the table "policy.default_entity_access" to return a all instances of the "DefaultEntityAccess" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "DefaultEntityAccess" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Policy.DefaultEntityAccess> Get()
+        public IEnumerable<MixERP.Net.Entities.Policy.DefaultEntityAccess> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Policy.Data
 
             const string sql = "SELECT * FROM policy.default_entity_access ORDER BY default_entity_access_id;";
             return Factory.Get<MixERP.Net.Entities.Policy.DefaultEntityAccess>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "policy.default_entity_access" to return a all instances of the "DefaultEntityAccess" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "DefaultEntityAccess" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"DefaultEntityAccess\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.default_entity_access ORDER BY default_entity_access_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// <param name="defaultEntityAccess">The instance of "DefaultEntityAccess" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Policy.DefaultEntityAccess defaultEntityAccess, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic defaultEntityAccess, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Policy.Data
 
             object primaryKeyValue;
 
-            defaultEntityAccess.AuditUserId = this._UserId;
-            defaultEntityAccess.AuditTs = System.DateTime.UtcNow;
+            defaultEntityAccess.audit_user_id = this._UserId;
+            defaultEntityAccess.audit_ts = System.DateTime.UtcNow;
 
-            if (defaultEntityAccess.DefaultEntityAccessId > 0)
+            if (Cast.To<int>(defaultEntityAccess.default_entity_access_id) > 0)
             {
-                primaryKeyValue = defaultEntityAccess.DefaultEntityAccessId;
-                this.Update(defaultEntityAccess, defaultEntityAccess.DefaultEntityAccessId);
+                primaryKeyValue = defaultEntityAccess.default_entity_access_id;
+                this.Update(defaultEntityAccess, int.Parse(defaultEntityAccess.default_entity_access_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// </summary>
         /// <param name="defaultEntityAccess">The instance of "DefaultEntityAccess" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Policy.DefaultEntityAccess defaultEntityAccess)
+        public object Add(dynamic defaultEntityAccess)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Policy.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, defaultEntityAccess);
+            return Factory.Insert(this._Catalog, defaultEntityAccess, "policy.default_entity_access", "default_entity_access_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// </summary>
         /// <param name="defaultEntityAccesses">List of "DefaultEntityAccess" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Policy.DefaultEntityAccess> defaultEntityAccesses)
+        public List<object> BulkImport(List<ExpandoObject> defaultEntityAccesses)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Policy.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var defaultEntityAccess in defaultEntityAccesses)
+                        foreach (dynamic defaultEntityAccess in defaultEntityAccesses)
                         {
                             line++;
 
-                            defaultEntityAccess.AuditUserId = this._UserId;
-                            defaultEntityAccess.AuditTs = System.DateTime.UtcNow;
+                            defaultEntityAccess.audit_user_id = this._UserId;
+                            defaultEntityAccess.audit_ts = System.DateTime.UtcNow;
 
-                            if (defaultEntityAccess.DefaultEntityAccessId > 0)
+                            if (Cast.To<int>(defaultEntityAccess.default_entity_access_id) > 0)
                             {
-                                result.Add(defaultEntityAccess.DefaultEntityAccessId);
-                                db.Update(defaultEntityAccess, defaultEntityAccess.DefaultEntityAccessId);
+                                result.Add(defaultEntityAccess.default_entity_access_id);
+                                db.Update("policy.default_entity_access", "default_entity_access_id", defaultEntityAccess, defaultEntityAccess.default_entity_access_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(defaultEntityAccess));
+                                result.Add(db.Insert("policy.default_entity_access", "default_entity_access_id", defaultEntityAccess));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// <param name="defaultEntityAccess">The instance of "DefaultEntityAccess" class to update.</param>
         /// <param name="defaultEntityAccessId">The value of the column "default_entity_access_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Policy.DefaultEntityAccess defaultEntityAccess, int defaultEntityAccessId)
+        public void Update(dynamic defaultEntityAccess, int defaultEntityAccessId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Policy.Data
                 }
             }
 
-            Factory.Update(this._Catalog, defaultEntityAccess, defaultEntityAccessId);
+            Factory.Update(this._Catalog, defaultEntityAccess, defaultEntityAccessId, "policy.default_entity_access", "default_entity_access_id");
         }
 
         /// <summary>

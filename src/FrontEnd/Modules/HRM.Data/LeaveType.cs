@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.leave_types" to return a all instances of the "LeaveType" class to export. 
+        /// Executes a select query on the table "hrm.leave_types" to return a all instances of the "LeaveType" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "LeaveType" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.LeaveType> Get()
+        public IEnumerable<MixERP.Net.Entities.HRM.LeaveType> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             const string sql = "SELECT * FROM hrm.leave_types ORDER BY leave_type_id;";
             return Factory.Get<MixERP.Net.Entities.HRM.LeaveType>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "hrm.leave_types" to return a all instances of the "LeaveType" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "LeaveType" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"LeaveType\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.leave_types ORDER BY leave_type_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="leaveType">The instance of "LeaveType" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.HRM.LeaveType leaveType, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic leaveType, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             object primaryKeyValue;
 
-            leaveType.AuditUserId = this._UserId;
-            leaveType.AuditTs = System.DateTime.UtcNow;
+            leaveType.audit_user_id = this._UserId;
+            leaveType.audit_ts = System.DateTime.UtcNow;
 
-            if (leaveType.LeaveTypeId > 0)
+            if (Cast.To<int>(leaveType.leave_type_id) > 0)
             {
-                primaryKeyValue = leaveType.LeaveTypeId;
-                this.Update(leaveType, leaveType.LeaveTypeId);
+                primaryKeyValue = leaveType.leave_type_id;
+                this.Update(leaveType, int.Parse(leaveType.leave_type_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="leaveType">The instance of "LeaveType" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.HRM.LeaveType leaveType)
+        public object Add(dynamic leaveType)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, leaveType);
+            return Factory.Insert(this._Catalog, leaveType, "hrm.leave_types", "leave_type_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="leaveTypes">List of "LeaveType" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.HRM.LeaveType> leaveTypes)
+        public List<object> BulkImport(List<ExpandoObject> leaveTypes)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var leaveType in leaveTypes)
+                        foreach (dynamic leaveType in leaveTypes)
                         {
                             line++;
 
-                            leaveType.AuditUserId = this._UserId;
-                            leaveType.AuditTs = System.DateTime.UtcNow;
+                            leaveType.audit_user_id = this._UserId;
+                            leaveType.audit_ts = System.DateTime.UtcNow;
 
-                            if (leaveType.LeaveTypeId > 0)
+                            if (Cast.To<int>(leaveType.leave_type_id) > 0)
                             {
-                                result.Add(leaveType.LeaveTypeId);
-                                db.Update(leaveType, leaveType.LeaveTypeId);
+                                result.Add(leaveType.leave_type_id);
+                                db.Update("hrm.leave_types", "leave_type_id", leaveType, leaveType.leave_type_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(leaveType));
+                                result.Add(db.Insert("hrm.leave_types", "leave_type_id", leaveType));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="leaveType">The instance of "LeaveType" class to update.</param>
         /// <param name="leaveTypeId">The value of the column "leave_type_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.HRM.LeaveType leaveType, int leaveTypeId)
+        public void Update(dynamic leaveType, int leaveTypeId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            Factory.Update(this._Catalog, leaveType, leaveTypeId);
+            Factory.Update(this._Catalog, leaveType, leaveTypeId, "hrm.leave_types", "leave_type_id");
         }
 
         /// <summary>

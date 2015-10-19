@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -103,19 +104,48 @@ namespace MixERP.Net.Api.Office
         }
 
         /// <summary>
+        ///     Returns all collection of holiday.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/office/holiday/all")]
+        public IEnumerable<MixERP.Net.Entities.Office.Holiday> GetAll()
+        {
+            try
+            {
+                return this.HolidayContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of holiday for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/office/holiday/export")]
-        [Route("~/api/office/holiday/all")]
-        public IEnumerable<MixERP.Net.Entities.Office.Holiday> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.HolidayContext.Get();
+                return this.HolidayContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -491,7 +521,7 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/holiday/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Office.Holiday holiday = form[0].ToObject<MixERP.Net.Entities.Office.Holiday>(JsonHelper.GetJsonSerializer());
+            dynamic holiday = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (holiday == null)
@@ -594,9 +624,9 @@ namespace MixERP.Net.Api.Office
             }
         }
 
-        private List<MixERP.Net.Entities.Office.Holiday> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Office.Holiday>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -608,9 +638,9 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/office/holiday/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Office.Holiday> holidayCollection = this.ParseCollection(collection);
+            List<ExpandoObject> holidayCollection = this.ParseCollection(collection);
 
             if (holidayCollection == null || holidayCollection.Count.Equals(0))
             {

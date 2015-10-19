@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.sales_tax_exempts" to return a all instances of the "SalesTaxExempt" class to export. 
+        /// Executes a select query on the table "core.sales_tax_exempts" to return a all instances of the "SalesTaxExempt" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "SalesTaxExempt" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.SalesTaxExempt> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.SalesTaxExempt> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.sales_tax_exempts ORDER BY sales_tax_exempt_id;";
             return Factory.Get<MixERP.Net.Entities.Core.SalesTaxExempt>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.sales_tax_exempts" to return a all instances of the "SalesTaxExempt" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "SalesTaxExempt" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"SalesTaxExempt\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_tax_exempts ORDER BY sales_tax_exempt_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="salesTaxExempt">The instance of "SalesTaxExempt" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.SalesTaxExempt salesTaxExempt, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic salesTaxExempt, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            salesTaxExempt.AuditUserId = this._UserId;
-            salesTaxExempt.AuditTs = System.DateTime.UtcNow;
+            salesTaxExempt.audit_user_id = this._UserId;
+            salesTaxExempt.audit_ts = System.DateTime.UtcNow;
 
-            if (salesTaxExempt.SalesTaxExemptId > 0)
+            if (Cast.To<int>(salesTaxExempt.sales_tax_exempt_id) > 0)
             {
-                primaryKeyValue = salesTaxExempt.SalesTaxExemptId;
-                this.Update(salesTaxExempt, salesTaxExempt.SalesTaxExemptId);
+                primaryKeyValue = salesTaxExempt.sales_tax_exempt_id;
+                this.Update(salesTaxExempt, int.Parse(salesTaxExempt.sales_tax_exempt_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="salesTaxExempt">The instance of "SalesTaxExempt" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.SalesTaxExempt salesTaxExempt)
+        public object Add(dynamic salesTaxExempt)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, salesTaxExempt);
+            return Factory.Insert(this._Catalog, salesTaxExempt, "core.sales_tax_exempts", "sales_tax_exempt_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="salesTaxExempts">List of "SalesTaxExempt" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.SalesTaxExempt> salesTaxExempts)
+        public List<object> BulkImport(List<ExpandoObject> salesTaxExempts)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var salesTaxExempt in salesTaxExempts)
+                        foreach (dynamic salesTaxExempt in salesTaxExempts)
                         {
                             line++;
 
-                            salesTaxExempt.AuditUserId = this._UserId;
-                            salesTaxExempt.AuditTs = System.DateTime.UtcNow;
+                            salesTaxExempt.audit_user_id = this._UserId;
+                            salesTaxExempt.audit_ts = System.DateTime.UtcNow;
 
-                            if (salesTaxExempt.SalesTaxExemptId > 0)
+                            if (Cast.To<int>(salesTaxExempt.sales_tax_exempt_id) > 0)
                             {
-                                result.Add(salesTaxExempt.SalesTaxExemptId);
-                                db.Update(salesTaxExempt, salesTaxExempt.SalesTaxExemptId);
+                                result.Add(salesTaxExempt.sales_tax_exempt_id);
+                                db.Update("core.sales_tax_exempts", "sales_tax_exempt_id", salesTaxExempt, salesTaxExempt.sales_tax_exempt_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(salesTaxExempt));
+                                result.Add(db.Insert("core.sales_tax_exempts", "sales_tax_exempt_id", salesTaxExempt));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="salesTaxExempt">The instance of "SalesTaxExempt" class to update.</param>
         /// <param name="salesTaxExemptId">The value of the column "sales_tax_exempt_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.SalesTaxExempt salesTaxExempt, int salesTaxExemptId)
+        public void Update(dynamic salesTaxExempt, int salesTaxExemptId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, salesTaxExempt, salesTaxExemptId);
+            Factory.Update(this._Catalog, salesTaxExempt, salesTaxExemptId, "core.sales_tax_exempts", "sales_tax_exempt_id");
         }
 
         /// <summary>

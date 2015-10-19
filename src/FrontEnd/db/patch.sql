@@ -2603,6 +2603,11 @@ DELETE FROM policy.menu_access WHERE menu_id = core.get_menu_id_by_menu_code('SA
 DELETE FROM core.menu_locale WHERE menu_id = core.get_menu_id_by_menu_code('SAA');
 DELETE FROM core.menus WHERE menu_code = 'SAA';
 
+DELETE FROM policy.menu_access WHERE menu_id = core.get_menu_id_by_menu_code('OTSSFP');
+DELETE FROM core.menu_locale WHERE menu_id = core.get_menu_id_by_menu_code('OTSSFP');
+DELETE FROM core.menus WHERE menu_code = 'OTSSFP';
+
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/0.neutral-resource(en)/language.sql --<--<--
 SELECT localization.add_localized_resource('CommonResource', '', 'DateMustBeGreaterThan', 'Invalid date. Must be greater than "{0}".');
 SELECT localization.add_localized_resource('CommonResource', '', 'DateMustBeLessThan', 'Invalid date. Must be less than "{0}".');
@@ -2738,6 +2743,7 @@ SELECT localization.add_localized_resource('Labels', '', 'ClickHereToDownload', 
 SELECT localization.add_localized_resource('Labels', '', 'ConfirmedPasswordDoesNotMatch', 'The confirmed password does not match.');
 SELECT localization.add_localized_resource('Labels', '', 'CreateCashRepositoriesDescription', 'Cash repository is a place where you store your cash and valuables. Example: Cash in Vault, Cash in Drawers.');
 SELECT localization.add_localized_resource('Labels', '', 'CreateCountySalesTaxDescription', 'County sales tax is the direct consumption tax imposed by your county government when you make purchase or sales.');
+SELECT localization.add_localized_resource('Labels', '', 'CreateEducationLevelsDescription', 'Create education levels applicable to your country and industry.');
 SELECT localization.add_localized_resource('Labels', '', 'CreateFiscalYearDescription', 'Fiscal year is an accounting period of 12 months, used to prepare financial statements.');
 SELECT localization.add_localized_resource('Labels', '', 'CreateFrequenciesDescription', 'The fiscal year is further divided into 12 frequencies, categorized as months, quarters, fiscal half, and fiscal year.');
 SELECT localization.add_localized_resource('Labels', '', 'CreateItemGroupsDescription', 'An item group allows you to manage similar inventory items into meaningful groups and categories.');
@@ -2754,6 +2760,7 @@ SELECT localization.add_localized_resource('Labels', '', 'CreateTaxMasterDescrip
 SELECT localization.add_localized_resource('Labels', '', 'DatabaseBackupSuccessful', 'The database backup was successful.');
 SELECT localization.add_localized_resource('Labels', '', 'DateFormatYYYYMMDD', 'yyyy-mm-dd');
 SELECT localization.add_localized_resource('Labels', '', 'DaysLowerCase', 'days');
+SELECT localization.add_localized_resource('Labels', '', 'DefaultEntityAccessPolicy', 'Create default entity access policy based on user roles. By default, users have right to access an entity if a menu acesss policy is granted. A negative policy defined here is applicable for all users of the selected role. The explicit <a href="{0}">entity access policy</a> takes precedence over this policy.');
 SELECT localization.add_localized_resource('Labels', '', 'DeletedApplicationFiles', 'Existing application files were deleted successfully.');
 SELECT localization.add_localized_resource('Labels', '', 'DeletingApplicationFiles', 'Deleting application files.');
 SELECT localization.add_localized_resource('Labels', '', 'DeletingApplicationFilesSucessMessage', 'Existing application files were deleted successfully.');
@@ -2764,6 +2771,7 @@ SELECT localization.add_localized_resource('Labels', '', 'DownloadingUpdateFrom'
 SELECT localization.add_localized_resource('Labels', '', 'EODBegunSaveYourWork', 'Please close this window and save your existing work before you will be signed off automatically.');
 SELECT localization.add_localized_resource('Labels', '', 'EmailBody', '<h2>Hi,</h2><p>Please find the attached document.</p><p>Thank you.<br />MixERP</p>');
 SELECT localization.add_localized_resource('Labels', '', 'EmailSentConfirmation', 'An email was sent to {0}.');
+SELECT localization.add_localized_resource('Labels', '', 'EntityAccessPolicy', 'Create entity access policy for individual users. By default, users have right to access an entity if a menu acesss policy is granted. If a <a href="{0}">default entity access policy</a> was created to restrict access to a group of users, you can still override that policy and provide access permission to a particular user.');
 SELECT localization.add_localized_resource('Labels', '', 'ExtractingDownloadedFile', 'Extracting the downloaded file.');
 SELECT localization.add_localized_resource('Labels', '', 'ExtractionCompleted', 'Extraction completed.');
 SELECT localization.add_localized_resource('Labels', '', 'FlagDescription', 'You can mark this item with a flag, however you will not be able to see the flags created by other users.');
@@ -2798,6 +2806,7 @@ SELECT localization.add_localized_resource('Labels', '', 'NamedFilter', 'Filter:
 SELECT localization.add_localized_resource('Labels', '', 'NoAdditionalUserFound', 'No additional user found.');
 SELECT localization.add_localized_resource('Labels', '', 'NoCashRepositoryDefnied', 'No cash repository defined.');
 SELECT localization.add_localized_resource('Labels', '', 'NoCountySalesTaxDefined', 'No county sales tax defined.');
+SELECT localization.add_localized_resource('Labels', '', 'NoEducationLevelDefined', 'No education level defined.');
 SELECT localization.add_localized_resource('Labels', '', 'NoFiscalYearDefined', 'No fiscal year defined.');
 SELECT localization.add_localized_resource('Labels', '', 'NoFormFound', 'No instance of form was found.');
 SELECT localization.add_localized_resource('Labels', '', 'NoPartyFound', 'No party found.');
@@ -3754,6 +3763,7 @@ SELECT localization.add_localized_resource('Titles', '', 'CreateBackup', 'Create
 SELECT localization.add_localized_resource('Titles', '', 'CreateBackupFirst', 'Create a Backup First');
 SELECT localization.add_localized_resource('Titles', '', 'CreateCashRepositories', 'Create Cash Repositories');
 SELECT localization.add_localized_resource('Titles', '', 'CreateCountySalesTax', 'Create County Sales Tax');
+SELECT localization.add_localized_resource('Titles', '', 'CreateEducationLevels', 'Create Education Levels');
 SELECT localization.add_localized_resource('Titles', '', 'CreateFiscalYear', 'Create Fiscal Year');
 SELECT localization.add_localized_resource('Titles', '', 'CreateFrequencies', 'Create Frequencies');
 SELECT localization.add_localized_resource('Titles', '', 'CreateItemGroups', 'Create Item Groups');
@@ -3815,6 +3825,7 @@ SELECT localization.add_localized_resource('Titles', '', 'DeductionSetups', 'Ded
 SELECT localization.add_localized_resource('Titles', '', 'Deductions', 'Deductions');
 SELECT localization.add_localized_resource('Titles', '', 'DefaultAddress', 'Default Address');
 SELECT localization.add_localized_resource('Titles', '', 'DefaultCurrency', 'Default Currency');
+SELECT localization.add_localized_resource('Titles', '', 'DefaultEntityAccessPolicy', 'Default Entity Access Policy');
 SELECT localization.add_localized_resource('Titles', '', 'DefaultReorderQuantityAbbreviated', 'Default Reorder Qty');
 SELECT localization.add_localized_resource('Titles', '', 'Definition', 'Definition');
 SELECT localization.add_localized_resource('Titles', '', 'Delete', 'Delete');
@@ -3888,6 +3899,7 @@ SELECT localization.add_localized_resource('Titles', '', 'EnterBackupName', 'Ent
 SELECT localization.add_localized_resource('Titles', '', 'EnterNewPassword', 'Enter a New Password');
 SELECT localization.add_localized_resource('Titles', '', 'EnteredBy', 'Entered By');
 SELECT localization.add_localized_resource('Titles', '', 'Entities', 'Entities');
+SELECT localization.add_localized_resource('Titles', '', 'EntityAccessPolicy', 'Entity Access Policy');
 SELECT localization.add_localized_resource('Titles', '', 'ExchangeRate', 'Exchange Rate');
 SELECT localization.add_localized_resource('Titles', '', 'ExchangeRates', 'Exchange Rates');
 SELECT localization.add_localized_resource('Titles', '', 'Execute', 'Execute');
@@ -3954,6 +3966,7 @@ SELECT localization.add_localized_resource('Titles', '', 'Holidays', 'Holidays')
 SELECT localization.add_localized_resource('Titles', '', 'Home', 'Home');
 SELECT localization.add_localized_resource('Titles', '', 'HomeCurrency', 'Home Currency');
 SELECT localization.add_localized_resource('Titles', '', 'HoursWorked', 'Hours Worked');
+SELECT localization.add_localized_resource('Titles', '', 'HumanResourceManagement', 'Human Resource Management');
 SELECT localization.add_localized_resource('Titles', '', 'HundredthName', 'Hundredth Name');
 SELECT localization.add_localized_resource('Titles', '', 'Id', 'Id');
 SELECT localization.add_localized_resource('Titles', '', 'IdentificationDetails', 'Identification Details');
@@ -4520,6 +4533,7 @@ SELECT localization.add_localized_resource('Warnings', '', 'RestrictedTransactio
 SELECT localization.add_localized_resource('Warnings', '', 'ReturnButtonUrlNull', 'Cannot return this entry. The return url was not provided.');
 SELECT localization.add_localized_resource('Warnings', '', 'StartDateGreaterThanEndDate', 'The start date cannot be greater than end date.');
 SELECT localization.add_localized_resource('Warnings', '', 'UserIdOrPasswordIncorrect', 'User id or password incorrect.');
+
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/ar/language.sql --<--<--
 /********************************************************************************************************************************************************

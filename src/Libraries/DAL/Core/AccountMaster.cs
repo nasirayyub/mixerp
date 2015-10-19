@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.account_masters" to return a all instances of the "AccountMaster" class to export. 
+        /// Executes a select query on the table "core.account_masters" to return a all instances of the "AccountMaster" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "AccountMaster" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.AccountMaster> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.AccountMaster> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.account_masters ORDER BY account_master_id;";
             return Factory.Get<MixERP.Net.Entities.Core.AccountMaster>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.account_masters" to return a all instances of the "AccountMaster" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "AccountMaster" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"AccountMaster\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.account_masters ORDER BY account_master_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="accountMaster">The instance of "AccountMaster" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.AccountMaster accountMaster, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic accountMaster, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-            if (accountMaster.AccountMasterId > 0)
+            if (Cast.To<short>(accountMaster.account_master_id) > 0)
             {
-                primaryKeyValue = accountMaster.AccountMasterId;
-                this.Update(accountMaster, accountMaster.AccountMasterId);
+                primaryKeyValue = accountMaster.account_master_id;
+                this.Update(accountMaster, short.Parse(accountMaster.account_master_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="accountMaster">The instance of "AccountMaster" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.AccountMaster accountMaster)
+        public object Add(dynamic accountMaster)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, accountMaster);
+            return Factory.Insert(this._Catalog, accountMaster, "core.account_masters", "account_master_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="accountMasters">List of "AccountMaster" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.AccountMaster> accountMasters)
+        public List<object> BulkImport(List<ExpandoObject> accountMasters)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var accountMaster in accountMasters)
+                        foreach (dynamic accountMaster in accountMasters)
                         {
                             line++;
 
 
 
-                            if (accountMaster.AccountMasterId > 0)
+                            if (Cast.To<short>(accountMaster.account_master_id) > 0)
                             {
-                                result.Add(accountMaster.AccountMasterId);
-                                db.Update(accountMaster, accountMaster.AccountMasterId);
+                                result.Add(accountMaster.account_master_id);
+                                db.Update("core.account_masters", "account_master_id", accountMaster, accountMaster.account_master_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(accountMaster));
+                                result.Add(db.Insert("core.account_masters", "account_master_id", accountMaster));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="accountMaster">The instance of "AccountMaster" class to update.</param>
         /// <param name="accountMasterId">The value of the column "account_master_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.AccountMaster accountMaster, short accountMasterId)
+        public void Update(dynamic accountMaster, short accountMasterId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, accountMaster, accountMasterId);
+            Factory.Update(this._Catalog, accountMaster, accountMasterId, "core.account_masters", "account_master_id");
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -105,19 +106,48 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns all collection of attachment.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/core/attachment/all")]
+        public IEnumerable<MixERP.Net.Entities.Core.Attachment> GetAll()
+        {
+            try
+            {
+                return this.AttachmentContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of attachment for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/core/attachment/export")]
-        [Route("~/api/core/attachment/all")]
-        public IEnumerable<MixERP.Net.Entities.Core.Attachment> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.AttachmentContext.Get();
+                return this.AttachmentContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -493,7 +523,7 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/attachment/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Core.Attachment attachment = form[0].ToObject<MixERP.Net.Entities.Core.Attachment>(JsonHelper.GetJsonSerializer());
+            dynamic attachment = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (attachment == null)
@@ -596,9 +626,9 @@ namespace MixERP.Net.Api.Core
             }
         }
 
-        private List<MixERP.Net.Entities.Core.Attachment> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Core.Attachment>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -610,9 +640,9 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/core/attachment/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Core.Attachment> attachmentCollection = this.ParseCollection(collection);
+            List<ExpandoObject> attachmentCollection = this.ParseCollection(collection);
 
             if (attachmentCollection == null || attachmentCollection.Count.Equals(0))
             {

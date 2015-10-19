@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.rounding_methods" to return a all instances of the "RoundingMethod" class to export. 
+        /// Executes a select query on the table "core.rounding_methods" to return a all instances of the "RoundingMethod" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "RoundingMethod" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.RoundingMethod> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.RoundingMethod> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.rounding_methods ORDER BY rounding_method_code;";
             return Factory.Get<MixERP.Net.Entities.Core.RoundingMethod>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.rounding_methods" to return a all instances of the "RoundingMethod" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "RoundingMethod" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"RoundingMethod\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.rounding_methods ORDER BY rounding_method_code;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="roundingMethod">The instance of "RoundingMethod" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.RoundingMethod roundingMethod, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic roundingMethod, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-            if (!string.IsNullOrWhiteSpace(roundingMethod.RoundingMethodCode))
+            if (!string.IsNullOrWhiteSpace(roundingMethod.rounding_method_code))
             {
-                primaryKeyValue = roundingMethod.RoundingMethodCode;
-                this.Update(roundingMethod, roundingMethod.RoundingMethodCode);
+                primaryKeyValue = roundingMethod.rounding_method_code;
+                this.Update(roundingMethod, roundingMethod.rounding_method_code);
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="roundingMethod">The instance of "RoundingMethod" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.RoundingMethod roundingMethod)
+        public object Add(dynamic roundingMethod)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, roundingMethod);
+            return Factory.Insert(this._Catalog, roundingMethod, "core.rounding_methods", "rounding_method_code");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="roundingMethods">List of "RoundingMethod" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.RoundingMethod> roundingMethods)
+        public List<object> BulkImport(List<ExpandoObject> roundingMethods)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var roundingMethod in roundingMethods)
+                        foreach (dynamic roundingMethod in roundingMethods)
                         {
                             line++;
 
 
 
-                            if (!string.IsNullOrWhiteSpace(roundingMethod.RoundingMethodCode))
+                            if (!string.IsNullOrWhiteSpace(roundingMethod.rounding_method_code))
                             {
-                                result.Add(roundingMethod.RoundingMethodCode);
-                                db.Update(roundingMethod, roundingMethod.RoundingMethodCode);
+                                result.Add(roundingMethod.rounding_method_code);
+                                db.Update("core.rounding_methods", "rounding_method_code", roundingMethod, roundingMethod.rounding_method_code);
                             }
                             else
                             {
-                                result.Add(db.Insert(roundingMethod));
+                                result.Add(db.Insert("core.rounding_methods", "rounding_method_code", roundingMethod));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="roundingMethod">The instance of "RoundingMethod" class to update.</param>
         /// <param name="roundingMethodCode">The value of the column "rounding_method_code" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.RoundingMethod roundingMethod, string roundingMethodCode)
+        public void Update(dynamic roundingMethod, string roundingMethodCode)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, roundingMethod, roundingMethodCode);
+            Factory.Update(this._Catalog, roundingMethod, roundingMethodCode, "core.rounding_methods", "rounding_method_code");
         }
 
         /// <summary>

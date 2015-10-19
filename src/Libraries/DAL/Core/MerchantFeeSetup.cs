@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.merchant_fee_setup" to return a all instances of the "MerchantFeeSetup" class to export. 
+        /// Executes a select query on the table "core.merchant_fee_setup" to return a all instances of the "MerchantFeeSetup" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "MerchantFeeSetup" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.MerchantFeeSetup> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.MerchantFeeSetup> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.merchant_fee_setup ORDER BY merchant_fee_setup_id;";
             return Factory.Get<MixERP.Net.Entities.Core.MerchantFeeSetup>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.merchant_fee_setup" to return a all instances of the "MerchantFeeSetup" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "MerchantFeeSetup" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"MerchantFeeSetup\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.merchant_fee_setup ORDER BY merchant_fee_setup_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="merchantFeeSetup">The instance of "MerchantFeeSetup" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.MerchantFeeSetup merchantFeeSetup, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic merchantFeeSetup, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            merchantFeeSetup.AuditUserId = this._UserId;
-            merchantFeeSetup.AuditTs = System.DateTime.UtcNow;
+            merchantFeeSetup.audit_user_id = this._UserId;
+            merchantFeeSetup.audit_ts = System.DateTime.UtcNow;
 
-            if (merchantFeeSetup.MerchantFeeSetupId > 0)
+            if (Cast.To<int>(merchantFeeSetup.merchant_fee_setup_id) > 0)
             {
-                primaryKeyValue = merchantFeeSetup.MerchantFeeSetupId;
-                this.Update(merchantFeeSetup, merchantFeeSetup.MerchantFeeSetupId);
+                primaryKeyValue = merchantFeeSetup.merchant_fee_setup_id;
+                this.Update(merchantFeeSetup, int.Parse(merchantFeeSetup.merchant_fee_setup_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="merchantFeeSetup">The instance of "MerchantFeeSetup" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.MerchantFeeSetup merchantFeeSetup)
+        public object Add(dynamic merchantFeeSetup)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, merchantFeeSetup);
+            return Factory.Insert(this._Catalog, merchantFeeSetup, "core.merchant_fee_setup", "merchant_fee_setup_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="merchantFeeSetups">List of "MerchantFeeSetup" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.MerchantFeeSetup> merchantFeeSetups)
+        public List<object> BulkImport(List<ExpandoObject> merchantFeeSetups)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var merchantFeeSetup in merchantFeeSetups)
+                        foreach (dynamic merchantFeeSetup in merchantFeeSetups)
                         {
                             line++;
 
-                            merchantFeeSetup.AuditUserId = this._UserId;
-                            merchantFeeSetup.AuditTs = System.DateTime.UtcNow;
+                            merchantFeeSetup.audit_user_id = this._UserId;
+                            merchantFeeSetup.audit_ts = System.DateTime.UtcNow;
 
-                            if (merchantFeeSetup.MerchantFeeSetupId > 0)
+                            if (Cast.To<int>(merchantFeeSetup.merchant_fee_setup_id) > 0)
                             {
-                                result.Add(merchantFeeSetup.MerchantFeeSetupId);
-                                db.Update(merchantFeeSetup, merchantFeeSetup.MerchantFeeSetupId);
+                                result.Add(merchantFeeSetup.merchant_fee_setup_id);
+                                db.Update("core.merchant_fee_setup", "merchant_fee_setup_id", merchantFeeSetup, merchantFeeSetup.merchant_fee_setup_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(merchantFeeSetup));
+                                result.Add(db.Insert("core.merchant_fee_setup", "merchant_fee_setup_id", merchantFeeSetup));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="merchantFeeSetup">The instance of "MerchantFeeSetup" class to update.</param>
         /// <param name="merchantFeeSetupId">The value of the column "merchant_fee_setup_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.MerchantFeeSetup merchantFeeSetup, int merchantFeeSetupId)
+        public void Update(dynamic merchantFeeSetup, int merchantFeeSetupId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, merchantFeeSetup, merchantFeeSetupId);
+            Factory.Update(this._Catalog, merchantFeeSetup, merchantFeeSetupId, "core.merchant_fee_setup", "merchant_fee_setup_id");
         }
 
         /// <summary>

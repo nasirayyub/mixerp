@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.social_networks" to return a all instances of the "SocialNetwork" class to export. 
+        /// Executes a select query on the table "core.social_networks" to return a all instances of the "SocialNetwork" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "SocialNetwork" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.SocialNetwork> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.SocialNetwork> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.social_networks ORDER BY social_network_name;";
             return Factory.Get<MixERP.Net.Entities.Core.SocialNetwork>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.social_networks" to return a all instances of the "SocialNetwork" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "SocialNetwork" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"SocialNetwork\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.social_networks ORDER BY social_network_name;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="socialNetwork">The instance of "SocialNetwork" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.SocialNetwork socialNetwork, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic socialNetwork, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            socialNetwork.AuditUserId = this._UserId;
-            socialNetwork.AuditTs = System.DateTime.UtcNow;
+            socialNetwork.audit_user_id = this._UserId;
+            socialNetwork.audit_ts = System.DateTime.UtcNow;
 
-            if (!string.IsNullOrWhiteSpace(socialNetwork.SocialNetworkName))
+            if (!string.IsNullOrWhiteSpace(socialNetwork.social_network_name))
             {
-                primaryKeyValue = socialNetwork.SocialNetworkName;
-                this.Update(socialNetwork, socialNetwork.SocialNetworkName);
+                primaryKeyValue = socialNetwork.social_network_name;
+                this.Update(socialNetwork, socialNetwork.social_network_name);
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="socialNetwork">The instance of "SocialNetwork" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.SocialNetwork socialNetwork)
+        public object Add(dynamic socialNetwork)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, socialNetwork);
+            return Factory.Insert(this._Catalog, socialNetwork, "core.social_networks", "social_network_name");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="socialNetworks">List of "SocialNetwork" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.SocialNetwork> socialNetworks)
+        public List<object> BulkImport(List<ExpandoObject> socialNetworks)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var socialNetwork in socialNetworks)
+                        foreach (dynamic socialNetwork in socialNetworks)
                         {
                             line++;
 
-                            socialNetwork.AuditUserId = this._UserId;
-                            socialNetwork.AuditTs = System.DateTime.UtcNow;
+                            socialNetwork.audit_user_id = this._UserId;
+                            socialNetwork.audit_ts = System.DateTime.UtcNow;
 
-                            if (!string.IsNullOrWhiteSpace(socialNetwork.SocialNetworkName))
+                            if (!string.IsNullOrWhiteSpace(socialNetwork.social_network_name))
                             {
-                                result.Add(socialNetwork.SocialNetworkName);
-                                db.Update(socialNetwork, socialNetwork.SocialNetworkName);
+                                result.Add(socialNetwork.social_network_name);
+                                db.Update("core.social_networks", "social_network_name", socialNetwork, socialNetwork.social_network_name);
                             }
                             else
                             {
-                                result.Add(db.Insert(socialNetwork));
+                                result.Add(db.Insert("core.social_networks", "social_network_name", socialNetwork));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="socialNetwork">The instance of "SocialNetwork" class to update.</param>
         /// <param name="socialNetworkName">The value of the column "social_network_name" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.SocialNetwork socialNetwork, string socialNetworkName)
+        public void Update(dynamic socialNetwork, string socialNetworkName)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, socialNetwork, socialNetworkName);
+            Factory.Update(this._Catalog, socialNetwork, socialNetworkName, "core.social_networks", "social_network_name");
         }
 
         /// <summary>

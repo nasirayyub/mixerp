@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -101,19 +102,48 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns all collection of social network.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/core/social-network/all")]
+        public IEnumerable<MixERP.Net.Entities.Core.SocialNetwork> GetAll()
+        {
+            try
+            {
+                return this.SocialNetworkContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of social network for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/core/social-network/export")]
-        [Route("~/api/core/social-network/all")]
-        public IEnumerable<MixERP.Net.Entities.Core.SocialNetwork> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.SocialNetworkContext.Get();
+                return this.SocialNetworkContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -489,7 +519,7 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/social-network/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Core.SocialNetwork socialNetwork = form[0].ToObject<MixERP.Net.Entities.Core.SocialNetwork>(JsonHelper.GetJsonSerializer());
+            dynamic socialNetwork = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (socialNetwork == null)
@@ -592,9 +622,9 @@ namespace MixERP.Net.Api.Core
             }
         }
 
-        private List<MixERP.Net.Entities.Core.SocialNetwork> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Core.SocialNetwork>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -606,9 +636,9 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/core/social-network/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Core.SocialNetwork> socialNetworkCollection = this.ParseCollection(collection);
+            List<ExpandoObject> socialNetworkCollection = this.ParseCollection(collection);
 
             if (socialNetworkCollection == null || socialNetworkCollection.Count.Equals(0))
             {

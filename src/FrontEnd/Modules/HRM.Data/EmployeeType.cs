@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.employee_types" to return a all instances of the "EmployeeType" class to export. 
+        /// Executes a select query on the table "hrm.employee_types" to return a all instances of the "EmployeeType" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "EmployeeType" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeType> Get()
+        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeType> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             const string sql = "SELECT * FROM hrm.employee_types ORDER BY employee_type_id;";
             return Factory.Get<MixERP.Net.Entities.HRM.EmployeeType>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "hrm.employee_types" to return a all instances of the "EmployeeType" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "EmployeeType" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"EmployeeType\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.employee_types ORDER BY employee_type_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="employeeType">The instance of "EmployeeType" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.HRM.EmployeeType employeeType, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic employeeType, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             object primaryKeyValue;
 
-            employeeType.AuditUserId = this._UserId;
-            employeeType.AuditTs = System.DateTime.UtcNow;
+            employeeType.audit_user_id = this._UserId;
+            employeeType.audit_ts = System.DateTime.UtcNow;
 
-            if (employeeType.EmployeeTypeId > 0)
+            if (Cast.To<int>(employeeType.employee_type_id) > 0)
             {
-                primaryKeyValue = employeeType.EmployeeTypeId;
-                this.Update(employeeType, employeeType.EmployeeTypeId);
+                primaryKeyValue = employeeType.employee_type_id;
+                this.Update(employeeType, int.Parse(employeeType.employee_type_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="employeeType">The instance of "EmployeeType" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.HRM.EmployeeType employeeType)
+        public object Add(dynamic employeeType)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, employeeType);
+            return Factory.Insert(this._Catalog, employeeType, "hrm.employee_types", "employee_type_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="employeeTypes">List of "EmployeeType" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.HRM.EmployeeType> employeeTypes)
+        public List<object> BulkImport(List<ExpandoObject> employeeTypes)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var employeeType in employeeTypes)
+                        foreach (dynamic employeeType in employeeTypes)
                         {
                             line++;
 
-                            employeeType.AuditUserId = this._UserId;
-                            employeeType.AuditTs = System.DateTime.UtcNow;
+                            employeeType.audit_user_id = this._UserId;
+                            employeeType.audit_ts = System.DateTime.UtcNow;
 
-                            if (employeeType.EmployeeTypeId > 0)
+                            if (Cast.To<int>(employeeType.employee_type_id) > 0)
                             {
-                                result.Add(employeeType.EmployeeTypeId);
-                                db.Update(employeeType, employeeType.EmployeeTypeId);
+                                result.Add(employeeType.employee_type_id);
+                                db.Update("hrm.employee_types", "employee_type_id", employeeType, employeeType.employee_type_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(employeeType));
+                                result.Add(db.Insert("hrm.employee_types", "employee_type_id", employeeType));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="employeeType">The instance of "EmployeeType" class to update.</param>
         /// <param name="employeeTypeId">The value of the column "employee_type_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.HRM.EmployeeType employeeType, int employeeTypeId)
+        public void Update(dynamic employeeType, int employeeTypeId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            Factory.Update(this._Catalog, employeeType, employeeTypeId);
+            Factory.Update(this._Catalog, employeeType, employeeTypeId, "hrm.employee_types", "employee_type_id");
         }
 
         /// <summary>

@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.item_types" to return a all instances of the "ItemType" class to export. 
+        /// Executes a select query on the table "core.item_types" to return a all instances of the "ItemType" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "ItemType" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.ItemType> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.ItemType> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.item_types ORDER BY item_type_id;";
             return Factory.Get<MixERP.Net.Entities.Core.ItemType>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.item_types" to return a all instances of the "ItemType" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "ItemType" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"ItemType\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.item_types ORDER BY item_type_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="itemType">The instance of "ItemType" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.ItemType itemType, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic itemType, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            itemType.AuditUserId = this._UserId;
-            itemType.AuditTs = System.DateTime.UtcNow;
+            itemType.audit_user_id = this._UserId;
+            itemType.audit_ts = System.DateTime.UtcNow;
 
-            if (itemType.ItemTypeId > 0)
+            if (Cast.To<int>(itemType.item_type_id) > 0)
             {
-                primaryKeyValue = itemType.ItemTypeId;
-                this.Update(itemType, itemType.ItemTypeId);
+                primaryKeyValue = itemType.item_type_id;
+                this.Update(itemType, int.Parse(itemType.item_type_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="itemType">The instance of "ItemType" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.ItemType itemType)
+        public object Add(dynamic itemType)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, itemType);
+            return Factory.Insert(this._Catalog, itemType, "core.item_types", "item_type_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="itemTypes">List of "ItemType" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.ItemType> itemTypes)
+        public List<object> BulkImport(List<ExpandoObject> itemTypes)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var itemType in itemTypes)
+                        foreach (dynamic itemType in itemTypes)
                         {
                             line++;
 
-                            itemType.AuditUserId = this._UserId;
-                            itemType.AuditTs = System.DateTime.UtcNow;
+                            itemType.audit_user_id = this._UserId;
+                            itemType.audit_ts = System.DateTime.UtcNow;
 
-                            if (itemType.ItemTypeId > 0)
+                            if (Cast.To<int>(itemType.item_type_id) > 0)
                             {
-                                result.Add(itemType.ItemTypeId);
-                                db.Update(itemType, itemType.ItemTypeId);
+                                result.Add(itemType.item_type_id);
+                                db.Update("core.item_types", "item_type_id", itemType, itemType.item_type_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(itemType));
+                                result.Add(db.Insert("core.item_types", "item_type_id", itemType));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="itemType">The instance of "ItemType" class to update.</param>
         /// <param name="itemTypeId">The value of the column "item_type_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.ItemType itemType, int itemTypeId)
+        public void Update(dynamic itemType, int itemTypeId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, itemType, itemTypeId);
+            Factory.Update(this._Catalog, itemType, itemTypeId, "core.item_types", "item_type_id");
         }
 
         /// <summary>

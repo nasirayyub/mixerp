@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.cash_flow_setup" to return a all instances of the "CashFlowSetup" class to export. 
+        /// Executes a select query on the table "core.cash_flow_setup" to return a all instances of the "CashFlowSetup" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "CashFlowSetup" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.CashFlowSetup> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.CashFlowSetup> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.cash_flow_setup ORDER BY cash_flow_setup_id;";
             return Factory.Get<MixERP.Net.Entities.Core.CashFlowSetup>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.cash_flow_setup" to return a all instances of the "CashFlowSetup" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "CashFlowSetup" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"CashFlowSetup\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.cash_flow_setup ORDER BY cash_flow_setup_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="cashFlowSetup">The instance of "CashFlowSetup" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.CashFlowSetup cashFlowSetup, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic cashFlowSetup, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            cashFlowSetup.AuditUserId = this._UserId;
-            cashFlowSetup.AuditTs = System.DateTime.UtcNow;
+            cashFlowSetup.audit_user_id = this._UserId;
+            cashFlowSetup.audit_ts = System.DateTime.UtcNow;
 
-            if (cashFlowSetup.CashFlowSetupId > 0)
+            if (Cast.To<int>(cashFlowSetup.cash_flow_setup_id) > 0)
             {
-                primaryKeyValue = cashFlowSetup.CashFlowSetupId;
-                this.Update(cashFlowSetup, cashFlowSetup.CashFlowSetupId);
+                primaryKeyValue = cashFlowSetup.cash_flow_setup_id;
+                this.Update(cashFlowSetup, int.Parse(cashFlowSetup.cash_flow_setup_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="cashFlowSetup">The instance of "CashFlowSetup" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.CashFlowSetup cashFlowSetup)
+        public object Add(dynamic cashFlowSetup)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, cashFlowSetup);
+            return Factory.Insert(this._Catalog, cashFlowSetup, "core.cash_flow_setup", "cash_flow_setup_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="cashFlowSetups">List of "CashFlowSetup" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.CashFlowSetup> cashFlowSetups)
+        public List<object> BulkImport(List<ExpandoObject> cashFlowSetups)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var cashFlowSetup in cashFlowSetups)
+                        foreach (dynamic cashFlowSetup in cashFlowSetups)
                         {
                             line++;
 
-                            cashFlowSetup.AuditUserId = this._UserId;
-                            cashFlowSetup.AuditTs = System.DateTime.UtcNow;
+                            cashFlowSetup.audit_user_id = this._UserId;
+                            cashFlowSetup.audit_ts = System.DateTime.UtcNow;
 
-                            if (cashFlowSetup.CashFlowSetupId > 0)
+                            if (Cast.To<int>(cashFlowSetup.cash_flow_setup_id) > 0)
                             {
-                                result.Add(cashFlowSetup.CashFlowSetupId);
-                                db.Update(cashFlowSetup, cashFlowSetup.CashFlowSetupId);
+                                result.Add(cashFlowSetup.cash_flow_setup_id);
+                                db.Update("core.cash_flow_setup", "cash_flow_setup_id", cashFlowSetup, cashFlowSetup.cash_flow_setup_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(cashFlowSetup));
+                                result.Add(db.Insert("core.cash_flow_setup", "cash_flow_setup_id", cashFlowSetup));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="cashFlowSetup">The instance of "CashFlowSetup" class to update.</param>
         /// <param name="cashFlowSetupId">The value of the column "cash_flow_setup_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.CashFlowSetup cashFlowSetup, int cashFlowSetupId)
+        public void Update(dynamic cashFlowSetup, int cashFlowSetupId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, cashFlowSetup, cashFlowSetupId);
+            Factory.Update(this._Catalog, cashFlowSetup, cashFlowSetupId, "core.cash_flow_setup", "cash_flow_setup_id");
         }
 
         /// <summary>

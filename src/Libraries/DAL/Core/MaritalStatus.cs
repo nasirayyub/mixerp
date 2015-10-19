@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.marital_statuses" to return a all instances of the "MaritalStatus" class to export. 
+        /// Executes a select query on the table "core.marital_statuses" to return a all instances of the "MaritalStatus" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "MaritalStatus" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.MaritalStatus> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.MaritalStatus> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.marital_statuses ORDER BY marital_status_id;";
             return Factory.Get<MixERP.Net.Entities.Core.MaritalStatus>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.marital_statuses" to return a all instances of the "MaritalStatus" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "MaritalStatus" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"MaritalStatus\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.marital_statuses ORDER BY marital_status_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="maritalStatus">The instance of "MaritalStatus" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.MaritalStatus maritalStatus, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic maritalStatus, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            maritalStatus.AuditUserId = this._UserId;
-            maritalStatus.AuditTs = System.DateTime.UtcNow;
+            maritalStatus.audit_user_id = this._UserId;
+            maritalStatus.audit_ts = System.DateTime.UtcNow;
 
-            if (maritalStatus.MaritalStatusId > 0)
+            if (Cast.To<int>(maritalStatus.marital_status_id) > 0)
             {
-                primaryKeyValue = maritalStatus.MaritalStatusId;
-                this.Update(maritalStatus, maritalStatus.MaritalStatusId);
+                primaryKeyValue = maritalStatus.marital_status_id;
+                this.Update(maritalStatus, int.Parse(maritalStatus.marital_status_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="maritalStatus">The instance of "MaritalStatus" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.MaritalStatus maritalStatus)
+        public object Add(dynamic maritalStatus)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, maritalStatus);
+            return Factory.Insert(this._Catalog, maritalStatus, "core.marital_statuses", "marital_status_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="maritalStatuses">List of "MaritalStatus" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.MaritalStatus> maritalStatuses)
+        public List<object> BulkImport(List<ExpandoObject> maritalStatuses)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var maritalStatus in maritalStatuses)
+                        foreach (dynamic maritalStatus in maritalStatuses)
                         {
                             line++;
 
-                            maritalStatus.AuditUserId = this._UserId;
-                            maritalStatus.AuditTs = System.DateTime.UtcNow;
+                            maritalStatus.audit_user_id = this._UserId;
+                            maritalStatus.audit_ts = System.DateTime.UtcNow;
 
-                            if (maritalStatus.MaritalStatusId > 0)
+                            if (Cast.To<int>(maritalStatus.marital_status_id) > 0)
                             {
-                                result.Add(maritalStatus.MaritalStatusId);
-                                db.Update(maritalStatus, maritalStatus.MaritalStatusId);
+                                result.Add(maritalStatus.marital_status_id);
+                                db.Update("core.marital_statuses", "marital_status_id", maritalStatus, maritalStatus.marital_status_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(maritalStatus));
+                                result.Add(db.Insert("core.marital_statuses", "marital_status_id", maritalStatus));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="maritalStatus">The instance of "MaritalStatus" class to update.</param>
         /// <param name="maritalStatusId">The value of the column "marital_status_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.MaritalStatus maritalStatus, int maritalStatusId)
+        public void Update(dynamic maritalStatus, int maritalStatusId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, maritalStatus, maritalStatusId);
+            Factory.Update(this._Catalog, maritalStatus, maritalStatusId, "core.marital_statuses", "marital_status_id");
         }
 
         /// <summary>

@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.verification_statuses" to return a all instances of the "VerificationStatus" class to export. 
+        /// Executes a select query on the table "core.verification_statuses" to return a all instances of the "VerificationStatus" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "VerificationStatus" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.VerificationStatus> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.VerificationStatus> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.verification_statuses ORDER BY verification_status_id;";
             return Factory.Get<MixERP.Net.Entities.Core.VerificationStatus>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.verification_statuses" to return a all instances of the "VerificationStatus" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "VerificationStatus" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"VerificationStatus\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.verification_statuses ORDER BY verification_status_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="verificationStatus">The instance of "VerificationStatus" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.VerificationStatus verificationStatus, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic verificationStatus, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-            if (verificationStatus.VerificationStatusId > 0)
+            if (Cast.To<short>(verificationStatus.verification_status_id) > 0)
             {
-                primaryKeyValue = verificationStatus.VerificationStatusId;
-                this.Update(verificationStatus, verificationStatus.VerificationStatusId);
+                primaryKeyValue = verificationStatus.verification_status_id;
+                this.Update(verificationStatus, short.Parse(verificationStatus.verification_status_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="verificationStatus">The instance of "VerificationStatus" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.VerificationStatus verificationStatus)
+        public object Add(dynamic verificationStatus)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, verificationStatus);
+            return Factory.Insert(this._Catalog, verificationStatus, "core.verification_statuses", "verification_status_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="verificationStatuses">List of "VerificationStatus" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.VerificationStatus> verificationStatuses)
+        public List<object> BulkImport(List<ExpandoObject> verificationStatuses)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var verificationStatus in verificationStatuses)
+                        foreach (dynamic verificationStatus in verificationStatuses)
                         {
                             line++;
 
 
 
-                            if (verificationStatus.VerificationStatusId > 0)
+                            if (Cast.To<short>(verificationStatus.verification_status_id) > 0)
                             {
-                                result.Add(verificationStatus.VerificationStatusId);
-                                db.Update(verificationStatus, verificationStatus.VerificationStatusId);
+                                result.Add(verificationStatus.verification_status_id);
+                                db.Update("core.verification_statuses", "verification_status_id", verificationStatus, verificationStatus.verification_status_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(verificationStatus));
+                                result.Add(db.Insert("core.verification_statuses", "verification_status_id", verificationStatus));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="verificationStatus">The instance of "VerificationStatus" class to update.</param>
         /// <param name="verificationStatusId">The value of the column "verification_status_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.VerificationStatus verificationStatus, short verificationStatusId)
+        public void Update(dynamic verificationStatus, short verificationStatusId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, verificationStatus, verificationStatusId);
+            Factory.Update(this._Catalog, verificationStatus, verificationStatusId, "core.verification_statuses", "verification_status_id");
         }
 
         /// <summary>

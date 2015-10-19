@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.item_cost_prices" to return a all instances of the "ItemCostPrice" class to export. 
+        /// Executes a select query on the table "core.item_cost_prices" to return a all instances of the "ItemCostPrice" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "ItemCostPrice" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.ItemCostPrice> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.ItemCostPrice> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.item_cost_prices ORDER BY item_cost_price_id;";
             return Factory.Get<MixERP.Net.Entities.Core.ItemCostPrice>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.item_cost_prices" to return a all instances of the "ItemCostPrice" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "ItemCostPrice" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"ItemCostPrice\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.item_cost_prices ORDER BY item_cost_price_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="itemCostPrice">The instance of "ItemCostPrice" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.ItemCostPrice itemCostPrice, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic itemCostPrice, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            itemCostPrice.AuditUserId = this._UserId;
-            itemCostPrice.AuditTs = System.DateTime.UtcNow;
+            itemCostPrice.audit_user_id = this._UserId;
+            itemCostPrice.audit_ts = System.DateTime.UtcNow;
 
-            if (itemCostPrice.ItemCostPriceId > 0)
+            if (Cast.To<long>(itemCostPrice.item_cost_price_id) > 0)
             {
-                primaryKeyValue = itemCostPrice.ItemCostPriceId;
-                this.Update(itemCostPrice, itemCostPrice.ItemCostPriceId);
+                primaryKeyValue = itemCostPrice.item_cost_price_id;
+                this.Update(itemCostPrice, long.Parse(itemCostPrice.item_cost_price_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="itemCostPrice">The instance of "ItemCostPrice" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.ItemCostPrice itemCostPrice)
+        public object Add(dynamic itemCostPrice)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, itemCostPrice);
+            return Factory.Insert(this._Catalog, itemCostPrice, "core.item_cost_prices", "item_cost_price_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="itemCostPrices">List of "ItemCostPrice" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.ItemCostPrice> itemCostPrices)
+        public List<object> BulkImport(List<ExpandoObject> itemCostPrices)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var itemCostPrice in itemCostPrices)
+                        foreach (dynamic itemCostPrice in itemCostPrices)
                         {
                             line++;
 
-                            itemCostPrice.AuditUserId = this._UserId;
-                            itemCostPrice.AuditTs = System.DateTime.UtcNow;
+                            itemCostPrice.audit_user_id = this._UserId;
+                            itemCostPrice.audit_ts = System.DateTime.UtcNow;
 
-                            if (itemCostPrice.ItemCostPriceId > 0)
+                            if (Cast.To<long>(itemCostPrice.item_cost_price_id) > 0)
                             {
-                                result.Add(itemCostPrice.ItemCostPriceId);
-                                db.Update(itemCostPrice, itemCostPrice.ItemCostPriceId);
+                                result.Add(itemCostPrice.item_cost_price_id);
+                                db.Update("core.item_cost_prices", "item_cost_price_id", itemCostPrice, itemCostPrice.item_cost_price_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(itemCostPrice));
+                                result.Add(db.Insert("core.item_cost_prices", "item_cost_price_id", itemCostPrice));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="itemCostPrice">The instance of "ItemCostPrice" class to update.</param>
         /// <param name="itemCostPriceId">The value of the column "item_cost_price_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.ItemCostPrice itemCostPrice, long itemCostPriceId)
+        public void Update(dynamic itemCostPrice, long itemCostPriceId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, itemCostPrice, itemCostPriceId);
+            Factory.Update(this._Catalog, itemCostPrice, itemCostPriceId, "core.item_cost_prices", "item_cost_price_id");
         }
 
         /// <summary>

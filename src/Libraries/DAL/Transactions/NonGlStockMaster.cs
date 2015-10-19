@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "transactions.non_gl_stock_master" to return a all instances of the "NonGlStockMaster" class to export. 
+        /// Executes a select query on the table "transactions.non_gl_stock_master" to return a all instances of the "NonGlStockMaster" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "NonGlStockMaster" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Transactions.NonGlStockMaster> Get()
+        public IEnumerable<MixERP.Net.Entities.Transactions.NonGlStockMaster> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
             const string sql = "SELECT * FROM transactions.non_gl_stock_master ORDER BY non_gl_stock_master_id;";
             return Factory.Get<MixERP.Net.Entities.Transactions.NonGlStockMaster>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "transactions.non_gl_stock_master" to return a all instances of the "NonGlStockMaster" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "NonGlStockMaster" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"NonGlStockMaster\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM transactions.non_gl_stock_master ORDER BY non_gl_stock_master_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="nonGlStockMaster">The instance of "NonGlStockMaster" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Transactions.NonGlStockMaster nonGlStockMaster, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic nonGlStockMaster, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
             object primaryKeyValue;
 
-            nonGlStockMaster.AuditUserId = this._UserId;
-            nonGlStockMaster.AuditTs = System.DateTime.UtcNow;
+            nonGlStockMaster.audit_user_id = this._UserId;
+            nonGlStockMaster.audit_ts = System.DateTime.UtcNow;
 
-            if (nonGlStockMaster.NonGlStockMasterId > 0)
+            if (Cast.To<long>(nonGlStockMaster.non_gl_stock_master_id) > 0)
             {
-                primaryKeyValue = nonGlStockMaster.NonGlStockMasterId;
-                this.Update(nonGlStockMaster, nonGlStockMaster.NonGlStockMasterId);
+                primaryKeyValue = nonGlStockMaster.non_gl_stock_master_id;
+                this.Update(nonGlStockMaster, long.Parse(nonGlStockMaster.non_gl_stock_master_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="nonGlStockMaster">The instance of "NonGlStockMaster" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Transactions.NonGlStockMaster nonGlStockMaster)
+        public object Add(dynamic nonGlStockMaster)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, nonGlStockMaster);
+            return Factory.Insert(this._Catalog, nonGlStockMaster, "transactions.non_gl_stock_master", "non_gl_stock_master_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="nonGlStockMasters">List of "NonGlStockMaster" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Transactions.NonGlStockMaster> nonGlStockMasters)
+        public List<object> BulkImport(List<ExpandoObject> nonGlStockMasters)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var nonGlStockMaster in nonGlStockMasters)
+                        foreach (dynamic nonGlStockMaster in nonGlStockMasters)
                         {
                             line++;
 
-                            nonGlStockMaster.AuditUserId = this._UserId;
-                            nonGlStockMaster.AuditTs = System.DateTime.UtcNow;
+                            nonGlStockMaster.audit_user_id = this._UserId;
+                            nonGlStockMaster.audit_ts = System.DateTime.UtcNow;
 
-                            if (nonGlStockMaster.NonGlStockMasterId > 0)
+                            if (Cast.To<long>(nonGlStockMaster.non_gl_stock_master_id) > 0)
                             {
-                                result.Add(nonGlStockMaster.NonGlStockMasterId);
-                                db.Update(nonGlStockMaster, nonGlStockMaster.NonGlStockMasterId);
+                                result.Add(nonGlStockMaster.non_gl_stock_master_id);
+                                db.Update("transactions.non_gl_stock_master", "non_gl_stock_master_id", nonGlStockMaster, nonGlStockMaster.non_gl_stock_master_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(nonGlStockMaster));
+                                result.Add(db.Insert("transactions.non_gl_stock_master", "non_gl_stock_master_id", nonGlStockMaster));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="nonGlStockMaster">The instance of "NonGlStockMaster" class to update.</param>
         /// <param name="nonGlStockMasterId">The value of the column "non_gl_stock_master_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Transactions.NonGlStockMaster nonGlStockMaster, long nonGlStockMasterId)
+        public void Update(dynamic nonGlStockMaster, long nonGlStockMasterId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            Factory.Update(this._Catalog, nonGlStockMaster, nonGlStockMasterId);
+            Factory.Update(this._Catalog, nonGlStockMaster, nonGlStockMasterId, "transactions.non_gl_stock_master", "non_gl_stock_master_id");
         }
 
         /// <summary>

@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.transaction_types" to return a all instances of the "TransactionType" class to export. 
+        /// Executes a select query on the table "core.transaction_types" to return a all instances of the "TransactionType" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "TransactionType" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.TransactionType> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.TransactionType> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.transaction_types ORDER BY transaction_type_id;";
             return Factory.Get<MixERP.Net.Entities.Core.TransactionType>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.transaction_types" to return a all instances of the "TransactionType" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "TransactionType" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"TransactionType\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.transaction_types ORDER BY transaction_type_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="transactionType">The instance of "TransactionType" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.TransactionType transactionType, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic transactionType, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-            if (transactionType.TransactionTypeId > 0)
+            if (Cast.To<short>(transactionType.transaction_type_id) > 0)
             {
-                primaryKeyValue = transactionType.TransactionTypeId;
-                this.Update(transactionType, transactionType.TransactionTypeId);
+                primaryKeyValue = transactionType.transaction_type_id;
+                this.Update(transactionType, short.Parse(transactionType.transaction_type_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="transactionType">The instance of "TransactionType" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.TransactionType transactionType)
+        public object Add(dynamic transactionType)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, transactionType);
+            return Factory.Insert(this._Catalog, transactionType, "core.transaction_types", "transaction_type_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="transactionTypes">List of "TransactionType" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.TransactionType> transactionTypes)
+        public List<object> BulkImport(List<ExpandoObject> transactionTypes)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var transactionType in transactionTypes)
+                        foreach (dynamic transactionType in transactionTypes)
                         {
                             line++;
 
 
 
-                            if (transactionType.TransactionTypeId > 0)
+                            if (Cast.To<short>(transactionType.transaction_type_id) > 0)
                             {
-                                result.Add(transactionType.TransactionTypeId);
-                                db.Update(transactionType, transactionType.TransactionTypeId);
+                                result.Add(transactionType.transaction_type_id);
+                                db.Update("core.transaction_types", "transaction_type_id", transactionType, transactionType.transaction_type_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(transactionType));
+                                result.Add(db.Insert("core.transaction_types", "transaction_type_id", transactionType));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="transactionType">The instance of "TransactionType" class to update.</param>
         /// <param name="transactionTypeId">The value of the column "transaction_type_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.TransactionType transactionType, short transactionTypeId)
+        public void Update(dynamic transactionType, short transactionTypeId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, transactionType, transactionTypeId);
+            Factory.Update(this._Catalog, transactionType, transactionTypeId, "core.transaction_types", "transaction_type_id");
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -99,19 +100,48 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
+        ///     Returns all collection of education level.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/hrm/education-level/all")]
+        public IEnumerable<MixERP.Net.Entities.HRM.EducationLevel> GetAll()
+        {
+            try
+            {
+                return this.EducationLevelContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of education level for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/hrm/education-level/export")]
-        [Route("~/api/hrm/education-level/all")]
-        public IEnumerable<MixERP.Net.Entities.HRM.EducationLevel> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.EducationLevelContext.Get();
+                return this.EducationLevelContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -487,7 +517,7 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/education-level/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.HRM.EducationLevel educationLevel = form[0].ToObject<MixERP.Net.Entities.HRM.EducationLevel>(JsonHelper.GetJsonSerializer());
+            dynamic educationLevel = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (educationLevel == null)
@@ -590,9 +620,9 @@ namespace MixERP.Net.Api.HRM
             }
         }
 
-        private List<MixERP.Net.Entities.HRM.EducationLevel> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.HRM.EducationLevel>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -604,9 +634,9 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/hrm/education-level/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.HRM.EducationLevel> educationLevelCollection = this.ParseCollection(collection);
+            List<ExpandoObject> educationLevelCollection = this.ParseCollection(collection);
 
             if (educationLevelCollection == null || educationLevelCollection.Count.Equals(0))
             {

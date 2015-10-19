@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -103,19 +104,48 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
+        ///     Returns all collection of shift.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/hrm/shift/all")]
+        public IEnumerable<MixERP.Net.Entities.HRM.Shift> GetAll()
+        {
+            try
+            {
+                return this.ShiftContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of shift for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/hrm/shift/export")]
-        [Route("~/api/hrm/shift/all")]
-        public IEnumerable<MixERP.Net.Entities.HRM.Shift> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.ShiftContext.Get();
+                return this.ShiftContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -491,7 +521,7 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/shift/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.HRM.Shift shift = form[0].ToObject<MixERP.Net.Entities.HRM.Shift>(JsonHelper.GetJsonSerializer());
+            dynamic shift = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (shift == null)
@@ -594,9 +624,9 @@ namespace MixERP.Net.Api.HRM
             }
         }
 
-        private List<MixERP.Net.Entities.HRM.Shift> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.HRM.Shift>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -608,9 +638,9 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/hrm/shift/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.HRM.Shift> shiftCollection = this.ParseCollection(collection);
+            List<ExpandoObject> shiftCollection = this.ParseCollection(collection);
 
             if (shiftCollection == null || shiftCollection.Count.Equals(0))
             {

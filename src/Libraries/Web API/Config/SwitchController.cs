@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -99,19 +100,48 @@ namespace MixERP.Net.Api.Config
         }
 
         /// <summary>
+        ///     Returns all collection of switch.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/config/switch/all")]
+        public IEnumerable<MixERP.Net.Entities.Config.Switch> GetAll()
+        {
+            try
+            {
+                return this.SwitchContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of switch for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/config/switch/export")]
-        [Route("~/api/config/switch/all")]
-        public IEnumerable<MixERP.Net.Entities.Config.Switch> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.SwitchContext.Get();
+                return this.SwitchContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -487,7 +517,7 @@ namespace MixERP.Net.Api.Config
         [Route("~/api/config/switch/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Config.Switch switchParameter = form[0].ToObject<MixERP.Net.Entities.Config.Switch>(JsonHelper.GetJsonSerializer());
+            dynamic switchParameter = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (switchParameter == null)
@@ -590,9 +620,9 @@ namespace MixERP.Net.Api.Config
             }
         }
 
-        private List<MixERP.Net.Entities.Config.Switch> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Config.Switch>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -604,9 +634,9 @@ namespace MixERP.Net.Api.Config
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/config/switch/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Config.Switch> switchParameterCollection = this.ParseCollection(collection);
+            List<ExpandoObject> switchParameterCollection = this.ParseCollection(collection);
 
             if (switchParameterCollection == null || switchParameterCollection.Count.Equals(0))
             {

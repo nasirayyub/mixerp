@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.exchange_rates" to return a all instances of the "ExchangeRate" class to export. 
+        /// Executes a select query on the table "core.exchange_rates" to return a all instances of the "ExchangeRate" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "ExchangeRate" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.ExchangeRate> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.ExchangeRate> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.exchange_rates ORDER BY exchange_rate_id;";
             return Factory.Get<MixERP.Net.Entities.Core.ExchangeRate>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.exchange_rates" to return a all instances of the "ExchangeRate" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "ExchangeRate" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"ExchangeRate\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.exchange_rates ORDER BY exchange_rate_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="exchangeRate">The instance of "ExchangeRate" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.ExchangeRate exchangeRate, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic exchangeRate, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-            if (exchangeRate.ExchangeRateId > 0)
+            if (Cast.To<long>(exchangeRate.exchange_rate_id) > 0)
             {
-                primaryKeyValue = exchangeRate.ExchangeRateId;
-                this.Update(exchangeRate, exchangeRate.ExchangeRateId);
+                primaryKeyValue = exchangeRate.exchange_rate_id;
+                this.Update(exchangeRate, long.Parse(exchangeRate.exchange_rate_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="exchangeRate">The instance of "ExchangeRate" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.ExchangeRate exchangeRate)
+        public object Add(dynamic exchangeRate)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, exchangeRate);
+            return Factory.Insert(this._Catalog, exchangeRate, "core.exchange_rates", "exchange_rate_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="exchangeRates">List of "ExchangeRate" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.ExchangeRate> exchangeRates)
+        public List<object> BulkImport(List<ExpandoObject> exchangeRates)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var exchangeRate in exchangeRates)
+                        foreach (dynamic exchangeRate in exchangeRates)
                         {
                             line++;
 
 
 
-                            if (exchangeRate.ExchangeRateId > 0)
+                            if (Cast.To<long>(exchangeRate.exchange_rate_id) > 0)
                             {
-                                result.Add(exchangeRate.ExchangeRateId);
-                                db.Update(exchangeRate, exchangeRate.ExchangeRateId);
+                                result.Add(exchangeRate.exchange_rate_id);
+                                db.Update("core.exchange_rates", "exchange_rate_id", exchangeRate, exchangeRate.exchange_rate_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(exchangeRate));
+                                result.Add(db.Insert("core.exchange_rates", "exchange_rate_id", exchangeRate));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="exchangeRate">The instance of "ExchangeRate" class to update.</param>
         /// <param name="exchangeRateId">The value of the column "exchange_rate_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.ExchangeRate exchangeRate, long exchangeRateId)
+        public void Update(dynamic exchangeRate, long exchangeRateId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, exchangeRate, exchangeRateId);
+            Factory.Update(this._Catalog, exchangeRate, exchangeRateId, "core.exchange_rates", "exchange_rate_id");
         }
 
         /// <summary>

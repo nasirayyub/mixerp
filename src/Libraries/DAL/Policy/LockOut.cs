@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Policy.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "policy.lock_outs" to return a all instances of the "LockOut" class to export. 
+        /// Executes a select query on the table "policy.lock_outs" to return a all instances of the "LockOut" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "LockOut" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Policy.LockOut> Get()
+        public IEnumerable<MixERP.Net.Entities.Policy.LockOut> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Policy.Data
 
             const string sql = "SELECT * FROM policy.lock_outs ORDER BY lock_out_id;";
             return Factory.Get<MixERP.Net.Entities.Policy.LockOut>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "policy.lock_outs" to return a all instances of the "LockOut" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "LockOut" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"LockOut\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.lock_outs ORDER BY lock_out_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// <param name="lockOut">The instance of "LockOut" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Policy.LockOut lockOut, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic lockOut, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Policy.Data
 
 
 
-            if (lockOut.LockOutId > 0)
+            if (Cast.To<long>(lockOut.lock_out_id) > 0)
             {
-                primaryKeyValue = lockOut.LockOutId;
-                this.Update(lockOut, lockOut.LockOutId);
+                primaryKeyValue = lockOut.lock_out_id;
+                this.Update(lockOut, long.Parse(lockOut.lock_out_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// </summary>
         /// <param name="lockOut">The instance of "LockOut" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Policy.LockOut lockOut)
+        public object Add(dynamic lockOut)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Policy.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, lockOut);
+            return Factory.Insert(this._Catalog, lockOut, "policy.lock_outs", "lock_out_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// </summary>
         /// <param name="lockOuts">List of "LockOut" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Policy.LockOut> lockOuts)
+        public List<object> BulkImport(List<ExpandoObject> lockOuts)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Policy.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var lockOut in lockOuts)
+                        foreach (dynamic lockOut in lockOuts)
                         {
                             line++;
 
 
 
-                            if (lockOut.LockOutId > 0)
+                            if (Cast.To<long>(lockOut.lock_out_id) > 0)
                             {
-                                result.Add(lockOut.LockOutId);
-                                db.Update(lockOut, lockOut.LockOutId);
+                                result.Add(lockOut.lock_out_id);
+                                db.Update("policy.lock_outs", "lock_out_id", lockOut, lockOut.lock_out_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(lockOut));
+                                result.Add(db.Insert("policy.lock_outs", "lock_out_id", lockOut));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// <param name="lockOut">The instance of "LockOut" class to update.</param>
         /// <param name="lockOutId">The value of the column "lock_out_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Policy.LockOut lockOut, long lockOutId)
+        public void Update(dynamic lockOut, long lockOutId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Policy.Data
                 }
             }
 
-            Factory.Update(this._Catalog, lockOut, lockOutId);
+            Factory.Update(this._Catalog, lockOut, lockOutId, "policy.lock_outs", "lock_out_id");
         }
 
         /// <summary>

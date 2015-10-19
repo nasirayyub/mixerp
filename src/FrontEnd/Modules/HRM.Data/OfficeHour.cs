@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.office_hours" to return a all instances of the "OfficeHour" class to export. 
+        /// Executes a select query on the table "hrm.office_hours" to return a all instances of the "OfficeHour" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "OfficeHour" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.OfficeHour> Get()
+        public IEnumerable<MixERP.Net.Entities.HRM.OfficeHour> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             const string sql = "SELECT * FROM hrm.office_hours ORDER BY office_hour_id;";
             return Factory.Get<MixERP.Net.Entities.HRM.OfficeHour>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "hrm.office_hours" to return a all instances of the "OfficeHour" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "OfficeHour" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"OfficeHour\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.office_hours ORDER BY office_hour_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="officeHour">The instance of "OfficeHour" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.HRM.OfficeHour officeHour, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic officeHour, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             object primaryKeyValue;
 
-            officeHour.AuditUserId = this._UserId;
-            officeHour.AuditTs = System.DateTime.UtcNow;
+            officeHour.audit_user_id = this._UserId;
+            officeHour.audit_ts = System.DateTime.UtcNow;
 
-            if (officeHour.OfficeHourId > 0)
+            if (Cast.To<int>(officeHour.office_hour_id) > 0)
             {
-                primaryKeyValue = officeHour.OfficeHourId;
-                this.Update(officeHour, officeHour.OfficeHourId);
+                primaryKeyValue = officeHour.office_hour_id;
+                this.Update(officeHour, int.Parse(officeHour.office_hour_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="officeHour">The instance of "OfficeHour" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.HRM.OfficeHour officeHour)
+        public object Add(dynamic officeHour)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, officeHour);
+            return Factory.Insert(this._Catalog, officeHour, "hrm.office_hours", "office_hour_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="officeHours">List of "OfficeHour" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.HRM.OfficeHour> officeHours)
+        public List<object> BulkImport(List<ExpandoObject> officeHours)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var officeHour in officeHours)
+                        foreach (dynamic officeHour in officeHours)
                         {
                             line++;
 
-                            officeHour.AuditUserId = this._UserId;
-                            officeHour.AuditTs = System.DateTime.UtcNow;
+                            officeHour.audit_user_id = this._UserId;
+                            officeHour.audit_ts = System.DateTime.UtcNow;
 
-                            if (officeHour.OfficeHourId > 0)
+                            if (Cast.To<int>(officeHour.office_hour_id) > 0)
                             {
-                                result.Add(officeHour.OfficeHourId);
-                                db.Update(officeHour, officeHour.OfficeHourId);
+                                result.Add(officeHour.office_hour_id);
+                                db.Update("hrm.office_hours", "office_hour_id", officeHour, officeHour.office_hour_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(officeHour));
+                                result.Add(db.Insert("hrm.office_hours", "office_hour_id", officeHour));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="officeHour">The instance of "OfficeHour" class to update.</param>
         /// <param name="officeHourId">The value of the column "office_hour_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.HRM.OfficeHour officeHour, int officeHourId)
+        public void Update(dynamic officeHour, int officeHourId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            Factory.Update(this._Catalog, officeHour, officeHourId);
+            Factory.Update(this._Catalog, officeHour, officeHourId, "hrm.office_hours", "office_hour_id");
         }
 
         /// <summary>

@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.shifts" to return a all instances of the "Shift" class to export. 
+        /// Executes a select query on the table "hrm.shifts" to return a all instances of the "Shift" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Shift" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.Shift> Get()
+        public IEnumerable<MixERP.Net.Entities.HRM.Shift> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             const string sql = "SELECT * FROM hrm.shifts ORDER BY shift_id;";
             return Factory.Get<MixERP.Net.Entities.HRM.Shift>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "hrm.shifts" to return a all instances of the "Shift" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Shift" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Shift\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.shifts ORDER BY shift_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="shift">The instance of "Shift" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.HRM.Shift shift, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic shift, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             object primaryKeyValue;
 
-            shift.AuditUserId = this._UserId;
-            shift.AuditTs = System.DateTime.UtcNow;
+            shift.audit_user_id = this._UserId;
+            shift.audit_ts = System.DateTime.UtcNow;
 
-            if (shift.ShiftId > 0)
+            if (Cast.To<int>(shift.shift_id) > 0)
             {
-                primaryKeyValue = shift.ShiftId;
-                this.Update(shift, shift.ShiftId);
+                primaryKeyValue = shift.shift_id;
+                this.Update(shift, int.Parse(shift.shift_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="shift">The instance of "Shift" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.HRM.Shift shift)
+        public object Add(dynamic shift)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, shift);
+            return Factory.Insert(this._Catalog, shift, "hrm.shifts", "shift_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="shifts">List of "Shift" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.HRM.Shift> shifts)
+        public List<object> BulkImport(List<ExpandoObject> shifts)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var shift in shifts)
+                        foreach (dynamic shift in shifts)
                         {
                             line++;
 
-                            shift.AuditUserId = this._UserId;
-                            shift.AuditTs = System.DateTime.UtcNow;
+                            shift.audit_user_id = this._UserId;
+                            shift.audit_ts = System.DateTime.UtcNow;
 
-                            if (shift.ShiftId > 0)
+                            if (Cast.To<int>(shift.shift_id) > 0)
                             {
-                                result.Add(shift.ShiftId);
-                                db.Update(shift, shift.ShiftId);
+                                result.Add(shift.shift_id);
+                                db.Update("hrm.shifts", "shift_id", shift, shift.shift_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(shift));
+                                result.Add(db.Insert("hrm.shifts", "shift_id", shift));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="shift">The instance of "Shift" class to update.</param>
         /// <param name="shiftId">The value of the column "shift_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.HRM.Shift shift, int shiftId)
+        public void Update(dynamic shift, int shiftId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            Factory.Update(this._Catalog, shift, shiftId);
+            Factory.Update(this._Catalog, shift, shiftId, "hrm.shifts", "shift_id");
         }
 
         /// <summary>

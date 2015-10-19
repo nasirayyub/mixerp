@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.nationalities" to return a all instances of the "Nationality" class to export. 
+        /// Executes a select query on the table "core.nationalities" to return a all instances of the "Nationality" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Nationality" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.Nationality> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.Nationality> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.nationalities ORDER BY nationality_code;";
             return Factory.Get<MixERP.Net.Entities.Core.Nationality>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.nationalities" to return a all instances of the "Nationality" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Nationality" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Nationality\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.nationalities ORDER BY nationality_code;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="nationality">The instance of "Nationality" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.Nationality nationality, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic nationality, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            nationality.AuditUserId = this._UserId;
-            nationality.AuditTs = System.DateTime.UtcNow;
+            nationality.audit_user_id = this._UserId;
+            nationality.audit_ts = System.DateTime.UtcNow;
 
-            if (!string.IsNullOrWhiteSpace(nationality.NationalityCode))
+            if (!string.IsNullOrWhiteSpace(nationality.nationality_code))
             {
-                primaryKeyValue = nationality.NationalityCode;
-                this.Update(nationality, nationality.NationalityCode);
+                primaryKeyValue = nationality.nationality_code;
+                this.Update(nationality, nationality.nationality_code);
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="nationality">The instance of "Nationality" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.Nationality nationality)
+        public object Add(dynamic nationality)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, nationality);
+            return Factory.Insert(this._Catalog, nationality, "core.nationalities", "nationality_code");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="nationalities">List of "Nationality" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.Nationality> nationalities)
+        public List<object> BulkImport(List<ExpandoObject> nationalities)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var nationality in nationalities)
+                        foreach (dynamic nationality in nationalities)
                         {
                             line++;
 
-                            nationality.AuditUserId = this._UserId;
-                            nationality.AuditTs = System.DateTime.UtcNow;
+                            nationality.audit_user_id = this._UserId;
+                            nationality.audit_ts = System.DateTime.UtcNow;
 
-                            if (!string.IsNullOrWhiteSpace(nationality.NationalityCode))
+                            if (!string.IsNullOrWhiteSpace(nationality.nationality_code))
                             {
-                                result.Add(nationality.NationalityCode);
-                                db.Update(nationality, nationality.NationalityCode);
+                                result.Add(nationality.nationality_code);
+                                db.Update("core.nationalities", "nationality_code", nationality, nationality.nationality_code);
                             }
                             else
                             {
-                                result.Add(db.Insert(nationality));
+                                result.Add(db.Insert("core.nationalities", "nationality_code", nationality));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="nationality">The instance of "Nationality" class to update.</param>
         /// <param name="nationalityCode">The value of the column "nationality_code" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.Nationality nationality, string nationalityCode)
+        public void Update(dynamic nationality, string nationalityCode)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, nationality, nationalityCode);
+            Factory.Update(this._Catalog, nationality, nationalityCode, "core.nationalities", "nationality_code");
         }
 
         /// <summary>

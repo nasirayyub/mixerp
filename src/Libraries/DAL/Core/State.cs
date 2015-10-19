@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.states" to return a all instances of the "State" class to export. 
+        /// Executes a select query on the table "core.states" to return a all instances of the "State" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "State" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.State> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.State> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.states ORDER BY state_id;";
             return Factory.Get<MixERP.Net.Entities.Core.State>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.states" to return a all instances of the "State" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "State" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"State\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.states ORDER BY state_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="state">The instance of "State" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.State state, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic state, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            state.AuditUserId = this._UserId;
-            state.AuditTs = System.DateTime.UtcNow;
+            state.audit_user_id = this._UserId;
+            state.audit_ts = System.DateTime.UtcNow;
 
-            if (state.StateId > 0)
+            if (Cast.To<int>(state.state_id) > 0)
             {
-                primaryKeyValue = state.StateId;
-                this.Update(state, state.StateId);
+                primaryKeyValue = state.state_id;
+                this.Update(state, int.Parse(state.state_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="state">The instance of "State" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.State state)
+        public object Add(dynamic state)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, state);
+            return Factory.Insert(this._Catalog, state, "core.states", "state_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="states">List of "State" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.State> states)
+        public List<object> BulkImport(List<ExpandoObject> states)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var state in states)
+                        foreach (dynamic state in states)
                         {
                             line++;
 
-                            state.AuditUserId = this._UserId;
-                            state.AuditTs = System.DateTime.UtcNow;
+                            state.audit_user_id = this._UserId;
+                            state.audit_ts = System.DateTime.UtcNow;
 
-                            if (state.StateId > 0)
+                            if (Cast.To<int>(state.state_id) > 0)
                             {
-                                result.Add(state.StateId);
-                                db.Update(state, state.StateId);
+                                result.Add(state.state_id);
+                                db.Update("core.states", "state_id", state, state.state_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(state));
+                                result.Add(db.Insert("core.states", "state_id", state));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="state">The instance of "State" class to update.</param>
         /// <param name="stateId">The value of the column "state_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.State state, int stateId)
+        public void Update(dynamic state, int stateId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, state, stateId);
+            Factory.Update(this._Catalog, state, stateId, "core.states", "state_id");
         }
 
         /// <summary>

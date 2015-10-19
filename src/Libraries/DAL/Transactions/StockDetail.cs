@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "transactions.stock_details" to return a all instances of the "StockDetail" class to export. 
+        /// Executes a select query on the table "transactions.stock_details" to return a all instances of the "StockDetail" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "StockDetail" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Transactions.StockDetail> Get()
+        public IEnumerable<MixERP.Net.Entities.Transactions.StockDetail> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
             const string sql = "SELECT * FROM transactions.stock_details ORDER BY stock_detail_id;";
             return Factory.Get<MixERP.Net.Entities.Transactions.StockDetail>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "transactions.stock_details" to return a all instances of the "StockDetail" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "StockDetail" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"StockDetail\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM transactions.stock_details ORDER BY stock_detail_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="stockDetail">The instance of "StockDetail" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Transactions.StockDetail stockDetail, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic stockDetail, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
             object primaryKeyValue;
 
-            stockDetail.AuditUserId = this._UserId;
-            stockDetail.AuditTs = System.DateTime.UtcNow;
+            stockDetail.audit_user_id = this._UserId;
+            stockDetail.audit_ts = System.DateTime.UtcNow;
 
-            if (stockDetail.StockDetailId > 0)
+            if (Cast.To<long>(stockDetail.stock_detail_id) > 0)
             {
-                primaryKeyValue = stockDetail.StockDetailId;
-                this.Update(stockDetail, stockDetail.StockDetailId);
+                primaryKeyValue = stockDetail.stock_detail_id;
+                this.Update(stockDetail, long.Parse(stockDetail.stock_detail_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="stockDetail">The instance of "StockDetail" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Transactions.StockDetail stockDetail)
+        public object Add(dynamic stockDetail)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, stockDetail);
+            return Factory.Insert(this._Catalog, stockDetail, "transactions.stock_details", "stock_detail_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="stockDetails">List of "StockDetail" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Transactions.StockDetail> stockDetails)
+        public List<object> BulkImport(List<ExpandoObject> stockDetails)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var stockDetail in stockDetails)
+                        foreach (dynamic stockDetail in stockDetails)
                         {
                             line++;
 
-                            stockDetail.AuditUserId = this._UserId;
-                            stockDetail.AuditTs = System.DateTime.UtcNow;
+                            stockDetail.audit_user_id = this._UserId;
+                            stockDetail.audit_ts = System.DateTime.UtcNow;
 
-                            if (stockDetail.StockDetailId > 0)
+                            if (Cast.To<long>(stockDetail.stock_detail_id) > 0)
                             {
-                                result.Add(stockDetail.StockDetailId);
-                                db.Update(stockDetail, stockDetail.StockDetailId);
+                                result.Add(stockDetail.stock_detail_id);
+                                db.Update("transactions.stock_details", "stock_detail_id", stockDetail, stockDetail.stock_detail_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(stockDetail));
+                                result.Add(db.Insert("transactions.stock_details", "stock_detail_id", stockDetail));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="stockDetail">The instance of "StockDetail" class to update.</param>
         /// <param name="stockDetailId">The value of the column "stock_detail_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Transactions.StockDetail stockDetail, long stockDetailId)
+        public void Update(dynamic stockDetail, long stockDetailId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            Factory.Update(this._Catalog, stockDetail, stockDetailId);
+            Factory.Update(this._Catalog, stockDetail, stockDetailId, "transactions.stock_details", "stock_detail_id");
         }
 
         /// <summary>

@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Office.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "office.counters" to return a all instances of the "Counter" class to export. 
+        /// Executes a select query on the table "office.counters" to return a all instances of the "Counter" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Counter" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Office.Counter> Get()
+        public IEnumerable<MixERP.Net.Entities.Office.Counter> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Office.Data
 
             const string sql = "SELECT * FROM office.counters ORDER BY counter_id;";
             return Factory.Get<MixERP.Net.Entities.Office.Counter>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "office.counters" to return a all instances of the "Counter" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Counter" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Counter\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM office.counters ORDER BY counter_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <param name="counter">The instance of "Counter" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Office.Counter counter, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic counter, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Office.Data
 
             object primaryKeyValue;
 
-            counter.AuditUserId = this._UserId;
-            counter.AuditTs = System.DateTime.UtcNow;
+            counter.audit_user_id = this._UserId;
+            counter.audit_ts = System.DateTime.UtcNow;
 
-            if (counter.CounterId > 0)
+            if (Cast.To<int>(counter.counter_id) > 0)
             {
-                primaryKeyValue = counter.CounterId;
-                this.Update(counter, counter.CounterId);
+                primaryKeyValue = counter.counter_id;
+                this.Update(counter, int.Parse(counter.counter_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// </summary>
         /// <param name="counter">The instance of "Counter" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Office.Counter counter)
+        public object Add(dynamic counter)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, counter);
+            return Factory.Insert(this._Catalog, counter, "office.counters", "counter_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// </summary>
         /// <param name="counters">List of "Counter" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Office.Counter> counters)
+        public List<object> BulkImport(List<ExpandoObject> counters)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Office.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var counter in counters)
+                        foreach (dynamic counter in counters)
                         {
                             line++;
 
-                            counter.AuditUserId = this._UserId;
-                            counter.AuditTs = System.DateTime.UtcNow;
+                            counter.audit_user_id = this._UserId;
+                            counter.audit_ts = System.DateTime.UtcNow;
 
-                            if (counter.CounterId > 0)
+                            if (Cast.To<int>(counter.counter_id) > 0)
                             {
-                                result.Add(counter.CounterId);
-                                db.Update(counter, counter.CounterId);
+                                result.Add(counter.counter_id);
+                                db.Update("office.counters", "counter_id", counter, counter.counter_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(counter));
+                                result.Add(db.Insert("office.counters", "counter_id", counter));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <param name="counter">The instance of "Counter" class to update.</param>
         /// <param name="counterId">The value of the column "counter_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Office.Counter counter, int counterId)
+        public void Update(dynamic counter, int counterId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
             }
 
-            Factory.Update(this._Catalog, counter, counterId);
+            Factory.Update(this._Catalog, counter, counterId, "office.counters", "counter_id");
         }
 
         /// <summary>

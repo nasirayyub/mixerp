@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.contracts" to return a all instances of the "Contract" class to export. 
+        /// Executes a select query on the table "hrm.contracts" to return a all instances of the "Contract" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Contract" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.Contract> Get()
+        public IEnumerable<MixERP.Net.Entities.HRM.Contract> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             const string sql = "SELECT * FROM hrm.contracts ORDER BY contract_id;";
             return Factory.Get<MixERP.Net.Entities.HRM.Contract>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "hrm.contracts" to return a all instances of the "Contract" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Contract" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Contract\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.contracts ORDER BY contract_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="contract">The instance of "Contract" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.HRM.Contract contract, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic contract, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             object primaryKeyValue;
 
-            contract.AuditUserId = this._UserId;
-            contract.AuditTs = System.DateTime.UtcNow;
+            contract.audit_user_id = this._UserId;
+            contract.audit_ts = System.DateTime.UtcNow;
 
-            if (contract.ContractId > 0)
+            if (Cast.To<long>(contract.contract_id) > 0)
             {
-                primaryKeyValue = contract.ContractId;
-                this.Update(contract, contract.ContractId);
+                primaryKeyValue = contract.contract_id;
+                this.Update(contract, long.Parse(contract.contract_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="contract">The instance of "Contract" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.HRM.Contract contract)
+        public object Add(dynamic contract)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, contract);
+            return Factory.Insert(this._Catalog, contract, "hrm.contracts", "contract_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="contracts">List of "Contract" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.HRM.Contract> contracts)
+        public List<object> BulkImport(List<ExpandoObject> contracts)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var contract in contracts)
+                        foreach (dynamic contract in contracts)
                         {
                             line++;
 
-                            contract.AuditUserId = this._UserId;
-                            contract.AuditTs = System.DateTime.UtcNow;
+                            contract.audit_user_id = this._UserId;
+                            contract.audit_ts = System.DateTime.UtcNow;
 
-                            if (contract.ContractId > 0)
+                            if (Cast.To<long>(contract.contract_id) > 0)
                             {
-                                result.Add(contract.ContractId);
-                                db.Update(contract, contract.ContractId);
+                                result.Add(contract.contract_id);
+                                db.Update("hrm.contracts", "contract_id", contract, contract.contract_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(contract));
+                                result.Add(db.Insert("hrm.contracts", "contract_id", contract));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="contract">The instance of "Contract" class to update.</param>
         /// <param name="contractId">The value of the column "contract_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.HRM.Contract contract, long contractId)
+        public void Update(dynamic contract, long contractId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            Factory.Update(this._Catalog, contract, contractId);
+            Factory.Update(this._Catalog, contract, contractId, "hrm.contracts", "contract_id");
         }
 
         /// <summary>

@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "transactions.transaction_details" to return a all instances of the "TransactionDetail" class to export. 
+        /// Executes a select query on the table "transactions.transaction_details" to return a all instances of the "TransactionDetail" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "TransactionDetail" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Transactions.TransactionDetail> Get()
+        public IEnumerable<MixERP.Net.Entities.Transactions.TransactionDetail> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
             const string sql = "SELECT * FROM transactions.transaction_details ORDER BY transaction_detail_id;";
             return Factory.Get<MixERP.Net.Entities.Transactions.TransactionDetail>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "transactions.transaction_details" to return a all instances of the "TransactionDetail" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "TransactionDetail" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"TransactionDetail\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM transactions.transaction_details ORDER BY transaction_detail_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="transactionDetail">The instance of "TransactionDetail" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Transactions.TransactionDetail transactionDetail, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic transactionDetail, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
             object primaryKeyValue;
 
-            transactionDetail.AuditUserId = this._UserId;
-            transactionDetail.AuditTs = System.DateTime.UtcNow;
+            transactionDetail.audit_user_id = this._UserId;
+            transactionDetail.audit_ts = System.DateTime.UtcNow;
 
-            if (transactionDetail.TransactionDetailId > 0)
+            if (Cast.To<long>(transactionDetail.transaction_detail_id) > 0)
             {
-                primaryKeyValue = transactionDetail.TransactionDetailId;
-                this.Update(transactionDetail, transactionDetail.TransactionDetailId);
+                primaryKeyValue = transactionDetail.transaction_detail_id;
+                this.Update(transactionDetail, long.Parse(transactionDetail.transaction_detail_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="transactionDetail">The instance of "TransactionDetail" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Transactions.TransactionDetail transactionDetail)
+        public object Add(dynamic transactionDetail)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, transactionDetail);
+            return Factory.Insert(this._Catalog, transactionDetail, "transactions.transaction_details", "transaction_detail_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="transactionDetails">List of "TransactionDetail" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Transactions.TransactionDetail> transactionDetails)
+        public List<object> BulkImport(List<ExpandoObject> transactionDetails)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var transactionDetail in transactionDetails)
+                        foreach (dynamic transactionDetail in transactionDetails)
                         {
                             line++;
 
-                            transactionDetail.AuditUserId = this._UserId;
-                            transactionDetail.AuditTs = System.DateTime.UtcNow;
+                            transactionDetail.audit_user_id = this._UserId;
+                            transactionDetail.audit_ts = System.DateTime.UtcNow;
 
-                            if (transactionDetail.TransactionDetailId > 0)
+                            if (Cast.To<long>(transactionDetail.transaction_detail_id) > 0)
                             {
-                                result.Add(transactionDetail.TransactionDetailId);
-                                db.Update(transactionDetail, transactionDetail.TransactionDetailId);
+                                result.Add(transactionDetail.transaction_detail_id);
+                                db.Update("transactions.transaction_details", "transaction_detail_id", transactionDetail, transactionDetail.transaction_detail_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(transactionDetail));
+                                result.Add(db.Insert("transactions.transaction_details", "transaction_detail_id", transactionDetail));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="transactionDetail">The instance of "TransactionDetail" class to update.</param>
         /// <param name="transactionDetailId">The value of the column "transaction_detail_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Transactions.TransactionDetail transactionDetail, long transactionDetailId)
+        public void Update(dynamic transactionDetail, long transactionDetailId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            Factory.Update(this._Catalog, transactionDetail, transactionDetailId);
+            Factory.Update(this._Catalog, transactionDetail, transactionDetailId, "transactions.transaction_details", "transaction_detail_id");
         }
 
         /// <summary>

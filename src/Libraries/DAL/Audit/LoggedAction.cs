@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Audit.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "audit.logged_actions" to return a all instances of the "LoggedAction" class to export. 
+        /// Executes a select query on the table "audit.logged_actions" to return a all instances of the "LoggedAction" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "LoggedAction" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Audit.LoggedAction> Get()
+        public IEnumerable<MixERP.Net.Entities.Audit.LoggedAction> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Audit.Data
 
             const string sql = "SELECT * FROM audit.logged_actions ORDER BY event_id;";
             return Factory.Get<MixERP.Net.Entities.Audit.LoggedAction>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "audit.logged_actions" to return a all instances of the "LoggedAction" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "LoggedAction" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"LoggedAction\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM audit.logged_actions ORDER BY event_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Audit.Data
         /// <param name="loggedAction">The instance of "LoggedAction" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Audit.LoggedAction loggedAction, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic loggedAction, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Audit.Data
 
 
 
-            if (loggedAction.EventId > 0)
+            if (Cast.To<long>(loggedAction.event_id) > 0)
             {
-                primaryKeyValue = loggedAction.EventId;
-                this.Update(loggedAction, loggedAction.EventId);
+                primaryKeyValue = loggedAction.event_id;
+                this.Update(loggedAction, long.Parse(loggedAction.event_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Audit.Data
         /// </summary>
         /// <param name="loggedAction">The instance of "LoggedAction" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Audit.LoggedAction loggedAction)
+        public object Add(dynamic loggedAction)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Audit.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, loggedAction);
+            return Factory.Insert(this._Catalog, loggedAction, "audit.logged_actions", "event_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Audit.Data
         /// </summary>
         /// <param name="loggedActions">List of "LoggedAction" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Audit.LoggedAction> loggedActions)
+        public List<object> BulkImport(List<ExpandoObject> loggedActions)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Audit.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var loggedAction in loggedActions)
+                        foreach (dynamic loggedAction in loggedActions)
                         {
                             line++;
 
 
 
-                            if (loggedAction.EventId > 0)
+                            if (Cast.To<long>(loggedAction.event_id) > 0)
                             {
-                                result.Add(loggedAction.EventId);
-                                db.Update(loggedAction, loggedAction.EventId);
+                                result.Add(loggedAction.event_id);
+                                db.Update("audit.logged_actions", "event_id", loggedAction, loggedAction.event_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(loggedAction));
+                                result.Add(db.Insert("audit.logged_actions", "event_id", loggedAction));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Audit.Data
         /// <param name="loggedAction">The instance of "LoggedAction" class to update.</param>
         /// <param name="eventId">The value of the column "event_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Audit.LoggedAction loggedAction, long eventId)
+        public void Update(dynamic loggedAction, long eventId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Audit.Data
                 }
             }
 
-            Factory.Update(this._Catalog, loggedAction, eventId);
+            Factory.Update(this._Catalog, loggedAction, eventId, "audit.logged_actions", "event_id");
         }
 
         /// <summary>

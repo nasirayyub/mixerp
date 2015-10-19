@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.custom_field_forms" to return a all instances of the "CustomFieldForm" class to export. 
+        /// Executes a select query on the table "core.custom_field_forms" to return a all instances of the "CustomFieldForm" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "CustomFieldForm" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldForm> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldForm> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.custom_field_forms ORDER BY form_name;";
             return Factory.Get<MixERP.Net.Entities.Core.CustomFieldForm>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.custom_field_forms" to return a all instances of the "CustomFieldForm" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "CustomFieldForm" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"CustomFieldForm\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.custom_field_forms ORDER BY form_name;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="customFieldForm">The instance of "CustomFieldForm" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.CustomFieldForm customFieldForm, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic customFieldForm, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-            if (!string.IsNullOrWhiteSpace(customFieldForm.FormName))
+            if (!string.IsNullOrWhiteSpace(customFieldForm.form_name))
             {
-                primaryKeyValue = customFieldForm.FormName;
-                this.Update(customFieldForm, customFieldForm.FormName);
+                primaryKeyValue = customFieldForm.form_name;
+                this.Update(customFieldForm, customFieldForm.form_name);
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="customFieldForm">The instance of "CustomFieldForm" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.CustomFieldForm customFieldForm)
+        public object Add(dynamic customFieldForm)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, customFieldForm);
+            return Factory.Insert(this._Catalog, customFieldForm, "core.custom_field_forms", "form_name");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="customFieldForms">List of "CustomFieldForm" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.CustomFieldForm> customFieldForms)
+        public List<object> BulkImport(List<ExpandoObject> customFieldForms)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var customFieldForm in customFieldForms)
+                        foreach (dynamic customFieldForm in customFieldForms)
                         {
                             line++;
 
 
 
-                            if (!string.IsNullOrWhiteSpace(customFieldForm.FormName))
+                            if (!string.IsNullOrWhiteSpace(customFieldForm.form_name))
                             {
-                                result.Add(customFieldForm.FormName);
-                                db.Update(customFieldForm, customFieldForm.FormName);
+                                result.Add(customFieldForm.form_name);
+                                db.Update("core.custom_field_forms", "form_name", customFieldForm, customFieldForm.form_name);
                             }
                             else
                             {
-                                result.Add(db.Insert(customFieldForm));
+                                result.Add(db.Insert("core.custom_field_forms", "form_name", customFieldForm));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="customFieldForm">The instance of "CustomFieldForm" class to update.</param>
         /// <param name="formName">The value of the column "form_name" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.CustomFieldForm customFieldForm, string formName)
+        public void Update(dynamic customFieldForm, string formName)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, customFieldForm, formName);
+            Factory.Update(this._Catalog, customFieldForm, formName, "core.custom_field_forms", "form_name");
         }
 
         /// <summary>

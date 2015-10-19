@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.education_levels" to return a all instances of the "EducationLevel" class to export. 
+        /// Executes a select query on the table "hrm.education_levels" to return a all instances of the "EducationLevel" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "EducationLevel" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.EducationLevel> Get()
+        public IEnumerable<MixERP.Net.Entities.HRM.EducationLevel> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             const string sql = "SELECT * FROM hrm.education_levels ORDER BY education_level_id;";
             return Factory.Get<MixERP.Net.Entities.HRM.EducationLevel>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "hrm.education_levels" to return a all instances of the "EducationLevel" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "EducationLevel" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"EducationLevel\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.education_levels ORDER BY education_level_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="educationLevel">The instance of "EducationLevel" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.HRM.EducationLevel educationLevel, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic educationLevel, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             object primaryKeyValue;
 
-            educationLevel.AuditUserId = this._UserId;
-            educationLevel.AuditTs = System.DateTime.UtcNow;
+            educationLevel.audit_user_id = this._UserId;
+            educationLevel.audit_ts = System.DateTime.UtcNow;
 
-            if (educationLevel.EducationLevelId > 0)
+            if (Cast.To<int>(educationLevel.education_level_id) > 0)
             {
-                primaryKeyValue = educationLevel.EducationLevelId;
-                this.Update(educationLevel, educationLevel.EducationLevelId);
+                primaryKeyValue = educationLevel.education_level_id;
+                this.Update(educationLevel, int.Parse(educationLevel.education_level_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="educationLevel">The instance of "EducationLevel" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.HRM.EducationLevel educationLevel)
+        public object Add(dynamic educationLevel)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, educationLevel);
+            return Factory.Insert(this._Catalog, educationLevel, "hrm.education_levels", "education_level_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="educationLevels">List of "EducationLevel" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.HRM.EducationLevel> educationLevels)
+        public List<object> BulkImport(List<ExpandoObject> educationLevels)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var educationLevel in educationLevels)
+                        foreach (dynamic educationLevel in educationLevels)
                         {
                             line++;
 
-                            educationLevel.AuditUserId = this._UserId;
-                            educationLevel.AuditTs = System.DateTime.UtcNow;
+                            educationLevel.audit_user_id = this._UserId;
+                            educationLevel.audit_ts = System.DateTime.UtcNow;
 
-                            if (educationLevel.EducationLevelId > 0)
+                            if (Cast.To<int>(educationLevel.education_level_id) > 0)
                             {
-                                result.Add(educationLevel.EducationLevelId);
-                                db.Update(educationLevel, educationLevel.EducationLevelId);
+                                result.Add(educationLevel.education_level_id);
+                                db.Update("hrm.education_levels", "education_level_id", educationLevel, educationLevel.education_level_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(educationLevel));
+                                result.Add(db.Insert("hrm.education_levels", "education_level_id", educationLevel));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="educationLevel">The instance of "EducationLevel" class to update.</param>
         /// <param name="educationLevelId">The value of the column "education_level_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.HRM.EducationLevel educationLevel, int educationLevelId)
+        public void Update(dynamic educationLevel, int educationLevelId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            Factory.Update(this._Catalog, educationLevel, educationLevelId);
+            Factory.Update(this._Catalog, educationLevel, educationLevelId, "hrm.education_levels", "education_level_id");
         }
 
         /// <summary>

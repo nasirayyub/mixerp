@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.job_titles" to return a all instances of the "JobTitle" class to export. 
+        /// Executes a select query on the table "hrm.job_titles" to return a all instances of the "JobTitle" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "JobTitle" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.JobTitle> Get()
+        public IEnumerable<MixERP.Net.Entities.HRM.JobTitle> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             const string sql = "SELECT * FROM hrm.job_titles ORDER BY job_title_id;";
             return Factory.Get<MixERP.Net.Entities.HRM.JobTitle>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "hrm.job_titles" to return a all instances of the "JobTitle" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "JobTitle" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"JobTitle\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.job_titles ORDER BY job_title_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="jobTitle">The instance of "JobTitle" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.HRM.JobTitle jobTitle, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic jobTitle, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             object primaryKeyValue;
 
-            jobTitle.AuditUserId = this._UserId;
-            jobTitle.AuditTs = System.DateTime.UtcNow;
+            jobTitle.audit_user_id = this._UserId;
+            jobTitle.audit_ts = System.DateTime.UtcNow;
 
-            if (jobTitle.JobTitleId > 0)
+            if (Cast.To<int>(jobTitle.job_title_id) > 0)
             {
-                primaryKeyValue = jobTitle.JobTitleId;
-                this.Update(jobTitle, jobTitle.JobTitleId);
+                primaryKeyValue = jobTitle.job_title_id;
+                this.Update(jobTitle, int.Parse(jobTitle.job_title_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="jobTitle">The instance of "JobTitle" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.HRM.JobTitle jobTitle)
+        public object Add(dynamic jobTitle)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, jobTitle);
+            return Factory.Insert(this._Catalog, jobTitle, "hrm.job_titles", "job_title_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="jobTitles">List of "JobTitle" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.HRM.JobTitle> jobTitles)
+        public List<object> BulkImport(List<ExpandoObject> jobTitles)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var jobTitle in jobTitles)
+                        foreach (dynamic jobTitle in jobTitles)
                         {
                             line++;
 
-                            jobTitle.AuditUserId = this._UserId;
-                            jobTitle.AuditTs = System.DateTime.UtcNow;
+                            jobTitle.audit_user_id = this._UserId;
+                            jobTitle.audit_ts = System.DateTime.UtcNow;
 
-                            if (jobTitle.JobTitleId > 0)
+                            if (Cast.To<int>(jobTitle.job_title_id) > 0)
                             {
-                                result.Add(jobTitle.JobTitleId);
-                                db.Update(jobTitle, jobTitle.JobTitleId);
+                                result.Add(jobTitle.job_title_id);
+                                db.Update("hrm.job_titles", "job_title_id", jobTitle, jobTitle.job_title_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(jobTitle));
+                                result.Add(db.Insert("hrm.job_titles", "job_title_id", jobTitle));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="jobTitle">The instance of "JobTitle" class to update.</param>
         /// <param name="jobTitleId">The value of the column "job_title_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.HRM.JobTitle jobTitle, int jobTitleId)
+        public void Update(dynamic jobTitle, int jobTitleId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            Factory.Update(this._Catalog, jobTitle, jobTitleId);
+            Factory.Update(this._Catalog, jobTitle, jobTitleId, "hrm.job_titles", "job_title_id");
         }
 
         /// <summary>

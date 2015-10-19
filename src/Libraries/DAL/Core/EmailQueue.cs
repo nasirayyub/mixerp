@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.email_queue" to return a all instances of the "EmailQueue" class to export. 
+        /// Executes a select query on the table "core.email_queue" to return a all instances of the "EmailQueue" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "EmailQueue" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.EmailQueue> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.EmailQueue> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.email_queue ORDER BY queue_id;";
             return Factory.Get<MixERP.Net.Entities.Core.EmailQueue>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.email_queue" to return a all instances of the "EmailQueue" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "EmailQueue" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"EmailQueue\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.email_queue ORDER BY queue_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="emailQueue">The instance of "EmailQueue" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.EmailQueue emailQueue, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic emailQueue, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-            if (emailQueue.QueueId > 0)
+            if (Cast.To<long>(emailQueue.queue_id) > 0)
             {
-                primaryKeyValue = emailQueue.QueueId;
-                this.Update(emailQueue, emailQueue.QueueId);
+                primaryKeyValue = emailQueue.queue_id;
+                this.Update(emailQueue, long.Parse(emailQueue.queue_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="emailQueue">The instance of "EmailQueue" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.EmailQueue emailQueue)
+        public object Add(dynamic emailQueue)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, emailQueue);
+            return Factory.Insert(this._Catalog, emailQueue, "core.email_queue", "queue_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="emailQueues">List of "EmailQueue" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.EmailQueue> emailQueues)
+        public List<object> BulkImport(List<ExpandoObject> emailQueues)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var emailQueue in emailQueues)
+                        foreach (dynamic emailQueue in emailQueues)
                         {
                             line++;
 
 
 
-                            if (emailQueue.QueueId > 0)
+                            if (Cast.To<long>(emailQueue.queue_id) > 0)
                             {
-                                result.Add(emailQueue.QueueId);
-                                db.Update(emailQueue, emailQueue.QueueId);
+                                result.Add(emailQueue.queue_id);
+                                db.Update("core.email_queue", "queue_id", emailQueue, emailQueue.queue_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(emailQueue));
+                                result.Add(db.Insert("core.email_queue", "queue_id", emailQueue));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="emailQueue">The instance of "EmailQueue" class to update.</param>
         /// <param name="queueId">The value of the column "queue_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.EmailQueue emailQueue, long queueId)
+        public void Update(dynamic emailQueue, long queueId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, emailQueue, queueId);
+            Factory.Update(this._Catalog, emailQueue, queueId, "core.email_queue", "queue_id");
         }
 
         /// <summary>

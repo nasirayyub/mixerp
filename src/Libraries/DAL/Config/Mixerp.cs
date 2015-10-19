@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Config.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "config.mixerp" to return a all instances of the "Mixerp" class to export. 
+        /// Executes a select query on the table "config.mixerp" to return a all instances of the "Mixerp" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Mixerp" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Config.Mixerp> Get()
+        public IEnumerable<MixERP.Net.Entities.Config.Mixerp> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Config.Data
 
             const string sql = "SELECT * FROM config.mixerp ORDER BY key;";
             return Factory.Get<MixERP.Net.Entities.Config.Mixerp>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "config.mixerp" to return a all instances of the "Mixerp" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Mixerp" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Mixerp\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM config.mixerp ORDER BY key;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// <param name="mixerp">The instance of "Mixerp" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Config.Mixerp mixerp, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic mixerp, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Config.Data
 
             object primaryKeyValue;
 
-            mixerp.AuditUserId = this._UserId;
-            mixerp.AuditTs = System.DateTime.UtcNow;
+            mixerp.audit_user_id = this._UserId;
+            mixerp.audit_ts = System.DateTime.UtcNow;
 
-            if (!string.IsNullOrWhiteSpace(mixerp.Key))
+            if (!string.IsNullOrWhiteSpace(mixerp.key))
             {
-                primaryKeyValue = mixerp.Key;
-                this.Update(mixerp, mixerp.Key);
+                primaryKeyValue = mixerp.key;
+                this.Update(mixerp, mixerp.key);
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// </summary>
         /// <param name="mixerp">The instance of "Mixerp" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Config.Mixerp mixerp)
+        public object Add(dynamic mixerp)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Config.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, mixerp);
+            return Factory.Insert(this._Catalog, mixerp, "config.mixerp", "key");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// </summary>
         /// <param name="mixerps">List of "Mixerp" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Config.Mixerp> mixerps)
+        public List<object> BulkImport(List<ExpandoObject> mixerps)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Config.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var mixerp in mixerps)
+                        foreach (dynamic mixerp in mixerps)
                         {
                             line++;
 
-                            mixerp.AuditUserId = this._UserId;
-                            mixerp.AuditTs = System.DateTime.UtcNow;
+                            mixerp.audit_user_id = this._UserId;
+                            mixerp.audit_ts = System.DateTime.UtcNow;
 
-                            if (!string.IsNullOrWhiteSpace(mixerp.Key))
+                            if (!string.IsNullOrWhiteSpace(mixerp.key))
                             {
-                                result.Add(mixerp.Key);
-                                db.Update(mixerp, mixerp.Key);
+                                result.Add(mixerp.key);
+                                db.Update("config.mixerp", "key", mixerp, mixerp.key);
                             }
                             else
                             {
-                                result.Add(db.Insert(mixerp));
+                                result.Add(db.Insert("config.mixerp", "key", mixerp));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// <param name="mixerp">The instance of "Mixerp" class to update.</param>
         /// <param name="key">The value of the column "key" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Config.Mixerp mixerp, string key)
+        public void Update(dynamic mixerp, string key)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Config.Data
                 }
             }
 
-            Factory.Update(this._Catalog, mixerp, key);
+            Factory.Update(this._Catalog, mixerp, key, "config.mixerp", "key");
         }
 
         /// <summary>

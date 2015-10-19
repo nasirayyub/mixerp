@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "transactions.routines" to return a all instances of the "Routine" class to export. 
+        /// Executes a select query on the table "transactions.routines" to return a all instances of the "Routine" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Routine" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Transactions.Routine> Get()
+        public IEnumerable<MixERP.Net.Entities.Transactions.Routine> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
             const string sql = "SELECT * FROM transactions.routines ORDER BY routine_id;";
             return Factory.Get<MixERP.Net.Entities.Transactions.Routine>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "transactions.routines" to return a all instances of the "Routine" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Routine" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Routine\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM transactions.routines ORDER BY routine_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="routine">The instance of "Routine" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Transactions.Routine routine, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic routine, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
 
 
-            if (routine.RoutineId > 0)
+            if (Cast.To<int>(routine.routine_id) > 0)
             {
-                primaryKeyValue = routine.RoutineId;
-                this.Update(routine, routine.RoutineId);
+                primaryKeyValue = routine.routine_id;
+                this.Update(routine, int.Parse(routine.routine_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="routine">The instance of "Routine" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Transactions.Routine routine)
+        public object Add(dynamic routine)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, routine);
+            return Factory.Insert(this._Catalog, routine, "transactions.routines", "routine_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="routines">List of "Routine" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Transactions.Routine> routines)
+        public List<object> BulkImport(List<ExpandoObject> routines)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var routine in routines)
+                        foreach (dynamic routine in routines)
                         {
                             line++;
 
 
 
-                            if (routine.RoutineId > 0)
+                            if (Cast.To<int>(routine.routine_id) > 0)
                             {
-                                result.Add(routine.RoutineId);
-                                db.Update(routine, routine.RoutineId);
+                                result.Add(routine.routine_id);
+                                db.Update("transactions.routines", "routine_id", routine, routine.routine_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(routine));
+                                result.Add(db.Insert("transactions.routines", "routine_id", routine));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="routine">The instance of "Routine" class to update.</param>
         /// <param name="routineId">The value of the column "routine_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Transactions.Routine routine, int routineId)
+        public void Update(dynamic routine, int routineId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            Factory.Update(this._Catalog, routine, routineId);
+            Factory.Update(this._Catalog, routine, routineId, "transactions.routines", "routine_id");
         }
 
         /// <summary>

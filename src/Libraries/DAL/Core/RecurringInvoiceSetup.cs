@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.recurring_invoice_setup" to return a all instances of the "RecurringInvoiceSetup" class to export. 
+        /// Executes a select query on the table "core.recurring_invoice_setup" to return a all instances of the "RecurringInvoiceSetup" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "RecurringInvoiceSetup" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.RecurringInvoiceSetup> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.RecurringInvoiceSetup> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.recurring_invoice_setup ORDER BY recurring_invoice_setup_id;";
             return Factory.Get<MixERP.Net.Entities.Core.RecurringInvoiceSetup>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.recurring_invoice_setup" to return a all instances of the "RecurringInvoiceSetup" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "RecurringInvoiceSetup" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"RecurringInvoiceSetup\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.recurring_invoice_setup ORDER BY recurring_invoice_setup_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="recurringInvoiceSetup">The instance of "RecurringInvoiceSetup" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.RecurringInvoiceSetup recurringInvoiceSetup, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic recurringInvoiceSetup, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            recurringInvoiceSetup.AuditUserId = this._UserId;
-            recurringInvoiceSetup.AuditTs = System.DateTime.UtcNow;
+            recurringInvoiceSetup.audit_user_id = this._UserId;
+            recurringInvoiceSetup.audit_ts = System.DateTime.UtcNow;
 
-            if (recurringInvoiceSetup.RecurringInvoiceSetupId > 0)
+            if (Cast.To<int>(recurringInvoiceSetup.recurring_invoice_setup_id) > 0)
             {
-                primaryKeyValue = recurringInvoiceSetup.RecurringInvoiceSetupId;
-                this.Update(recurringInvoiceSetup, recurringInvoiceSetup.RecurringInvoiceSetupId);
+                primaryKeyValue = recurringInvoiceSetup.recurring_invoice_setup_id;
+                this.Update(recurringInvoiceSetup, int.Parse(recurringInvoiceSetup.recurring_invoice_setup_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="recurringInvoiceSetup">The instance of "RecurringInvoiceSetup" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.RecurringInvoiceSetup recurringInvoiceSetup)
+        public object Add(dynamic recurringInvoiceSetup)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, recurringInvoiceSetup);
+            return Factory.Insert(this._Catalog, recurringInvoiceSetup, "core.recurring_invoice_setup", "recurring_invoice_setup_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="recurringInvoiceSetups">List of "RecurringInvoiceSetup" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.RecurringInvoiceSetup> recurringInvoiceSetups)
+        public List<object> BulkImport(List<ExpandoObject> recurringInvoiceSetups)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var recurringInvoiceSetup in recurringInvoiceSetups)
+                        foreach (dynamic recurringInvoiceSetup in recurringInvoiceSetups)
                         {
                             line++;
 
-                            recurringInvoiceSetup.AuditUserId = this._UserId;
-                            recurringInvoiceSetup.AuditTs = System.DateTime.UtcNow;
+                            recurringInvoiceSetup.audit_user_id = this._UserId;
+                            recurringInvoiceSetup.audit_ts = System.DateTime.UtcNow;
 
-                            if (recurringInvoiceSetup.RecurringInvoiceSetupId > 0)
+                            if (Cast.To<int>(recurringInvoiceSetup.recurring_invoice_setup_id) > 0)
                             {
-                                result.Add(recurringInvoiceSetup.RecurringInvoiceSetupId);
-                                db.Update(recurringInvoiceSetup, recurringInvoiceSetup.RecurringInvoiceSetupId);
+                                result.Add(recurringInvoiceSetup.recurring_invoice_setup_id);
+                                db.Update("core.recurring_invoice_setup", "recurring_invoice_setup_id", recurringInvoiceSetup, recurringInvoiceSetup.recurring_invoice_setup_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(recurringInvoiceSetup));
+                                result.Add(db.Insert("core.recurring_invoice_setup", "recurring_invoice_setup_id", recurringInvoiceSetup));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="recurringInvoiceSetup">The instance of "RecurringInvoiceSetup" class to update.</param>
         /// <param name="recurringInvoiceSetupId">The value of the column "recurring_invoice_setup_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.RecurringInvoiceSetup recurringInvoiceSetup, int recurringInvoiceSetupId)
+        public void Update(dynamic recurringInvoiceSetup, int recurringInvoiceSetupId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, recurringInvoiceSetup, recurringInvoiceSetupId);
+            Factory.Update(this._Catalog, recurringInvoiceSetup, recurringInvoiceSetupId, "core.recurring_invoice_setup", "recurring_invoice_setup_id");
         }
 
         /// <summary>

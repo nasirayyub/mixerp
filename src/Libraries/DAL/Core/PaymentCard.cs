@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.payment_cards" to return a all instances of the "PaymentCard" class to export. 
+        /// Executes a select query on the table "core.payment_cards" to return a all instances of the "PaymentCard" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "PaymentCard" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.PaymentCard> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.PaymentCard> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.payment_cards ORDER BY payment_card_id;";
             return Factory.Get<MixERP.Net.Entities.Core.PaymentCard>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.payment_cards" to return a all instances of the "PaymentCard" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "PaymentCard" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"PaymentCard\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.payment_cards ORDER BY payment_card_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="paymentCard">The instance of "PaymentCard" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.PaymentCard paymentCard, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic paymentCard, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            paymentCard.AuditUserId = this._UserId;
-            paymentCard.AuditTs = System.DateTime.UtcNow;
+            paymentCard.audit_user_id = this._UserId;
+            paymentCard.audit_ts = System.DateTime.UtcNow;
 
-            if (paymentCard.PaymentCardId > 0)
+            if (Cast.To<int>(paymentCard.payment_card_id) > 0)
             {
-                primaryKeyValue = paymentCard.PaymentCardId;
-                this.Update(paymentCard, paymentCard.PaymentCardId);
+                primaryKeyValue = paymentCard.payment_card_id;
+                this.Update(paymentCard, int.Parse(paymentCard.payment_card_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="paymentCard">The instance of "PaymentCard" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.PaymentCard paymentCard)
+        public object Add(dynamic paymentCard)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, paymentCard);
+            return Factory.Insert(this._Catalog, paymentCard, "core.payment_cards", "payment_card_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="paymentCards">List of "PaymentCard" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.PaymentCard> paymentCards)
+        public List<object> BulkImport(List<ExpandoObject> paymentCards)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var paymentCard in paymentCards)
+                        foreach (dynamic paymentCard in paymentCards)
                         {
                             line++;
 
-                            paymentCard.AuditUserId = this._UserId;
-                            paymentCard.AuditTs = System.DateTime.UtcNow;
+                            paymentCard.audit_user_id = this._UserId;
+                            paymentCard.audit_ts = System.DateTime.UtcNow;
 
-                            if (paymentCard.PaymentCardId > 0)
+                            if (Cast.To<int>(paymentCard.payment_card_id) > 0)
                             {
-                                result.Add(paymentCard.PaymentCardId);
-                                db.Update(paymentCard, paymentCard.PaymentCardId);
+                                result.Add(paymentCard.payment_card_id);
+                                db.Update("core.payment_cards", "payment_card_id", paymentCard, paymentCard.payment_card_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(paymentCard));
+                                result.Add(db.Insert("core.payment_cards", "payment_card_id", paymentCard));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="paymentCard">The instance of "PaymentCard" class to update.</param>
         /// <param name="paymentCardId">The value of the column "payment_card_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.PaymentCard paymentCard, int paymentCardId)
+        public void Update(dynamic paymentCard, int paymentCardId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, paymentCard, paymentCardId);
+            Factory.Update(this._Catalog, paymentCard, paymentCardId, "core.payment_cards", "payment_card_id");
         }
 
         /// <summary>

@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Config.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "config.attachment_factory" to return a all instances of the "AttachmentFactory" class to export. 
+        /// Executes a select query on the table "config.attachment_factory" to return a all instances of the "AttachmentFactory" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "AttachmentFactory" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Config.AttachmentFactory> Get()
+        public IEnumerable<MixERP.Net.Entities.Config.AttachmentFactory> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Config.Data
 
             const string sql = "SELECT * FROM config.attachment_factory ORDER BY key;";
             return Factory.Get<MixERP.Net.Entities.Config.AttachmentFactory>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "config.attachment_factory" to return a all instances of the "AttachmentFactory" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "AttachmentFactory" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"AttachmentFactory\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM config.attachment_factory ORDER BY key;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// <param name="attachmentFactory">The instance of "AttachmentFactory" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Config.AttachmentFactory attachmentFactory, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic attachmentFactory, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Config.Data
 
             object primaryKeyValue;
 
-            attachmentFactory.AuditUserId = this._UserId;
-            attachmentFactory.AuditTs = System.DateTime.UtcNow;
+            attachmentFactory.audit_user_id = this._UserId;
+            attachmentFactory.audit_ts = System.DateTime.UtcNow;
 
-            if (!string.IsNullOrWhiteSpace(attachmentFactory.Key))
+            if (!string.IsNullOrWhiteSpace(attachmentFactory.key))
             {
-                primaryKeyValue = attachmentFactory.Key;
-                this.Update(attachmentFactory, attachmentFactory.Key);
+                primaryKeyValue = attachmentFactory.key;
+                this.Update(attachmentFactory, attachmentFactory.key);
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// </summary>
         /// <param name="attachmentFactory">The instance of "AttachmentFactory" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Config.AttachmentFactory attachmentFactory)
+        public object Add(dynamic attachmentFactory)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Config.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, attachmentFactory);
+            return Factory.Insert(this._Catalog, attachmentFactory, "config.attachment_factory", "key");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// </summary>
         /// <param name="attachmentFactories">List of "AttachmentFactory" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Config.AttachmentFactory> attachmentFactories)
+        public List<object> BulkImport(List<ExpandoObject> attachmentFactories)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Config.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var attachmentFactory in attachmentFactories)
+                        foreach (dynamic attachmentFactory in attachmentFactories)
                         {
                             line++;
 
-                            attachmentFactory.AuditUserId = this._UserId;
-                            attachmentFactory.AuditTs = System.DateTime.UtcNow;
+                            attachmentFactory.audit_user_id = this._UserId;
+                            attachmentFactory.audit_ts = System.DateTime.UtcNow;
 
-                            if (!string.IsNullOrWhiteSpace(attachmentFactory.Key))
+                            if (!string.IsNullOrWhiteSpace(attachmentFactory.key))
                             {
-                                result.Add(attachmentFactory.Key);
-                                db.Update(attachmentFactory, attachmentFactory.Key);
+                                result.Add(attachmentFactory.key);
+                                db.Update("config.attachment_factory", "key", attachmentFactory, attachmentFactory.key);
                             }
                             else
                             {
-                                result.Add(db.Insert(attachmentFactory));
+                                result.Add(db.Insert("config.attachment_factory", "key", attachmentFactory));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// <param name="attachmentFactory">The instance of "AttachmentFactory" class to update.</param>
         /// <param name="key">The value of the column "key" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Config.AttachmentFactory attachmentFactory, string key)
+        public void Update(dynamic attachmentFactory, string key)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Config.Data
                 }
             }
 
-            Factory.Update(this._Catalog, attachmentFactory, key);
+            Factory.Update(this._Catalog, attachmentFactory, key, "config.attachment_factory", "key");
         }
 
         /// <summary>

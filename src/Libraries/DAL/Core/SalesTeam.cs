@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.sales_teams" to return a all instances of the "SalesTeam" class to export. 
+        /// Executes a select query on the table "core.sales_teams" to return a all instances of the "SalesTeam" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "SalesTeam" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.SalesTeam> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.SalesTeam> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.sales_teams ORDER BY sales_team_id;";
             return Factory.Get<MixERP.Net.Entities.Core.SalesTeam>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.sales_teams" to return a all instances of the "SalesTeam" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "SalesTeam" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"SalesTeam\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_teams ORDER BY sales_team_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="salesTeam">The instance of "SalesTeam" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.SalesTeam salesTeam, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic salesTeam, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            salesTeam.AuditUserId = this._UserId;
-            salesTeam.AuditTs = System.DateTime.UtcNow;
+            salesTeam.audit_user_id = this._UserId;
+            salesTeam.audit_ts = System.DateTime.UtcNow;
 
-            if (salesTeam.SalesTeamId > 0)
+            if (Cast.To<int>(salesTeam.sales_team_id) > 0)
             {
-                primaryKeyValue = salesTeam.SalesTeamId;
-                this.Update(salesTeam, salesTeam.SalesTeamId);
+                primaryKeyValue = salesTeam.sales_team_id;
+                this.Update(salesTeam, int.Parse(salesTeam.sales_team_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="salesTeam">The instance of "SalesTeam" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.SalesTeam salesTeam)
+        public object Add(dynamic salesTeam)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, salesTeam);
+            return Factory.Insert(this._Catalog, salesTeam, "core.sales_teams", "sales_team_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="salesTeams">List of "SalesTeam" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.SalesTeam> salesTeams)
+        public List<object> BulkImport(List<ExpandoObject> salesTeams)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var salesTeam in salesTeams)
+                        foreach (dynamic salesTeam in salesTeams)
                         {
                             line++;
 
-                            salesTeam.AuditUserId = this._UserId;
-                            salesTeam.AuditTs = System.DateTime.UtcNow;
+                            salesTeam.audit_user_id = this._UserId;
+                            salesTeam.audit_ts = System.DateTime.UtcNow;
 
-                            if (salesTeam.SalesTeamId > 0)
+                            if (Cast.To<int>(salesTeam.sales_team_id) > 0)
                             {
-                                result.Add(salesTeam.SalesTeamId);
-                                db.Update(salesTeam, salesTeam.SalesTeamId);
+                                result.Add(salesTeam.sales_team_id);
+                                db.Update("core.sales_teams", "sales_team_id", salesTeam, salesTeam.sales_team_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(salesTeam));
+                                result.Add(db.Insert("core.sales_teams", "sales_team_id", salesTeam));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="salesTeam">The instance of "SalesTeam" class to update.</param>
         /// <param name="salesTeamId">The value of the column "sales_team_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.SalesTeam salesTeam, int salesTeamId)
+        public void Update(dynamic salesTeam, int salesTeamId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, salesTeam, salesTeamId);
+            Factory.Update(this._Catalog, salesTeam, salesTeamId, "core.sales_teams", "sales_team_id");
         }
 
         /// <summary>

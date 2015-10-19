@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.late_fee" to return a all instances of the "LateFee" class to export. 
+        /// Executes a select query on the table "core.late_fee" to return a all instances of the "LateFee" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "LateFee" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.LateFee> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.LateFee> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.late_fee ORDER BY late_fee_id;";
             return Factory.Get<MixERP.Net.Entities.Core.LateFee>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.late_fee" to return a all instances of the "LateFee" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "LateFee" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"LateFee\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.late_fee ORDER BY late_fee_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="lateFee">The instance of "LateFee" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.LateFee lateFee, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic lateFee, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            lateFee.AuditUserId = this._UserId;
-            lateFee.AuditTs = System.DateTime.UtcNow;
+            lateFee.audit_user_id = this._UserId;
+            lateFee.audit_ts = System.DateTime.UtcNow;
 
-            if (lateFee.LateFeeId > 0)
+            if (Cast.To<int>(lateFee.late_fee_id) > 0)
             {
-                primaryKeyValue = lateFee.LateFeeId;
-                this.Update(lateFee, lateFee.LateFeeId);
+                primaryKeyValue = lateFee.late_fee_id;
+                this.Update(lateFee, int.Parse(lateFee.late_fee_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="lateFee">The instance of "LateFee" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.LateFee lateFee)
+        public object Add(dynamic lateFee)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, lateFee);
+            return Factory.Insert(this._Catalog, lateFee, "core.late_fee", "late_fee_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="lateFees">List of "LateFee" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.LateFee> lateFees)
+        public List<object> BulkImport(List<ExpandoObject> lateFees)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var lateFee in lateFees)
+                        foreach (dynamic lateFee in lateFees)
                         {
                             line++;
 
-                            lateFee.AuditUserId = this._UserId;
-                            lateFee.AuditTs = System.DateTime.UtcNow;
+                            lateFee.audit_user_id = this._UserId;
+                            lateFee.audit_ts = System.DateTime.UtcNow;
 
-                            if (lateFee.LateFeeId > 0)
+                            if (Cast.To<int>(lateFee.late_fee_id) > 0)
                             {
-                                result.Add(lateFee.LateFeeId);
-                                db.Update(lateFee, lateFee.LateFeeId);
+                                result.Add(lateFee.late_fee_id);
+                                db.Update("core.late_fee", "late_fee_id", lateFee, lateFee.late_fee_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(lateFee));
+                                result.Add(db.Insert("core.late_fee", "late_fee_id", lateFee));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="lateFee">The instance of "LateFee" class to update.</param>
         /// <param name="lateFeeId">The value of the column "late_fee_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.LateFee lateFee, int lateFeeId)
+        public void Update(dynamic lateFee, int lateFeeId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, lateFee, lateFeeId);
+            Factory.Update(this._Catalog, lateFee, lateFeeId, "core.late_fee", "late_fee_id");
         }
 
         /// <summary>

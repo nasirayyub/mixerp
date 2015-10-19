@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.state_sales_taxes" to return a all instances of the "StateSalesTax" class to export. 
+        /// Executes a select query on the table "core.state_sales_taxes" to return a all instances of the "StateSalesTax" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "StateSalesTax" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.StateSalesTax> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.StateSalesTax> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.state_sales_taxes ORDER BY state_sales_tax_id;";
             return Factory.Get<MixERP.Net.Entities.Core.StateSalesTax>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.state_sales_taxes" to return a all instances of the "StateSalesTax" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "StateSalesTax" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"StateSalesTax\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.state_sales_taxes ORDER BY state_sales_tax_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="stateSalesTax">The instance of "StateSalesTax" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.StateSalesTax stateSalesTax, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic stateSalesTax, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            stateSalesTax.AuditUserId = this._UserId;
-            stateSalesTax.AuditTs = System.DateTime.UtcNow;
+            stateSalesTax.audit_user_id = this._UserId;
+            stateSalesTax.audit_ts = System.DateTime.UtcNow;
 
-            if (stateSalesTax.StateSalesTaxId > 0)
+            if (Cast.To<int>(stateSalesTax.state_sales_tax_id) > 0)
             {
-                primaryKeyValue = stateSalesTax.StateSalesTaxId;
-                this.Update(stateSalesTax, stateSalesTax.StateSalesTaxId);
+                primaryKeyValue = stateSalesTax.state_sales_tax_id;
+                this.Update(stateSalesTax, int.Parse(stateSalesTax.state_sales_tax_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="stateSalesTax">The instance of "StateSalesTax" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.StateSalesTax stateSalesTax)
+        public object Add(dynamic stateSalesTax)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, stateSalesTax);
+            return Factory.Insert(this._Catalog, stateSalesTax, "core.state_sales_taxes", "state_sales_tax_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="stateSalesTaxes">List of "StateSalesTax" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.StateSalesTax> stateSalesTaxes)
+        public List<object> BulkImport(List<ExpandoObject> stateSalesTaxes)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var stateSalesTax in stateSalesTaxes)
+                        foreach (dynamic stateSalesTax in stateSalesTaxes)
                         {
                             line++;
 
-                            stateSalesTax.AuditUserId = this._UserId;
-                            stateSalesTax.AuditTs = System.DateTime.UtcNow;
+                            stateSalesTax.audit_user_id = this._UserId;
+                            stateSalesTax.audit_ts = System.DateTime.UtcNow;
 
-                            if (stateSalesTax.StateSalesTaxId > 0)
+                            if (Cast.To<int>(stateSalesTax.state_sales_tax_id) > 0)
                             {
-                                result.Add(stateSalesTax.StateSalesTaxId);
-                                db.Update(stateSalesTax, stateSalesTax.StateSalesTaxId);
+                                result.Add(stateSalesTax.state_sales_tax_id);
+                                db.Update("core.state_sales_taxes", "state_sales_tax_id", stateSalesTax, stateSalesTax.state_sales_tax_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(stateSalesTax));
+                                result.Add(db.Insert("core.state_sales_taxes", "state_sales_tax_id", stateSalesTax));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="stateSalesTax">The instance of "StateSalesTax" class to update.</param>
         /// <param name="stateSalesTaxId">The value of the column "state_sales_tax_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.StateSalesTax stateSalesTax, int stateSalesTaxId)
+        public void Update(dynamic stateSalesTax, int stateSalesTaxId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, stateSalesTax, stateSalesTaxId);
+            Factory.Update(this._Catalog, stateSalesTax, stateSalesTaxId, "core.state_sales_taxes", "state_sales_tax_id");
         }
 
         /// <summary>

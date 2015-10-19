@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -104,19 +105,48 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns all collection of item cost price.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/core/item-cost-price/all")]
+        public IEnumerable<MixERP.Net.Entities.Core.ItemCostPrice> GetAll()
+        {
+            try
+            {
+                return this.ItemCostPriceContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of item cost price for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/core/item-cost-price/export")]
-        [Route("~/api/core/item-cost-price/all")]
-        public IEnumerable<MixERP.Net.Entities.Core.ItemCostPrice> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.ItemCostPriceContext.Get();
+                return this.ItemCostPriceContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -492,7 +522,7 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/item-cost-price/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Core.ItemCostPrice itemCostPrice = form[0].ToObject<MixERP.Net.Entities.Core.ItemCostPrice>(JsonHelper.GetJsonSerializer());
+            dynamic itemCostPrice = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (itemCostPrice == null)
@@ -595,9 +625,9 @@ namespace MixERP.Net.Api.Core
             }
         }
 
-        private List<MixERP.Net.Entities.Core.ItemCostPrice> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Core.ItemCostPrice>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -609,9 +639,9 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/core/item-cost-price/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Core.ItemCostPrice> itemCostPriceCollection = this.ParseCollection(collection);
+            List<ExpandoObject> itemCostPriceCollection = this.ParseCollection(collection);
 
             if (itemCostPriceCollection == null || itemCostPriceCollection.Count.Equals(0))
             {

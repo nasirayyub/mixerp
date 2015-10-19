@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Config.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "config.scrud_factory" to return a all instances of the "ScrudFactory" class to export. 
+        /// Executes a select query on the table "config.scrud_factory" to return a all instances of the "ScrudFactory" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "ScrudFactory" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Config.ScrudFactory> Get()
+        public IEnumerable<MixERP.Net.Entities.Config.ScrudFactory> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Config.Data
 
             const string sql = "SELECT * FROM config.scrud_factory ORDER BY key;";
             return Factory.Get<MixERP.Net.Entities.Config.ScrudFactory>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "config.scrud_factory" to return a all instances of the "ScrudFactory" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "ScrudFactory" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"ScrudFactory\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM config.scrud_factory ORDER BY key;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// <param name="scrudFactory">The instance of "ScrudFactory" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Config.ScrudFactory scrudFactory, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic scrudFactory, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Config.Data
 
             object primaryKeyValue;
 
-            scrudFactory.AuditUserId = this._UserId;
-            scrudFactory.AuditTs = System.DateTime.UtcNow;
+            scrudFactory.audit_user_id = this._UserId;
+            scrudFactory.audit_ts = System.DateTime.UtcNow;
 
-            if (!string.IsNullOrWhiteSpace(scrudFactory.Key))
+            if (!string.IsNullOrWhiteSpace(scrudFactory.key))
             {
-                primaryKeyValue = scrudFactory.Key;
-                this.Update(scrudFactory, scrudFactory.Key);
+                primaryKeyValue = scrudFactory.key;
+                this.Update(scrudFactory, scrudFactory.key);
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// </summary>
         /// <param name="scrudFactory">The instance of "ScrudFactory" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Config.ScrudFactory scrudFactory)
+        public object Add(dynamic scrudFactory)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Config.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, scrudFactory);
+            return Factory.Insert(this._Catalog, scrudFactory, "config.scrud_factory", "key");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// </summary>
         /// <param name="scrudFactories">List of "ScrudFactory" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Config.ScrudFactory> scrudFactories)
+        public List<object> BulkImport(List<ExpandoObject> scrudFactories)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Config.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var scrudFactory in scrudFactories)
+                        foreach (dynamic scrudFactory in scrudFactories)
                         {
                             line++;
 
-                            scrudFactory.AuditUserId = this._UserId;
-                            scrudFactory.AuditTs = System.DateTime.UtcNow;
+                            scrudFactory.audit_user_id = this._UserId;
+                            scrudFactory.audit_ts = System.DateTime.UtcNow;
 
-                            if (!string.IsNullOrWhiteSpace(scrudFactory.Key))
+                            if (!string.IsNullOrWhiteSpace(scrudFactory.key))
                             {
-                                result.Add(scrudFactory.Key);
-                                db.Update(scrudFactory, scrudFactory.Key);
+                                result.Add(scrudFactory.key);
+                                db.Update("config.scrud_factory", "key", scrudFactory, scrudFactory.key);
                             }
                             else
                             {
-                                result.Add(db.Insert(scrudFactory));
+                                result.Add(db.Insert("config.scrud_factory", "key", scrudFactory));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// <param name="scrudFactory">The instance of "ScrudFactory" class to update.</param>
         /// <param name="key">The value of the column "key" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Config.ScrudFactory scrudFactory, string key)
+        public void Update(dynamic scrudFactory, string key)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Config.Data
                 }
             }
 
-            Factory.Update(this._Catalog, scrudFactory, key);
+            Factory.Update(this._Catalog, scrudFactory, key, "config.scrud_factory", "key");
         }
 
         /// <summary>

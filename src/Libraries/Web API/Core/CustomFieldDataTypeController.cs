@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -100,19 +101,48 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns all collection of custom field data type.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/core/custom-field-data-type/all")]
+        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldDataType> GetAll()
+        {
+            try
+            {
+                return this.CustomFieldDataTypeContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of custom field data type for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/core/custom-field-data-type/export")]
-        [Route("~/api/core/custom-field-data-type/all")]
-        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldDataType> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.CustomFieldDataTypeContext.Get();
+                return this.CustomFieldDataTypeContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -488,7 +518,7 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/custom-field-data-type/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Core.CustomFieldDataType customFieldDataType = form[0].ToObject<MixERP.Net.Entities.Core.CustomFieldDataType>(JsonHelper.GetJsonSerializer());
+            dynamic customFieldDataType = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (customFieldDataType == null)
@@ -591,9 +621,9 @@ namespace MixERP.Net.Api.Core
             }
         }
 
-        private List<MixERP.Net.Entities.Core.CustomFieldDataType> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Core.CustomFieldDataType>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -605,9 +635,9 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/core/custom-field-data-type/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Core.CustomFieldDataType> customFieldDataTypeCollection = this.ParseCollection(collection);
+            List<ExpandoObject> customFieldDataTypeCollection = this.ParseCollection(collection);
 
             if (customFieldDataTypeCollection == null || customFieldDataTypeCollection.Count.Equals(0))
             {

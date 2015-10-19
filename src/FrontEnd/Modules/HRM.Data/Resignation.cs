@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.resignations" to return a all instances of the "Resignation" class to export. 
+        /// Executes a select query on the table "hrm.resignations" to return a all instances of the "Resignation" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Resignation" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.Resignation> Get()
+        public IEnumerable<MixERP.Net.Entities.HRM.Resignation> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             const string sql = "SELECT * FROM hrm.resignations ORDER BY resignation_id;";
             return Factory.Get<MixERP.Net.Entities.HRM.Resignation>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "hrm.resignations" to return a all instances of the "Resignation" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Resignation" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Resignation\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.resignations ORDER BY resignation_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="resignation">The instance of "Resignation" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.HRM.Resignation resignation, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic resignation, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,14 +298,14 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             object primaryKeyValue;
 
-            resignation.AuditUserId = this._UserId;
-            resignation.EnteredBy = this._UserId;
-            resignation.AuditTs = System.DateTime.UtcNow;
+            resignation.audit_user_id = this._UserId;
+            resignation.entered_by = this._UserId;
+            resignation.audit_ts = System.DateTime.UtcNow;
 
-            if (resignation.ResignationId > 0)
+            if (Cast.To<int>(resignation.resignation_id) > 0)
             {
-                primaryKeyValue = resignation.ResignationId;
-                this.Update(resignation, resignation.ResignationId);
+                primaryKeyValue = resignation.resignation_id;
+                this.Update(resignation, int.Parse(resignation.resignation_id));
             }
             else
             {
@@ -311,7 +342,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="resignation">The instance of "Resignation" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.HRM.Resignation resignation)
+        public object Add(dynamic resignation)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -331,7 +362,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, resignation);
+            return Factory.Insert(this._Catalog, resignation, "hrm.resignations", "resignation_id");
         }
 
         /// <summary>
@@ -339,7 +370,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="resignations">List of "Resignation" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.HRM.Resignation> resignations)
+        public List<object> BulkImport(List<ExpandoObject> resignations)
         {
             if (!this.SkipValidation)
             {
@@ -363,22 +394,22 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var resignation in resignations)
+                        foreach (dynamic resignation in resignations)
                         {
                             line++;
 
-                            resignation.AuditUserId = this._UserId;
-                            resignation.EnteredBy = this._UserId;
-                            resignation.AuditTs = System.DateTime.UtcNow;
+                            resignation.audit_user_id = this._UserId;
+                            resignation.entered_by = this._UserId;
+                            resignation.audit_ts = System.DateTime.UtcNow;
 
-                            if (resignation.ResignationId > 0)
+                            if (Cast.To<int>(resignation.resignation_id) > 0)
                             {
-                                result.Add(resignation.ResignationId);
-                                db.Update(resignation, resignation.ResignationId);
+                                result.Add(resignation.resignation_id);
+                                db.Update("hrm.resignations", "resignation_id", resignation, resignation.resignation_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(resignation));
+                                result.Add(db.Insert("hrm.resignations", "resignation_id", resignation));
                             }
                         }
 
@@ -415,7 +446,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="resignation">The instance of "Resignation" class to update.</param>
         /// <param name="resignationId">The value of the column "resignation_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.HRM.Resignation resignation, int resignationId)
+        public void Update(dynamic resignation, int resignationId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -435,7 +466,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            Factory.Update(this._Catalog, resignation, resignationId);
+            Factory.Update(this._Catalog, resignation, resignationId, "hrm.resignations", "resignation_id");
         }
 
         /// <summary>

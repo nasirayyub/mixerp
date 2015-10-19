@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "transactions.stock_return" to return a all instances of the "StockReturn" class to export. 
+        /// Executes a select query on the table "transactions.stock_return" to return a all instances of the "StockReturn" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "StockReturn" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Transactions.StockReturn> Get()
+        public IEnumerable<MixERP.Net.Entities.Transactions.StockReturn> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
             const string sql = "SELECT * FROM transactions.stock_return ORDER BY sales_return_id;";
             return Factory.Get<MixERP.Net.Entities.Transactions.StockReturn>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "transactions.stock_return" to return a all instances of the "StockReturn" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "StockReturn" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"StockReturn\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM transactions.stock_return ORDER BY sales_return_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="stockReturn">The instance of "StockReturn" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Transactions.StockReturn stockReturn, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic stockReturn, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
 
 
-            if (stockReturn.SalesReturnId > 0)
+            if (Cast.To<long>(stockReturn.sales_return_id) > 0)
             {
-                primaryKeyValue = stockReturn.SalesReturnId;
-                this.Update(stockReturn, stockReturn.SalesReturnId);
+                primaryKeyValue = stockReturn.sales_return_id;
+                this.Update(stockReturn, long.Parse(stockReturn.sales_return_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="stockReturn">The instance of "StockReturn" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Transactions.StockReturn stockReturn)
+        public object Add(dynamic stockReturn)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, stockReturn);
+            return Factory.Insert(this._Catalog, stockReturn, "transactions.stock_return", "sales_return_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="stockReturns">List of "StockReturn" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Transactions.StockReturn> stockReturns)
+        public List<object> BulkImport(List<ExpandoObject> stockReturns)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var stockReturn in stockReturns)
+                        foreach (dynamic stockReturn in stockReturns)
                         {
                             line++;
 
 
 
-                            if (stockReturn.SalesReturnId > 0)
+                            if (Cast.To<long>(stockReturn.sales_return_id) > 0)
                             {
-                                result.Add(stockReturn.SalesReturnId);
-                                db.Update(stockReturn, stockReturn.SalesReturnId);
+                                result.Add(stockReturn.sales_return_id);
+                                db.Update("transactions.stock_return", "sales_return_id", stockReturn, stockReturn.sales_return_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(stockReturn));
+                                result.Add(db.Insert("transactions.stock_return", "sales_return_id", stockReturn));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="stockReturn">The instance of "StockReturn" class to update.</param>
         /// <param name="salesReturnId">The value of the column "sales_return_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Transactions.StockReturn stockReturn, long salesReturnId)
+        public void Update(dynamic stockReturn, long salesReturnId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            Factory.Update(this._Catalog, stockReturn, salesReturnId);
+            Factory.Update(this._Catalog, stockReturn, salesReturnId, "transactions.stock_return", "sales_return_id");
         }
 
         /// <summary>

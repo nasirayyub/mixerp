@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.party_types" to return a all instances of the "PartyType" class to export. 
+        /// Executes a select query on the table "core.party_types" to return a all instances of the "PartyType" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "PartyType" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.PartyType> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.PartyType> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.party_types ORDER BY party_type_id;";
             return Factory.Get<MixERP.Net.Entities.Core.PartyType>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.party_types" to return a all instances of the "PartyType" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "PartyType" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"PartyType\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.party_types ORDER BY party_type_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="partyType">The instance of "PartyType" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.PartyType partyType, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic partyType, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            partyType.AuditUserId = this._UserId;
-            partyType.AuditTs = System.DateTime.UtcNow;
+            partyType.audit_user_id = this._UserId;
+            partyType.audit_ts = System.DateTime.UtcNow;
 
-            if (partyType.PartyTypeId > 0)
+            if (Cast.To<int>(partyType.party_type_id) > 0)
             {
-                primaryKeyValue = partyType.PartyTypeId;
-                this.Update(partyType, partyType.PartyTypeId);
+                primaryKeyValue = partyType.party_type_id;
+                this.Update(partyType, int.Parse(partyType.party_type_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="partyType">The instance of "PartyType" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.PartyType partyType)
+        public object Add(dynamic partyType)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, partyType);
+            return Factory.Insert(this._Catalog, partyType, "core.party_types", "party_type_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="partyTypes">List of "PartyType" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.PartyType> partyTypes)
+        public List<object> BulkImport(List<ExpandoObject> partyTypes)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var partyType in partyTypes)
+                        foreach (dynamic partyType in partyTypes)
                         {
                             line++;
 
-                            partyType.AuditUserId = this._UserId;
-                            partyType.AuditTs = System.DateTime.UtcNow;
+                            partyType.audit_user_id = this._UserId;
+                            partyType.audit_ts = System.DateTime.UtcNow;
 
-                            if (partyType.PartyTypeId > 0)
+                            if (Cast.To<int>(partyType.party_type_id) > 0)
                             {
-                                result.Add(partyType.PartyTypeId);
-                                db.Update(partyType, partyType.PartyTypeId);
+                                result.Add(partyType.party_type_id);
+                                db.Update("core.party_types", "party_type_id", partyType, partyType.party_type_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(partyType));
+                                result.Add(db.Insert("core.party_types", "party_type_id", partyType));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="partyType">The instance of "PartyType" class to update.</param>
         /// <param name="partyTypeId">The value of the column "party_type_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.PartyType partyType, int partyTypeId)
+        public void Update(dynamic partyType, int partyTypeId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, partyType, partyTypeId);
+            Factory.Update(this._Catalog, partyType, partyTypeId, "core.party_types", "party_type_id");
         }
 
         /// <summary>

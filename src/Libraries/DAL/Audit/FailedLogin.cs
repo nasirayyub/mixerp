@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Audit.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "audit.failed_logins" to return a all instances of the "FailedLogin" class to export. 
+        /// Executes a select query on the table "audit.failed_logins" to return a all instances of the "FailedLogin" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "FailedLogin" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Audit.FailedLogin> Get()
+        public IEnumerable<MixERP.Net.Entities.Audit.FailedLogin> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Audit.Data
 
             const string sql = "SELECT * FROM audit.failed_logins ORDER BY failed_login_id;";
             return Factory.Get<MixERP.Net.Entities.Audit.FailedLogin>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "audit.failed_logins" to return a all instances of the "FailedLogin" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "FailedLogin" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"FailedLogin\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM audit.failed_logins ORDER BY failed_login_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Audit.Data
         /// <param name="failedLogin">The instance of "FailedLogin" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Audit.FailedLogin failedLogin, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic failedLogin, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Audit.Data
 
 
 
-            if (failedLogin.FailedLoginId > 0)
+            if (Cast.To<long>(failedLogin.failed_login_id) > 0)
             {
-                primaryKeyValue = failedLogin.FailedLoginId;
-                this.Update(failedLogin, failedLogin.FailedLoginId);
+                primaryKeyValue = failedLogin.failed_login_id;
+                this.Update(failedLogin, long.Parse(failedLogin.failed_login_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Audit.Data
         /// </summary>
         /// <param name="failedLogin">The instance of "FailedLogin" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Audit.FailedLogin failedLogin)
+        public object Add(dynamic failedLogin)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Audit.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, failedLogin);
+            return Factory.Insert(this._Catalog, failedLogin, "audit.failed_logins", "failed_login_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Audit.Data
         /// </summary>
         /// <param name="failedLogins">List of "FailedLogin" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Audit.FailedLogin> failedLogins)
+        public List<object> BulkImport(List<ExpandoObject> failedLogins)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Audit.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var failedLogin in failedLogins)
+                        foreach (dynamic failedLogin in failedLogins)
                         {
                             line++;
 
 
 
-                            if (failedLogin.FailedLoginId > 0)
+                            if (Cast.To<long>(failedLogin.failed_login_id) > 0)
                             {
-                                result.Add(failedLogin.FailedLoginId);
-                                db.Update(failedLogin, failedLogin.FailedLoginId);
+                                result.Add(failedLogin.failed_login_id);
+                                db.Update("audit.failed_logins", "failed_login_id", failedLogin, failedLogin.failed_login_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(failedLogin));
+                                result.Add(db.Insert("audit.failed_logins", "failed_login_id", failedLogin));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Audit.Data
         /// <param name="failedLogin">The instance of "FailedLogin" class to update.</param>
         /// <param name="failedLoginId">The value of the column "failed_login_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Audit.FailedLogin failedLogin, long failedLoginId)
+        public void Update(dynamic failedLogin, long failedLoginId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Audit.Data
                 }
             }
 
-            Factory.Update(this._Catalog, failedLogin, failedLoginId);
+            Factory.Update(this._Catalog, failedLogin, failedLoginId, "audit.failed_logins", "failed_login_id");
         }
 
         /// <summary>

@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.salespersons" to return a all instances of the "Salesperson" class to export. 
+        /// Executes a select query on the table "core.salespersons" to return a all instances of the "Salesperson" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Salesperson" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.Salesperson> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.Salesperson> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.salespersons ORDER BY salesperson_id;";
             return Factory.Get<MixERP.Net.Entities.Core.Salesperson>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.salespersons" to return a all instances of the "Salesperson" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Salesperson" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Salesperson\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.salespersons ORDER BY salesperson_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="salesperson">The instance of "Salesperson" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.Salesperson salesperson, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic salesperson, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            salesperson.AuditUserId = this._UserId;
-            salesperson.AuditTs = System.DateTime.UtcNow;
+            salesperson.audit_user_id = this._UserId;
+            salesperson.audit_ts = System.DateTime.UtcNow;
 
-            if (salesperson.SalespersonId > 0)
+            if (Cast.To<int>(salesperson.salesperson_id) > 0)
             {
-                primaryKeyValue = salesperson.SalespersonId;
-                this.Update(salesperson, salesperson.SalespersonId);
+                primaryKeyValue = salesperson.salesperson_id;
+                this.Update(salesperson, int.Parse(salesperson.salesperson_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="salesperson">The instance of "Salesperson" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.Salesperson salesperson)
+        public object Add(dynamic salesperson)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, salesperson);
+            return Factory.Insert(this._Catalog, salesperson, "core.salespersons", "salesperson_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="salespeople">List of "Salesperson" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.Salesperson> salespeople)
+        public List<object> BulkImport(List<ExpandoObject> salespeople)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var salesperson in salespeople)
+                        foreach (dynamic salesperson in salespeople)
                         {
                             line++;
 
-                            salesperson.AuditUserId = this._UserId;
-                            salesperson.AuditTs = System.DateTime.UtcNow;
+                            salesperson.audit_user_id = this._UserId;
+                            salesperson.audit_ts = System.DateTime.UtcNow;
 
-                            if (salesperson.SalespersonId > 0)
+                            if (Cast.To<int>(salesperson.salesperson_id) > 0)
                             {
-                                result.Add(salesperson.SalespersonId);
-                                db.Update(salesperson, salesperson.SalespersonId);
+                                result.Add(salesperson.salesperson_id);
+                                db.Update("core.salespersons", "salesperson_id", salesperson, salesperson.salesperson_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(salesperson));
+                                result.Add(db.Insert("core.salespersons", "salesperson_id", salesperson));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="salesperson">The instance of "Salesperson" class to update.</param>
         /// <param name="salespersonId">The value of the column "salesperson_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.Salesperson salesperson, int salespersonId)
+        public void Update(dynamic salesperson, int salespersonId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, salesperson, salespersonId);
+            Factory.Update(this._Catalog, salesperson, salespersonId, "core.salespersons", "salesperson_id");
         }
 
         /// <summary>

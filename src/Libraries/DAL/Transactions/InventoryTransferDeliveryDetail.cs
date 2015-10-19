@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "transactions.inventory_transfer_delivery_details" to return a all instances of the "InventoryTransferDeliveryDetail" class to export. 
+        /// Executes a select query on the table "transactions.inventory_transfer_delivery_details" to return a all instances of the "InventoryTransferDeliveryDetail" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "InventoryTransferDeliveryDetail" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Transactions.InventoryTransferDeliveryDetail> Get()
+        public IEnumerable<MixERP.Net.Entities.Transactions.InventoryTransferDeliveryDetail> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
             const string sql = "SELECT * FROM transactions.inventory_transfer_delivery_details ORDER BY inventory_transfer_delivery_detail_id;";
             return Factory.Get<MixERP.Net.Entities.Transactions.InventoryTransferDeliveryDetail>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "transactions.inventory_transfer_delivery_details" to return a all instances of the "InventoryTransferDeliveryDetail" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "InventoryTransferDeliveryDetail" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"InventoryTransferDeliveryDetail\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM transactions.inventory_transfer_delivery_details ORDER BY inventory_transfer_delivery_detail_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="inventoryTransferDeliveryDetail">The instance of "InventoryTransferDeliveryDetail" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Transactions.InventoryTransferDeliveryDetail inventoryTransferDeliveryDetail, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic inventoryTransferDeliveryDetail, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
 
 
-            if (inventoryTransferDeliveryDetail.InventoryTransferDeliveryDetailId > 0)
+            if (Cast.To<long>(inventoryTransferDeliveryDetail.inventory_transfer_delivery_detail_id) > 0)
             {
-                primaryKeyValue = inventoryTransferDeliveryDetail.InventoryTransferDeliveryDetailId;
-                this.Update(inventoryTransferDeliveryDetail, inventoryTransferDeliveryDetail.InventoryTransferDeliveryDetailId);
+                primaryKeyValue = inventoryTransferDeliveryDetail.inventory_transfer_delivery_detail_id;
+                this.Update(inventoryTransferDeliveryDetail, long.Parse(inventoryTransferDeliveryDetail.inventory_transfer_delivery_detail_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="inventoryTransferDeliveryDetail">The instance of "InventoryTransferDeliveryDetail" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Transactions.InventoryTransferDeliveryDetail inventoryTransferDeliveryDetail)
+        public object Add(dynamic inventoryTransferDeliveryDetail)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, inventoryTransferDeliveryDetail);
+            return Factory.Insert(this._Catalog, inventoryTransferDeliveryDetail, "transactions.inventory_transfer_delivery_details", "inventory_transfer_delivery_detail_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="inventoryTransferDeliveryDetails">List of "InventoryTransferDeliveryDetail" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Transactions.InventoryTransferDeliveryDetail> inventoryTransferDeliveryDetails)
+        public List<object> BulkImport(List<ExpandoObject> inventoryTransferDeliveryDetails)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var inventoryTransferDeliveryDetail in inventoryTransferDeliveryDetails)
+                        foreach (dynamic inventoryTransferDeliveryDetail in inventoryTransferDeliveryDetails)
                         {
                             line++;
 
 
 
-                            if (inventoryTransferDeliveryDetail.InventoryTransferDeliveryDetailId > 0)
+                            if (Cast.To<long>(inventoryTransferDeliveryDetail.inventory_transfer_delivery_detail_id) > 0)
                             {
-                                result.Add(inventoryTransferDeliveryDetail.InventoryTransferDeliveryDetailId);
-                                db.Update(inventoryTransferDeliveryDetail, inventoryTransferDeliveryDetail.InventoryTransferDeliveryDetailId);
+                                result.Add(inventoryTransferDeliveryDetail.inventory_transfer_delivery_detail_id);
+                                db.Update("transactions.inventory_transfer_delivery_details", "inventory_transfer_delivery_detail_id", inventoryTransferDeliveryDetail, inventoryTransferDeliveryDetail.inventory_transfer_delivery_detail_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(inventoryTransferDeliveryDetail));
+                                result.Add(db.Insert("transactions.inventory_transfer_delivery_details", "inventory_transfer_delivery_detail_id", inventoryTransferDeliveryDetail));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="inventoryTransferDeliveryDetail">The instance of "InventoryTransferDeliveryDetail" class to update.</param>
         /// <param name="inventoryTransferDeliveryDetailId">The value of the column "inventory_transfer_delivery_detail_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Transactions.InventoryTransferDeliveryDetail inventoryTransferDeliveryDetail, long inventoryTransferDeliveryDetailId)
+        public void Update(dynamic inventoryTransferDeliveryDetail, long inventoryTransferDeliveryDetailId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            Factory.Update(this._Catalog, inventoryTransferDeliveryDetail, inventoryTransferDeliveryDetailId);
+            Factory.Update(this._Catalog, inventoryTransferDeliveryDetail, inventoryTransferDeliveryDetailId, "transactions.inventory_transfer_delivery_details", "inventory_transfer_delivery_detail_id");
         }
 
         /// <summary>

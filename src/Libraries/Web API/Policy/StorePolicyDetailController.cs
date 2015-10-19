@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -101,19 +102,48 @@ namespace MixERP.Net.Api.Policy
         }
 
         /// <summary>
+        ///     Returns all collection of store policy detail.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/policy/store-policy-detail/all")]
+        public IEnumerable<MixERP.Net.Entities.Policy.StorePolicyDetail> GetAll()
+        {
+            try
+            {
+                return this.StorePolicyDetailContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of store policy detail for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/policy/store-policy-detail/export")]
-        [Route("~/api/policy/store-policy-detail/all")]
-        public IEnumerable<MixERP.Net.Entities.Policy.StorePolicyDetail> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.StorePolicyDetailContext.Get();
+                return this.StorePolicyDetailContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -489,7 +519,7 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/store-policy-detail/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Policy.StorePolicyDetail storePolicyDetail = form[0].ToObject<MixERP.Net.Entities.Policy.StorePolicyDetail>(JsonHelper.GetJsonSerializer());
+            dynamic storePolicyDetail = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (storePolicyDetail == null)
@@ -592,9 +622,9 @@ namespace MixERP.Net.Api.Policy
             }
         }
 
-        private List<MixERP.Net.Entities.Policy.StorePolicyDetail> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Policy.StorePolicyDetail>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -606,9 +636,9 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/policy/store-policy-detail/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Policy.StorePolicyDetail> storePolicyDetailCollection = this.ParseCollection(collection);
+            List<ExpandoObject> storePolicyDetailCollection = this.ParseCollection(collection);
 
             if (storePolicyDetailCollection == null || storePolicyDetailCollection.Count.Equals(0))
             {

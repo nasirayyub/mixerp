@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.shipping_mail_types" to return a all instances of the "ShippingMailType" class to export. 
+        /// Executes a select query on the table "core.shipping_mail_types" to return a all instances of the "ShippingMailType" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "ShippingMailType" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.ShippingMailType> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.ShippingMailType> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.shipping_mail_types ORDER BY shipping_mail_type_id;";
             return Factory.Get<MixERP.Net.Entities.Core.ShippingMailType>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.shipping_mail_types" to return a all instances of the "ShippingMailType" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "ShippingMailType" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"ShippingMailType\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.shipping_mail_types ORDER BY shipping_mail_type_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="shippingMailType">The instance of "ShippingMailType" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.ShippingMailType shippingMailType, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic shippingMailType, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            shippingMailType.AuditUserId = this._UserId;
-            shippingMailType.AuditTs = System.DateTime.UtcNow;
+            shippingMailType.audit_user_id = this._UserId;
+            shippingMailType.audit_ts = System.DateTime.UtcNow;
 
-            if (shippingMailType.ShippingMailTypeId > 0)
+            if (Cast.To<int>(shippingMailType.shipping_mail_type_id) > 0)
             {
-                primaryKeyValue = shippingMailType.ShippingMailTypeId;
-                this.Update(shippingMailType, shippingMailType.ShippingMailTypeId);
+                primaryKeyValue = shippingMailType.shipping_mail_type_id;
+                this.Update(shippingMailType, int.Parse(shippingMailType.shipping_mail_type_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="shippingMailType">The instance of "ShippingMailType" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.ShippingMailType shippingMailType)
+        public object Add(dynamic shippingMailType)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, shippingMailType);
+            return Factory.Insert(this._Catalog, shippingMailType, "core.shipping_mail_types", "shipping_mail_type_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="shippingMailTypes">List of "ShippingMailType" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.ShippingMailType> shippingMailTypes)
+        public List<object> BulkImport(List<ExpandoObject> shippingMailTypes)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var shippingMailType in shippingMailTypes)
+                        foreach (dynamic shippingMailType in shippingMailTypes)
                         {
                             line++;
 
-                            shippingMailType.AuditUserId = this._UserId;
-                            shippingMailType.AuditTs = System.DateTime.UtcNow;
+                            shippingMailType.audit_user_id = this._UserId;
+                            shippingMailType.audit_ts = System.DateTime.UtcNow;
 
-                            if (shippingMailType.ShippingMailTypeId > 0)
+                            if (Cast.To<int>(shippingMailType.shipping_mail_type_id) > 0)
                             {
-                                result.Add(shippingMailType.ShippingMailTypeId);
-                                db.Update(shippingMailType, shippingMailType.ShippingMailTypeId);
+                                result.Add(shippingMailType.shipping_mail_type_id);
+                                db.Update("core.shipping_mail_types", "shipping_mail_type_id", shippingMailType, shippingMailType.shipping_mail_type_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(shippingMailType));
+                                result.Add(db.Insert("core.shipping_mail_types", "shipping_mail_type_id", shippingMailType));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="shippingMailType">The instance of "ShippingMailType" class to update.</param>
         /// <param name="shippingMailTypeId">The value of the column "shipping_mail_type_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.ShippingMailType shippingMailType, int shippingMailTypeId)
+        public void Update(dynamic shippingMailType, int shippingMailTypeId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, shippingMailType, shippingMailTypeId);
+            Factory.Update(this._Catalog, shippingMailType, shippingMailTypeId, "core.shipping_mail_types", "shipping_mail_type_id");
         }
 
         /// <summary>

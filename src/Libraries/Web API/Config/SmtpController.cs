@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -108,19 +109,48 @@ namespace MixERP.Net.Api.Config
         }
 
         /// <summary>
+        ///     Returns all collection of smtp.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/config/smtp/all")]
+        public IEnumerable<MixERP.Net.Entities.Config.Smtp> GetAll()
+        {
+            try
+            {
+                return this.SmtpContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of smtp for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/config/smtp/export")]
-        [Route("~/api/config/smtp/all")]
-        public IEnumerable<MixERP.Net.Entities.Config.Smtp> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.SmtpContext.Get();
+                return this.SmtpContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -496,7 +526,7 @@ namespace MixERP.Net.Api.Config
         [Route("~/api/config/smtp/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Config.Smtp smtp = form[0].ToObject<MixERP.Net.Entities.Config.Smtp>(JsonHelper.GetJsonSerializer());
+            dynamic smtp = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (smtp == null)
@@ -599,9 +629,9 @@ namespace MixERP.Net.Api.Config
             }
         }
 
-        private List<MixERP.Net.Entities.Config.Smtp> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Config.Smtp>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -613,9 +643,9 @@ namespace MixERP.Net.Api.Config
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/config/smtp/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Config.Smtp> smtpCollection = this.ParseCollection(collection);
+            List<ExpandoObject> smtpCollection = this.ParseCollection(collection);
 
             if (smtpCollection == null || smtpCollection.Count.Equals(0))
             {

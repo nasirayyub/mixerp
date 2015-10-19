@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.tax_authorities" to return a all instances of the "TaxAuthority" class to export. 
+        /// Executes a select query on the table "core.tax_authorities" to return a all instances of the "TaxAuthority" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "TaxAuthority" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.TaxAuthority> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.TaxAuthority> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.tax_authorities ORDER BY tax_authority_id;";
             return Factory.Get<MixERP.Net.Entities.Core.TaxAuthority>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.tax_authorities" to return a all instances of the "TaxAuthority" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "TaxAuthority" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"TaxAuthority\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.tax_authorities ORDER BY tax_authority_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="taxAuthority">The instance of "TaxAuthority" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.TaxAuthority taxAuthority, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic taxAuthority, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            taxAuthority.AuditUserId = this._UserId;
-            taxAuthority.AuditTs = System.DateTime.UtcNow;
+            taxAuthority.audit_user_id = this._UserId;
+            taxAuthority.audit_ts = System.DateTime.UtcNow;
 
-            if (taxAuthority.TaxAuthorityId > 0)
+            if (Cast.To<int>(taxAuthority.tax_authority_id) > 0)
             {
-                primaryKeyValue = taxAuthority.TaxAuthorityId;
-                this.Update(taxAuthority, taxAuthority.TaxAuthorityId);
+                primaryKeyValue = taxAuthority.tax_authority_id;
+                this.Update(taxAuthority, int.Parse(taxAuthority.tax_authority_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="taxAuthority">The instance of "TaxAuthority" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.TaxAuthority taxAuthority)
+        public object Add(dynamic taxAuthority)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, taxAuthority);
+            return Factory.Insert(this._Catalog, taxAuthority, "core.tax_authorities", "tax_authority_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="taxAuthorities">List of "TaxAuthority" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.TaxAuthority> taxAuthorities)
+        public List<object> BulkImport(List<ExpandoObject> taxAuthorities)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var taxAuthority in taxAuthorities)
+                        foreach (dynamic taxAuthority in taxAuthorities)
                         {
                             line++;
 
-                            taxAuthority.AuditUserId = this._UserId;
-                            taxAuthority.AuditTs = System.DateTime.UtcNow;
+                            taxAuthority.audit_user_id = this._UserId;
+                            taxAuthority.audit_ts = System.DateTime.UtcNow;
 
-                            if (taxAuthority.TaxAuthorityId > 0)
+                            if (Cast.To<int>(taxAuthority.tax_authority_id) > 0)
                             {
-                                result.Add(taxAuthority.TaxAuthorityId);
-                                db.Update(taxAuthority, taxAuthority.TaxAuthorityId);
+                                result.Add(taxAuthority.tax_authority_id);
+                                db.Update("core.tax_authorities", "tax_authority_id", taxAuthority, taxAuthority.tax_authority_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(taxAuthority));
+                                result.Add(db.Insert("core.tax_authorities", "tax_authority_id", taxAuthority));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="taxAuthority">The instance of "TaxAuthority" class to update.</param>
         /// <param name="taxAuthorityId">The value of the column "tax_authority_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.TaxAuthority taxAuthority, int taxAuthorityId)
+        public void Update(dynamic taxAuthority, int taxAuthorityId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, taxAuthority, taxAuthorityId);
+            Factory.Update(this._Catalog, taxAuthority, taxAuthorityId, "core.tax_authorities", "tax_authority_id");
         }
 
         /// <summary>

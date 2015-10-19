@@ -459,8 +459,6 @@
             if (window.scrudForm.length) {
                 window.scrudView.hide();
                 window.scrudForm.fadeIn(500);
-                var url = updateQueryString("View", "FormView");
-                window.history.pushState({ path: url }, '', url);
             };
         });
 
@@ -965,6 +963,10 @@
                 scrudFactory.keys = [];
             };
 
+            if (propertyName.toString().toLowerCase() === "password") {
+                dataType = "password";
+            };
+
             var hasKey = Enumerable.From(scrudFactory.keys || [])
                 .Where(function (x) { return x.property === propertyName }).ToArray()[0];
 
@@ -1283,6 +1285,12 @@
         $.each(entity, function (i) {
             if (!imageField) {
                 if (i.toLowerCase().indexOf("image") !== -1) {
+                    imageField = i;
+                };
+            };
+
+            if (!imageField) {
+                if (i.toLowerCase().indexOf("logo") !== -1) {
                     imageField = i;
                 };
             };
@@ -2292,6 +2300,11 @@
 
             var getViewForEditAjax = getViewForEdit(primaryKeyValue);
 
+            $.each(scrudFactory.disabledOnEdit, function () {
+                var t = $('[data-property="' + this + '"]');
+                t.attr("disabled", "disabled");
+            });
+
             getViewForEditAjax.success(function (data) {
                 displayEdit(data, false);
 
@@ -2755,7 +2768,7 @@
     });
 
     var kanbanTemplate = '<div id="kanban{KanbanId}" class="ui segment">\
-                    <span class="ui teal left large label" data-kanban-id="{KanbanId}" title="{Description}">{KanbanName}</span>\
+                    <span class="ui purple left large label" data-kanban-id="{KanbanId}" title="{Description}">{KanbanName}</span>\
                     <div class="ui right floated tiny basic icon buttons">\
                         <a title="{AddNewCheckListLocalized}" class="ui basic button" href="javascript:void(0);" onclick="addKanban();"><i class="add icon"></i></a>\
                         <a title="{EditThisCheckListLocalized}" class="ui basic button" href="javascript:void(0);" onclick="editKanban(this);"><i class="edit icon"></i></a>\

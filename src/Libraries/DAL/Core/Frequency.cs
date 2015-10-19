@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.frequencies" to return a all instances of the "Frequency" class to export. 
+        /// Executes a select query on the table "core.frequencies" to return a all instances of the "Frequency" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Frequency" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.Frequency> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.Frequency> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.frequencies ORDER BY frequency_id;";
             return Factory.Get<MixERP.Net.Entities.Core.Frequency>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.frequencies" to return a all instances of the "Frequency" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Frequency" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Frequency\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.frequencies ORDER BY frequency_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="frequency">The instance of "Frequency" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.Frequency frequency, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic frequency, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-            if (frequency.FrequencyId > 0)
+            if (Cast.To<int>(frequency.frequency_id) > 0)
             {
-                primaryKeyValue = frequency.FrequencyId;
-                this.Update(frequency, frequency.FrequencyId);
+                primaryKeyValue = frequency.frequency_id;
+                this.Update(frequency, int.Parse(frequency.frequency_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="frequency">The instance of "Frequency" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.Frequency frequency)
+        public object Add(dynamic frequency)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, frequency);
+            return Factory.Insert(this._Catalog, frequency, "core.frequencies", "frequency_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="frequencies">List of "Frequency" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.Frequency> frequencies)
+        public List<object> BulkImport(List<ExpandoObject> frequencies)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var frequency in frequencies)
+                        foreach (dynamic frequency in frequencies)
                         {
                             line++;
 
 
 
-                            if (frequency.FrequencyId > 0)
+                            if (Cast.To<int>(frequency.frequency_id) > 0)
                             {
-                                result.Add(frequency.FrequencyId);
-                                db.Update(frequency, frequency.FrequencyId);
+                                result.Add(frequency.frequency_id);
+                                db.Update("core.frequencies", "frequency_id", frequency, frequency.frequency_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(frequency));
+                                result.Add(db.Insert("core.frequencies", "frequency_id", frequency));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="frequency">The instance of "Frequency" class to update.</param>
         /// <param name="frequencyId">The value of the column "frequency_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.Frequency frequency, int frequencyId)
+        public void Update(dynamic frequency, int frequencyId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, frequency, frequencyId);
+            Factory.Update(this._Catalog, frequency, frequencyId, "core.frequencies", "frequency_id");
         }
 
         /// <summary>

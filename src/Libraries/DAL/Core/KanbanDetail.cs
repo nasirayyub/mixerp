@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.kanban_details" to return a all instances of the "KanbanDetail" class to export. 
+        /// Executes a select query on the table "core.kanban_details" to return a all instances of the "KanbanDetail" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "KanbanDetail" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.KanbanDetail> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.KanbanDetail> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.kanban_details ORDER BY kanban_detail_id;";
             return Factory.Get<MixERP.Net.Entities.Core.KanbanDetail>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.kanban_details" to return a all instances of the "KanbanDetail" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "KanbanDetail" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"KanbanDetail\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.kanban_details ORDER BY kanban_detail_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="kanbanDetail">The instance of "KanbanDetail" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.KanbanDetail kanbanDetail, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic kanbanDetail, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            kanbanDetail.AuditUserId = this._UserId;
-            kanbanDetail.AuditTs = System.DateTime.UtcNow;
+            kanbanDetail.audit_user_id = this._UserId;
+            kanbanDetail.audit_ts = System.DateTime.UtcNow;
 
-            if (kanbanDetail.KanbanDetailId > 0)
+            if (Cast.To<long>(kanbanDetail.kanban_detail_id) > 0)
             {
-                primaryKeyValue = kanbanDetail.KanbanDetailId;
-                this.Update(kanbanDetail, kanbanDetail.KanbanDetailId);
+                primaryKeyValue = kanbanDetail.kanban_detail_id;
+                this.Update(kanbanDetail, long.Parse(kanbanDetail.kanban_detail_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="kanbanDetail">The instance of "KanbanDetail" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.KanbanDetail kanbanDetail)
+        public object Add(dynamic kanbanDetail)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, kanbanDetail);
+            return Factory.Insert(this._Catalog, kanbanDetail, "core.kanban_details", "kanban_detail_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="kanbanDetails">List of "KanbanDetail" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.KanbanDetail> kanbanDetails)
+        public List<object> BulkImport(List<ExpandoObject> kanbanDetails)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var kanbanDetail in kanbanDetails)
+                        foreach (dynamic kanbanDetail in kanbanDetails)
                         {
                             line++;
 
-                            kanbanDetail.AuditUserId = this._UserId;
-                            kanbanDetail.AuditTs = System.DateTime.UtcNow;
+                            kanbanDetail.audit_user_id = this._UserId;
+                            kanbanDetail.audit_ts = System.DateTime.UtcNow;
 
-                            if (kanbanDetail.KanbanDetailId > 0)
+                            if (Cast.To<long>(kanbanDetail.kanban_detail_id) > 0)
                             {
-                                result.Add(kanbanDetail.KanbanDetailId);
-                                db.Update(kanbanDetail, kanbanDetail.KanbanDetailId);
+                                result.Add(kanbanDetail.kanban_detail_id);
+                                db.Update("core.kanban_details", "kanban_detail_id", kanbanDetail, kanbanDetail.kanban_detail_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(kanbanDetail));
+                                result.Add(db.Insert("core.kanban_details", "kanban_detail_id", kanbanDetail));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="kanbanDetail">The instance of "KanbanDetail" class to update.</param>
         /// <param name="kanbanDetailId">The value of the column "kanban_detail_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.KanbanDetail kanbanDetail, long kanbanDetailId)
+        public void Update(dynamic kanbanDetail, long kanbanDetailId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, kanbanDetail, kanbanDetailId);
+            Factory.Update(this._Catalog, kanbanDetail, kanbanDetailId, "core.kanban_details", "kanban_detail_id");
         }
 
         /// <summary>

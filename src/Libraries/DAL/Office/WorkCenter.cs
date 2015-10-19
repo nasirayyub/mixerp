@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Office.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "office.work_centers" to return a all instances of the "WorkCenter" class to export. 
+        /// Executes a select query on the table "office.work_centers" to return a all instances of the "WorkCenter" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "WorkCenter" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Office.WorkCenter> Get()
+        public IEnumerable<MixERP.Net.Entities.Office.WorkCenter> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Office.Data
 
             const string sql = "SELECT * FROM office.work_centers ORDER BY work_center_id;";
             return Factory.Get<MixERP.Net.Entities.Office.WorkCenter>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "office.work_centers" to return a all instances of the "WorkCenter" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "WorkCenter" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"WorkCenter\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM office.work_centers ORDER BY work_center_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <param name="workCenter">The instance of "WorkCenter" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Office.WorkCenter workCenter, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic workCenter, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Office.Data
 
             object primaryKeyValue;
 
-            workCenter.AuditUserId = this._UserId;
-            workCenter.AuditTs = System.DateTime.UtcNow;
+            workCenter.audit_user_id = this._UserId;
+            workCenter.audit_ts = System.DateTime.UtcNow;
 
-            if (workCenter.WorkCenterId > 0)
+            if (Cast.To<int>(workCenter.work_center_id) > 0)
             {
-                primaryKeyValue = workCenter.WorkCenterId;
-                this.Update(workCenter, workCenter.WorkCenterId);
+                primaryKeyValue = workCenter.work_center_id;
+                this.Update(workCenter, int.Parse(workCenter.work_center_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// </summary>
         /// <param name="workCenter">The instance of "WorkCenter" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Office.WorkCenter workCenter)
+        public object Add(dynamic workCenter)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, workCenter);
+            return Factory.Insert(this._Catalog, workCenter, "office.work_centers", "work_center_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// </summary>
         /// <param name="workCenters">List of "WorkCenter" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Office.WorkCenter> workCenters)
+        public List<object> BulkImport(List<ExpandoObject> workCenters)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Office.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var workCenter in workCenters)
+                        foreach (dynamic workCenter in workCenters)
                         {
                             line++;
 
-                            workCenter.AuditUserId = this._UserId;
-                            workCenter.AuditTs = System.DateTime.UtcNow;
+                            workCenter.audit_user_id = this._UserId;
+                            workCenter.audit_ts = System.DateTime.UtcNow;
 
-                            if (workCenter.WorkCenterId > 0)
+                            if (Cast.To<int>(workCenter.work_center_id) > 0)
                             {
-                                result.Add(workCenter.WorkCenterId);
-                                db.Update(workCenter, workCenter.WorkCenterId);
+                                result.Add(workCenter.work_center_id);
+                                db.Update("office.work_centers", "work_center_id", workCenter, workCenter.work_center_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(workCenter));
+                                result.Add(db.Insert("office.work_centers", "work_center_id", workCenter));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <param name="workCenter">The instance of "WorkCenter" class to update.</param>
         /// <param name="workCenterId">The value of the column "work_center_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Office.WorkCenter workCenter, int workCenterId)
+        public void Update(dynamic workCenter, int workCenterId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
             }
 
-            Factory.Update(this._Catalog, workCenter, workCenterId);
+            Factory.Update(this._Catalog, workCenter, workCenterId, "office.work_centers", "work_center_id");
         }
 
         /// <summary>

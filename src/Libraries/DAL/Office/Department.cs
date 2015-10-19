@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Office.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "office.departments" to return a all instances of the "Department" class to export. 
+        /// Executes a select query on the table "office.departments" to return a all instances of the "Department" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Department" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Office.Department> Get()
+        public IEnumerable<MixERP.Net.Entities.Office.Department> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Office.Data
 
             const string sql = "SELECT * FROM office.departments ORDER BY department_id;";
             return Factory.Get<MixERP.Net.Entities.Office.Department>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "office.departments" to return a all instances of the "Department" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Department" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Department\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM office.departments ORDER BY department_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <param name="department">The instance of "Department" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Office.Department department, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic department, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Office.Data
 
             object primaryKeyValue;
 
-            department.AuditUserId = this._UserId;
-            department.AuditTs = System.DateTime.UtcNow;
+            department.audit_user_id = this._UserId;
+            department.audit_ts = System.DateTime.UtcNow;
 
-            if (department.DepartmentId > 0)
+            if (Cast.To<int>(department.department_id) > 0)
             {
-                primaryKeyValue = department.DepartmentId;
-                this.Update(department, department.DepartmentId);
+                primaryKeyValue = department.department_id;
+                this.Update(department, int.Parse(department.department_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// </summary>
         /// <param name="department">The instance of "Department" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Office.Department department)
+        public object Add(dynamic department)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, department);
+            return Factory.Insert(this._Catalog, department, "office.departments", "department_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// </summary>
         /// <param name="departments">List of "Department" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Office.Department> departments)
+        public List<object> BulkImport(List<ExpandoObject> departments)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Office.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var department in departments)
+                        foreach (dynamic department in departments)
                         {
                             line++;
 
-                            department.AuditUserId = this._UserId;
-                            department.AuditTs = System.DateTime.UtcNow;
+                            department.audit_user_id = this._UserId;
+                            department.audit_ts = System.DateTime.UtcNow;
 
-                            if (department.DepartmentId > 0)
+                            if (Cast.To<int>(department.department_id) > 0)
                             {
-                                result.Add(department.DepartmentId);
-                                db.Update(department, department.DepartmentId);
+                                result.Add(department.department_id);
+                                db.Update("office.departments", "department_id", department, department.department_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(department));
+                                result.Add(db.Insert("office.departments", "department_id", department));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <param name="department">The instance of "Department" class to update.</param>
         /// <param name="departmentId">The value of the column "department_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Office.Department department, int departmentId)
+        public void Update(dynamic department, int departmentId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
             }
 
-            Factory.Update(this._Catalog, department, departmentId);
+            Factory.Update(this._Catalog, department, departmentId, "office.departments", "department_id");
         }
 
         /// <summary>

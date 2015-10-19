@@ -132,6 +132,7 @@ SELECT localization.add_localized_resource('Labels', '', 'ClickHereToDownload', 
 SELECT localization.add_localized_resource('Labels', '', 'ConfirmedPasswordDoesNotMatch', 'The confirmed password does not match.');
 SELECT localization.add_localized_resource('Labels', '', 'CreateCashRepositoriesDescription', 'Cash repository is a place where you store your cash and valuables. Example: Cash in Vault, Cash in Drawers.');
 SELECT localization.add_localized_resource('Labels', '', 'CreateCountySalesTaxDescription', 'County sales tax is the direct consumption tax imposed by your county government when you make purchase or sales.');
+SELECT localization.add_localized_resource('Labels', '', 'CreateEducationLevelsDescription', 'Create education levels applicable to your country and industry.');
 SELECT localization.add_localized_resource('Labels', '', 'CreateFiscalYearDescription', 'Fiscal year is an accounting period of 12 months, used to prepare financial statements.');
 SELECT localization.add_localized_resource('Labels', '', 'CreateFrequenciesDescription', 'The fiscal year is further divided into 12 frequencies, categorized as months, quarters, fiscal half, and fiscal year.');
 SELECT localization.add_localized_resource('Labels', '', 'CreateItemGroupsDescription', 'An item group allows you to manage similar inventory items into meaningful groups and categories.');
@@ -194,6 +195,7 @@ SELECT localization.add_localized_resource('Labels', '', 'NamedFilter', 'Filter:
 SELECT localization.add_localized_resource('Labels', '', 'NoAdditionalUserFound', 'No additional user found.');
 SELECT localization.add_localized_resource('Labels', '', 'NoCashRepositoryDefnied', 'No cash repository defined.');
 SELECT localization.add_localized_resource('Labels', '', 'NoCountySalesTaxDefined', 'No county sales tax defined.');
+SELECT localization.add_localized_resource('Labels', '', 'NoEducationLevelDefined', 'No education level defined.');
 SELECT localization.add_localized_resource('Labels', '', 'NoFiscalYearDefined', 'No fiscal year defined.');
 SELECT localization.add_localized_resource('Labels', '', 'NoFormFound', 'No instance of form was found.');
 SELECT localization.add_localized_resource('Labels', '', 'NoPartyFound', 'No party found.');
@@ -1150,6 +1152,7 @@ SELECT localization.add_localized_resource('Titles', '', 'CreateBackup', 'Create
 SELECT localization.add_localized_resource('Titles', '', 'CreateBackupFirst', 'Create a Backup First');
 SELECT localization.add_localized_resource('Titles', '', 'CreateCashRepositories', 'Create Cash Repositories');
 SELECT localization.add_localized_resource('Titles', '', 'CreateCountySalesTax', 'Create County Sales Tax');
+SELECT localization.add_localized_resource('Titles', '', 'CreateEducationLevels', 'Create Education Levels');
 SELECT localization.add_localized_resource('Titles', '', 'CreateFiscalYear', 'Create Fiscal Year');
 SELECT localization.add_localized_resource('Titles', '', 'CreateFrequencies', 'Create Frequencies');
 SELECT localization.add_localized_resource('Titles', '', 'CreateItemGroups', 'Create Item Groups');
@@ -1352,6 +1355,7 @@ SELECT localization.add_localized_resource('Titles', '', 'Holidays', 'Holidays')
 SELECT localization.add_localized_resource('Titles', '', 'Home', 'Home');
 SELECT localization.add_localized_resource('Titles', '', 'HomeCurrency', 'Home Currency');
 SELECT localization.add_localized_resource('Titles', '', 'HoursWorked', 'Hours Worked');
+SELECT localization.add_localized_resource('Titles', '', 'HumanResourceManagement', 'Human Resource Management');
 SELECT localization.add_localized_resource('Titles', '', 'HundredthName', 'Hundredth Name');
 SELECT localization.add_localized_resource('Titles', '', 'Id', 'Id');
 SELECT localization.add_localized_resource('Titles', '', 'IdentificationDetails', 'Identification Details');

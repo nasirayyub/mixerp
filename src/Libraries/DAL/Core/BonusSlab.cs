@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.bonus_slabs" to return a all instances of the "BonusSlab" class to export. 
+        /// Executes a select query on the table "core.bonus_slabs" to return a all instances of the "BonusSlab" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "BonusSlab" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.BonusSlab> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.BonusSlab> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.bonus_slabs ORDER BY bonus_slab_id;";
             return Factory.Get<MixERP.Net.Entities.Core.BonusSlab>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.bonus_slabs" to return a all instances of the "BonusSlab" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "BonusSlab" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"BonusSlab\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.bonus_slabs ORDER BY bonus_slab_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="bonusSlab">The instance of "BonusSlab" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.BonusSlab bonusSlab, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic bonusSlab, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            bonusSlab.AuditUserId = this._UserId;
-            bonusSlab.AuditTs = System.DateTime.UtcNow;
+            bonusSlab.audit_user_id = this._UserId;
+            bonusSlab.audit_ts = System.DateTime.UtcNow;
 
-            if (bonusSlab.BonusSlabId > 0)
+            if (Cast.To<int>(bonusSlab.bonus_slab_id) > 0)
             {
-                primaryKeyValue = bonusSlab.BonusSlabId;
-                this.Update(bonusSlab, bonusSlab.BonusSlabId);
+                primaryKeyValue = bonusSlab.bonus_slab_id;
+                this.Update(bonusSlab, int.Parse(bonusSlab.bonus_slab_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="bonusSlab">The instance of "BonusSlab" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.BonusSlab bonusSlab)
+        public object Add(dynamic bonusSlab)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, bonusSlab);
+            return Factory.Insert(this._Catalog, bonusSlab, "core.bonus_slabs", "bonus_slab_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="bonusSlabs">List of "BonusSlab" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.BonusSlab> bonusSlabs)
+        public List<object> BulkImport(List<ExpandoObject> bonusSlabs)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var bonusSlab in bonusSlabs)
+                        foreach (dynamic bonusSlab in bonusSlabs)
                         {
                             line++;
 
-                            bonusSlab.AuditUserId = this._UserId;
-                            bonusSlab.AuditTs = System.DateTime.UtcNow;
+                            bonusSlab.audit_user_id = this._UserId;
+                            bonusSlab.audit_ts = System.DateTime.UtcNow;
 
-                            if (bonusSlab.BonusSlabId > 0)
+                            if (Cast.To<int>(bonusSlab.bonus_slab_id) > 0)
                             {
-                                result.Add(bonusSlab.BonusSlabId);
-                                db.Update(bonusSlab, bonusSlab.BonusSlabId);
+                                result.Add(bonusSlab.bonus_slab_id);
+                                db.Update("core.bonus_slabs", "bonus_slab_id", bonusSlab, bonusSlab.bonus_slab_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(bonusSlab));
+                                result.Add(db.Insert("core.bonus_slabs", "bonus_slab_id", bonusSlab));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="bonusSlab">The instance of "BonusSlab" class to update.</param>
         /// <param name="bonusSlabId">The value of the column "bonus_slab_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.BonusSlab bonusSlab, int bonusSlabId)
+        public void Update(dynamic bonusSlab, int bonusSlabId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, bonusSlab, bonusSlabId);
+            Factory.Update(this._Catalog, bonusSlab, bonusSlabId, "core.bonus_slabs", "bonus_slab_id");
         }
 
         /// <summary>

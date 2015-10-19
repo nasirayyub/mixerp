@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Office.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "office.holidays" to return a all instances of the "Holiday" class to export. 
+        /// Executes a select query on the table "office.holidays" to return a all instances of the "Holiday" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Holiday" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Office.Holiday> Get()
+        public IEnumerable<MixERP.Net.Entities.Office.Holiday> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Office.Data
 
             const string sql = "SELECT * FROM office.holidays ORDER BY holiday_id;";
             return Factory.Get<MixERP.Net.Entities.Office.Holiday>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "office.holidays" to return a all instances of the "Holiday" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Holiday" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Holiday\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM office.holidays ORDER BY holiday_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <param name="holiday">The instance of "Holiday" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Office.Holiday holiday, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic holiday, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Office.Data
 
             object primaryKeyValue;
 
-            holiday.AuditUserId = this._UserId;
-            holiday.AuditTs = System.DateTime.UtcNow;
+            holiday.audit_user_id = this._UserId;
+            holiday.audit_ts = System.DateTime.UtcNow;
 
-            if (holiday.HolidayId > 0)
+            if (Cast.To<int>(holiday.holiday_id) > 0)
             {
-                primaryKeyValue = holiday.HolidayId;
-                this.Update(holiday, holiday.HolidayId);
+                primaryKeyValue = holiday.holiday_id;
+                this.Update(holiday, int.Parse(holiday.holiday_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// </summary>
         /// <param name="holiday">The instance of "Holiday" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Office.Holiday holiday)
+        public object Add(dynamic holiday)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, holiday);
+            return Factory.Insert(this._Catalog, holiday, "office.holidays", "holiday_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// </summary>
         /// <param name="holidays">List of "Holiday" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Office.Holiday> holidays)
+        public List<object> BulkImport(List<ExpandoObject> holidays)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Office.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var holiday in holidays)
+                        foreach (dynamic holiday in holidays)
                         {
                             line++;
 
-                            holiday.AuditUserId = this._UserId;
-                            holiday.AuditTs = System.DateTime.UtcNow;
+                            holiday.audit_user_id = this._UserId;
+                            holiday.audit_ts = System.DateTime.UtcNow;
 
-                            if (holiday.HolidayId > 0)
+                            if (Cast.To<int>(holiday.holiday_id) > 0)
                             {
-                                result.Add(holiday.HolidayId);
-                                db.Update(holiday, holiday.HolidayId);
+                                result.Add(holiday.holiday_id);
+                                db.Update("office.holidays", "holiday_id", holiday, holiday.holiday_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(holiday));
+                                result.Add(db.Insert("office.holidays", "holiday_id", holiday));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <param name="holiday">The instance of "Holiday" class to update.</param>
         /// <param name="holidayId">The value of the column "holiday_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Office.Holiday holiday, int holidayId)
+        public void Update(dynamic holiday, int holidayId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
             }
 
-            Factory.Update(this._Catalog, holiday, holidayId);
+            Factory.Update(this._Catalog, holiday, holidayId, "office.holidays", "holiday_id");
         }
 
         /// <summary>

@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Office.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "office.configuration" to return a all instances of the "Configuration" class to export. 
+        /// Executes a select query on the table "office.configuration" to return a all instances of the "Configuration" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Configuration" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Office.Configuration> Get()
+        public IEnumerable<MixERP.Net.Entities.Office.Configuration> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Office.Data
 
             const string sql = "SELECT * FROM office.configuration ORDER BY configuration_id;";
             return Factory.Get<MixERP.Net.Entities.Office.Configuration>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "office.configuration" to return a all instances of the "Configuration" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Configuration" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Configuration\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM office.configuration ORDER BY configuration_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <param name="configuration">The instance of "Configuration" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Office.Configuration configuration, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic configuration, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Office.Data
 
             object primaryKeyValue;
 
-            configuration.AuditUserId = this._UserId;
-            configuration.AuditTs = System.DateTime.UtcNow;
+            configuration.audit_user_id = this._UserId;
+            configuration.audit_ts = System.DateTime.UtcNow;
 
-            if (configuration.ConfigurationId > 0)
+            if (Cast.To<int>(configuration.configuration_id) > 0)
             {
-                primaryKeyValue = configuration.ConfigurationId;
-                this.Update(configuration, configuration.ConfigurationId);
+                primaryKeyValue = configuration.configuration_id;
+                this.Update(configuration, int.Parse(configuration.configuration_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// </summary>
         /// <param name="configuration">The instance of "Configuration" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Office.Configuration configuration)
+        public object Add(dynamic configuration)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, configuration);
+            return Factory.Insert(this._Catalog, configuration, "office.configuration", "configuration_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// </summary>
         /// <param name="configurations">List of "Configuration" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Office.Configuration> configurations)
+        public List<object> BulkImport(List<ExpandoObject> configurations)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Office.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var configuration in configurations)
+                        foreach (dynamic configuration in configurations)
                         {
                             line++;
 
-                            configuration.AuditUserId = this._UserId;
-                            configuration.AuditTs = System.DateTime.UtcNow;
+                            configuration.audit_user_id = this._UserId;
+                            configuration.audit_ts = System.DateTime.UtcNow;
 
-                            if (configuration.ConfigurationId > 0)
+                            if (Cast.To<int>(configuration.configuration_id) > 0)
                             {
-                                result.Add(configuration.ConfigurationId);
-                                db.Update(configuration, configuration.ConfigurationId);
+                                result.Add(configuration.configuration_id);
+                                db.Update("office.configuration", "configuration_id", configuration, configuration.configuration_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(configuration));
+                                result.Add(db.Insert("office.configuration", "configuration_id", configuration));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <param name="configuration">The instance of "Configuration" class to update.</param>
         /// <param name="configurationId">The value of the column "configuration_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Office.Configuration configuration, int configurationId)
+        public void Update(dynamic configuration, int configurationId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
             }
 
-            Factory.Update(this._Catalog, configuration, configurationId);
+            Factory.Update(this._Catalog, configuration, configurationId, "office.configuration", "configuration_id");
         }
 
         /// <summary>

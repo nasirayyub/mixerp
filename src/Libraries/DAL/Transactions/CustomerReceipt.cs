@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "transactions.customer_receipts" to return a all instances of the "CustomerReceipt" class to export. 
+        /// Executes a select query on the table "transactions.customer_receipts" to return a all instances of the "CustomerReceipt" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "CustomerReceipt" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Transactions.CustomerReceipt> Get()
+        public IEnumerable<MixERP.Net.Entities.Transactions.CustomerReceipt> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
             const string sql = "SELECT * FROM transactions.customer_receipts ORDER BY receipt_id;";
             return Factory.Get<MixERP.Net.Entities.Transactions.CustomerReceipt>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "transactions.customer_receipts" to return a all instances of the "CustomerReceipt" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "CustomerReceipt" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"CustomerReceipt\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM transactions.customer_receipts ORDER BY receipt_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="customerReceipt">The instance of "CustomerReceipt" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Transactions.CustomerReceipt customerReceipt, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic customerReceipt, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
 
 
-            if (customerReceipt.ReceiptId > 0)
+            if (Cast.To<long>(customerReceipt.receipt_id) > 0)
             {
-                primaryKeyValue = customerReceipt.ReceiptId;
-                this.Update(customerReceipt, customerReceipt.ReceiptId);
+                primaryKeyValue = customerReceipt.receipt_id;
+                this.Update(customerReceipt, long.Parse(customerReceipt.receipt_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="customerReceipt">The instance of "CustomerReceipt" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Transactions.CustomerReceipt customerReceipt)
+        public object Add(dynamic customerReceipt)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, customerReceipt);
+            return Factory.Insert(this._Catalog, customerReceipt, "transactions.customer_receipts", "receipt_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="customerReceipts">List of "CustomerReceipt" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Transactions.CustomerReceipt> customerReceipts)
+        public List<object> BulkImport(List<ExpandoObject> customerReceipts)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var customerReceipt in customerReceipts)
+                        foreach (dynamic customerReceipt in customerReceipts)
                         {
                             line++;
 
 
 
-                            if (customerReceipt.ReceiptId > 0)
+                            if (Cast.To<long>(customerReceipt.receipt_id) > 0)
                             {
-                                result.Add(customerReceipt.ReceiptId);
-                                db.Update(customerReceipt, customerReceipt.ReceiptId);
+                                result.Add(customerReceipt.receipt_id);
+                                db.Update("transactions.customer_receipts", "receipt_id", customerReceipt, customerReceipt.receipt_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(customerReceipt));
+                                result.Add(db.Insert("transactions.customer_receipts", "receipt_id", customerReceipt));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="customerReceipt">The instance of "CustomerReceipt" class to update.</param>
         /// <param name="receiptId">The value of the column "receipt_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Transactions.CustomerReceipt customerReceipt, long receiptId)
+        public void Update(dynamic customerReceipt, long receiptId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            Factory.Update(this._Catalog, customerReceipt, receiptId);
+            Factory.Update(this._Catalog, customerReceipt, receiptId, "transactions.customer_receipts", "receipt_id");
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -113,19 +114,48 @@ namespace MixERP.Net.Api.Transactions
         }
 
         /// <summary>
+        ///     Returns all collection of stock detail.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/transactions/stock-detail/all")]
+        public IEnumerable<MixERP.Net.Entities.Transactions.StockDetail> GetAll()
+        {
+            try
+            {
+                return this.StockDetailContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of stock detail for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/transactions/stock-detail/export")]
-        [Route("~/api/transactions/stock-detail/all")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.StockDetail> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.StockDetailContext.Get();
+                return this.StockDetailContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -501,7 +531,7 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/stock-detail/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Transactions.StockDetail stockDetail = form[0].ToObject<MixERP.Net.Entities.Transactions.StockDetail>(JsonHelper.GetJsonSerializer());
+            dynamic stockDetail = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (stockDetail == null)
@@ -604,9 +634,9 @@ namespace MixERP.Net.Api.Transactions
             }
         }
 
-        private List<MixERP.Net.Entities.Transactions.StockDetail> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Transactions.StockDetail>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -618,9 +648,9 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/transactions/stock-detail/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Transactions.StockDetail> stockDetailCollection = this.ParseCollection(collection);
+            List<ExpandoObject> stockDetailCollection = this.ParseCollection(collection);
 
             if (stockDetailCollection == null || stockDetailCollection.Count.Equals(0))
             {

@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.tax_rate_types" to return a all instances of the "TaxRateType" class to export. 
+        /// Executes a select query on the table "core.tax_rate_types" to return a all instances of the "TaxRateType" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "TaxRateType" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.TaxRateType> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.TaxRateType> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.tax_rate_types ORDER BY tax_rate_type_code;";
             return Factory.Get<MixERP.Net.Entities.Core.TaxRateType>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.tax_rate_types" to return a all instances of the "TaxRateType" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "TaxRateType" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"TaxRateType\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.tax_rate_types ORDER BY tax_rate_type_code;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="taxRateType">The instance of "TaxRateType" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.TaxRateType taxRateType, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic taxRateType, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-            if (!string.IsNullOrWhiteSpace(taxRateType.TaxRateTypeCode))
+            if (!string.IsNullOrWhiteSpace(taxRateType.tax_rate_type_code))
             {
-                primaryKeyValue = taxRateType.TaxRateTypeCode;
-                this.Update(taxRateType, taxRateType.TaxRateTypeCode);
+                primaryKeyValue = taxRateType.tax_rate_type_code;
+                this.Update(taxRateType, taxRateType.tax_rate_type_code);
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="taxRateType">The instance of "TaxRateType" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.TaxRateType taxRateType)
+        public object Add(dynamic taxRateType)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, taxRateType);
+            return Factory.Insert(this._Catalog, taxRateType, "core.tax_rate_types", "tax_rate_type_code");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="taxRateTypes">List of "TaxRateType" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.TaxRateType> taxRateTypes)
+        public List<object> BulkImport(List<ExpandoObject> taxRateTypes)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var taxRateType in taxRateTypes)
+                        foreach (dynamic taxRateType in taxRateTypes)
                         {
                             line++;
 
 
 
-                            if (!string.IsNullOrWhiteSpace(taxRateType.TaxRateTypeCode))
+                            if (!string.IsNullOrWhiteSpace(taxRateType.tax_rate_type_code))
                             {
-                                result.Add(taxRateType.TaxRateTypeCode);
-                                db.Update(taxRateType, taxRateType.TaxRateTypeCode);
+                                result.Add(taxRateType.tax_rate_type_code);
+                                db.Update("core.tax_rate_types", "tax_rate_type_code", taxRateType, taxRateType.tax_rate_type_code);
                             }
                             else
                             {
-                                result.Add(db.Insert(taxRateType));
+                                result.Add(db.Insert("core.tax_rate_types", "tax_rate_type_code", taxRateType));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="taxRateType">The instance of "TaxRateType" class to update.</param>
         /// <param name="taxRateTypeCode">The value of the column "tax_rate_type_code" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.TaxRateType taxRateType, string taxRateTypeCode)
+        public void Update(dynamic taxRateType, string taxRateTypeCode)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, taxRateType, taxRateTypeCode);
+            Factory.Update(this._Catalog, taxRateType, taxRateTypeCode, "core.tax_rate_types", "tax_rate_type_code");
         }
 
         /// <summary>

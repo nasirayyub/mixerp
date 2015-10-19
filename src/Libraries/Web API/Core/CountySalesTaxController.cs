@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -105,19 +106,48 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns all collection of county sales tax.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/core/county-sales-tax/all")]
+        public IEnumerable<MixERP.Net.Entities.Core.CountySalesTax> GetAll()
+        {
+            try
+            {
+                return this.CountySalesTaxContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of county sales tax for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/core/county-sales-tax/export")]
-        [Route("~/api/core/county-sales-tax/all")]
-        public IEnumerable<MixERP.Net.Entities.Core.CountySalesTax> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.CountySalesTaxContext.Get();
+                return this.CountySalesTaxContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -493,7 +523,7 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/county-sales-tax/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Core.CountySalesTax countySalesTax = form[0].ToObject<MixERP.Net.Entities.Core.CountySalesTax>(JsonHelper.GetJsonSerializer());
+            dynamic countySalesTax = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (countySalesTax == null)
@@ -596,9 +626,9 @@ namespace MixERP.Net.Api.Core
             }
         }
 
-        private List<MixERP.Net.Entities.Core.CountySalesTax> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Core.CountySalesTax>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -610,9 +640,9 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/core/county-sales-tax/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Core.CountySalesTax> countySalesTaxCollection = this.ParseCollection(collection);
+            List<ExpandoObject> countySalesTaxCollection = this.ParseCollection(collection);
 
             if (countySalesTaxCollection == null || countySalesTaxCollection.Count.Equals(0))
             {

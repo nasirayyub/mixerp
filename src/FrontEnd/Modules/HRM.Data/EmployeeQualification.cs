@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.employee_qualifications" to return a all instances of the "EmployeeQualification" class to export. 
+        /// Executes a select query on the table "hrm.employee_qualifications" to return a all instances of the "EmployeeQualification" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "EmployeeQualification" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeQualification> Get()
+        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeQualification> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             const string sql = "SELECT * FROM hrm.employee_qualifications ORDER BY employee_qualification_id;";
             return Factory.Get<MixERP.Net.Entities.HRM.EmployeeQualification>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "hrm.employee_qualifications" to return a all instances of the "EmployeeQualification" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "EmployeeQualification" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"EmployeeQualification\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.employee_qualifications ORDER BY employee_qualification_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="employeeQualification">The instance of "EmployeeQualification" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.HRM.EmployeeQualification employeeQualification, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic employeeQualification, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             object primaryKeyValue;
 
-            employeeQualification.AuditUserId = this._UserId;
-            employeeQualification.AuditTs = System.DateTime.UtcNow;
+            employeeQualification.audit_user_id = this._UserId;
+            employeeQualification.audit_ts = System.DateTime.UtcNow;
 
-            if (employeeQualification.EmployeeQualificationId > 0)
+            if (Cast.To<long>(employeeQualification.employee_qualification_id) > 0)
             {
-                primaryKeyValue = employeeQualification.EmployeeQualificationId;
-                this.Update(employeeQualification, employeeQualification.EmployeeQualificationId);
+                primaryKeyValue = employeeQualification.employee_qualification_id;
+                this.Update(employeeQualification, long.Parse(employeeQualification.employee_qualification_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="employeeQualification">The instance of "EmployeeQualification" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.HRM.EmployeeQualification employeeQualification)
+        public object Add(dynamic employeeQualification)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, employeeQualification);
+            return Factory.Insert(this._Catalog, employeeQualification, "hrm.employee_qualifications", "employee_qualification_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="employeeQualifications">List of "EmployeeQualification" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.HRM.EmployeeQualification> employeeQualifications)
+        public List<object> BulkImport(List<ExpandoObject> employeeQualifications)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var employeeQualification in employeeQualifications)
+                        foreach (dynamic employeeQualification in employeeQualifications)
                         {
                             line++;
 
-                            employeeQualification.AuditUserId = this._UserId;
-                            employeeQualification.AuditTs = System.DateTime.UtcNow;
+                            employeeQualification.audit_user_id = this._UserId;
+                            employeeQualification.audit_ts = System.DateTime.UtcNow;
 
-                            if (employeeQualification.EmployeeQualificationId > 0)
+                            if (Cast.To<long>(employeeQualification.employee_qualification_id) > 0)
                             {
-                                result.Add(employeeQualification.EmployeeQualificationId);
-                                db.Update(employeeQualification, employeeQualification.EmployeeQualificationId);
+                                result.Add(employeeQualification.employee_qualification_id);
+                                db.Update("hrm.employee_qualifications", "employee_qualification_id", employeeQualification, employeeQualification.employee_qualification_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(employeeQualification));
+                                result.Add(db.Insert("hrm.employee_qualifications", "employee_qualification_id", employeeQualification));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="employeeQualification">The instance of "EmployeeQualification" class to update.</param>
         /// <param name="employeeQualificationId">The value of the column "employee_qualification_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.HRM.EmployeeQualification employeeQualification, long employeeQualificationId)
+        public void Update(dynamic employeeQualification, long employeeQualificationId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            Factory.Update(this._Catalog, employeeQualification, employeeQualificationId);
+            Factory.Update(this._Catalog, employeeQualification, employeeQualificationId, "hrm.employee_qualifications", "employee_qualification_id");
         }
 
         /// <summary>

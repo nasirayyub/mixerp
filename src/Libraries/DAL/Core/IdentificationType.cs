@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.identification_types" to return a all instances of the "IdentificationType" class to export. 
+        /// Executes a select query on the table "core.identification_types" to return a all instances of the "IdentificationType" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "IdentificationType" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.IdentificationType> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.IdentificationType> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.identification_types ORDER BY identification_type_code;";
             return Factory.Get<MixERP.Net.Entities.Core.IdentificationType>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.identification_types" to return a all instances of the "IdentificationType" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "IdentificationType" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"IdentificationType\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.identification_types ORDER BY identification_type_code;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="identificationType">The instance of "IdentificationType" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.IdentificationType identificationType, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic identificationType, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            identificationType.AuditUserId = this._UserId;
-            identificationType.AuditTs = System.DateTime.UtcNow;
+            identificationType.audit_user_id = this._UserId;
+            identificationType.audit_ts = System.DateTime.UtcNow;
 
-            if (!string.IsNullOrWhiteSpace(identificationType.IdentificationTypeCode))
+            if (!string.IsNullOrWhiteSpace(identificationType.identification_type_code))
             {
-                primaryKeyValue = identificationType.IdentificationTypeCode;
-                this.Update(identificationType, identificationType.IdentificationTypeCode);
+                primaryKeyValue = identificationType.identification_type_code;
+                this.Update(identificationType, identificationType.identification_type_code);
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="identificationType">The instance of "IdentificationType" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.IdentificationType identificationType)
+        public object Add(dynamic identificationType)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, identificationType);
+            return Factory.Insert(this._Catalog, identificationType, "core.identification_types", "identification_type_code");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="identificationTypes">List of "IdentificationType" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.IdentificationType> identificationTypes)
+        public List<object> BulkImport(List<ExpandoObject> identificationTypes)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var identificationType in identificationTypes)
+                        foreach (dynamic identificationType in identificationTypes)
                         {
                             line++;
 
-                            identificationType.AuditUserId = this._UserId;
-                            identificationType.AuditTs = System.DateTime.UtcNow;
+                            identificationType.audit_user_id = this._UserId;
+                            identificationType.audit_ts = System.DateTime.UtcNow;
 
-                            if (!string.IsNullOrWhiteSpace(identificationType.IdentificationTypeCode))
+                            if (!string.IsNullOrWhiteSpace(identificationType.identification_type_code))
                             {
-                                result.Add(identificationType.IdentificationTypeCode);
-                                db.Update(identificationType, identificationType.IdentificationTypeCode);
+                                result.Add(identificationType.identification_type_code);
+                                db.Update("core.identification_types", "identification_type_code", identificationType, identificationType.identification_type_code);
                             }
                             else
                             {
-                                result.Add(db.Insert(identificationType));
+                                result.Add(db.Insert("core.identification_types", "identification_type_code", identificationType));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="identificationType">The instance of "IdentificationType" class to update.</param>
         /// <param name="identificationTypeCode">The value of the column "identification_type_code" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.IdentificationType identificationType, string identificationTypeCode)
+        public void Update(dynamic identificationType, string identificationTypeCode)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, identificationType, identificationTypeCode);
+            Factory.Update(this._Catalog, identificationType, identificationTypeCode, "core.identification_types", "identification_type_code");
         }
 
         /// <summary>

@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.widget_setup" to return a all instances of the "WidgetSetup" class to export. 
+        /// Executes a select query on the table "core.widget_setup" to return a all instances of the "WidgetSetup" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "WidgetSetup" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.WidgetSetup> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.WidgetSetup> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.widget_setup ORDER BY widget_setup_id;";
             return Factory.Get<MixERP.Net.Entities.Core.WidgetSetup>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.widget_setup" to return a all instances of the "WidgetSetup" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "WidgetSetup" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"WidgetSetup\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.widget_setup ORDER BY widget_setup_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="widgetSetup">The instance of "WidgetSetup" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.WidgetSetup widgetSetup, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic widgetSetup, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-            if (widgetSetup.WidgetSetupId > 0)
+            if (Cast.To<int>(widgetSetup.widget_setup_id) > 0)
             {
-                primaryKeyValue = widgetSetup.WidgetSetupId;
-                this.Update(widgetSetup, widgetSetup.WidgetSetupId);
+                primaryKeyValue = widgetSetup.widget_setup_id;
+                this.Update(widgetSetup, int.Parse(widgetSetup.widget_setup_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="widgetSetup">The instance of "WidgetSetup" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.WidgetSetup widgetSetup)
+        public object Add(dynamic widgetSetup)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, widgetSetup);
+            return Factory.Insert(this._Catalog, widgetSetup, "core.widget_setup", "widget_setup_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="widgetSetups">List of "WidgetSetup" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.WidgetSetup> widgetSetups)
+        public List<object> BulkImport(List<ExpandoObject> widgetSetups)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var widgetSetup in widgetSetups)
+                        foreach (dynamic widgetSetup in widgetSetups)
                         {
                             line++;
 
 
 
-                            if (widgetSetup.WidgetSetupId > 0)
+                            if (Cast.To<int>(widgetSetup.widget_setup_id) > 0)
                             {
-                                result.Add(widgetSetup.WidgetSetupId);
-                                db.Update(widgetSetup, widgetSetup.WidgetSetupId);
+                                result.Add(widgetSetup.widget_setup_id);
+                                db.Update("core.widget_setup", "widget_setup_id", widgetSetup, widgetSetup.widget_setup_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(widgetSetup));
+                                result.Add(db.Insert("core.widget_setup", "widget_setup_id", widgetSetup));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="widgetSetup">The instance of "WidgetSetup" class to update.</param>
         /// <param name="widgetSetupId">The value of the column "widget_setup_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.WidgetSetup widgetSetup, int widgetSetupId)
+        public void Update(dynamic widgetSetup, int widgetSetupId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, widgetSetup, widgetSetupId);
+            Factory.Update(this._Catalog, widgetSetup, widgetSetupId, "core.widget_setup", "widget_setup_id");
         }
 
         /// <summary>

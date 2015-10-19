@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.custom_field_data_types" to return a all instances of the "CustomFieldDataType" class to export. 
+        /// Executes a select query on the table "core.custom_field_data_types" to return a all instances of the "CustomFieldDataType" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "CustomFieldDataType" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldDataType> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldDataType> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.custom_field_data_types ORDER BY data_type;";
             return Factory.Get<MixERP.Net.Entities.Core.CustomFieldDataType>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.custom_field_data_types" to return a all instances of the "CustomFieldDataType" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "CustomFieldDataType" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"CustomFieldDataType\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.custom_field_data_types ORDER BY data_type;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="customFieldDataType">The instance of "CustomFieldDataType" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.CustomFieldDataType customFieldDataType, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic customFieldDataType, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-            if (!string.IsNullOrWhiteSpace(customFieldDataType.DataType))
+            if (!string.IsNullOrWhiteSpace(customFieldDataType.data_type))
             {
-                primaryKeyValue = customFieldDataType.DataType;
-                this.Update(customFieldDataType, customFieldDataType.DataType);
+                primaryKeyValue = customFieldDataType.data_type;
+                this.Update(customFieldDataType, customFieldDataType.data_type);
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="customFieldDataType">The instance of "CustomFieldDataType" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.CustomFieldDataType customFieldDataType)
+        public object Add(dynamic customFieldDataType)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, customFieldDataType);
+            return Factory.Insert(this._Catalog, customFieldDataType, "core.custom_field_data_types", "data_type");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="customFieldDataTypes">List of "CustomFieldDataType" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.CustomFieldDataType> customFieldDataTypes)
+        public List<object> BulkImport(List<ExpandoObject> customFieldDataTypes)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var customFieldDataType in customFieldDataTypes)
+                        foreach (dynamic customFieldDataType in customFieldDataTypes)
                         {
                             line++;
 
 
 
-                            if (!string.IsNullOrWhiteSpace(customFieldDataType.DataType))
+                            if (!string.IsNullOrWhiteSpace(customFieldDataType.data_type))
                             {
-                                result.Add(customFieldDataType.DataType);
-                                db.Update(customFieldDataType, customFieldDataType.DataType);
+                                result.Add(customFieldDataType.data_type);
+                                db.Update("core.custom_field_data_types", "data_type", customFieldDataType, customFieldDataType.data_type);
                             }
                             else
                             {
-                                result.Add(db.Insert(customFieldDataType));
+                                result.Add(db.Insert("core.custom_field_data_types", "data_type", customFieldDataType));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="customFieldDataType">The instance of "CustomFieldDataType" class to update.</param>
         /// <param name="dataType">The value of the column "data_type" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.CustomFieldDataType customFieldDataType, string dataType)
+        public void Update(dynamic customFieldDataType, string dataType)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, customFieldDataType, dataType);
+            Factory.Update(this._Catalog, customFieldDataType, dataType, "core.custom_field_data_types", "data_type");
         }
 
         /// <summary>

@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.shipping_package_shapes" to return a all instances of the "ShippingPackageShape" class to export. 
+        /// Executes a select query on the table "core.shipping_package_shapes" to return a all instances of the "ShippingPackageShape" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "ShippingPackageShape" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShape> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShape> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.shipping_package_shapes ORDER BY shipping_package_shape_id;";
             return Factory.Get<MixERP.Net.Entities.Core.ShippingPackageShape>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.shipping_package_shapes" to return a all instances of the "ShippingPackageShape" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "ShippingPackageShape" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"ShippingPackageShape\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.shipping_package_shapes ORDER BY shipping_package_shape_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="shippingPackageShape">The instance of "ShippingPackageShape" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.ShippingPackageShape shippingPackageShape, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic shippingPackageShape, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            shippingPackageShape.AuditUserId = this._UserId;
-            shippingPackageShape.AuditTs = System.DateTime.UtcNow;
+            shippingPackageShape.audit_user_id = this._UserId;
+            shippingPackageShape.audit_ts = System.DateTime.UtcNow;
 
-            if (shippingPackageShape.ShippingPackageShapeId > 0)
+            if (Cast.To<int>(shippingPackageShape.shipping_package_shape_id) > 0)
             {
-                primaryKeyValue = shippingPackageShape.ShippingPackageShapeId;
-                this.Update(shippingPackageShape, shippingPackageShape.ShippingPackageShapeId);
+                primaryKeyValue = shippingPackageShape.shipping_package_shape_id;
+                this.Update(shippingPackageShape, int.Parse(shippingPackageShape.shipping_package_shape_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="shippingPackageShape">The instance of "ShippingPackageShape" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.ShippingPackageShape shippingPackageShape)
+        public object Add(dynamic shippingPackageShape)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, shippingPackageShape);
+            return Factory.Insert(this._Catalog, shippingPackageShape, "core.shipping_package_shapes", "shipping_package_shape_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="shippingPackageShapes">List of "ShippingPackageShape" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.ShippingPackageShape> shippingPackageShapes)
+        public List<object> BulkImport(List<ExpandoObject> shippingPackageShapes)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var shippingPackageShape in shippingPackageShapes)
+                        foreach (dynamic shippingPackageShape in shippingPackageShapes)
                         {
                             line++;
 
-                            shippingPackageShape.AuditUserId = this._UserId;
-                            shippingPackageShape.AuditTs = System.DateTime.UtcNow;
+                            shippingPackageShape.audit_user_id = this._UserId;
+                            shippingPackageShape.audit_ts = System.DateTime.UtcNow;
 
-                            if (shippingPackageShape.ShippingPackageShapeId > 0)
+                            if (Cast.To<int>(shippingPackageShape.shipping_package_shape_id) > 0)
                             {
-                                result.Add(shippingPackageShape.ShippingPackageShapeId);
-                                db.Update(shippingPackageShape, shippingPackageShape.ShippingPackageShapeId);
+                                result.Add(shippingPackageShape.shipping_package_shape_id);
+                                db.Update("core.shipping_package_shapes", "shipping_package_shape_id", shippingPackageShape, shippingPackageShape.shipping_package_shape_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(shippingPackageShape));
+                                result.Add(db.Insert("core.shipping_package_shapes", "shipping_package_shape_id", shippingPackageShape));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="shippingPackageShape">The instance of "ShippingPackageShape" class to update.</param>
         /// <param name="shippingPackageShapeId">The value of the column "shipping_package_shape_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.ShippingPackageShape shippingPackageShape, int shippingPackageShapeId)
+        public void Update(dynamic shippingPackageShape, int shippingPackageShapeId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, shippingPackageShape, shippingPackageShapeId);
+            Factory.Update(this._Catalog, shippingPackageShape, shippingPackageShapeId, "core.shipping_package_shapes", "shipping_package_shape_id");
         }
 
         /// <summary>

@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.fiscal_year" to return a all instances of the "FiscalYear" class to export. 
+        /// Executes a select query on the table "core.fiscal_year" to return a all instances of the "FiscalYear" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "FiscalYear" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.FiscalYear> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.FiscalYear> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.fiscal_year ORDER BY fiscal_year_code;";
             return Factory.Get<MixERP.Net.Entities.Core.FiscalYear>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.fiscal_year" to return a all instances of the "FiscalYear" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "FiscalYear" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"FiscalYear\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.fiscal_year ORDER BY fiscal_year_code;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="fiscalYear">The instance of "FiscalYear" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.FiscalYear fiscalYear, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic fiscalYear, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            fiscalYear.AuditUserId = this._UserId;
-            fiscalYear.AuditTs = System.DateTime.UtcNow;
+            fiscalYear.audit_user_id = this._UserId;
+            fiscalYear.audit_ts = System.DateTime.UtcNow;
 
-            if (!string.IsNullOrWhiteSpace(fiscalYear.FiscalYearCode))
+            if (!string.IsNullOrWhiteSpace(fiscalYear.fiscal_year_code))
             {
-                primaryKeyValue = fiscalYear.FiscalYearCode;
-                this.Update(fiscalYear, fiscalYear.FiscalYearCode);
+                primaryKeyValue = fiscalYear.fiscal_year_code;
+                this.Update(fiscalYear, fiscalYear.fiscal_year_code);
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="fiscalYear">The instance of "FiscalYear" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.FiscalYear fiscalYear)
+        public object Add(dynamic fiscalYear)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, fiscalYear);
+            return Factory.Insert(this._Catalog, fiscalYear, "core.fiscal_year", "fiscal_year_code");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="fiscalYears">List of "FiscalYear" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.FiscalYear> fiscalYears)
+        public List<object> BulkImport(List<ExpandoObject> fiscalYears)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var fiscalYear in fiscalYears)
+                        foreach (dynamic fiscalYear in fiscalYears)
                         {
                             line++;
 
-                            fiscalYear.AuditUserId = this._UserId;
-                            fiscalYear.AuditTs = System.DateTime.UtcNow;
+                            fiscalYear.audit_user_id = this._UserId;
+                            fiscalYear.audit_ts = System.DateTime.UtcNow;
 
-                            if (!string.IsNullOrWhiteSpace(fiscalYear.FiscalYearCode))
+                            if (!string.IsNullOrWhiteSpace(fiscalYear.fiscal_year_code))
                             {
-                                result.Add(fiscalYear.FiscalYearCode);
-                                db.Update(fiscalYear, fiscalYear.FiscalYearCode);
+                                result.Add(fiscalYear.fiscal_year_code);
+                                db.Update("core.fiscal_year", "fiscal_year_code", fiscalYear, fiscalYear.fiscal_year_code);
                             }
                             else
                             {
-                                result.Add(db.Insert(fiscalYear));
+                                result.Add(db.Insert("core.fiscal_year", "fiscal_year_code", fiscalYear));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="fiscalYear">The instance of "FiscalYear" class to update.</param>
         /// <param name="fiscalYearCode">The value of the column "fiscal_year_code" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.FiscalYear fiscalYear, string fiscalYearCode)
+        public void Update(dynamic fiscalYear, string fiscalYearCode)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, fiscalYear, fiscalYearCode);
+            Factory.Update(this._Catalog, fiscalYear, fiscalYearCode, "core.fiscal_year", "fiscal_year_code");
         }
 
         /// <summary>

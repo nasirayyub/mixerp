@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Policy.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "policy.http_actions" to return a all instances of the "HttpAction" class to export. 
+        /// Executes a select query on the table "policy.http_actions" to return a all instances of the "HttpAction" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "HttpAction" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Policy.HttpAction> Get()
+        public IEnumerable<MixERP.Net.Entities.Policy.HttpAction> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Policy.Data
 
             const string sql = "SELECT * FROM policy.http_actions ORDER BY http_action_code;";
             return Factory.Get<MixERP.Net.Entities.Policy.HttpAction>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "policy.http_actions" to return a all instances of the "HttpAction" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "HttpAction" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"HttpAction\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.http_actions ORDER BY http_action_code;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// <param name="httpAction">The instance of "HttpAction" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Policy.HttpAction httpAction, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic httpAction, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Policy.Data
 
 
 
-            if (!string.IsNullOrWhiteSpace(httpAction.HttpActionCode))
+            if (!string.IsNullOrWhiteSpace(httpAction.http_action_code))
             {
-                primaryKeyValue = httpAction.HttpActionCode;
-                this.Update(httpAction, httpAction.HttpActionCode);
+                primaryKeyValue = httpAction.http_action_code;
+                this.Update(httpAction, httpAction.http_action_code);
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// </summary>
         /// <param name="httpAction">The instance of "HttpAction" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Policy.HttpAction httpAction)
+        public object Add(dynamic httpAction)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Policy.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, httpAction);
+            return Factory.Insert(this._Catalog, httpAction, "policy.http_actions", "http_action_code");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// </summary>
         /// <param name="httpActions">List of "HttpAction" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Policy.HttpAction> httpActions)
+        public List<object> BulkImport(List<ExpandoObject> httpActions)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Policy.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var httpAction in httpActions)
+                        foreach (dynamic httpAction in httpActions)
                         {
                             line++;
 
 
 
-                            if (!string.IsNullOrWhiteSpace(httpAction.HttpActionCode))
+                            if (!string.IsNullOrWhiteSpace(httpAction.http_action_code))
                             {
-                                result.Add(httpAction.HttpActionCode);
-                                db.Update(httpAction, httpAction.HttpActionCode);
+                                result.Add(httpAction.http_action_code);
+                                db.Update("policy.http_actions", "http_action_code", httpAction, httpAction.http_action_code);
                             }
                             else
                             {
-                                result.Add(db.Insert(httpAction));
+                                result.Add(db.Insert("policy.http_actions", "http_action_code", httpAction));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// <param name="httpAction">The instance of "HttpAction" class to update.</param>
         /// <param name="httpActionCode">The value of the column "http_action_code" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Policy.HttpAction httpAction, string httpActionCode)
+        public void Update(dynamic httpAction, string httpActionCode)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Policy.Data
                 }
             }
 
-            Factory.Update(this._Catalog, httpAction, httpActionCode);
+            Factory.Update(this._Catalog, httpAction, httpActionCode, "policy.http_actions", "http_action_code");
         }
 
         /// <summary>

@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.week_days" to return a all instances of the "WeekDay" class to export. 
+        /// Executes a select query on the table "core.week_days" to return a all instances of the "WeekDay" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "WeekDay" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.WeekDay> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.WeekDay> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.week_days ORDER BY week_day_id;";
             return Factory.Get<MixERP.Net.Entities.Core.WeekDay>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.week_days" to return a all instances of the "WeekDay" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "WeekDay" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"WeekDay\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.week_days ORDER BY week_day_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="weekDay">The instance of "WeekDay" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.WeekDay weekDay, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic weekDay, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-            if (weekDay.WeekDayId > 0)
+            if (Cast.To<int>(weekDay.week_day_id) > 0)
             {
-                primaryKeyValue = weekDay.WeekDayId;
-                this.Update(weekDay, weekDay.WeekDayId);
+                primaryKeyValue = weekDay.week_day_id;
+                this.Update(weekDay, int.Parse(weekDay.week_day_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="weekDay">The instance of "WeekDay" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.WeekDay weekDay)
+        public object Add(dynamic weekDay)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, weekDay);
+            return Factory.Insert(this._Catalog, weekDay, "core.week_days", "week_day_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="weekDays">List of "WeekDay" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.WeekDay> weekDays)
+        public List<object> BulkImport(List<ExpandoObject> weekDays)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var weekDay in weekDays)
+                        foreach (dynamic weekDay in weekDays)
                         {
                             line++;
 
 
 
-                            if (weekDay.WeekDayId > 0)
+                            if (Cast.To<int>(weekDay.week_day_id) > 0)
                             {
-                                result.Add(weekDay.WeekDayId);
-                                db.Update(weekDay, weekDay.WeekDayId);
+                                result.Add(weekDay.week_day_id);
+                                db.Update("core.week_days", "week_day_id", weekDay, weekDay.week_day_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(weekDay));
+                                result.Add(db.Insert("core.week_days", "week_day_id", weekDay));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="weekDay">The instance of "WeekDay" class to update.</param>
         /// <param name="weekDayId">The value of the column "week_day_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.WeekDay weekDay, int weekDayId)
+        public void Update(dynamic weekDay, int weekDayId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, weekDay, weekDayId);
+            Factory.Update(this._Catalog, weekDay, weekDayId, "core.week_days", "week_day_id");
         }
 
         /// <summary>

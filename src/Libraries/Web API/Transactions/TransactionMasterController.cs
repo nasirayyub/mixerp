@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -116,19 +117,48 @@ namespace MixERP.Net.Api.Transactions
         }
 
         /// <summary>
+        ///     Returns all collection of transaction master.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/transactions/transaction-master/all")]
+        public IEnumerable<MixERP.Net.Entities.Transactions.TransactionMaster> GetAll()
+        {
+            try
+            {
+                return this.TransactionMasterContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of transaction master for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/transactions/transaction-master/export")]
-        [Route("~/api/transactions/transaction-master/all")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.TransactionMaster> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.TransactionMasterContext.Get();
+                return this.TransactionMasterContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -504,7 +534,7 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/transaction-master/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Transactions.TransactionMaster transactionMaster = form[0].ToObject<MixERP.Net.Entities.Transactions.TransactionMaster>(JsonHelper.GetJsonSerializer());
+            dynamic transactionMaster = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (transactionMaster == null)
@@ -607,9 +637,9 @@ namespace MixERP.Net.Api.Transactions
             }
         }
 
-        private List<MixERP.Net.Entities.Transactions.TransactionMaster> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Transactions.TransactionMaster>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -621,9 +651,9 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/transactions/transaction-master/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Transactions.TransactionMaster> transactionMasterCollection = this.ParseCollection(collection);
+            List<ExpandoObject> transactionMasterCollection = this.ParseCollection(collection);
 
             if (transactionMasterCollection == null || transactionMasterCollection.Count.Equals(0))
             {

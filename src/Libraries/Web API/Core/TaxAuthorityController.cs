@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -113,19 +114,48 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns all collection of tax authority.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/core/tax-authority/all")]
+        public IEnumerable<MixERP.Net.Entities.Core.TaxAuthority> GetAll()
+        {
+            try
+            {
+                return this.TaxAuthorityContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of tax authority for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/core/tax-authority/export")]
-        [Route("~/api/core/tax-authority/all")]
-        public IEnumerable<MixERP.Net.Entities.Core.TaxAuthority> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.TaxAuthorityContext.Get();
+                return this.TaxAuthorityContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -501,7 +531,7 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/tax-authority/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Core.TaxAuthority taxAuthority = form[0].ToObject<MixERP.Net.Entities.Core.TaxAuthority>(JsonHelper.GetJsonSerializer());
+            dynamic taxAuthority = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (taxAuthority == null)
@@ -604,9 +634,9 @@ namespace MixERP.Net.Api.Core
             }
         }
 
-        private List<MixERP.Net.Entities.Core.TaxAuthority> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Core.TaxAuthority>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -618,9 +648,9 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/core/tax-authority/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Core.TaxAuthority> taxAuthorityCollection = this.ParseCollection(collection);
+            List<ExpandoObject> taxAuthorityCollection = this.ParseCollection(collection);
 
             if (taxAuthorityCollection == null || taxAuthorityCollection.Count.Equals(0))
             {

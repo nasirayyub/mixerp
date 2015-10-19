@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.config" to return a all instances of the "Config" class to export. 
+        /// Executes a select query on the table "core.config" to return a all instances of the "Config" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Config" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.Config> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.Config> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.config ORDER BY config_id;";
             return Factory.Get<MixERP.Net.Entities.Core.Config>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.config" to return a all instances of the "Config" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Config" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Config\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.config ORDER BY config_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="config">The instance of "Config" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.Config config, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic config, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-            if (config.ConfigId > 0)
+            if (Cast.To<int>(config.config_id) > 0)
             {
-                primaryKeyValue = config.ConfigId;
-                this.Update(config, config.ConfigId);
+                primaryKeyValue = config.config_id;
+                this.Update(config, int.Parse(config.config_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="config">The instance of "Config" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.Config config)
+        public object Add(dynamic config)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, config);
+            return Factory.Insert(this._Catalog, config, "core.config", "config_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="configs">List of "Config" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.Config> configs)
+        public List<object> BulkImport(List<ExpandoObject> configs)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var config in configs)
+                        foreach (dynamic config in configs)
                         {
                             line++;
 
 
 
-                            if (config.ConfigId > 0)
+                            if (Cast.To<int>(config.config_id) > 0)
                             {
-                                result.Add(config.ConfigId);
-                                db.Update(config, config.ConfigId);
+                                result.Add(config.config_id);
+                                db.Update("core.config", "config_id", config, config.config_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(config));
+                                result.Add(db.Insert("core.config", "config_id", config));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="config">The instance of "Config" class to update.</param>
         /// <param name="configId">The value of the column "config_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.Config config, int configId)
+        public void Update(dynamic config, int configId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, config, configId);
+            Factory.Update(this._Catalog, config, configId, "core.config", "config_id");
         }
 
         /// <summary>

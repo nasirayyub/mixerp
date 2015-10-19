@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "transactions.stock_tax_details" to return a all instances of the "StockTaxDetail" class to export. 
+        /// Executes a select query on the table "transactions.stock_tax_details" to return a all instances of the "StockTaxDetail" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "StockTaxDetail" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Transactions.StockTaxDetail> Get()
+        public IEnumerable<MixERP.Net.Entities.Transactions.StockTaxDetail> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
             const string sql = "SELECT * FROM transactions.stock_tax_details ORDER BY stock_tax_detail_id;";
             return Factory.Get<MixERP.Net.Entities.Transactions.StockTaxDetail>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "transactions.stock_tax_details" to return a all instances of the "StockTaxDetail" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "StockTaxDetail" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"StockTaxDetail\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM transactions.stock_tax_details ORDER BY stock_tax_detail_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="stockTaxDetail">The instance of "StockTaxDetail" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Transactions.StockTaxDetail stockTaxDetail, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic stockTaxDetail, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
 
 
-            if (stockTaxDetail.StockTaxDetailId > 0)
+            if (Cast.To<long>(stockTaxDetail.stock_tax_detail_id) > 0)
             {
-                primaryKeyValue = stockTaxDetail.StockTaxDetailId;
-                this.Update(stockTaxDetail, stockTaxDetail.StockTaxDetailId);
+                primaryKeyValue = stockTaxDetail.stock_tax_detail_id;
+                this.Update(stockTaxDetail, long.Parse(stockTaxDetail.stock_tax_detail_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="stockTaxDetail">The instance of "StockTaxDetail" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Transactions.StockTaxDetail stockTaxDetail)
+        public object Add(dynamic stockTaxDetail)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, stockTaxDetail);
+            return Factory.Insert(this._Catalog, stockTaxDetail, "transactions.stock_tax_details", "stock_tax_detail_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="stockTaxDetails">List of "StockTaxDetail" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Transactions.StockTaxDetail> stockTaxDetails)
+        public List<object> BulkImport(List<ExpandoObject> stockTaxDetails)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var stockTaxDetail in stockTaxDetails)
+                        foreach (dynamic stockTaxDetail in stockTaxDetails)
                         {
                             line++;
 
 
 
-                            if (stockTaxDetail.StockTaxDetailId > 0)
+                            if (Cast.To<long>(stockTaxDetail.stock_tax_detail_id) > 0)
                             {
-                                result.Add(stockTaxDetail.StockTaxDetailId);
-                                db.Update(stockTaxDetail, stockTaxDetail.StockTaxDetailId);
+                                result.Add(stockTaxDetail.stock_tax_detail_id);
+                                db.Update("transactions.stock_tax_details", "stock_tax_detail_id", stockTaxDetail, stockTaxDetail.stock_tax_detail_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(stockTaxDetail));
+                                result.Add(db.Insert("transactions.stock_tax_details", "stock_tax_detail_id", stockTaxDetail));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="stockTaxDetail">The instance of "StockTaxDetail" class to update.</param>
         /// <param name="stockTaxDetailId">The value of the column "stock_tax_detail_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Transactions.StockTaxDetail stockTaxDetail, long stockTaxDetailId)
+        public void Update(dynamic stockTaxDetail, long stockTaxDetailId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            Factory.Update(this._Catalog, stockTaxDetail, stockTaxDetailId);
+            Factory.Update(this._Catalog, stockTaxDetail, stockTaxDetailId, "transactions.stock_tax_details", "stock_tax_detail_id");
         }
 
         /// <summary>

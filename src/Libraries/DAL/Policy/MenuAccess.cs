@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Policy.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "policy.menu_access" to return a all instances of the "MenuAccess" class to export. 
+        /// Executes a select query on the table "policy.menu_access" to return a all instances of the "MenuAccess" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "MenuAccess" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Policy.MenuAccess> Get()
+        public IEnumerable<MixERP.Net.Entities.Policy.MenuAccess> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Policy.Data
 
             const string sql = "SELECT * FROM policy.menu_access ORDER BY access_id;";
             return Factory.Get<MixERP.Net.Entities.Policy.MenuAccess>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "policy.menu_access" to return a all instances of the "MenuAccess" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "MenuAccess" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"MenuAccess\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.menu_access ORDER BY access_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// <param name="menuAccess">The instance of "MenuAccess" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Policy.MenuAccess menuAccess, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic menuAccess, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -269,10 +300,10 @@ namespace MixERP.Net.Schemas.Policy.Data
 
 
 
-            if (menuAccess.AccessId > 0)
+            if (Cast.To<long>(menuAccess.access_id) > 0)
             {
-                primaryKeyValue = menuAccess.AccessId;
-                this.Update(menuAccess, menuAccess.AccessId);
+                primaryKeyValue = menuAccess.access_id;
+                this.Update(menuAccess, long.Parse(menuAccess.access_id));
             }
             else
             {
@@ -309,7 +340,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// </summary>
         /// <param name="menuAccess">The instance of "MenuAccess" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Policy.MenuAccess menuAccess)
+        public object Add(dynamic menuAccess)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -329,7 +360,7 @@ namespace MixERP.Net.Schemas.Policy.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, menuAccess);
+            return Factory.Insert(this._Catalog, menuAccess, "policy.menu_access", "access_id");
         }
 
         /// <summary>
@@ -337,7 +368,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// </summary>
         /// <param name="menuAccesses">List of "MenuAccess" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Policy.MenuAccess> menuAccesses)
+        public List<object> BulkImport(List<ExpandoObject> menuAccesses)
         {
             if (!this.SkipValidation)
             {
@@ -361,20 +392,20 @@ namespace MixERP.Net.Schemas.Policy.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var menuAccess in menuAccesses)
+                        foreach (dynamic menuAccess in menuAccesses)
                         {
                             line++;
 
 
 
-                            if (menuAccess.AccessId > 0)
+                            if (Cast.To<long>(menuAccess.access_id) > 0)
                             {
-                                result.Add(menuAccess.AccessId);
-                                db.Update(menuAccess, menuAccess.AccessId);
+                                result.Add(menuAccess.access_id);
+                                db.Update("policy.menu_access", "access_id", menuAccess, menuAccess.access_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(menuAccess));
+                                result.Add(db.Insert("policy.menu_access", "access_id", menuAccess));
                             }
                         }
 
@@ -411,7 +442,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// <param name="menuAccess">The instance of "MenuAccess" class to update.</param>
         /// <param name="accessId">The value of the column "access_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Policy.MenuAccess menuAccess, long accessId)
+        public void Update(dynamic menuAccess, long accessId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -431,7 +462,7 @@ namespace MixERP.Net.Schemas.Policy.Data
                 }
             }
 
-            Factory.Update(this._Catalog, menuAccess, accessId);
+            Factory.Update(this._Catalog, menuAccess, accessId, "policy.menu_access", "access_id");
         }
 
         /// <summary>

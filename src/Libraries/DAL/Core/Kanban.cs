@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.kanbans" to return a all instances of the "Kanban" class to export. 
+        /// Executes a select query on the table "core.kanbans" to return a all instances of the "Kanban" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Kanban" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.Kanban> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.Kanban> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.kanbans ORDER BY kanban_id;";
             return Factory.Get<MixERP.Net.Entities.Core.Kanban>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.kanbans" to return a all instances of the "Kanban" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Kanban" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Kanban\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.kanbans ORDER BY kanban_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="kanban">The instance of "Kanban" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.Kanban kanban, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic kanban, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            kanban.AuditUserId = this._UserId;
-            kanban.AuditTs = System.DateTime.UtcNow;
+            kanban.audit_user_id = this._UserId;
+            kanban.audit_ts = System.DateTime.UtcNow;
 
-            if (kanban.KanbanId > 0)
+            if (Cast.To<long>(kanban.kanban_id) > 0)
             {
-                primaryKeyValue = kanban.KanbanId;
-                this.Update(kanban, kanban.KanbanId);
+                primaryKeyValue = kanban.kanban_id;
+                this.Update(kanban, long.Parse(kanban.kanban_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="kanban">The instance of "Kanban" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.Kanban kanban)
+        public object Add(dynamic kanban)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, kanban);
+            return Factory.Insert(this._Catalog, kanban, "core.kanbans", "kanban_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="kanbans">List of "Kanban" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.Kanban> kanbans)
+        public List<object> BulkImport(List<ExpandoObject> kanbans)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var kanban in kanbans)
+                        foreach (dynamic kanban in kanbans)
                         {
                             line++;
 
-                            kanban.AuditUserId = this._UserId;
-                            kanban.AuditTs = System.DateTime.UtcNow;
+                            kanban.audit_user_id = this._UserId;
+                            kanban.audit_ts = System.DateTime.UtcNow;
 
-                            if (kanban.KanbanId > 0)
+                            if (Cast.To<long>(kanban.kanban_id) > 0)
                             {
-                                result.Add(kanban.KanbanId);
-                                db.Update(kanban, kanban.KanbanId);
+                                result.Add(kanban.kanban_id);
+                                db.Update("core.kanbans", "kanban_id", kanban, kanban.kanban_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(kanban));
+                                result.Add(db.Insert("core.kanbans", "kanban_id", kanban));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="kanban">The instance of "Kanban" class to update.</param>
         /// <param name="kanbanId">The value of the column "kanban_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.Kanban kanban, long kanbanId)
+        public void Update(dynamic kanban, long kanbanId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, kanban, kanbanId);
+            Factory.Update(this._Catalog, kanban, kanbanId, "core.kanbans", "kanban_id");
         }
 
         /// <summary>

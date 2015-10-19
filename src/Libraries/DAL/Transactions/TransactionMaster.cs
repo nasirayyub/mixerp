@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "transactions.transaction_master" to return a all instances of the "TransactionMaster" class to export. 
+        /// Executes a select query on the table "transactions.transaction_master" to return a all instances of the "TransactionMaster" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "TransactionMaster" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Transactions.TransactionMaster> Get()
+        public IEnumerable<MixERP.Net.Entities.Transactions.TransactionMaster> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
             const string sql = "SELECT * FROM transactions.transaction_master ORDER BY transaction_master_id;";
             return Factory.Get<MixERP.Net.Entities.Transactions.TransactionMaster>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "transactions.transaction_master" to return a all instances of the "TransactionMaster" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "TransactionMaster" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"TransactionMaster\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM transactions.transaction_master ORDER BY transaction_master_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="transactionMaster">The instance of "TransactionMaster" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Transactions.TransactionMaster transactionMaster, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic transactionMaster, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
             object primaryKeyValue;
 
-            transactionMaster.AuditUserId = this._UserId;
-            transactionMaster.AuditTs = System.DateTime.UtcNow;
+            transactionMaster.audit_user_id = this._UserId;
+            transactionMaster.audit_ts = System.DateTime.UtcNow;
 
-            if (transactionMaster.TransactionMasterId > 0)
+            if (Cast.To<long>(transactionMaster.transaction_master_id) > 0)
             {
-                primaryKeyValue = transactionMaster.TransactionMasterId;
-                this.Update(transactionMaster, transactionMaster.TransactionMasterId);
+                primaryKeyValue = transactionMaster.transaction_master_id;
+                this.Update(transactionMaster, long.Parse(transactionMaster.transaction_master_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="transactionMaster">The instance of "TransactionMaster" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Transactions.TransactionMaster transactionMaster)
+        public object Add(dynamic transactionMaster)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, transactionMaster);
+            return Factory.Insert(this._Catalog, transactionMaster, "transactions.transaction_master", "transaction_master_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// </summary>
         /// <param name="transactionMasters">List of "TransactionMaster" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Transactions.TransactionMaster> transactionMasters)
+        public List<object> BulkImport(List<ExpandoObject> transactionMasters)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var transactionMaster in transactionMasters)
+                        foreach (dynamic transactionMaster in transactionMasters)
                         {
                             line++;
 
-                            transactionMaster.AuditUserId = this._UserId;
-                            transactionMaster.AuditTs = System.DateTime.UtcNow;
+                            transactionMaster.audit_user_id = this._UserId;
+                            transactionMaster.audit_ts = System.DateTime.UtcNow;
 
-                            if (transactionMaster.TransactionMasterId > 0)
+                            if (Cast.To<long>(transactionMaster.transaction_master_id) > 0)
                             {
-                                result.Add(transactionMaster.TransactionMasterId);
-                                db.Update(transactionMaster, transactionMaster.TransactionMasterId);
+                                result.Add(transactionMaster.transaction_master_id);
+                                db.Update("transactions.transaction_master", "transaction_master_id", transactionMaster, transactionMaster.transaction_master_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(transactionMaster));
+                                result.Add(db.Insert("transactions.transaction_master", "transaction_master_id", transactionMaster));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         /// <param name="transactionMaster">The instance of "TransactionMaster" class to update.</param>
         /// <param name="transactionMasterId">The value of the column "transaction_master_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Transactions.TransactionMaster transactionMaster, long transactionMasterId)
+        public void Update(dynamic transactionMaster, long transactionMasterId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 }
             }
 
-            Factory.Update(this._Catalog, transactionMaster, transactionMasterId);
+            Factory.Update(this._Catalog, transactionMaster, transactionMasterId, "transactions.transaction_master", "transaction_master_id");
         }
 
         /// <summary>

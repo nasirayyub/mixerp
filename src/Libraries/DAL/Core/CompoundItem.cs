@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.compound_items" to return a all instances of the "CompoundItem" class to export. 
+        /// Executes a select query on the table "core.compound_items" to return a all instances of the "CompoundItem" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "CompoundItem" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.CompoundItem> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.CompoundItem> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.compound_items ORDER BY compound_item_id;";
             return Factory.Get<MixERP.Net.Entities.Core.CompoundItem>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.compound_items" to return a all instances of the "CompoundItem" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "CompoundItem" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"CompoundItem\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.compound_items ORDER BY compound_item_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="compoundItem">The instance of "CompoundItem" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.CompoundItem compoundItem, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic compoundItem, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            compoundItem.AuditUserId = this._UserId;
-            compoundItem.AuditTs = System.DateTime.UtcNow;
+            compoundItem.audit_user_id = this._UserId;
+            compoundItem.audit_ts = System.DateTime.UtcNow;
 
-            if (compoundItem.CompoundItemId > 0)
+            if (Cast.To<int>(compoundItem.compound_item_id) > 0)
             {
-                primaryKeyValue = compoundItem.CompoundItemId;
-                this.Update(compoundItem, compoundItem.CompoundItemId);
+                primaryKeyValue = compoundItem.compound_item_id;
+                this.Update(compoundItem, int.Parse(compoundItem.compound_item_id));
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="compoundItem">The instance of "CompoundItem" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.CompoundItem compoundItem)
+        public object Add(dynamic compoundItem)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, compoundItem);
+            return Factory.Insert(this._Catalog, compoundItem, "core.compound_items", "compound_item_id");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="compoundItems">List of "CompoundItem" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.CompoundItem> compoundItems)
+        public List<object> BulkImport(List<ExpandoObject> compoundItems)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var compoundItem in compoundItems)
+                        foreach (dynamic compoundItem in compoundItems)
                         {
                             line++;
 
-                            compoundItem.AuditUserId = this._UserId;
-                            compoundItem.AuditTs = System.DateTime.UtcNow;
+                            compoundItem.audit_user_id = this._UserId;
+                            compoundItem.audit_ts = System.DateTime.UtcNow;
 
-                            if (compoundItem.CompoundItemId > 0)
+                            if (Cast.To<int>(compoundItem.compound_item_id) > 0)
                             {
-                                result.Add(compoundItem.CompoundItemId);
-                                db.Update(compoundItem, compoundItem.CompoundItemId);
+                                result.Add(compoundItem.compound_item_id);
+                                db.Update("core.compound_items", "compound_item_id", compoundItem, compoundItem.compound_item_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(compoundItem));
+                                result.Add(db.Insert("core.compound_items", "compound_item_id", compoundItem));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="compoundItem">The instance of "CompoundItem" class to update.</param>
         /// <param name="compoundItemId">The value of the column "compound_item_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.CompoundItem compoundItem, int compoundItemId)
+        public void Update(dynamic compoundItem, int compoundItemId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, compoundItem, compoundItemId);
+            Factory.Update(this._Catalog, compoundItem, compoundItemId, "core.compound_items", "compound_item_id");
         }
 
         /// <summary>

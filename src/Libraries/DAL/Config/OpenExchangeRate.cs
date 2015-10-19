@@ -1,10 +1,12 @@
 // ReSharper disable All
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -71,11 +73,11 @@ namespace MixERP.Net.Schemas.Config.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "config.open_exchange_rates" to return a all instances of the "OpenExchangeRate" class to export. 
+        /// Executes a select query on the table "config.open_exchange_rates" to return a all instances of the "OpenExchangeRate" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "OpenExchangeRate" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Config.OpenExchangeRate> Get()
+        public IEnumerable<MixERP.Net.Entities.Config.OpenExchangeRate> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -97,6 +99,35 @@ namespace MixERP.Net.Schemas.Config.Data
 
             const string sql = "SELECT * FROM config.open_exchange_rates ORDER BY key;";
             return Factory.Get<MixERP.Net.Entities.Config.OpenExchangeRate>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "config.open_exchange_rates" to return a all instances of the "OpenExchangeRate" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "OpenExchangeRate" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"OpenExchangeRate\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM config.open_exchange_rates ORDER BY key;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -258,7 +289,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// <param name="openExchangeRate">The instance of "OpenExchangeRate" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Config.OpenExchangeRate openExchangeRate, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic openExchangeRate, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -267,13 +298,13 @@ namespace MixERP.Net.Schemas.Config.Data
 
             object primaryKeyValue;
 
-            openExchangeRate.AuditUserId = this._UserId;
-            openExchangeRate.AuditTs = System.DateTime.UtcNow;
+            openExchangeRate.audit_user_id = this._UserId;
+            openExchangeRate.audit_ts = System.DateTime.UtcNow;
 
-            if (!string.IsNullOrWhiteSpace(openExchangeRate.Key))
+            if (!string.IsNullOrWhiteSpace(openExchangeRate.key))
             {
-                primaryKeyValue = openExchangeRate.Key;
-                this.Update(openExchangeRate, openExchangeRate.Key);
+                primaryKeyValue = openExchangeRate.key;
+                this.Update(openExchangeRate, openExchangeRate.key);
             }
             else
             {
@@ -310,7 +341,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// </summary>
         /// <param name="openExchangeRate">The instance of "OpenExchangeRate" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Config.OpenExchangeRate openExchangeRate)
+        public object Add(dynamic openExchangeRate)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -330,7 +361,7 @@ namespace MixERP.Net.Schemas.Config.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, openExchangeRate);
+            return Factory.Insert(this._Catalog, openExchangeRate, "config.open_exchange_rates", "key");
         }
 
         /// <summary>
@@ -338,7 +369,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// </summary>
         /// <param name="openExchangeRates">List of "OpenExchangeRate" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Config.OpenExchangeRate> openExchangeRates)
+        public List<object> BulkImport(List<ExpandoObject> openExchangeRates)
         {
             if (!this.SkipValidation)
             {
@@ -362,21 +393,21 @@ namespace MixERP.Net.Schemas.Config.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var openExchangeRate in openExchangeRates)
+                        foreach (dynamic openExchangeRate in openExchangeRates)
                         {
                             line++;
 
-                            openExchangeRate.AuditUserId = this._UserId;
-                            openExchangeRate.AuditTs = System.DateTime.UtcNow;
+                            openExchangeRate.audit_user_id = this._UserId;
+                            openExchangeRate.audit_ts = System.DateTime.UtcNow;
 
-                            if (!string.IsNullOrWhiteSpace(openExchangeRate.Key))
+                            if (!string.IsNullOrWhiteSpace(openExchangeRate.key))
                             {
-                                result.Add(openExchangeRate.Key);
-                                db.Update(openExchangeRate, openExchangeRate.Key);
+                                result.Add(openExchangeRate.key);
+                                db.Update("config.open_exchange_rates", "key", openExchangeRate, openExchangeRate.key);
                             }
                             else
                             {
-                                result.Add(db.Insert(openExchangeRate));
+                                result.Add(db.Insert("config.open_exchange_rates", "key", openExchangeRate));
                             }
                         }
 
@@ -413,7 +444,7 @@ namespace MixERP.Net.Schemas.Config.Data
         /// <param name="openExchangeRate">The instance of "OpenExchangeRate" class to update.</param>
         /// <param name="key">The value of the column "key" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Config.OpenExchangeRate openExchangeRate, string key)
+        public void Update(dynamic openExchangeRate, string key)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -433,7 +464,7 @@ namespace MixERP.Net.Schemas.Config.Data
                 }
             }
 
-            Factory.Update(this._Catalog, openExchangeRate, key);
+            Factory.Update(this._Catalog, openExchangeRate, key, "config.open_exchange_rates", "key");
         }
 
         /// <summary>
