@@ -1,21 +1,37 @@
-﻿<%--
-Copyright (C) MixERP Inc. (http://mixof.org).
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="CashRepositories.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.CashRepositories" %>
+<script>
+    var scrudFactory = new Object();
 
-This file is part of MixERP.
+    scrudFactory.title = Resources.Titles.CashRepositories();
 
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
+    scrudFactory.viewAPI = "/api/office/cash-repository-scrud-view";
+    scrudFactory.viewTableName = "office.cash_repository_scrud_view";
 
+    scrudFactory.formAPI = "/api/office/cash-repository";
+    scrudFactory.formTableName = "office.cash_repositories";
+    scrudFactory.live = "CashRepositoryName";
 
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
 
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses />.
---%>
+    scrudFactory.allowDelete = true;
+    scrudFactory.allowEdit = true;
 
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="CashRepositories.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.CashRepositories" %>
-<asp:PlaceHolder ID="ScrudPlaceholder" runat="server" />
+    scrudFactory.keys = [
+        {
+            property: "ParentCashRepositoryId",
+            url: '/api/office/cash-repository-scrud-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "OfficeId",
+            url: '/api/office/office-scrud-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        }
+    ];
+</script>
+<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
+<div data-ng-include="'/Views/Modules/FormFactory.html'"></div>

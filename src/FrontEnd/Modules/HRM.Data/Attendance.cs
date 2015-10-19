@@ -1,28 +1,12 @@
 // ReSharper disable All
-/********************************************************************************
-Copyright (C) MixERP Inc. (http://mixof.org).
-
-This file is part of MixERP.
-
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
-
-
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************************/
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -75,7 +59,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -89,11 +73,11 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.attendances" to return a all instances of the "Attendance" class to export. 
+        /// Executes a select query on the table "hrm.attendances" to return a all instances of the "Attendance" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Attendance" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.HRM.Attendance> Get()
+        public IEnumerable<MixERP.Net.Entities.HRM.Attendance> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -104,7 +88,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -115,6 +99,35 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             const string sql = "SELECT * FROM hrm.attendances ORDER BY attendance_id;";
             return Factory.Get<MixERP.Net.Entities.HRM.Attendance>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "hrm.attendances" to return a all instances of the "Attendance" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Attendance" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Attendance\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.attendances ORDER BY attendance_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -134,7 +147,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -164,7 +177,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -194,7 +207,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -232,7 +245,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -276,7 +289,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="attendance">The instance of "Attendance" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.HRM.Attendance attendance, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic attendance, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -285,13 +298,13 @@ namespace MixERP.Net.Core.Modules.HRM.Data
 
             object primaryKeyValue;
 
-            attendance.AuditUserId = this._UserId;
-            attendance.AuditTs = System.DateTime.UtcNow;
+            attendance.audit_user_id = this._UserId;
+            attendance.audit_ts = System.DateTime.UtcNow;
 
-            if (attendance.AttendanceId > 0)
+            if (Cast.To<long>(attendance.attendance_id) > 0)
             {
-                primaryKeyValue = attendance.AttendanceId;
-                this.Update(attendance, attendance.AttendanceId);
+                primaryKeyValue = attendance.attendance_id;
+                this.Update(attendance, long.Parse(attendance.attendance_id));
             }
             else
             {
@@ -328,7 +341,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="attendance">The instance of "Attendance" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.HRM.Attendance attendance)
+        public object Add(dynamic attendance)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -339,7 +352,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Create, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Create, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -348,7 +361,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, attendance);
+            return Factory.Insert(this._Catalog, attendance, "hrm.attendances", "attendance_id");
         }
 
         /// <summary>
@@ -356,13 +369,13 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// </summary>
         /// <param name="attendances">List of "Attendance" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.HRM.Attendance> attendances)
+        public List<object> BulkImport(List<ExpandoObject> attendances)
         {
             if (!this.SkipValidation)
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.ImportData, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.ImportData, this._LoginId, this._Catalog, false);
                 }
 
                 if (!this.HasAccess)
@@ -380,21 +393,21 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var attendance in attendances)
+                        foreach (dynamic attendance in attendances)
                         {
                             line++;
 
-                            attendance.AuditUserId = this._UserId;
-                            attendance.AuditTs = System.DateTime.UtcNow;
+                            attendance.audit_user_id = this._UserId;
+                            attendance.audit_ts = System.DateTime.UtcNow;
 
-                            if (attendance.AttendanceId > 0)
+                            if (Cast.To<long>(attendance.attendance_id) > 0)
                             {
-                                result.Add(attendance.AttendanceId);
-                                db.Update(attendance, attendance.AttendanceId);
+                                result.Add(attendance.attendance_id);
+                                db.Update("hrm.attendances", "attendance_id", attendance, attendance.attendance_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(attendance));
+                                result.Add(db.Insert("hrm.attendances", "attendance_id", attendance));
                             }
                         }
 
@@ -431,7 +444,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         /// <param name="attendance">The instance of "Attendance" class to update.</param>
         /// <param name="attendanceId">The value of the column "attendance_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.HRM.Attendance attendance, long attendanceId)
+        public void Update(dynamic attendance, long attendanceId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -442,7 +455,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Edit, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Edit, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -451,7 +464,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 }
             }
 
-            Factory.Update(this._Catalog, attendance, attendanceId);
+            Factory.Update(this._Catalog, attendance, attendanceId, "hrm.attendances", "attendance_id");
         }
 
         /// <summary>
@@ -470,7 +483,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Delete, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Delete, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -499,7 +512,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -529,7 +542,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -567,7 +580,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -600,7 +613,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -642,7 +655,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -676,7 +689,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {

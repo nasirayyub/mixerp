@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -126,19 +127,48 @@ namespace MixERP.Net.Api.Office
         }
 
         /// <summary>
+        ///     Returns all collection of office.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/office/office/all")]
+        public IEnumerable<MixERP.Net.Entities.Office.Office> GetAll()
+        {
+            try
+            {
+                return this.OfficeContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of office for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/office/office/export")]
-        [Route("~/api/office/office/all")]
-        public IEnumerable<MixERP.Net.Entities.Office.Office> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.OfficeContext.Get();
+                return this.OfficeContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -514,7 +544,7 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/office/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Office.Office office = form[0].ToObject<MixERP.Net.Entities.Office.Office>(JsonHelper.GetJsonSerializer());
+            dynamic office = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (office == null)
@@ -617,9 +647,9 @@ namespace MixERP.Net.Api.Office
             }
         }
 
-        private List<MixERP.Net.Entities.Office.Office> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Office.Office>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -631,9 +661,9 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/office/office/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Office.Office> officeCollection = this.ParseCollection(collection);
+            List<ExpandoObject> officeCollection = this.ParseCollection(collection);
 
             if (officeCollection == null || officeCollection.Count.Equals(0))
             {

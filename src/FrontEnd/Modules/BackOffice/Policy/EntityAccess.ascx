@@ -2,15 +2,15 @@
 <script>
     var scrudFactory = new Object();
 
-    scrudFactory.title = "Entity Access Policy";
-    scrudFactory.description = "Create entity access policy for individual users. By default, users have right to access an entity if a menu acesss policy is granted. If a <a href='{0}'>default entity access policy</a> was created to restrict access to a group of users, you can still override that policy and provide access permission to a particular user.";
-    scrudFactory.description = stringFormat(scrudFactory.description, "DefaultEntityAccess.mix");
+    scrudFactory.title = window.Resources.Titles.EntityAccessPolicy();
+    scrudFactory.description = stringFormat(window.Resources.Labels.EntityAccessPolicy(), "DefaultEntityAccess.mix");
 
     scrudFactory.viewAPI = "/api/policy/entity-access-scrud-view";
     scrudFactory.viewTableName = "policy.entity_access_scrud_view";
 
     scrudFactory.formAPI = "/api/policy/entity-access";
     scrudFactory.formTableName = "policy.entity_access";
+    scrudFactory.className = "EntityAccess";
 
     scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
 
@@ -21,6 +21,11 @@
     + " (" + this["TableSchema"].toString().split("_").join(" ").toPascalCase() + ")"\
     }}';
 
+    scrudFactory.card = {
+        header: "EntityName",
+        meta: "UserName",
+        description: "{{card.AccessTypeName + ' (' + card.AllowAccess + ')'}}"
+    };
 
     scrudFactory.keys = [
         {

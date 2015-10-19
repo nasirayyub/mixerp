@@ -1,4 +1,7 @@
 ///<reference path="/Scripts/jquery-1.9.1.js" />
+
+
+
 ///<reference path="/Scripts/mixerp/mixerp-core.js" />
 QUnit.test("event.js -> triggerClick", function (assert) {
     var button = $("<input type='button' id='TestButton' />").hide();

@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -100,19 +101,48 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns all collection of account master.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/core/account-master/all")]
+        public IEnumerable<MixERP.Net.Entities.Core.AccountMaster> GetAll()
+        {
+            try
+            {
+                return this.AccountMasterContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of account master for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/core/account-master/export")]
-        [Route("~/api/core/account-master/all")]
-        public IEnumerable<MixERP.Net.Entities.Core.AccountMaster> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.AccountMasterContext.Get();
+                return this.AccountMasterContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -488,7 +518,7 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/account-master/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Core.AccountMaster accountMaster = form[0].ToObject<MixERP.Net.Entities.Core.AccountMaster>(JsonHelper.GetJsonSerializer());
+            dynamic accountMaster = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (accountMaster == null)
@@ -591,9 +621,9 @@ namespace MixERP.Net.Api.Core
             }
         }
 
-        private List<MixERP.Net.Entities.Core.AccountMaster> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Core.AccountMaster>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -605,9 +635,9 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/core/account-master/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Core.AccountMaster> accountMasterCollection = this.ParseCollection(collection);
+            List<ExpandoObject> accountMasterCollection = this.ParseCollection(collection);
 
             if (accountMasterCollection == null || accountMasterCollection.Count.Equals(0))
             {

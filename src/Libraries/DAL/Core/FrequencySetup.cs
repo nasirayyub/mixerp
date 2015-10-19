@@ -1,28 +1,12 @@
 // ReSharper disable All
-/********************************************************************************
-Copyright (C) MixERP Inc. (http://mixof.org).
-
-This file is part of MixERP.
-
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
-
-
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************************/
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -75,7 +59,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -89,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.frequency_setups" to return a all instances of the "FrequencySetup" class to export. 
+        /// Executes a select query on the table "core.frequency_setups" to return a all instances of the "FrequencySetup" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "FrequencySetup" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.FrequencySetup> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.FrequencySetup> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -104,7 +88,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -115,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.frequency_setups ORDER BY frequency_setup_id;";
             return Factory.Get<MixERP.Net.Entities.Core.FrequencySetup>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.frequency_setups" to return a all instances of the "FrequencySetup" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "FrequencySetup" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"FrequencySetup\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.frequency_setups ORDER BY frequency_setup_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -134,7 +147,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -164,7 +177,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -194,7 +207,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -232,7 +245,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -276,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="frequencySetup">The instance of "FrequencySetup" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.FrequencySetup frequencySetup, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic frequencySetup, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -285,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            frequencySetup.AuditUserId = this._UserId;
-            frequencySetup.AuditTs = System.DateTime.UtcNow;
+            frequencySetup.audit_user_id = this._UserId;
+            frequencySetup.audit_ts = System.DateTime.UtcNow;
 
-            if (frequencySetup.FrequencySetupId > 0)
+            if (Cast.To<int>(frequencySetup.frequency_setup_id) > 0)
             {
-                primaryKeyValue = frequencySetup.FrequencySetupId;
-                this.Update(frequencySetup, frequencySetup.FrequencySetupId);
+                primaryKeyValue = frequencySetup.frequency_setup_id;
+                this.Update(frequencySetup, int.Parse(frequencySetup.frequency_setup_id));
             }
             else
             {
@@ -328,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="frequencySetup">The instance of "FrequencySetup" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.FrequencySetup frequencySetup)
+        public object Add(dynamic frequencySetup)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -339,7 +352,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Create, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Create, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -348,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, frequencySetup);
+            return Factory.Insert(this._Catalog, frequencySetup, "core.frequency_setups", "frequency_setup_id");
         }
 
         /// <summary>
@@ -356,13 +369,13 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="frequencySetups">List of "FrequencySetup" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.FrequencySetup> frequencySetups)
+        public List<object> BulkImport(List<ExpandoObject> frequencySetups)
         {
             if (!this.SkipValidation)
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.ImportData, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.ImportData, this._LoginId, this._Catalog, false);
                 }
 
                 if (!this.HasAccess)
@@ -380,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var frequencySetup in frequencySetups)
+                        foreach (dynamic frequencySetup in frequencySetups)
                         {
                             line++;
 
-                            frequencySetup.AuditUserId = this._UserId;
-                            frequencySetup.AuditTs = System.DateTime.UtcNow;
+                            frequencySetup.audit_user_id = this._UserId;
+                            frequencySetup.audit_ts = System.DateTime.UtcNow;
 
-                            if (frequencySetup.FrequencySetupId > 0)
+                            if (Cast.To<int>(frequencySetup.frequency_setup_id) > 0)
                             {
-                                result.Add(frequencySetup.FrequencySetupId);
-                                db.Update(frequencySetup, frequencySetup.FrequencySetupId);
+                                result.Add(frequencySetup.frequency_setup_id);
+                                db.Update("core.frequency_setups", "frequency_setup_id", frequencySetup, frequencySetup.frequency_setup_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(frequencySetup));
+                                result.Add(db.Insert("core.frequency_setups", "frequency_setup_id", frequencySetup));
                             }
                         }
 
@@ -431,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="frequencySetup">The instance of "FrequencySetup" class to update.</param>
         /// <param name="frequencySetupId">The value of the column "frequency_setup_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.FrequencySetup frequencySetup, int frequencySetupId)
+        public void Update(dynamic frequencySetup, int frequencySetupId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -442,7 +455,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Edit, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Edit, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -451,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, frequencySetup, frequencySetupId);
+            Factory.Update(this._Catalog, frequencySetup, frequencySetupId, "core.frequency_setups", "frequency_setup_id");
         }
 
         /// <summary>
@@ -470,7 +483,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Delete, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Delete, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -499,7 +512,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -529,7 +542,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -567,7 +580,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -600,7 +613,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -642,7 +655,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -676,7 +689,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {

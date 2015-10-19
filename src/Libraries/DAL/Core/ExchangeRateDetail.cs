@@ -1,28 +1,12 @@
 // ReSharper disable All
-/********************************************************************************
-Copyright (C) MixERP Inc. (http://mixof.org).
-
-This file is part of MixERP.
-
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
-
-
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************************/
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -75,7 +59,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -89,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.exchange_rate_details" to return a all instances of the "ExchangeRateDetail" class to export. 
+        /// Executes a select query on the table "core.exchange_rate_details" to return a all instances of the "ExchangeRateDetail" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "ExchangeRateDetail" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.ExchangeRateDetail> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.ExchangeRateDetail> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -104,7 +88,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -115,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.exchange_rate_details ORDER BY exchange_rate_detail_id;";
             return Factory.Get<MixERP.Net.Entities.Core.ExchangeRateDetail>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.exchange_rate_details" to return a all instances of the "ExchangeRateDetail" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "ExchangeRateDetail" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"ExchangeRateDetail\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.exchange_rate_details ORDER BY exchange_rate_detail_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -134,7 +147,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -164,7 +177,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -194,7 +207,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -232,7 +245,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -276,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="exchangeRateDetail">The instance of "ExchangeRateDetail" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.ExchangeRateDetail exchangeRateDetail, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic exchangeRateDetail, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -287,10 +300,10 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-            if (exchangeRateDetail.ExchangeRateDetailId > 0)
+            if (Cast.To<long>(exchangeRateDetail.exchange_rate_detail_id) > 0)
             {
-                primaryKeyValue = exchangeRateDetail.ExchangeRateDetailId;
-                this.Update(exchangeRateDetail, exchangeRateDetail.ExchangeRateDetailId);
+                primaryKeyValue = exchangeRateDetail.exchange_rate_detail_id;
+                this.Update(exchangeRateDetail, long.Parse(exchangeRateDetail.exchange_rate_detail_id));
             }
             else
             {
@@ -327,7 +340,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="exchangeRateDetail">The instance of "ExchangeRateDetail" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.ExchangeRateDetail exchangeRateDetail)
+        public object Add(dynamic exchangeRateDetail)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -338,7 +351,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Create, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Create, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -347,7 +360,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, exchangeRateDetail);
+            return Factory.Insert(this._Catalog, exchangeRateDetail, "core.exchange_rate_details", "exchange_rate_detail_id");
         }
 
         /// <summary>
@@ -355,13 +368,13 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="exchangeRateDetails">List of "ExchangeRateDetail" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.ExchangeRateDetail> exchangeRateDetails)
+        public List<object> BulkImport(List<ExpandoObject> exchangeRateDetails)
         {
             if (!this.SkipValidation)
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.ImportData, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.ImportData, this._LoginId, this._Catalog, false);
                 }
 
                 if (!this.HasAccess)
@@ -379,20 +392,20 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var exchangeRateDetail in exchangeRateDetails)
+                        foreach (dynamic exchangeRateDetail in exchangeRateDetails)
                         {
                             line++;
 
 
 
-                            if (exchangeRateDetail.ExchangeRateDetailId > 0)
+                            if (Cast.To<long>(exchangeRateDetail.exchange_rate_detail_id) > 0)
                             {
-                                result.Add(exchangeRateDetail.ExchangeRateDetailId);
-                                db.Update(exchangeRateDetail, exchangeRateDetail.ExchangeRateDetailId);
+                                result.Add(exchangeRateDetail.exchange_rate_detail_id);
+                                db.Update("core.exchange_rate_details", "exchange_rate_detail_id", exchangeRateDetail, exchangeRateDetail.exchange_rate_detail_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(exchangeRateDetail));
+                                result.Add(db.Insert("core.exchange_rate_details", "exchange_rate_detail_id", exchangeRateDetail));
                             }
                         }
 
@@ -429,7 +442,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="exchangeRateDetail">The instance of "ExchangeRateDetail" class to update.</param>
         /// <param name="exchangeRateDetailId">The value of the column "exchange_rate_detail_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.ExchangeRateDetail exchangeRateDetail, long exchangeRateDetailId)
+        public void Update(dynamic exchangeRateDetail, long exchangeRateDetailId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -440,7 +453,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Edit, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Edit, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -449,7 +462,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, exchangeRateDetail, exchangeRateDetailId);
+            Factory.Update(this._Catalog, exchangeRateDetail, exchangeRateDetailId, "core.exchange_rate_details", "exchange_rate_detail_id");
         }
 
         /// <summary>
@@ -468,7 +481,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Delete, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Delete, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -497,7 +510,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -527,7 +540,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -565,7 +578,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -598,7 +611,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -640,7 +653,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -674,7 +687,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {

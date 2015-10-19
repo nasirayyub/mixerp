@@ -107,6 +107,7 @@
     <Compile Include="GetUserIdByUserNameController.cs" />
     <Compile Include="GetUserNameByUserIdController.cs" />
     <Compile Include="HasChildOfficesController.cs" />
+    <Compile Include="HolidayController.cs" />
     <Compile Include="IsAdminController.cs" />
     <Compile Include="IsParentOfficeController.cs" />
     <Compile Include="IsPeriodicInventoryController.cs" />

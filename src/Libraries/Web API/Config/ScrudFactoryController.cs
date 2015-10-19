@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -99,19 +100,48 @@ namespace MixERP.Net.Api.Config
         }
 
         /// <summary>
+        ///     Returns all collection of scrud factory.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/config/scrud-factory/all")]
+        public IEnumerable<MixERP.Net.Entities.Config.ScrudFactory> GetAll()
+        {
+            try
+            {
+                return this.ScrudFactoryContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of scrud factory for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/config/scrud-factory/export")]
-        [Route("~/api/config/scrud-factory/all")]
-        public IEnumerable<MixERP.Net.Entities.Config.ScrudFactory> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.ScrudFactoryContext.Get();
+                return this.ScrudFactoryContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -487,7 +517,7 @@ namespace MixERP.Net.Api.Config
         [Route("~/api/config/scrud-factory/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Config.ScrudFactory scrudFactory = form[0].ToObject<MixERP.Net.Entities.Config.ScrudFactory>(JsonHelper.GetJsonSerializer());
+            dynamic scrudFactory = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (scrudFactory == null)
@@ -590,9 +620,9 @@ namespace MixERP.Net.Api.Config
             }
         }
 
-        private List<MixERP.Net.Entities.Config.ScrudFactory> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Config.ScrudFactory>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -604,9 +634,9 @@ namespace MixERP.Net.Api.Config
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/config/scrud-factory/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Config.ScrudFactory> scrudFactoryCollection = this.ParseCollection(collection);
+            List<ExpandoObject> scrudFactoryCollection = this.ParseCollection(collection);
 
             if (scrudFactoryCollection == null || scrudFactoryCollection.Count.Equals(0))
             {

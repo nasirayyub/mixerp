@@ -1,23 +1,4 @@
-﻿/********************************************************************************
-Copyright (C) MixERP Inc. (http://mixof.org).
-
-This file is part of MixERP.
-
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
-
-
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************************/
-
-using MixERP.Net.ApplicationState.Cache;
+﻿using MixERP.Net.ApplicationState.Cache;
 using MixERP.Net.Core.Modules.BackOffice.Data.Admin;
 using MixERP.Net.Framework.Controls;
 using MixERP.Net.FrontEnd.Base;
@@ -29,10 +10,7 @@ namespace MixERP.Net.Core.Modules.BackOffice.Admin
 {
     public partial class DatabaseStatistics : MixERPUserControl
     {
-        public override AccessLevel AccessLevel
-        {
-            get { return AccessLevel.AdminOnly; }
-        }
+        public override AccessLevel AccessLevel => AccessLevel.AdminOnly;
 
         public override void OnControlLoad(object sender, EventArgs e)
         {
@@ -43,8 +21,6 @@ namespace MixERP.Net.Core.Modules.BackOffice.Admin
             this.VacuumButton.Text = Titles.VacuumDatabase;
             this.FullVacuumButton.Text = Titles.VacuumFullDatabase;
             this.AnalyzeButton.Text = Titles.AnalyzeDatabse;
-
-            this.AddScrud();
         }
 
         protected void AnalyzeButton_Click(object sender, EventArgs e)
@@ -71,31 +47,9 @@ namespace MixERP.Net.Core.Modules.BackOffice.Admin
             this.DisplaySuccess();
         }
 
-        private void AddScrud()
-        {
-            using (Scrud scrud = new Scrud())
-            {
-                scrud.DenyAdd = true;
-                scrud.DenyDelete = true;
-                scrud.DenyEdit = true;
-
-                scrud.KeyColumn = "relname";
-                scrud.PageSize = 500;
-
-                scrud.TableSchema = "public";
-                scrud.Table = "db_stat";
-                scrud.ViewSchema = "public";
-                scrud.View = "db_stat";
-
-                scrud.Text = Titles.DatabaseStatistics;
-
-                this.ScrudPlaceholder.Controls.Add(scrud);
-            }
-        }
-
         private void DisplaySuccess()
         {
-            this.MessageLiteral.Text = @"<div class='success'>" + Labels.TaskCompletedSuccessfully + @"</div>";
+            this.MessageLiteral.Text = @"<div class='ui positive message'>" + Labels.TaskCompletedSuccessfully + @"</div>";
         }
     }
 }

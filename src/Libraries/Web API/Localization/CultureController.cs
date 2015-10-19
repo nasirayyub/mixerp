@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -97,19 +98,48 @@ namespace MixERP.Net.Api.Localization
         }
 
         /// <summary>
+        ///     Returns all collection of culture.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/localization/culture/all")]
+        public IEnumerable<MixERP.Net.Entities.Localization.Culture> GetAll()
+        {
+            try
+            {
+                return this.CultureContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of culture for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/localization/culture/export")]
-        [Route("~/api/localization/culture/all")]
-        public IEnumerable<MixERP.Net.Entities.Localization.Culture> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.CultureContext.Get();
+                return this.CultureContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -485,7 +515,7 @@ namespace MixERP.Net.Api.Localization
         [Route("~/api/localization/culture/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Localization.Culture culture = form[0].ToObject<MixERP.Net.Entities.Localization.Culture>(JsonHelper.GetJsonSerializer());
+            dynamic culture = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (culture == null)
@@ -588,9 +618,9 @@ namespace MixERP.Net.Api.Localization
             }
         }
 
-        private List<MixERP.Net.Entities.Localization.Culture> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Localization.Culture>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -602,9 +632,9 @@ namespace MixERP.Net.Api.Localization
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/localization/culture/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Localization.Culture> cultureCollection = this.ParseCollection(collection);
+            List<ExpandoObject> cultureCollection = this.ParseCollection(collection);
 
             if (cultureCollection == null || cultureCollection.Count.Equals(0))
             {

@@ -1,24 +1,46 @@
-﻿<%--
-Copyright (C) MixERP Inc. (http://mixof.org).
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AutoVerification.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.Policy.AutoVerification" %>
 
-This file is part of MixERP.
+<script>
+    var scrudFactory = new Object();
 
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
+    scrudFactory.title = Resources.Titles.AutoVerificationPolicy();
 
+    scrudFactory.viewAPI = "/api/policy/auto-verification-policy-scrud-view";
+    scrudFactory.viewTableName = "policy.auto_verification_policy_scrud_view";
 
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    scrudFactory.formAPI = "/api/policy/auto-verification-policy";
+    scrudFactory.formTableName = "policy.auto_verification_policy";
 
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses />.
---%>
+    scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
 
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AutoVerification.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.Policy.AutoVerification" %>
-<asp:PlaceHolder ID="ScrudPlaceholder" runat="server" />
+    scrudFactory.allowDelete = true;
+    scrudFactory.allowEdit = true;
+
+    scrudFactory.card = {
+        keyField : "PolicyId",
+        header: "UserName"
+    };
+
+    scrudFactory.keys = [
+        {
+            property: "OfficeId",
+            url: '/api/office/office/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "UserId",
+            url: '/api/office/user/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        }
+    ];
+
+</script>
+<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
+<div data-ng-include="'/Views/Modules/FormFactory.html'"></div>
 
 <script type="text/javascript">
 

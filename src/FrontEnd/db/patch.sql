@@ -428,8 +428,6 @@ END
 $$
 LANGUAGE plpgsql;
 
-DROP TABLE IF EXISTS office.holiday;
-
 DROP VIEW IF EXISTS core.item_cost_price_scrud_view;
 DROP VIEW IF EXISTS core.item_scrud_view;
 DROP VIEW IF EXISTS core.item_view;
@@ -491,6 +489,65 @@ BEGIN
     ) THEN
         ALTER TABLE core.salespersons
         ADD COLUMN photo public.image;
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+ALTER TABLE office.holidays
+DROP COLUMN IF EXISTS falls_on;
+
+ALTER TABLE office.holidays
+DROP COLUMN IF EXISTS recurs_next_year;
+
+
+DO
+$$
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM   pg_attribute 
+        WHERE  attrelid = 'office.holidays'::regclass
+        AND    attname = 'occurs_on'
+        AND    NOT attisdropped
+    ) THEN
+        ALTER TABLE office.holidays
+        ADD COLUMN occurs_on date NOT NULL;
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+DO
+$$
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM   pg_attribute 
+        WHERE  attrelid = 'office.holidays'::regclass
+        AND    attname = 'ends_on'
+        AND    NOT attisdropped
+    ) THEN
+        ALTER TABLE office.holidays
+        ADD COLUMN ends_on date NOT NULL CHECK(ends_on >= occurs_on);
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+DO
+$$
+BEGIN
+    IF NOT EXISTS(SELECT 0 FROM pg_class where oid::regclass::text = 'office.holidays_holiday_id_seq') THEN
+        CREATE SEQUENCE office.holidays_holiday_id_seq;
+        ALTER SEQUENCE office.holidays_holiday_id_seq OWNER TO mix_erp;
+
+        ALTER TABLE office.holidays
+        ALTER COLUMN holiday_id SET DEFAULT(nextval('office.holidays_holiday_id_seq'));
+
+        ALTER SEQUENCE office.holidays_holiday_id_seq OWNED BY office.holidays.holiday_id;
     END IF;
 END
 $$
@@ -789,6 +846,44 @@ $$
 LANGUAGE plpgsql;
 
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/localization/localization.get_resource.sql --<--<--
+DROP FUNCTION IF EXISTS localization.get_resource(_culture_code text, _resource_class text, _key text);
+
+CREATE FUNCTION localization.get_resource(_culture_code text, _resource_class text, _key text)
+RETURNS text
+STABLE
+AS
+$$
+    DECLARE _resource_id    integer;
+    DECLARE _resource       text;
+    DECLARE _value          text;
+BEGIN
+    SELECT 
+        resource_id,
+        value
+    INTO
+        _resource_id,
+        _resource
+    FROM localization.resources
+    WHERE resource_class = _resource_class
+    AND key = _key;
+
+    SELECT
+        value
+    INTO
+        _value
+    FROM localization.localized_resources
+    WHERE culture_code = _culture_code
+    AND resource_id = _resource_id;
+
+
+    _resource := COALESCE(_value, _resource);
+    
+    RETURN _resource;
+END
+$$
+LANGUAGE plpgsql;
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/office/office.can_login.sql --<--<--
 DROP FUNCTION IF EXISTS office.can_login(user_id public.integer_strict, office_id public.integer_strict, OUT result boolean, OUT message text);
 DROP FUNCTION IF EXISTS office.can_login(user_id public.integer_strict, office_id public.integer_strict);
@@ -1027,6 +1122,196 @@ $$
 LANGUAGE plpgsql;
 
 
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/policy/policy.has_access.sql --<--<--
+DROP FUNCTION IF EXISTS policy.has_access(_user_id integer, _entity text, _access_type_id integer);
+
+CREATE FUNCTION policy.has_access(_user_id integer, _entity text, _access_type_id integer)
+RETURNS boolean
+AS
+$$
+    DECLARE _role_id                    integer;
+    DECLARE _group_policy               boolean = NULL;
+    DECLARE _user_policy                boolean = NULL;
+    DECLARE _policy                     boolean = true;
+BEGIN
+    SELECT role_id INTO _role_id FROM office.users WHERE user_id = _user_id;
+
+    --GROUP POLICY BASED ON ALL ENTITIES AND ALL ACCESS TYPES
+    IF EXISTS
+    (
+        SELECT * FROM policy.default_entity_access
+        WHERE role_id = _role_id
+        AND NOT allow_access
+        AND access_type_id IS NULL
+        AND COALESCE(entity_name, '') = ''
+    ) THEN
+        _group_policy = false;
+    END IF;
+
+    --GROUP POLICY BASED ON ALL ENTITIES AND SPECIFIED ACCESS TYPE
+    IF EXISTS
+    (
+        SELECT * FROM policy.default_entity_access
+        WHERE role_id = _role_id
+        AND NOT allow_access
+        AND access_type_id = _access_type_id
+        AND COALESCE(entity_name, '') = ''
+    ) THEN
+        _group_policy = false;
+    END IF;
+ 
+
+    --GROUP POLICY BASED ON SPECIFIED ENTITY AND ALL ACCESS TYPES
+    IF EXISTS
+    (
+        SELECT * FROM policy.default_entity_access
+        WHERE role_id = _role_id
+        AND NOT allow_access
+        AND access_type_id IS NULL
+        AND entity_name = _entity
+    ) THEN
+        _group_policy = false;
+    END IF;
+
+    --GROUP POLICY BASED ON SPECIFIED ENTITY AND SPECIFIED ACCESS TYPE
+    IF EXISTS
+    (
+        SELECT * FROM policy.default_entity_access
+        WHERE role_id = _role_id
+        AND NOT allow_access
+        AND access_type_id = _access_type_id
+        AND entity_name = _entity
+    ) THEN
+        _group_policy = false;
+    END IF;
+
+
+    --USER POLICY BASED ON ALL ENTITIES AND ALL ACCESS TYPES
+    SELECT allow_access INTO _user_policy FROM policy.entity_access
+    WHERE user_id = _user_id
+    AND access_type_id IS NULL
+    AND COALESCE(entity_name, '') = '';
+
+    --USER POLICY BASED ON SPECIFIED ENTITY AND ALL ACCESS TYPES
+    IF(_user_policy IS NULL) THEN
+        SELECT allow_access INTO _user_policy 
+        FROM policy.entity_access
+        WHERE user_id = _user_id
+        AND access_type_id IS NULL
+        AND entity_name = _entity;
+    END IF;
+ 
+    --USER POLICY BASED ON ALL ENTITIES AND SPECIFIED ACCESS TYPE
+    IF(_user_policy IS NULL) THEN
+        SELECT allow_access INTO _user_policy FROM policy.entity_access
+        WHERE user_id = _user_id
+        AND access_type_id = _access_type_id
+        AND COALESCE(entity_name, '') = '';
+    END IF;
+ 
+
+    --USER POLICY BASED ON SPECIFIED ENTITY AND SPECIFIED ACCESS TYPE
+    IF(_user_policy IS NULL) THEN
+        SELECT allow_access INTO _user_policy FROM policy.entity_access
+        WHERE user_id = _user_id
+        AND access_type_id = _access_type_id
+        AND entity_name = _entity;
+    END IF;
+
+    IF(_group_policy IS NOT NULL) THEN
+        _policy := _group_policy;
+    END IF;
+
+    IF(_user_policy IS NOT NULL) THEN
+        _policy := _user_policy;
+    END IF;
+
+    RETURN _policy;
+END
+$$
+LANGUAGE plpgsql;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/public/public.get_entities.sql --<--<--
+DROP FUNCTION IF EXISTS public.get_entities();
+
+CREATE FUNCTION public.get_entities()
+RETURNS TABLE
+(
+    table_schema name, 
+    table_name name, 
+    table_type text, 
+    has_duplicate boolean
+)
+AS
+$$
+    DECLARE _ignored_schemas text[] = '{pg_catalog, information_schema}';
+BEGIN
+    CREATE TEMPORARY TABLE _t
+    (
+        table_schema            name,
+        table_name              name,
+        table_type              text,
+        has_duplicate           boolean DEFAULT(false)
+    ) ON COMMIT DROP;
+
+    INSERT INTO _t
+    SELECT 
+        information_schema.tables.table_schema, 
+        information_schema.tables.table_name, 
+        information_schema.tables.table_type
+    FROM information_schema.tables 
+    WHERE (information_schema.tables.table_type='BASE TABLE' OR information_schema.tables.table_type='VIEW')
+    AND information_schema.tables.table_schema != ALL(_ignored_schemas)
+    UNION ALL
+    SELECT DISTINCT 
+        pg_namespace.nspname::text, 
+        pg_proc.proname::text, 
+        'FUNCTION' AS table_type
+    FROM pg_proc
+    INNER JOIN pg_namespace
+    ON pg_proc.pronamespace = pg_namespace.oid
+    INNER JOIN pg_language 
+    ON pg_proc.prolang = pg_language .oid
+    INNER JOIN pg_type
+    ON pg_proc.prorettype=pg_type.oid
+    WHERE ('t' = ANY(pg_proc.proargmodes) OR 'o' = ANY(pg_proc.proargmodes) OR pg_type.typtype = 'c')
+    AND lanname NOT IN ('c','internal')
+    AND nspname != ALL(_ignored_schemas)
+    UNION ALL
+    SELECT 
+        pg_namespace.nspname, 
+        pg_class.relname, 
+        'TYPE'
+    FROM pg_class
+    INNER JOIN pg_namespace
+    ON pg_class.relnamespace=pg_namespace.oid
+    WHERE relkind IN('c', 'm')
+    AND nspname != ALL(_ignored_schemas);
+
+
+    UPDATE _t
+    SET has_duplicate = TRUE
+    FROM
+    (
+        SELECT
+            information_schema.tables.table_name,
+            COUNT(information_schema.tables.table_name) AS table_count
+        FROM information_schema.tables
+        GROUP BY information_schema.tables.table_name
+        
+    ) subquery
+    WHERE subquery.table_name = _t.table_name
+    AND subquery.table_count > 1;
+
+    
+
+    RETURN QUERY
+    SELECT * FROM _t
+    ORDER BY 2;
+END
+$$
+LANGUAGE plpgsql;
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/public/public.parse_default.sql --<--<--
 DROP FUNCTION IF EXISTS public.parse_default(text);
 
@@ -1052,6 +1337,68 @@ END
 $$
 LANGUAGE plpgsql;
 
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/public/public.poco_get_table_function_annotation.sql --<--<--
+DROP FUNCTION IF EXISTS public.poco_get_table_function_annotation(_schema_name text, _table_name text);
+
+CREATE FUNCTION public.poco_get_table_function_annotation(_schema_name text, _table_name text)
+RETURNS TABLE
+(
+    id                      integer,
+    column_name             text,
+    is_nullable             text,
+    udt_name                text,
+    column_default          text,
+    max_length              integer,
+    is_primary_key          text
+)
+AS
+$$
+    DECLARE _args           text;
+BEGIN
+    DROP TABLE IF EXISTS temp_annonation;
+    CREATE TEMPORARY TABLE temp_annonation
+    (
+        id                      SERIAL,
+        column_name             text,
+        is_nullable             text DEFAULT('NO'),
+        udt_name                text,
+        column_default          text,
+        max_length              integer DEFAULT(0),
+        is_primary_key          text DEFAULT('NO')
+    ) ON COMMIT DROP;
+
+
+    SELECT
+        pg_catalog.pg_get_function_arguments(pg_proc.oid) AS arguments
+    INTO
+        _args
+    FROM pg_proc
+    INNER JOIN pg_namespace
+    ON pg_proc.pronamespace = pg_namespace.oid
+    INNER JOIN pg_type
+    ON pg_proc.prorettype = pg_type.oid
+    INNER JOIN pg_namespace type_namespace
+    ON pg_type.typnamespace = type_namespace.oid
+    WHERE typname != ANY(ARRAY['trigger'])
+    AND pg_namespace.nspname = _schema_name
+    AND proname::text = _table_name;
+
+    INSERT INTO temp_annonation(column_name, udt_name)
+    SELECT split_part(trim(unnest(regexp_split_to_array(_args, ','))), ' ', 1), trim(unnest(regexp_split_to_array(_args, ',')));
+
+    UPDATE temp_annonation
+    SET udt_name = TRIM(REPLACE(temp_annonation.udt_name, temp_annonation.column_name, ''));
+
+    
+    RETURN QUERY
+    SELECT * FROM temp_annonation;
+END
+$$
+LANGUAGE plpgsql;
+
+--SELECT * FROM public.poco_get_table_function_annotation('transactions', 'get_product_view');
 
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/public/public.poco_get_table_function_definition.sql --<--<--
@@ -1267,19 +1614,12 @@ BEGIN
     FROM pg_proc
     INNER JOIN pg_namespace
     ON pg_proc.pronamespace = pg_namespace.oid
+    INNER JOIN pg_language 
+    ON pg_proc.prolang = pg_language .oid
     INNER JOIN pg_type
     ON pg_proc.prorettype=pg_type.oid
     WHERE ('t' = ANY(pg_proc.proargmodes) OR 'o' = ANY(pg_proc.proargmodes) OR pg_type.typtype = 'c')
-    AND nspname = _schema
-    UNION ALL
-    SELECT 
-        pg_namespace.nspname, 
-        pg_class.relname, 
-        'TYPE'
-    FROM pg_class
-    INNER JOIN pg_namespace
-    ON pg_class.relnamespace=pg_namespace.oid
-    WHERE relkind IN('c', 'm')
+    AND lanname NOT IN ('c','internal')
     AND nspname=_schema;
 
 
@@ -1304,6 +1644,8 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+--SELECT * FROM public.poco_get_tables('public');
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.are_sales_quotations_already_merged.sql --<--<--
 DROP FUNCTION IF EXISTS transactions.are_sales_quotations_already_merged(VARIADIC arr bigint[]);
@@ -1337,6 +1679,353 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;   
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.get_journal_view.sql --<--<--
+DROP FUNCTION IF EXISTS transactions.get_journal_view
+(
+    _user_id                        integer,
+    _office_id                      integer,
+    _from                           date,
+    _to                             date,
+    _tran_id                        bigint,
+    _tran_code                      national character varying(50),
+    _book                           national character varying(50),
+    _reference_number               national character varying(50),
+    _statement_reference            national character varying(50),
+    _posted_by                      national character varying(50),
+    _office                         national character varying(50),
+    _status                         national character varying(12),
+    _verified_by                    national character varying(50),
+    _reason                         national character varying(128)
+);
+
+CREATE FUNCTION transactions.get_journal_view
+(
+    _user_id                        integer,
+    _office_id                      integer,
+    _from                           date,
+    _to                             date,
+    _tran_id                        bigint,
+    _tran_code                      national character varying(50),
+    _book                           national character varying(50),
+    _reference_number               national character varying(50),
+    _statement_reference            national character varying(50),
+    _posted_by                      national character varying(50),
+    _office                         national character varying(50),
+    _status                         national character varying(12),
+    _verified_by                    national character varying(50),
+    _reason                         national character varying(128)
+)
+RETURNS TABLE
+(
+    transaction_master_id           bigint,
+    transaction_code                national character varying(50),
+    book                            national character varying(50),
+    value_date                      date,
+    reference_number                national character varying(24),
+    statement_reference             text,
+    posted_by                       text,
+    office                          text,
+    status                          text,
+    verified_by                     text,
+    verified_on                     TIMESTAMP WITH TIME ZONE,
+    reason                          national character varying(128),
+    transaction_ts                  TIMESTAMP WITH TIME ZONE
+)
+AS
+$$
+BEGIN
+    RETURN QUERY
+    WITH RECURSIVE office_cte(office_id) AS 
+    (
+        SELECT _office_id
+        UNION ALL
+        SELECT
+            c.office_id
+        FROM 
+        office_cte AS p, 
+        office.offices AS c 
+        WHERE 
+        parent_office_id = p.office_id
+    )
+
+    SELECT 
+        transactions.transaction_master.transaction_master_id, 
+        transactions.transaction_master.transaction_code,
+        transactions.transaction_master.book,
+        transactions.transaction_master.value_date,
+        transactions.transaction_master.reference_number,
+        transactions.transaction_master.statement_reference,
+        office.get_user_name_by_user_id(transactions.transaction_master.user_id) as posted_by,
+        office.get_office_name_by_id(transactions.transaction_master.office_id) as office,
+        core.get_verification_status_name_by_verification_status_id(transactions.transaction_master.verification_status_id) as status,
+        office.get_user_name_by_user_id(transactions.transaction_master.verified_by_user_id) as verified_by,
+        transactions.transaction_master.last_verified_on AS verified_on,
+        transactions.transaction_master.verification_reason AS reason,    
+        transactions.transaction_master.transaction_ts
+    FROM transactions.transaction_master
+    WHERE 1 = 1
+    AND transactions.transaction_master.value_date BETWEEN _from AND _to
+    AND office_id IN (SELECT office_id FROM office_cte)
+    AND (_tran_id = 0 OR _tran_id  = transactions.transaction_master.transaction_master_id)
+    AND lower(transactions.transaction_master.transaction_code) LIKE '%' || lower(_tran_code) || '%' 
+    AND lower(transactions.transaction_master.book) LIKE '%' || lower(_book) || '%' 
+    AND COALESCE(lower(transactions.transaction_master.reference_number), '') LIKE '%' || lower(_reference_number) || '%' 
+    AND COALESCE(lower(transactions.transaction_master.statement_reference), '') LIKE '%' || lower(_statement_reference) || '%' 
+    AND COALESCE(lower(transactions.transaction_master.verification_reason), '') LIKE '%' || lower(_reason) || '%' 
+    AND lower(office.get_user_name_by_user_id(transactions.transaction_master.user_id)) LIKE '%' || lower(_posted_by) || '%' 
+    AND lower(office.get_office_name_by_id(transactions.transaction_master.office_id)) LIKE '%' || lower(_office) || '%' 
+    AND COALESCE(lower(core.get_verification_status_name_by_verification_status_id(transactions.transaction_master.verification_status_id)), '') LIKE '%' || lower(_status) || '%' 
+    AND COALESCE(lower(office.get_user_name_by_user_id(transactions.transaction_master.verified_by_user_id)), '') LIKE '%' || lower(_verified_by) || '%'    
+    ORDER BY value_date ASC, verification_status_id DESC;
+END
+$$
+LANGUAGE plpgsql;
+
+
+--SELECT * FROM transactions.get_journal_view(2,1,'1-1-2000','1-1-2020',0,'', 'Jou', '', '','', '','','', '');
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.get_merge_model.sql --<--<--
+DROP FUNCTION IF EXISTS transactions.get_merge_model(_tran_ids bigint[], _book text);
+
+CREATE FUNCTION transactions.get_merge_model(_tran_ids bigint[], _book text)
+RETURNS TABLE
+(
+    value_date                      date,
+    party_id                        bigint,
+    party_code                      national character varying(12),
+    price_type_id                   integer,
+    reference_number                national character varying(24),
+    item_code                       national character varying(12),
+    item_name                       national character varying(150),
+    quantity                        integer,
+    unit_name                       national character varying(50),
+    price                           public.money_strict,
+    discount                        public.money_strict2,
+    shipping_charge                 public.money_strict2,
+    tax_code                        national character varying,
+    tax                             public.money_strict2,
+    non_taxable                     boolean,
+    salesperson_id                  integer,
+    shipper_id                      integer,
+    store_id                        integer,
+    shipping_addresss_code          text,
+    statement_reference             text
+)
+STABLE AS
+$$
+BEGIN
+    IF
+    (
+        (
+            SELECT 
+                COUNT(DISTINCT transactions.non_gl_stock_master.party_id) 
+            FROM 
+            transactions.non_gl_stock_master 
+            WHERE non_gl_stock_master_id = ANY(_tran_ids)
+        ) > 1
+    )THEN
+        RAISE EXCEPTION 'Cannot merge transactions of different parties into a single batch. Please try again.'
+        USING ERRCODE = 'P4021';
+    END IF;
+
+    IF(transactions.are_sales_quotations_already_merged(VARIADIC _tran_ids)) THEN
+        RAISE EXCEPTION 'The selected transactions contain items which have already been merged. Please try again.'
+        USING ERRCODE = 'P4022';
+    END IF;
+
+    IF(transactions.are_sales_orders_already_merged(VARIADIC _tran_ids)) THEN
+        RAISE EXCEPTION 'The selected transactions contain items which have already been merged. Please try again.'
+        USING ERRCODE = 'P4022';
+    END IF;
+
+    IF(transactions.contains_incompatible_taxes(VARIADIC _tran_ids)) THEN
+        RAISE EXCEPTION 'Cannot merge transactions having incompatible tax types. Please try again.'
+        USING ERRCODE = 'P4023';
+    END IF;
+
+    
+    RETURN QUERY
+    SELECT
+        transactions.non_gl_stock_master.value_date,
+        transactions.non_gl_stock_master.party_id,
+        core.parties.party_code,
+        transactions.non_gl_stock_master.price_type_id,
+        transactions.non_gl_stock_master.reference_number,
+        core.items.item_code,
+        core.items.item_name,
+        transactions.non_gl_stock_details.quantity,
+        core.units.unit_name,
+        transactions.non_gl_stock_details.price,
+        transactions.non_gl_stock_details.discount,
+        transactions.non_gl_stock_details.shipping_charge,
+        core.get_sales_tax_code_by_sales_tax_id(transactions.non_gl_stock_details.sales_tax_id) as tax_code,
+        transactions.non_gl_stock_details.tax,
+        transactions.non_gl_stock_master.non_taxable,
+        transactions.non_gl_stock_master.salesperson_id,
+        transactions.non_gl_stock_master.shipper_id,
+        transactions.non_gl_stock_master.store_id,
+        core.get_shipping_address_code_by_shipping_address_id(transactions.non_gl_stock_master.store_id) AS shipping_address_code,
+        transactions.non_gl_stock_master.statement_reference
+    FROM
+    transactions.non_gl_stock_master
+    INNER JOIN
+    transactions.non_gl_stock_details
+    ON transactions.non_gl_stock_master.non_gl_stock_master_id = transactions.non_gl_stock_details.non_gl_stock_master_id
+    INNER JOIN core.items
+    ON transactions.non_gl_stock_details.item_id = core.items.item_id
+    INNER JOIN core.units
+    ON transactions.non_gl_stock_details.unit_id = core.units.unit_id
+    INNER JOIN core.parties
+    ON transactions.non_gl_stock_master.party_id = core.parties.party_id
+    WHERE transactions.non_gl_stock_master.book = _book
+    AND transactions.non_gl_stock_master.non_gl_stock_master_id = ANY(_tran_ids);    
+END
+$$
+LANGUAGE plpgsql;
+
+
+--SELECT * FROM transactions.get_merge_model('{82}', 'Sales.Order');
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.get_non_gl_product_view.sql --<--<--
+DROP FUNCTION IF EXISTS transactions.get_non_gl_product_view
+(   
+    user_id_                integer,
+    book_                   text,
+    office_id_              integer,
+    date_from_              date, 
+    date_to_                date, 
+    office_                 national character varying(12),
+    party_                  text,   
+    price_type_             text,
+    user_                   national character varying(50),
+    reference_number_       national character varying(24),
+    statement_reference_    text
+ );
+
+CREATE FUNCTION transactions.get_non_gl_product_view
+(
+    user_id_                integer,
+    book_                   text,
+    office_id_              integer,
+    date_from_              date, 
+    date_to_                date, 
+    office_                 national character varying(12),
+    party_                  text,   
+    price_type_             text,
+    user_                   national character varying(50),
+    reference_number_       national character varying(24),
+    statement_reference_    text
+ )
+RETURNS TABLE
+(
+    id                      bigint,
+    value_date              date,
+    office                  national character varying(12),
+    party                   text,
+    price_type              text,
+    amount                  decimal(24, 4),
+    transaction_ts          TIMESTAMP WITH TIME ZONE,
+    "user"                  national character varying(50),
+    reference_number        national character varying(24),
+    statement_reference     text,
+    book                    text
+)
+STABLE
+AS
+$$
+BEGIN
+    RETURN QUERY 
+    WITH RECURSIVE office_cte(office_id) AS 
+    (
+        SELECT office_id_
+        UNION ALL
+        SELECT
+            c.office_id
+        FROM 
+        office_cte AS p, 
+        office.offices AS c 
+        WHERE 
+        parent_office_id = p.office_id
+    )
+
+    SELECT
+        transactions.non_gl_stock_master.non_gl_stock_master_id AS id,
+        transactions.non_gl_stock_master.value_date,
+        office.offices.office_code AS office,
+        core.parties.party_code || ' (' || core.parties.party_name || ')' AS party,
+        core.price_types.price_type_code || ' (' || core.price_types.price_type_name || ')' AS price_type,
+        SUM(transactions.non_gl_stock_details.price * transactions.non_gl_stock_details.quantity + tax - discount)::decimal(24, 4) AS amount,
+        transactions.non_gl_stock_master.transaction_ts,
+        office.users.user_name AS user,
+        transactions.non_gl_stock_master.reference_number,
+        transactions.non_gl_stock_master.statement_reference,
+        transactions.non_gl_stock_master.book::text
+    FROM transactions.non_gl_stock_master
+    INNER JOIN transactions.non_gl_stock_details
+    ON transactions.non_gl_stock_master.non_gl_stock_master_id = transactions.non_gl_stock_details.non_gl_stock_master_id
+    INNER JOIN core.parties
+    ON transactions.non_gl_stock_master.party_id = core.parties.party_id
+    INNER JOIN office.users
+    ON transactions.non_gl_stock_master.user_id = office.users.user_id
+    INNER JOIN office.offices
+    ON transactions.non_gl_stock_master.office_id = office.offices.office_id
+    LEFT OUTER JOIN core.price_types
+    ON transactions.non_gl_stock_master.price_type_id = core.price_types.price_type_id
+    WHERE transactions.non_gl_stock_master.book = book_
+    AND transactions.non_gl_stock_master.value_date BETWEEN date_from_ AND date_to_
+    AND 
+    lower
+    (
+        core.parties.party_code || ' (' || core.parties.party_name || ')'
+    ) LIKE '%' || lower(party_) || '%'
+    AND
+    lower
+    (
+        COALESCE(core.price_types.price_type_code, '') || ' (' || COALESCE(core.price_types.price_type_name, '') || ')'
+    ) LIKE '%' || lower(price_type_) || '%'
+    AND 
+    lower
+    (
+        office.users.user_name
+    )  LIKE '%' || lower(user_) || '%'
+    AND 
+    lower
+    (
+        COALESCE(transactions.non_gl_stock_master.reference_number, '')
+    ) LIKE '%' || lower(reference_number_) || '%'
+    AND 
+    lower
+    (
+        COALESCE(transactions.non_gl_stock_master.statement_reference, '')
+    ) LIKE '%' || lower(statement_reference_) || '%'    
+    AND lower
+    (
+        office.offices.office_code
+    ) LIKE '%' || lower(office_) || '%' 
+    AND office.offices.office_id IN (SELECT office_id FROM office_cte)
+    GROUP BY 
+        transactions.non_gl_stock_master.non_gl_stock_master_id,
+        transactions.non_gl_stock_master.value_date,
+        office.offices.office_code,
+        core.parties.party_code,
+        core.parties.party_name,
+        core.price_types.price_type_code,
+        core.price_types.price_type_name,
+        transactions.non_gl_stock_master.transaction_ts,
+        office.users.user_name,
+        transactions.non_gl_stock_master.reference_number,
+        transactions.non_gl_stock_master.statement_reference,
+        transactions.non_gl_stock_master.book
+    LIMIT 100;
+END
+$$
+LANGUAGE plpgsql;
+
+
+--SELECT * FROM transactions.get_non_gl_product_view(1,'Purchase.Order',1, '1-1-2000', '1-1-2050', '', '', '', '', '', '');
 
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.get_party_transaction_summary.sql --<--<--
@@ -1405,6 +2094,157 @@ $$
 LANGUAGE plpgsql;
 
 --select * from transactions.get_party_transaction_summary(2,1);
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.get_product_view.sql --<--<--
+DROP FUNCTION IF EXISTS transactions.get_product_view
+(   
+    user_id_                integer,
+    book_                   text,
+    office_id_              integer,
+    date_from_              date, 
+    date_to_                date, 
+    office_                 national character varying(12),
+    party_                  text,   
+    price_type_             text,
+    user_                   national character varying(50),
+    reference_number_           national character varying(24),
+    statement_reference_            text
+ );
+
+CREATE FUNCTION transactions.get_product_view
+(
+    user_id_                integer,
+    book_                   text,
+    office_id_              integer,
+    date_from_              date, 
+    date_to_                date, 
+    office_                 national character varying(12),
+    party_                  text,   
+    price_type_             text,
+    user_                   national character varying(50),
+    reference_number_           national character varying(24),
+    statement_reference_            text
+ )
+RETURNS TABLE
+(
+    id                      bigint,
+    value_date              date,
+    office                  national character varying(12),
+    party                   text,
+    price_type              text,
+    amount                  decimal(24, 4),
+    transaction_ts          TIMESTAMP WITH TIME ZONE,
+    "user"                  national character varying(50),
+    reference_number        national character varying(24),
+    statement_reference     text,
+    book                    text,
+    salesperson             text,
+    is_credit               boolean,
+    shipper                 text,
+    shipping_address_code   text,
+    store                   text
+)
+STABLE
+AS
+$$
+BEGIN
+    RETURN QUERY
+    WITH RECURSIVE office_cte(office_id) AS 
+    (
+        SELECT office_id_
+        UNION ALL
+        SELECT
+            c.office_id
+        FROM 
+        office_cte AS p, 
+        office.offices AS c 
+        WHERE 
+        parent_office_id = p.office_id
+    )
+
+    SELECT
+        transactions.stock_master.transaction_master_id AS id,
+        transactions.transaction_master.value_date,
+        office.offices.office_code AS office,
+        core.parties.party_code || ' (' || core.parties.party_name || ')' AS party,
+        core.price_types.price_type_code || ' (' || core.price_types.price_type_name || ')' AS price_type,
+        SUM(transactions.stock_details.price * transactions.stock_details.quantity + tax - discount)::decimal(24, 4) AS amount,
+        transactions.transaction_master.transaction_ts,
+        office.users.user_name AS user,
+        transactions.transaction_master.reference_number,
+        transactions.transaction_master.statement_reference,
+                transactions.transaction_master.book::text,
+        core.get_salesperson_name_by_salesperson_id(transactions.stock_master.salesperson_id),
+        transactions.stock_master.is_credit,
+        core.get_shipper_name_by_shipper_id(transactions.stock_master.shipper_id),
+        core.get_shipping_address_code_by_shipping_address_id(transactions.stock_master.shipping_address_id),
+        office.get_store_name_by_store_id(transactions.stock_master.store_id)
+    FROM transactions.stock_master
+    INNER JOIN transactions.stock_details
+    ON transactions.stock_master.stock_master_id = transactions.stock_details.stock_master_id
+    LEFT OUTER JOIN core.parties
+    ON transactions.stock_master.party_id = core.parties.party_id
+    INNER JOIN transactions.transaction_master
+    ON transactions.transaction_master.transaction_master_id=transactions.stock_master.transaction_master_id
+    INNER JOIN office.users
+    ON transactions.transaction_master.user_id = office.users.user_id
+    INNER JOIN office.offices
+    ON transactions.transaction_master.office_id = office.offices.office_id
+    LEFT OUTER JOIN core.price_types
+    ON transactions.stock_master.price_type_id = core.price_types.price_type_id
+    WHERE transactions.transaction_master.book = book_
+    AND transactions.transaction_master.verification_status_id > 0
+    AND transactions.transaction_master.value_date BETWEEN date_from_ AND date_to_
+    AND 
+    lower
+    (
+        COALESCE(core.parties.party_code || ' (' || core.parties.party_name || ')', '')
+    ) LIKE '%' || lower(party_) || '%'
+    AND
+    lower
+    (
+        COALESCE(core.price_types.price_type_code, '') || ' (' || COALESCE(core.price_types.price_type_name, '') || ')'
+    ) LIKE '%' || lower(price_type_) || '%'
+    AND 
+    lower
+    (
+        office.users.user_name
+    )  LIKE '%' || lower(user_) || '%'
+    AND 
+    lower
+    (
+        transactions.transaction_master.reference_number
+    ) LIKE '%' || lower(reference_number_) || '%'
+    AND 
+    lower
+    (
+        transactions.transaction_master.statement_reference
+    ) LIKE '%' || lower(statement_reference_) || '%'    
+    AND lower
+    (
+        office.offices.office_code
+    ) LIKE '%' || lower(office_) || '%' 
+    AND office.offices.office_id IN (SELECT office_id FROM office_cte)
+    GROUP BY 
+        transactions.stock_master.stock_master_id,
+        transactions.transaction_master.value_date,
+        office.offices.office_code,
+        core.parties.party_code,
+        core.parties.party_name,
+        core.price_types.price_type_code,
+        core.price_types.price_type_name,
+        transactions.transaction_master.transaction_ts,
+        office.users.user_name,
+        transactions.transaction_master.reference_number,
+        transactions.transaction_master.statement_reference,
+        transactions.transaction_master.book    
+    LIMIT 100;
+END
+$$
+LANGUAGE plpgsql;
+
+--select * from transactions.get_product_view(1, 'Inventory.Transfer', 1, '1-1-2000',  '1-1-2020', '', '', '', '', '', '');
+
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/policy/policy.create_access_types.sql --<--<--
 DROP FUNCTION IF EXISTS policy.create_access_types(_access_type_id integer, _access_type_name national character varying(48));
@@ -1723,6 +2563,7 @@ SELECT * FROM core.create_menu('Marital Statuses', '~/Modules/BackOffice/Other/M
 
 SELECT * FROM core.create_menu('Default Entity Access Policy', '~/Modules/BackOffice/Policy/DefaultEntityAccess.mix', 'DEFEAPOL', 2, core.get_menu_id('SPM'));
 SELECT * FROM core.create_menu('Entity Access Policy', '~/Modules/BackOffice/Policy/EntityAccess.mix', 'EAPOL', 2, core.get_menu_id('SPM'));
+SELECT * FROM core.create_menu('Holiday Setup', '~/Modules/BackOffice/Other/HolidaySetup.mix', 'HOLIDAY', 2, core.get_menu_id('OTHR'));
 
 
 UPDATE core.menus SET menu_text = 'Inventory' WHERE menu_code = 'ITM';
@@ -1758,6 +2599,15 @@ UPDATE core.menus SET sort = 3, icon = 'flipped rocket' WHERE menu_code ='STK';
 UPDATE core.menus SET sort = 4, icon = 'shipping' WHERE menu_code ='STJ';
 UPDATE core.menus SET sort = 5, icon = 'desktop' WHERE menu_code ='STA';
 
+DELETE FROM policy.menu_access WHERE menu_id = core.get_menu_id_by_menu_code('SAA');
+DELETE FROM core.menu_locale WHERE menu_id = core.get_menu_id_by_menu_code('SAA');
+DELETE FROM core.menus WHERE menu_code = 'SAA';
+
+DELETE FROM policy.menu_access WHERE menu_id = core.get_menu_id_by_menu_code('OTSSFP');
+DELETE FROM core.menu_locale WHERE menu_id = core.get_menu_id_by_menu_code('OTSSFP');
+DELETE FROM core.menus WHERE menu_code = 'OTSSFP';
+
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/0.neutral-resource(en)/language.sql --<--<--
 SELECT localization.add_localized_resource('CommonResource', '', 'DateMustBeGreaterThan', 'Invalid date. Must be greater than "{0}".');
 SELECT localization.add_localized_resource('CommonResource', '', 'DateMustBeLessThan', 'Invalid date. Must be less than "{0}".');
@@ -1790,8 +2640,14 @@ SELECT localization.add_localized_resource('DbErrors', '', 'P3202', 'Tax form mi
 SELECT localization.add_localized_resource('DbErrors', '', 'P3301', 'Invalid quantity.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P3302', 'Invalid transaction id.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P3501', 'The column account_id cannot be null.');
+SELECT localization.add_localized_resource('DbErrors', '', 'P4001', 'Cannot process salary when the employee has multiple salary taxes.');
+SELECT localization.add_localized_resource('DbErrors', '', 'P4002', 'Cannot process salary when the employee has multiple employment taxes.');
+SELECT localization.add_localized_resource('DbErrors', '', 'P4003', 'Cannot post salary because the net payment is less than zero.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P4010', 'Exchange rate between the currencies was not found.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P4020', 'This item is not associated with this transaction.');
+SELECT localization.add_localized_resource('DbErrors', '', 'P4021', 'Cannot merge transactions of different parties into a single batch. Please try again.');
+SELECT localization.add_localized_resource('DbErrors', '', 'P4022', 'The selected transactions contain items which have already been merged. Please try again.');
+SELECT localization.add_localized_resource('DbErrors', '', 'P4023', 'Cannot merge transactions having incompatible tax types. Please try again.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P4030', 'No verification policy found for this user.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P4031', 'Please ask someone else to verify your transaction.');
 SELECT localization.add_localized_resource('DbErrors', '', 'P5000', 'Referencing sides are not equal.');
@@ -1887,6 +2743,7 @@ SELECT localization.add_localized_resource('Labels', '', 'ClickHereToDownload', 
 SELECT localization.add_localized_resource('Labels', '', 'ConfirmedPasswordDoesNotMatch', 'The confirmed password does not match.');
 SELECT localization.add_localized_resource('Labels', '', 'CreateCashRepositoriesDescription', 'Cash repository is a place where you store your cash and valuables. Example: Cash in Vault, Cash in Drawers.');
 SELECT localization.add_localized_resource('Labels', '', 'CreateCountySalesTaxDescription', 'County sales tax is the direct consumption tax imposed by your county government when you make purchase or sales.');
+SELECT localization.add_localized_resource('Labels', '', 'CreateEducationLevelsDescription', 'Create education levels applicable to your country and industry.');
 SELECT localization.add_localized_resource('Labels', '', 'CreateFiscalYearDescription', 'Fiscal year is an accounting period of 12 months, used to prepare financial statements.');
 SELECT localization.add_localized_resource('Labels', '', 'CreateFrequenciesDescription', 'The fiscal year is further divided into 12 frequencies, categorized as months, quarters, fiscal half, and fiscal year.');
 SELECT localization.add_localized_resource('Labels', '', 'CreateItemGroupsDescription', 'An item group allows you to manage similar inventory items into meaningful groups and categories.');
@@ -1903,6 +2760,7 @@ SELECT localization.add_localized_resource('Labels', '', 'CreateTaxMasterDescrip
 SELECT localization.add_localized_resource('Labels', '', 'DatabaseBackupSuccessful', 'The database backup was successful.');
 SELECT localization.add_localized_resource('Labels', '', 'DateFormatYYYYMMDD', 'yyyy-mm-dd');
 SELECT localization.add_localized_resource('Labels', '', 'DaysLowerCase', 'days');
+SELECT localization.add_localized_resource('Labels', '', 'DefaultEntityAccessPolicy', 'Create default entity access policy based on user roles. By default, users have right to access an entity if a menu acesss policy is granted. A negative policy defined here is applicable for all users of the selected role. The explicit <a href="{0}">entity access policy</a> takes precedence over this policy.');
 SELECT localization.add_localized_resource('Labels', '', 'DeletedApplicationFiles', 'Existing application files were deleted successfully.');
 SELECT localization.add_localized_resource('Labels', '', 'DeletingApplicationFiles', 'Deleting application files.');
 SELECT localization.add_localized_resource('Labels', '', 'DeletingApplicationFilesSucessMessage', 'Existing application files were deleted successfully.');
@@ -1913,6 +2771,7 @@ SELECT localization.add_localized_resource('Labels', '', 'DownloadingUpdateFrom'
 SELECT localization.add_localized_resource('Labels', '', 'EODBegunSaveYourWork', 'Please close this window and save your existing work before you will be signed off automatically.');
 SELECT localization.add_localized_resource('Labels', '', 'EmailBody', '<h2>Hi,</h2><p>Please find the attached document.</p><p>Thank you.<br />MixERP</p>');
 SELECT localization.add_localized_resource('Labels', '', 'EmailSentConfirmation', 'An email was sent to {0}.');
+SELECT localization.add_localized_resource('Labels', '', 'EntityAccessPolicy', 'Create entity access policy for individual users. By default, users have right to access an entity if a menu acesss policy is granted. If a <a href="{0}">default entity access policy</a> was created to restrict access to a group of users, you can still override that policy and provide access permission to a particular user.');
 SELECT localization.add_localized_resource('Labels', '', 'ExtractingDownloadedFile', 'Extracting the downloaded file.');
 SELECT localization.add_localized_resource('Labels', '', 'ExtractionCompleted', 'Extraction completed.');
 SELECT localization.add_localized_resource('Labels', '', 'FlagDescription', 'You can mark this item with a flag, however you will not be able to see the flags created by other users.');
@@ -1947,6 +2806,7 @@ SELECT localization.add_localized_resource('Labels', '', 'NamedFilter', 'Filter:
 SELECT localization.add_localized_resource('Labels', '', 'NoAdditionalUserFound', 'No additional user found.');
 SELECT localization.add_localized_resource('Labels', '', 'NoCashRepositoryDefnied', 'No cash repository defined.');
 SELECT localization.add_localized_resource('Labels', '', 'NoCountySalesTaxDefined', 'No county sales tax defined.');
+SELECT localization.add_localized_resource('Labels', '', 'NoEducationLevelDefined', 'No education level defined.');
 SELECT localization.add_localized_resource('Labels', '', 'NoFiscalYearDefined', 'No fiscal year defined.');
 SELECT localization.add_localized_resource('Labels', '', 'NoFormFound', 'No instance of form was found.');
 SELECT localization.add_localized_resource('Labels', '', 'NoPartyFound', 'No party found.');
@@ -2210,6 +3070,8 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'current_role_id
 SELECT localization.add_localized_resource('ScrudResource', '', 'current_shift_id', 'Current Shift Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'customer_pays_fee', 'Customer Pays Fee');
 SELECT localization.add_localized_resource('ScrudResource', '', 'date_of_birth', 'Date Of Birth');
+SELECT localization.add_localized_resource('ScrudResource', '', 'day_of_month', 'Day of Month');
+SELECT localization.add_localized_resource('ScrudResource', '', 'day_of_week', 'Day of Week');
 SELECT localization.add_localized_resource('ScrudResource', '', 'debit', 'Debit');
 SELECT localization.add_localized_resource('ScrudResource', '', 'deduction_applicable', 'Deduction Applicable');
 SELECT localization.add_localized_resource('ScrudResource', '', 'deduction_setup_code', 'Deduction Setup Code');
@@ -2309,6 +3171,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'flagged_on', 'F
 SELECT localization.add_localized_resource('ScrudResource', '', 'foreground_color', 'Foreground Color');
 SELECT localization.add_localized_resource('ScrudResource', '', 'foreign_currency_code', 'Foreign Currency Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'forward_to', 'Forward To');
+SELECT localization.add_localized_resource('ScrudResource', '', 'frequency', 'Frequency');
 SELECT localization.add_localized_resource('ScrudResource', '', 'frequency_code', 'Frequency Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'frequency_id', 'Frequency Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'frequency_name', 'Frequency Name');
@@ -2359,6 +3222,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'is_autistic', '
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_cash', 'Is Cash');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_cognitively_disabled', 'Is Cognitively Disabled');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_contract', 'Is Contract');
+SELECT localization.add_localized_resource('ScrudResource', '', 'is_credit', 'Is Credit');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_debit', 'Is Debit');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_default', 'Is Default');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_default_admin', 'Is Default (Admin)');
@@ -2378,6 +3242,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'is_smoker', 'Is
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_summary', 'Is Summary');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_supplier', 'Is Supplier');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_system', 'Is System');
+SELECT localization.add_localized_resource('ScrudResource', '', 'is_taxable', 'Is Taxable');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_transaction_node', 'Is Transaction Node');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_vat', 'Is Vat');
 SELECT localization.add_localized_resource('ScrudResource', '', 'item', 'Item');
@@ -2516,6 +3381,11 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'payment_term', 
 SELECT localization.add_localized_resource('ScrudResource', '', 'payment_term_code', 'Payment Term Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'payment_term_id', 'Payment Term Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'payment_term_name', 'Payment Term Name');
+SELECT localization.add_localized_resource('ScrudResource', '', 'pension_fund', 'Pension Fund');
+SELECT localization.add_localized_resource('ScrudResource', '', 'pension_fund_code', 'Pension Fund Code');
+SELECT localization.add_localized_resource('ScrudResource', '', 'pension_fund_expense_account_id', 'Pension Fund Expense Account Id');
+SELECT localization.add_localized_resource('ScrudResource', '', 'pension_fund_id', 'Pension Fund Id');
+SELECT localization.add_localized_resource('ScrudResource', '', 'pension_fund_name', 'Pension Fund Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'personal_exemption', 'Personal Exemption');
 SELECT localization.add_localized_resource('ScrudResource', '', 'phone', 'Phone');
 SELECT localization.add_localized_resource('ScrudResource', '', 'phone_cell', 'Phone Cell');
@@ -2540,16 +3410,12 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'previous_period
 SELECT localization.add_localized_resource('ScrudResource', '', 'price', 'Price');
 SELECT localization.add_localized_resource('ScrudResource', '', 'price_from', 'Price From');
 SELECT localization.add_localized_resource('ScrudResource', '', 'price_to', 'Price To');
+SELECT localization.add_localized_resource('ScrudResource', '', 'price_type', 'Price Type');
 SELECT localization.add_localized_resource('ScrudResource', '', 'price_type_code', 'Price Type Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'price_type_id', 'Price Type Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'price_type_name', 'Price Type Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'primary_sales_tax_is_vat', 'Primary Sales Tax Is Vat?');
 SELECT localization.add_localized_resource('ScrudResource', '', 'priority', 'Priority');
-SELECT localization.add_localized_resource('ScrudResource', '', 'pension_fund', 'Pension Fund');
-SELECT localization.add_localized_resource('ScrudResource', '', 'pension_fund_code', 'Pension Fund Code');
-SELECT localization.add_localized_resource('ScrudResource', '', 'pension_fund_expense_account_id', 'Pension Fund Expense Account Id');
-SELECT localization.add_localized_resource('ScrudResource', '', 'pension_fund_id', 'Pension Fund Id');
-SELECT localization.add_localized_resource('ScrudResource', '', 'pension_fund_name', 'Pension Fund Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'purchase_account_id', 'Purchase Account Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'purchase_discount_account_id', 'Purchase Discount Account Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'purchase_verification_limit', 'Purchase Verification Limit');
@@ -2603,6 +3469,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'salary_frequenc
 SELECT localization.add_localized_resource('ScrudResource', '', 'salary_frequency_name', 'Salary Frequency Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'salary_from', 'Salary From');
 SELECT localization.add_localized_resource('ScrudResource', '', 'salary_id', 'Salary Id');
+SELECT localization.add_localized_resource('ScrudResource', '', 'salary_name', 'Salary Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'salary_tax', 'Salary Tax');
 SELECT localization.add_localized_resource('ScrudResource', '', 'salary_tax_code', 'Salary Tax Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'salary_tax_id', 'Salary Tax Id');
@@ -2655,6 +3522,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'shift', 'Shift'
 SELECT localization.add_localized_resource('ScrudResource', '', 'shift_code', 'Shift Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'shift_id', 'Shift Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'shift_name', 'Shift Name');
+SELECT localization.add_localized_resource('ScrudResource', '', 'shipper', 'Shipper');
 SELECT localization.add_localized_resource('ScrudResource', '', 'shipper_code', 'Shipper Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'shipper_id', 'Shipper Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'shipper_name', 'Shipper Name');
@@ -2741,6 +3609,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'total_years', '
 SELECT localization.add_localized_resource('ScrudResource', '', 'tran_code', 'Tran Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'tran_type', 'Tran Type');
 SELECT localization.add_localized_resource('ScrudResource', '', 'transaction_start_date', 'Transaction Start Date');
+SELECT localization.add_localized_resource('ScrudResource', '', 'transaction_ts', 'Transaction Timestamp');
 SELECT localization.add_localized_resource('ScrudResource', '', 'unit', 'Unit');
 SELECT localization.add_localized_resource('ScrudResource', '', 'unit_code', 'Unit Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'unit_id', 'Unit Id');
@@ -2748,6 +3617,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'unit_name', 'Un
 SELECT localization.add_localized_resource('ScrudResource', '', 'url', 'Url');
 SELECT localization.add_localized_resource('ScrudResource', '', 'use_tax_collecting_account', 'Use Tax Collecting Account');
 SELECT localization.add_localized_resource('ScrudResource', '', 'use_tax_collecting_account_id', 'Use Tax Collecting Account Id');
+SELECT localization.add_localized_resource('ScrudResource', '', 'user', 'User');
 SELECT localization.add_localized_resource('ScrudResource', '', 'user_id', 'User Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'user_name', 'User Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'uses_wheelchair', 'Uses Wheelchair');
@@ -2893,6 +3763,7 @@ SELECT localization.add_localized_resource('Titles', '', 'CreateBackup', 'Create
 SELECT localization.add_localized_resource('Titles', '', 'CreateBackupFirst', 'Create a Backup First');
 SELECT localization.add_localized_resource('Titles', '', 'CreateCashRepositories', 'Create Cash Repositories');
 SELECT localization.add_localized_resource('Titles', '', 'CreateCountySalesTax', 'Create County Sales Tax');
+SELECT localization.add_localized_resource('Titles', '', 'CreateEducationLevels', 'Create Education Levels');
 SELECT localization.add_localized_resource('Titles', '', 'CreateFiscalYear', 'Create Fiscal Year');
 SELECT localization.add_localized_resource('Titles', '', 'CreateFrequencies', 'Create Frequencies');
 SELECT localization.add_localized_resource('Titles', '', 'CreateItemGroups', 'Create Item Groups');
@@ -2954,6 +3825,7 @@ SELECT localization.add_localized_resource('Titles', '', 'DeductionSetups', 'Ded
 SELECT localization.add_localized_resource('Titles', '', 'Deductions', 'Deductions');
 SELECT localization.add_localized_resource('Titles', '', 'DefaultAddress', 'Default Address');
 SELECT localization.add_localized_resource('Titles', '', 'DefaultCurrency', 'Default Currency');
+SELECT localization.add_localized_resource('Titles', '', 'DefaultEntityAccessPolicy', 'Default Entity Access Policy');
 SELECT localization.add_localized_resource('Titles', '', 'DefaultReorderQuantityAbbreviated', 'Default Reorder Qty');
 SELECT localization.add_localized_resource('Titles', '', 'Definition', 'Definition');
 SELECT localization.add_localized_resource('Titles', '', 'Delete', 'Delete');
@@ -3027,6 +3899,7 @@ SELECT localization.add_localized_resource('Titles', '', 'EnterBackupName', 'Ent
 SELECT localization.add_localized_resource('Titles', '', 'EnterNewPassword', 'Enter a New Password');
 SELECT localization.add_localized_resource('Titles', '', 'EnteredBy', 'Entered By');
 SELECT localization.add_localized_resource('Titles', '', 'Entities', 'Entities');
+SELECT localization.add_localized_resource('Titles', '', 'EntityAccessPolicy', 'Entity Access Policy');
 SELECT localization.add_localized_resource('Titles', '', 'ExchangeRate', 'Exchange Rate');
 SELECT localization.add_localized_resource('Titles', '', 'ExchangeRates', 'Exchange Rates');
 SELECT localization.add_localized_resource('Titles', '', 'Execute', 'Execute');
@@ -3085,6 +3958,7 @@ SELECT localization.add_localized_resource('Titles', '', 'GoToTop', 'GoToTop');
 SELECT localization.add_localized_resource('Titles', '', 'GoodsReceiptNote', 'Goods Receipt Note');
 SELECT localization.add_localized_resource('Titles', '', 'GrandTotal', 'Grand Total');
 SELECT localization.add_localized_resource('Titles', '', 'GridView', 'Grid View');
+SELECT localization.add_localized_resource('Titles', '', 'GrossEarnings', 'Gross Earnings');
 SELECT localization.add_localized_resource('Titles', '', 'HideForNow', 'Hide for Now');
 SELECT localization.add_localized_resource('Titles', '', 'Holiday', 'Holiday');
 SELECT localization.add_localized_resource('Titles', '', 'HolidaySetup', 'Holiday Setup');
@@ -3092,6 +3966,7 @@ SELECT localization.add_localized_resource('Titles', '', 'Holidays', 'Holidays')
 SELECT localization.add_localized_resource('Titles', '', 'Home', 'Home');
 SELECT localization.add_localized_resource('Titles', '', 'HomeCurrency', 'Home Currency');
 SELECT localization.add_localized_resource('Titles', '', 'HoursWorked', 'Hours Worked');
+SELECT localization.add_localized_resource('Titles', '', 'HumanResourceManagement', 'Human Resource Management');
 SELECT localization.add_localized_resource('Titles', '', 'HundredthName', 'Hundredth Name');
 SELECT localization.add_localized_resource('Titles', '', 'Id', 'Id');
 SELECT localization.add_localized_resource('Titles', '', 'IdentificationDetails', 'Identification Details');
@@ -3205,6 +4080,7 @@ SELECT localization.add_localized_resource('Titles', '', 'NewReleaseAvailable', 
 SELECT localization.add_localized_resource('Titles', '', 'Next', 'Next');
 SELECT localization.add_localized_resource('Titles', '', 'NextPage', 'Next Page');
 SELECT localization.add_localized_resource('Titles', '', 'No', 'No');
+SELECT localization.add_localized_resource('Titles', '', 'NonTaxableEarning', 'Non Taxable Earning');
 SELECT localization.add_localized_resource('Titles', '', 'NonTaxableSales', 'Nontaxable Sales');
 SELECT localization.add_localized_resource('Titles', '', 'NonVAT', 'Non VAT');
 SELECT localization.add_localized_resource('Titles', '', 'None', 'None');
@@ -3249,6 +4125,8 @@ SELECT localization.add_localized_resource('Titles', '', 'PayRate', 'Pay Rate');
 SELECT localization.add_localized_resource('Titles', '', 'PaySlip', 'Pay Slip');
 SELECT localization.add_localized_resource('Titles', '', 'PaymentCards', 'Payment Cards');
 SELECT localization.add_localized_resource('Titles', '', 'PaymentTerms', 'Payment Terms');
+SELECT localization.add_localized_resource('Titles', '', 'PensionFund', 'Pension Fund');
+SELECT localization.add_localized_resource('Titles', '', 'PensionFunds', 'Pension Funds');
 SELECT localization.add_localized_resource('Titles', '', 'PerformEOD', 'Perform EOD');
 SELECT localization.add_localized_resource('Titles', '', 'PerformEODOperation', 'Perform EOD Operation');
 SELECT localization.add_localized_resource('Titles', '', 'PerformingEODOperation', 'Performing EOD Operation');
@@ -3281,8 +4159,6 @@ SELECT localization.add_localized_resource('Titles', '', 'ProfitAndLossStatement
 SELECT localization.add_localized_resource('Titles', '', 'ProfitBeforeTax', 'Profit Before Tax');
 SELECT localization.add_localized_resource('Titles', '', 'ProfitOrLoss', 'Profit or Loss');
 SELECT localization.add_localized_resource('Titles', '', 'Progress', 'Progress');
-SELECT localization.add_localized_resource('Titles', '', 'PensionFund', 'Pension Fund');
-SELECT localization.add_localized_resource('Titles', '', 'PensionFunds', 'Pension Funds');
 SELECT localization.add_localized_resource('Titles', '', 'PublishedOn', 'Published On');
 SELECT localization.add_localized_resource('Titles', '', 'PurchaseInvoice', 'Purchase Invoice');
 SELECT localization.add_localized_resource('Titles', '', 'PurchaseOrder', 'Purchase Order');
@@ -3353,6 +4229,7 @@ SELECT localization.add_localized_resource('Titles', '', 'Salaries', 'Salaries')
 SELECT localization.add_localized_resource('Titles', '', 'Salary', 'Salary');
 SELECT localization.add_localized_resource('Titles', '', 'SalaryDeductions', 'Salary Deductions');
 SELECT localization.add_localized_resource('Titles', '', 'SalaryFrequencies', 'Salary Frequencies');
+SELECT localization.add_localized_resource('Titles', '', 'SalarySetup', 'Salary Setup');
 SELECT localization.add_localized_resource('Titles', '', 'SalaryTax', 'Salary Tax');
 SELECT localization.add_localized_resource('Titles', '', 'SalaryTaxIncomeBracket', 'Salary Tax Income Bracket');
 SELECT localization.add_localized_resource('Titles', '', 'SalaryTaxIncomeBrackets', 'Salary Tax Income Brackets');
@@ -3466,6 +4343,7 @@ SELECT localization.add_localized_resource('Titles', '', 'TaxRate', 'Tax Rate');
 SELECT localization.add_localized_resource('Titles', '', 'TaxSetup', 'Tax Setup');
 SELECT localization.add_localized_resource('Titles', '', 'TaxTotal', 'Tax Total');
 SELECT localization.add_localized_resource('Titles', '', 'TaxTypes', 'Tax Types');
+SELECT localization.add_localized_resource('Titles', '', 'TaxableEarning', 'Taxable Earning');
 SELECT localization.add_localized_resource('Titles', '', 'TaxableSales', 'Taxable Sales');
 SELECT localization.add_localized_resource('Titles', '', 'Tel', 'Tel');
 SELECT localization.add_localized_resource('Titles', '', 'Termination', 'Termination');
@@ -3559,8 +4437,8 @@ SELECT localization.add_localized_resource('Titles', '', 'VoucherVerification', 
 SELECT localization.add_localized_resource('Titles', '', 'VoucherVerificationPolicy', 'Voucher Verification Policy');
 SELECT localization.add_localized_resource('Titles', '', 'Wage', 'Wage');
 SELECT localization.add_localized_resource('Titles', '', 'WageProcessing', 'Wage Processing');
-SELECT localization.add_localized_resource('Titles', '', 'Wages', 'Wages');
 SELECT localization.add_localized_resource('Titles', '', 'WageSetups', 'Wage Setups');
+SELECT localization.add_localized_resource('Titles', '', 'Wages', 'Wages');
 SELECT localization.add_localized_resource('Titles', '', 'Warning', 'Warning');
 SELECT localization.add_localized_resource('Titles', '', 'WasPresent', 'Was Present');
 SELECT localization.add_localized_resource('Titles', '', 'Wednesday', 'Wednesday');
@@ -3655,6 +4533,7 @@ SELECT localization.add_localized_resource('Warnings', '', 'RestrictedTransactio
 SELECT localization.add_localized_resource('Warnings', '', 'ReturnButtonUrlNull', 'Cannot return this entry. The return url was not provided.');
 SELECT localization.add_localized_resource('Warnings', '', 'StartDateGreaterThanEndDate', 'The start date cannot be greater than end date.');
 SELECT localization.add_localized_resource('Warnings', '', 'UserIdOrPasswordIncorrect', 'User id or password incorrect.');
+
 
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/ar/language.sql --<--<--
 /********************************************************************************************************************************************************

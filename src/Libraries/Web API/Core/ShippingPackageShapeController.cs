@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -101,19 +102,48 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns all collection of shipping package shape.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/core/shipping-package-shape/all")]
+        public IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShape> GetAll()
+        {
+            try
+            {
+                return this.ShippingPackageShapeContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of shipping package shape for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/core/shipping-package-shape/export")]
-        [Route("~/api/core/shipping-package-shape/all")]
-        public IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShape> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.ShippingPackageShapeContext.Get();
+                return this.ShippingPackageShapeContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -489,7 +519,7 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/shipping-package-shape/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Core.ShippingPackageShape shippingPackageShape = form[0].ToObject<MixERP.Net.Entities.Core.ShippingPackageShape>(JsonHelper.GetJsonSerializer());
+            dynamic shippingPackageShape = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (shippingPackageShape == null)
@@ -592,9 +622,9 @@ namespace MixERP.Net.Api.Core
             }
         }
 
-        private List<MixERP.Net.Entities.Core.ShippingPackageShape> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Core.ShippingPackageShape>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -606,9 +636,9 @@ namespace MixERP.Net.Api.Core
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/core/shipping-package-shape/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Core.ShippingPackageShape> shippingPackageShapeCollection = this.ParseCollection(collection);
+            List<ExpandoObject> shippingPackageShapeCollection = this.ParseCollection(collection);
 
             if (shippingPackageShapeCollection == null || shippingPackageShapeCollection.Count.Equals(0))
             {

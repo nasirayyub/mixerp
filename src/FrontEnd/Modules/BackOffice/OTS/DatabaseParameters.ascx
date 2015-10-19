@@ -1,20 +1,27 @@
-﻿<%-- 
-Copyright (C) MixERP Inc. (http://mixof.org).
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="DatabaseParameters.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.OTS.DatabaseParameters" %>
+<script>
+    var scrudFactory = new Object();
 
-This file is part of MixERP.
+    scrudFactory.title = Resources.Titles.DatabaseParameters();
 
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
+    scrudFactory.viewAPI = "/api/config/db-parameter-scrud-view";
+    scrudFactory.viewTableName = "config.db_parameter_scrud_view";
 
+    scrudFactory.formAPI = "/api/config/db-parameter";
+    scrudFactory.formTableName = "config.db_parameters";
+    scrudFactory.removeKanban = true;
+    scrudFactory.removeFilter = true;
+    scrudFactory.removeImport = true;
 
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
 
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
---%>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="DatabaseParameters.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.OTS.DatabaseParameters" %>
-<asp:PlaceHolder runat="server" ID="ScrudPlaceholder"/>
+    scrudFactory.allowDelete = true;
+    scrudFactory.allowEdit = true;
+
+    scrudFactory.layout = [
+        ["Key", ""],
+        ["Value", ""]
+    ];
+</script>
+<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
+<div data-ng-include="'/Views/Modules/FormFactory.html'"></div>

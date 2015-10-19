@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -101,19 +102,48 @@ namespace MixERP.Net.Api.Office
         }
 
         /// <summary>
+        ///     Returns all collection of cashier.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/office/cashier/all")]
+        public IEnumerable<MixERP.Net.Entities.Office.Cashier> GetAll()
+        {
+            try
+            {
+                return this.CashierContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of cashier for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/office/cashier/export")]
-        [Route("~/api/office/cashier/all")]
-        public IEnumerable<MixERP.Net.Entities.Office.Cashier> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.CashierContext.Get();
+                return this.CashierContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -489,7 +519,7 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/cashier/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Office.Cashier cashier = form[0].ToObject<MixERP.Net.Entities.Office.Cashier>(JsonHelper.GetJsonSerializer());
+            dynamic cashier = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (cashier == null)
@@ -592,9 +622,9 @@ namespace MixERP.Net.Api.Office
             }
         }
 
-        private List<MixERP.Net.Entities.Office.Cashier> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Office.Cashier>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -606,9 +636,9 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/office/cashier/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Office.Cashier> cashierCollection = this.ParseCollection(collection);
+            List<ExpandoObject> cashierCollection = this.ParseCollection(collection);
 
             if (cashierCollection == null || cashierCollection.Count.Equals(0))
             {

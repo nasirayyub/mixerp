@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -103,19 +104,48 @@ namespace MixERP.Net.Api.Transactions
         }
 
         /// <summary>
+        ///     Returns all collection of day operation.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/transactions/day-operation/all")]
+        public IEnumerable<MixERP.Net.Entities.Transactions.DayOperation> GetAll()
+        {
+            try
+            {
+                return this.DayOperationContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of day operation for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/transactions/day-operation/export")]
-        [Route("~/api/transactions/day-operation/all")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.DayOperation> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.DayOperationContext.Get();
+                return this.DayOperationContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -491,7 +521,7 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/day-operation/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Transactions.DayOperation dayOperation = form[0].ToObject<MixERP.Net.Entities.Transactions.DayOperation>(JsonHelper.GetJsonSerializer());
+            dynamic dayOperation = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (dayOperation == null)
@@ -594,9 +624,9 @@ namespace MixERP.Net.Api.Transactions
             }
         }
 
-        private List<MixERP.Net.Entities.Transactions.DayOperation> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Transactions.DayOperation>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -608,9 +638,9 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/transactions/day-operation/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Transactions.DayOperation> dayOperationCollection = this.ParseCollection(collection);
+            List<ExpandoObject> dayOperationCollection = this.ParseCollection(collection);
 
             if (dayOperationCollection == null || dayOperationCollection.Count.Equals(0))
             {

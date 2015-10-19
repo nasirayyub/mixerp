@@ -80,7 +80,6 @@
     <Compile Include="Exit.cs" />
     <Compile Include="ExitScrudView.cs" />
     <Compile Include="ExitType.cs" />
-    <Compile Include="Holiday.cs" />
     <Compile Include="JobTitle.cs" />
     <Compile Include="LeaveApplication.cs" />
     <Compile Include="LeaveApplicationScrudView.cs" />

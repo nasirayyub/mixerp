@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -109,19 +110,48 @@ namespace MixERP.Net.Api.Policy
         }
 
         /// <summary>
+        ///     Returns all collection of auto verification policy.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/policy/auto-verification-policy/all")]
+        public IEnumerable<MixERP.Net.Entities.Policy.AutoVerificationPolicy> GetAll()
+        {
+            try
+            {
+                return this.AutoVerificationPolicyContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of auto verification policy for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/policy/auto-verification-policy/export")]
-        [Route("~/api/policy/auto-verification-policy/all")]
-        public IEnumerable<MixERP.Net.Entities.Policy.AutoVerificationPolicy> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.AutoVerificationPolicyContext.Get();
+                return this.AutoVerificationPolicyContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -497,7 +527,7 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/auto-verification-policy/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Policy.AutoVerificationPolicy autoVerificationPolicy = form[0].ToObject<MixERP.Net.Entities.Policy.AutoVerificationPolicy>(JsonHelper.GetJsonSerializer());
+            dynamic autoVerificationPolicy = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (autoVerificationPolicy == null)
@@ -600,9 +630,9 @@ namespace MixERP.Net.Api.Policy
             }
         }
 
-        private List<MixERP.Net.Entities.Policy.AutoVerificationPolicy> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Policy.AutoVerificationPolicy>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -614,9 +644,9 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/policy/auto-verification-policy/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Policy.AutoVerificationPolicy> autoVerificationPolicyCollection = this.ParseCollection(collection);
+            List<ExpandoObject> autoVerificationPolicyCollection = this.ParseCollection(collection);
 
             if (autoVerificationPolicyCollection == null || autoVerificationPolicyCollection.Count.Equals(0))
             {

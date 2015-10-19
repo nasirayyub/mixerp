@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -101,19 +102,48 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
+        ///     Returns all collection of employee social network detail.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/hrm/employee-social-network-detail/all")]
+        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail> GetAll()
+        {
+            try
+            {
+                return this.EmployeeSocialNetworkDetailContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of employee social network detail for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/hrm/employee-social-network-detail/export")]
-        [Route("~/api/hrm/employee-social-network-detail/all")]
-        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.EmployeeSocialNetworkDetailContext.Get();
+                return this.EmployeeSocialNetworkDetailContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -489,7 +519,7 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/employee-social-network-detail/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail employeeSocialNetworkDetail = form[0].ToObject<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail>(JsonHelper.GetJsonSerializer());
+            dynamic employeeSocialNetworkDetail = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (employeeSocialNetworkDetail == null)
@@ -592,9 +622,9 @@ namespace MixERP.Net.Api.HRM
             }
         }
 
-        private List<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -606,9 +636,9 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/hrm/employee-social-network-detail/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail> employeeSocialNetworkDetailCollection = this.ParseCollection(collection);
+            List<ExpandoObject> employeeSocialNetworkDetailCollection = this.ParseCollection(collection);
 
             if (employeeSocialNetworkDetailCollection == null || employeeSocialNetworkDetailCollection.Count.Equals(0))
             {

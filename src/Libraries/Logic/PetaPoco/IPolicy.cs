@@ -9,6 +9,7 @@ namespace PetaPoco
         AccessTypeEnum AccessType { get; set; }
         bool HasAccess { get; }
         long LoginId { get; set; }
+        string Catalog { get; set; }
         void Validate();
     }
 }

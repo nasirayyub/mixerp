@@ -1,21 +1,21 @@
-﻿<%--
-Copyright (C) MixERP Inc. (http://mixof.org).
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="FiscalYear.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.FiscalYear" %>
+<script>
+    var scrudFactory = new Object();
 
-This file is part of MixERP.
+    scrudFactory.title = Resources.Titles.FiscalYear();
 
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
+    scrudFactory.viewAPI = "/api/core/fiscal-year-scrud-view";
+    scrudFactory.viewTableName = "core.fiscal_year_scrud_view";
+    scrudFactory.removeKanban = true;
 
+    scrudFactory.formAPI = "/api/core/fiscal-year";
+    scrudFactory.formTableName = "core.fiscal_year";
+    scrudFactory.live = "FiscalYearName";
 
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
 
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses />.
---%>
-
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="FiscalYear.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.FiscalYear" %>
-<asp:PlaceHolder ID="ScrudPlaceholder" runat="server" />
+    scrudFactory.allowDelete = true;
+    scrudFactory.allowEdit = true;
+</script>
+<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
+<div data-ng-include="'/Views/Modules/FormFactory.html'"></div>

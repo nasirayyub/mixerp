@@ -1,28 +1,12 @@
 // ReSharper disable All
-/********************************************************************************
-Copyright (C) MixERP Inc. (http://mixof.org).
-
-This file is part of MixERP.
-
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
-
-
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************************/
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -75,7 +59,7 @@ namespace MixERP.Net.Schemas.Office.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -89,11 +73,11 @@ namespace MixERP.Net.Schemas.Office.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "office.cost_centers" to return a all instances of the "CostCenter" class to export. 
+        /// Executes a select query on the table "office.cost_centers" to return a all instances of the "CostCenter" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "CostCenter" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Office.CostCenter> Get()
+        public IEnumerable<MixERP.Net.Entities.Office.CostCenter> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -104,7 +88,7 @@ namespace MixERP.Net.Schemas.Office.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -115,6 +99,35 @@ namespace MixERP.Net.Schemas.Office.Data
 
             const string sql = "SELECT * FROM office.cost_centers ORDER BY cost_center_id;";
             return Factory.Get<MixERP.Net.Entities.Office.CostCenter>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "office.cost_centers" to return a all instances of the "CostCenter" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "CostCenter" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"CostCenter\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM office.cost_centers ORDER BY cost_center_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -134,7 +147,7 @@ namespace MixERP.Net.Schemas.Office.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -164,7 +177,7 @@ namespace MixERP.Net.Schemas.Office.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -194,7 +207,7 @@ namespace MixERP.Net.Schemas.Office.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -232,7 +245,7 @@ namespace MixERP.Net.Schemas.Office.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -276,7 +289,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <param name="costCenter">The instance of "CostCenter" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Office.CostCenter costCenter, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic costCenter, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -285,13 +298,13 @@ namespace MixERP.Net.Schemas.Office.Data
 
             object primaryKeyValue;
 
-            costCenter.AuditUserId = this._UserId;
-            costCenter.AuditTs = System.DateTime.UtcNow;
+            costCenter.audit_user_id = this._UserId;
+            costCenter.audit_ts = System.DateTime.UtcNow;
 
-            if (costCenter.CostCenterId > 0)
+            if (Cast.To<int>(costCenter.cost_center_id) > 0)
             {
-                primaryKeyValue = costCenter.CostCenterId;
-                this.Update(costCenter, costCenter.CostCenterId);
+                primaryKeyValue = costCenter.cost_center_id;
+                this.Update(costCenter, int.Parse(costCenter.cost_center_id));
             }
             else
             {
@@ -328,7 +341,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// </summary>
         /// <param name="costCenter">The instance of "CostCenter" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Office.CostCenter costCenter)
+        public object Add(dynamic costCenter)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -339,7 +352,7 @@ namespace MixERP.Net.Schemas.Office.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Create, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Create, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -348,7 +361,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, costCenter);
+            return Factory.Insert(this._Catalog, costCenter, "office.cost_centers", "cost_center_id");
         }
 
         /// <summary>
@@ -356,13 +369,13 @@ namespace MixERP.Net.Schemas.Office.Data
         /// </summary>
         /// <param name="costCenters">List of "CostCenter" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Office.CostCenter> costCenters)
+        public List<object> BulkImport(List<ExpandoObject> costCenters)
         {
             if (!this.SkipValidation)
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.ImportData, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.ImportData, this._LoginId, this._Catalog, false);
                 }
 
                 if (!this.HasAccess)
@@ -380,21 +393,21 @@ namespace MixERP.Net.Schemas.Office.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var costCenter in costCenters)
+                        foreach (dynamic costCenter in costCenters)
                         {
                             line++;
 
-                            costCenter.AuditUserId = this._UserId;
-                            costCenter.AuditTs = System.DateTime.UtcNow;
+                            costCenter.audit_user_id = this._UserId;
+                            costCenter.audit_ts = System.DateTime.UtcNow;
 
-                            if (costCenter.CostCenterId > 0)
+                            if (Cast.To<int>(costCenter.cost_center_id) > 0)
                             {
-                                result.Add(costCenter.CostCenterId);
-                                db.Update(costCenter, costCenter.CostCenterId);
+                                result.Add(costCenter.cost_center_id);
+                                db.Update("office.cost_centers", "cost_center_id", costCenter, costCenter.cost_center_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(costCenter));
+                                result.Add(db.Insert("office.cost_centers", "cost_center_id", costCenter));
                             }
                         }
 
@@ -431,7 +444,7 @@ namespace MixERP.Net.Schemas.Office.Data
         /// <param name="costCenter">The instance of "CostCenter" class to update.</param>
         /// <param name="costCenterId">The value of the column "cost_center_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Office.CostCenter costCenter, int costCenterId)
+        public void Update(dynamic costCenter, int costCenterId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -442,7 +455,7 @@ namespace MixERP.Net.Schemas.Office.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Edit, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Edit, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -451,7 +464,7 @@ namespace MixERP.Net.Schemas.Office.Data
                 }
             }
 
-            Factory.Update(this._Catalog, costCenter, costCenterId);
+            Factory.Update(this._Catalog, costCenter, costCenterId, "office.cost_centers", "cost_center_id");
         }
 
         /// <summary>
@@ -470,7 +483,7 @@ namespace MixERP.Net.Schemas.Office.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Delete, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Delete, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -499,7 +512,7 @@ namespace MixERP.Net.Schemas.Office.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -529,7 +542,7 @@ namespace MixERP.Net.Schemas.Office.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -567,7 +580,7 @@ namespace MixERP.Net.Schemas.Office.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -600,7 +613,7 @@ namespace MixERP.Net.Schemas.Office.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -642,7 +655,7 @@ namespace MixERP.Net.Schemas.Office.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -676,7 +689,7 @@ namespace MixERP.Net.Schemas.Office.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {

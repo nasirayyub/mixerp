@@ -1,21 +1,38 @@
-﻿<%--
-Copyright (C) MixERP Inc. (http://mixof.org).
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Frequency.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.Frequency" %>
+<script>
+    var scrudFactory = new Object();
 
-This file is part of MixERP.
+    scrudFactory.title = Resources.Titles.Frequencies();
 
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
+    scrudFactory.viewAPI = "/api/core/frequency-setup-scrud-view";
+    scrudFactory.viewTableName = "core.frequency_setup_scrud_view";
+    scrudFactory.removeKanban = true;
 
+    scrudFactory.formAPI = "/api/core/frequency-setup";
+    scrudFactory.formTableName = "core.frequency_setups";
+    scrudFactory.live = "FrequencySetupCode";
 
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
 
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses />.
---%>
+    scrudFactory.allowDelete = true;
+    scrudFactory.allowEdit = true;
 
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Frequency.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.Frequency" %>
-<asp:PlaceHolder ID="ScrudPlaceholder" runat="server" />
+    scrudFactory.keys = [
+        {
+            property: "FrequencyId",
+            url: '/api/core/frequency-selector-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "FiscalYearCode",
+            url: '/api/core/fiscal-year-scrud-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        }
+    ];
+</script>
+<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
+<div data-ng-include="'/Views/Modules/FormFactory.html'"></div>

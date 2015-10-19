@@ -28,7 +28,7 @@
                     var selectedValue = "";
 
                     if (window.editData) {
-                        selectedValue = window.editData[el.attr("data-property")];
+                        selectedValue = window.editData[el.attr("data-property")] || "";
                     };
 
                     if (this.url) {
@@ -87,14 +87,14 @@
         };
 
         function showView() {
-            var url = updateQueryString("View", "kanban");
-            window.history.pushState({ path: url }, '', url);
+            var target = $("[data-target]:last-child").attr("data-target") || "grid";
 
+            var url = updateQueryString("View", target);
+            window.history.pushState({ path: url }, '', url);
             window.scrudForm.hide();
             $("div[data-target]").hide();
             $("[data-target]").removeClass("active");
-            $('[data-target="kanban"]').show().addClass("active");
-
+            $('[data-target="' + target + '"]').show().addClass("active");
             window.scrudView.fadeIn(500);
             loadPageCount(loadGrid);
         };
@@ -172,7 +172,15 @@
             $.each(metaInfo.Columns, function (i, v) {
                 var value = getFormValue(v.ColumnName, v.DataType, v.IsSerial);
 
-                entity[v.PropertyName] = value;
+                if (window.editData) {
+                    if (scrudFactory.disabledOnEdit) {
+                        if (scrudFactory.disabledOnEdit.indexOf(v.PropertyName) !== -1) {
+                            return false;
+                        };
+                    };
+                };
+
+                entity[v.ColumnName] = value;
             });
 
             if (window.metaCustomFields) {
@@ -224,6 +232,11 @@
             var fields = $(".form-field, .custom-field");
 
             $(".uploader.field .ui.image.preview").attr("src", "/Static/images/mixerp-logo-light.png");
+
+            $.each(scrudFactory.disabledOnEdit, function () {
+                var el = $('[data-property="' + this + '"]');
+                el.removeAttr("disabled");
+            });
 
             $.each(fields, function () {
                 var el = $(this);
@@ -742,6 +755,14 @@
                 element.addClass("form-field");
             };
 
+            if (window.editData) {
+                if (scrudFactory.disabledOnEdit) {
+                    if (scrudFactory.disabledOnEdit.indexOf(column.PropertyName) !== -1) {
+                        element.attr("disabled", "disabled");
+                    };
+                };
+            };
+
             field.append(label);
             field.append(element);
 
@@ -755,6 +776,10 @@
         function getField(propertyName, dataType, nullable) {
             if (typeof (scrudFactory.keys) === "undefined") {
                 scrudFactory.keys = [];
+            };
+
+            if (propertyName.toString().toLowerCase() === "password") {
+                dataType = "password";
             };
 
             var hasKey = Enumerable.From(scrudFactory.keys)
@@ -782,6 +807,8 @@
                     return $("<input type='text' class='currency' />");
                 case "text":
                     return $("<textarea />");
+                case "password":
+                    return $("<input type='password' class='password' />");
                 case "date":
                     return $("<input type='text' class='date' />");
                 case "bool":

@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -100,19 +101,48 @@ namespace MixERP.Net.Api.Config
         }
 
         /// <summary>
+        ///     Returns all collection of mixerp.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/config/mixerp/all")]
+        public IEnumerable<MixERP.Net.Entities.Config.Mixerp> GetAll()
+        {
+            try
+            {
+                return this.MixerpContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of mixerp for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/config/mixerp/export")]
-        [Route("~/api/config/mixerp/all")]
-        public IEnumerable<MixERP.Net.Entities.Config.Mixerp> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.MixerpContext.Get();
+                return this.MixerpContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -488,7 +518,7 @@ namespace MixERP.Net.Api.Config
         [Route("~/api/config/mixerp/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Config.Mixerp mixerp = form[0].ToObject<MixERP.Net.Entities.Config.Mixerp>(JsonHelper.GetJsonSerializer());
+            dynamic mixerp = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (mixerp == null)
@@ -591,9 +621,9 @@ namespace MixERP.Net.Api.Config
             }
         }
 
-        private List<MixERP.Net.Entities.Config.Mixerp> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Config.Mixerp>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -605,9 +635,9 @@ namespace MixERP.Net.Api.Config
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/config/mixerp/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Config.Mixerp> mixerpCollection = this.ParseCollection(collection);
+            List<ExpandoObject> mixerpCollection = this.ParseCollection(collection);
 
             if (mixerpCollection == null || mixerpCollection.Count.Equals(0))
             {

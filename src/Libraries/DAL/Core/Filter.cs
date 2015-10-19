@@ -1,28 +1,12 @@
 // ReSharper disable All
-/********************************************************************************
-Copyright (C) MixERP Inc. (http://mixof.org).
-
-This file is part of MixERP.
-
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
-
-
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************************/
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -75,7 +59,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -89,11 +73,11 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.filters" to return a all instances of the "Filter" class to export. 
+        /// Executes a select query on the table "core.filters" to return a all instances of the "Filter" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Filter" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.Filter> Get()
+        public IEnumerable<MixERP.Net.Entities.Core.Filter> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -104,7 +88,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -115,6 +99,35 @@ namespace MixERP.Net.Schemas.Core.Data
 
             const string sql = "SELECT * FROM core.filters ORDER BY filter_id;";
             return Factory.Get<MixERP.Net.Entities.Core.Filter>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.filters" to return a all instances of the "Filter" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "Filter" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"Filter\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.filters ORDER BY filter_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -134,7 +147,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -164,7 +177,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -194,7 +207,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -232,7 +245,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -276,7 +289,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="filter">The instance of "Filter" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Core.Filter filter, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic filter, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -285,13 +298,13 @@ namespace MixERP.Net.Schemas.Core.Data
 
             object primaryKeyValue;
 
-            filter.AuditUserId = this._UserId;
-            filter.AuditTs = System.DateTime.UtcNow;
+            filter.audit_user_id = this._UserId;
+            filter.audit_ts = System.DateTime.UtcNow;
 
-            if (filter.FilterId > 0)
+            if (Cast.To<long>(filter.filter_id) > 0)
             {
-                primaryKeyValue = filter.FilterId;
-                this.Update(filter, filter.FilterId);
+                primaryKeyValue = filter.filter_id;
+                this.Update(filter, long.Parse(filter.filter_id));
             }
             else
             {
@@ -328,7 +341,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="filter">The instance of "Filter" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Core.Filter filter)
+        public object Add(dynamic filter)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -339,7 +352,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Create, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Create, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -348,7 +361,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, filter);
+            return Factory.Insert(this._Catalog, filter, "core.filters", "filter_id");
         }
 
         /// <summary>
@@ -356,13 +369,13 @@ namespace MixERP.Net.Schemas.Core.Data
         /// </summary>
         /// <param name="filters">List of "Filter" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Core.Filter> filters)
+        public List<object> BulkImport(List<ExpandoObject> filters)
         {
             if (!this.SkipValidation)
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.ImportData, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.ImportData, this._LoginId, this._Catalog, false);
                 }
 
                 if (!this.HasAccess)
@@ -380,21 +393,21 @@ namespace MixERP.Net.Schemas.Core.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var filter in filters)
+                        foreach (dynamic filter in filters)
                         {
                             line++;
 
-                            filter.AuditUserId = this._UserId;
-                            filter.AuditTs = System.DateTime.UtcNow;
+                            filter.audit_user_id = this._UserId;
+                            filter.audit_ts = System.DateTime.UtcNow;
 
-                            if (filter.FilterId > 0)
+                            if (Cast.To<long>(filter.filter_id) > 0)
                             {
-                                result.Add(filter.FilterId);
-                                db.Update(filter, filter.FilterId);
+                                result.Add(filter.filter_id);
+                                db.Update("core.filters", "filter_id", filter, filter.filter_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(filter));
+                                result.Add(db.Insert("core.filters", "filter_id", filter));
                             }
                         }
 
@@ -431,7 +444,7 @@ namespace MixERP.Net.Schemas.Core.Data
         /// <param name="filter">The instance of "Filter" class to update.</param>
         /// <param name="filterId">The value of the column "filter_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Core.Filter filter, long filterId)
+        public void Update(dynamic filter, long filterId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -442,7 +455,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Edit, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Edit, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -451,7 +464,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            Factory.Update(this._Catalog, filter, filterId);
+            Factory.Update(this._Catalog, filter, filterId, "core.filters", "filter_id");
         }
 
         /// <summary>
@@ -470,7 +483,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Delete, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Delete, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -499,7 +512,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -529,7 +542,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -567,7 +580,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -600,7 +613,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -642,7 +655,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -676,7 +689,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -710,7 +723,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Create, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Create, this._LoginId, this._Catalog, false);
                 }
 
                 if (!this.HasAccess)
@@ -757,7 +770,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.CreateFilter, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.CreateFilter, this._LoginId, this._Catalog, false);
                 }
 
                 if (!this.HasAccess)
@@ -777,7 +790,7 @@ namespace MixERP.Net.Schemas.Core.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.DeleteFilter, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.DeleteFilter, this._LoginId, this._Catalog, false);
                 }
 
                 if (!this.HasAccess)

@@ -1,21 +1,44 @@
-﻿<%--
-Copyright (C) MixERP Inc. (http://mixof.org).
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TaxAuthorities.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.Tax.TaxAuthorities" %>
+<script>
+    var scrudFactory = new Object();
 
-This file is part of MixERP.
+    scrudFactory.title = Resources.Titles.TaxAuthorities();
 
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
+    scrudFactory.viewAPI = "/api/core/tax-authority-scrud-view";
+    scrudFactory.viewTableName = "core.tax_authority_scrud_view";
 
+    scrudFactory.formAPI = "/api/core/tax-authority";
+    scrudFactory.formTableName = "core.tax_authorities";
+    scrudFactory.live = "TaxMasterName";
 
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
 
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses />.
---%>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TaxAuthorities.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.Tax.TaxAuthorities" %>
+    scrudFactory.allowDelete = true;
+    scrudFactory.allowEdit = true;
 
-<asp:PlaceHolder runat="server" ID="ScrudPlaceholder" />
+    scrudFactory.keys = [
+        {
+            property: "TaxMasterId",
+            url: '/api/core/tax-master-scrud-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "CountryId",
+            url: '/api/core/country-scrud-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "StateId",
+            url: '/api/core/state-scrud-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        }
+    ];
+</script>
+<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
+<div data-ng-include="'/Views/Modules/FormFactory.html'"></div>

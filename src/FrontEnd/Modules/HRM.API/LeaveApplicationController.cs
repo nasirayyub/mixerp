@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -109,19 +110,48 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
+        ///     Returns all collection of leave application.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/hrm/leave-application/all")]
+        public IEnumerable<MixERP.Net.Entities.HRM.LeaveApplication> GetAll()
+        {
+            try
+            {
+                return this.LeaveApplicationContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of leave application for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/hrm/leave-application/export")]
-        [Route("~/api/hrm/leave-application/all")]
-        public IEnumerable<MixERP.Net.Entities.HRM.LeaveApplication> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.LeaveApplicationContext.Get();
+                return this.LeaveApplicationContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -497,7 +527,7 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/leave-application/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.HRM.LeaveApplication leaveApplication = form[0].ToObject<MixERP.Net.Entities.HRM.LeaveApplication>(JsonHelper.GetJsonSerializer());
+            dynamic leaveApplication = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (leaveApplication == null)
@@ -600,9 +630,9 @@ namespace MixERP.Net.Api.HRM
             }
         }
 
-        private List<MixERP.Net.Entities.HRM.LeaveApplication> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.HRM.LeaveApplication>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -614,9 +644,9 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/hrm/leave-application/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.HRM.LeaveApplication> leaveApplicationCollection = this.ParseCollection(collection);
+            List<ExpandoObject> leaveApplicationCollection = this.ParseCollection(collection);
 
             if (leaveApplicationCollection == null || leaveApplicationCollection.Count.Equals(0))
             {

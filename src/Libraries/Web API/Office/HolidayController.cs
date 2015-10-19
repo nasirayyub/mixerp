@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -18,14 +19,14 @@ namespace MixERP.Net.Api.Office
     ///     Provides a direct HTTP access to perform various tasks such as adding, editing, and removing Holidays.
     /// </summary>
     [RoutePrefix("api/v1.5/office/holiday")]
-    public class OfficeHolidayController : ApiController
+    public class HolidayController : ApiController
     {
         /// <summary>
         ///     The Holiday data context.
         /// </summary>
         private readonly MixERP.Net.Schemas.Office.Data.Holiday HolidayContext;
 
-        public OfficeHolidayController()
+        public HolidayController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
@@ -59,14 +60,14 @@ namespace MixERP.Net.Api.Office
                 PrimaryKey = "holiday_id",
                 Columns = new List<EntityColumn>()
                                 {
-                                        new EntityColumn { ColumnName = "holiday_id",  PropertyName = "HolidayId",  DataType = "int",  DbDataType = "int4",  IsNullable = false,  IsPrimaryKey = true,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "holiday_id",  PropertyName = "HolidayId",  DataType = "int",  DbDataType = "int4",  IsNullable = false,  IsPrimaryKey = true,  IsSerial = true,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "office_id",  PropertyName = "OfficeId",  DataType = "int",  DbDataType = "int4",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
-                                        new EntityColumn { ColumnName = "falls_on",  PropertyName = "FallsOn",  DataType = "DateTime",  DbDataType = "date",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "holiday_name",  PropertyName = "HolidayName",  DataType = "string",  DbDataType = "varchar",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 100 },
                                         new EntityColumn { ColumnName = "description",  PropertyName = "Description",  DataType = "string",  DbDataType = "text",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
-                                        new EntityColumn { ColumnName = "recurs_next_year",  PropertyName = "RecursNextYear",  DataType = "bool",  DbDataType = "bool",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "audit_user_id",  PropertyName = "AuditUserId",  DataType = "int",  DbDataType = "int4",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
-                                        new EntityColumn { ColumnName = "audit_ts",  PropertyName = "AuditTs",  DataType = "DateTime",  DbDataType = "timestamptz",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                        new EntityColumn { ColumnName = "audit_ts",  PropertyName = "AuditTs",  DataType = "DateTime",  DbDataType = "timestamptz",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "occurs_on",  PropertyName = "OccursOn",  DataType = "DateTime",  DbDataType = "date",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "ends_on",  PropertyName = "EndsOn",  DataType = "DateTime",  DbDataType = "date",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
                                 }
             };
         }
@@ -103,19 +104,48 @@ namespace MixERP.Net.Api.Office
         }
 
         /// <summary>
+        ///     Returns all collection of holiday.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/office/holiday/all")]
+        public IEnumerable<MixERP.Net.Entities.Office.Holiday> GetAll()
+        {
+            try
+            {
+                return this.HolidayContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of holiday for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/office/holiday/export")]
-        [Route("~/api/office/holiday/all")]
-        public IEnumerable<MixERP.Net.Entities.Office.Holiday> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.HolidayContext.Get();
+                return this.HolidayContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -491,7 +521,7 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/holiday/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Office.Holiday holiday = form[0].ToObject<MixERP.Net.Entities.Office.Holiday>(JsonHelper.GetJsonSerializer());
+            dynamic holiday = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (holiday == null)
@@ -594,9 +624,9 @@ namespace MixERP.Net.Api.Office
             }
         }
 
-        private List<MixERP.Net.Entities.Office.Holiday> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Office.Holiday>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -608,9 +638,9 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/office/holiday/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Office.Holiday> holidayCollection = this.ParseCollection(collection);
+            List<ExpandoObject> holidayCollection = this.ParseCollection(collection);
 
             if (holidayCollection == null || holidayCollection.Count.Equals(0))
             {

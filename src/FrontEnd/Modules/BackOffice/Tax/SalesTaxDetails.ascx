@@ -1,21 +1,93 @@
-﻿<%--
-Copyright (C) MixERP Inc. (http://mixof.org).
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="SalesTaxDetails.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.Tax.SalesTaxDetails" %>
+<script>
+    var scrudFactory = new Object();
 
-This file is part of MixERP.
+    scrudFactory.title = Resources.Titles.SalesTaxDetails();
 
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
+    scrudFactory.viewAPI = "/api/core/sales-tax-detail-scrud-view";
+    scrudFactory.viewTableName = "core.sales_tax_detail_scrud_view";
 
+    scrudFactory.formAPI = "/api/core/sales-tax-detail";
+    scrudFactory.formTableName = "core.sales_tax_details";
+    scrudFactory.live = "SalesTaxDetailName";
 
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
 
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses />.
---%>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="SalesTaxDetails.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.Tax.SalesTaxDetails" %>
+    scrudFactory.allowDelete = true;
+    scrudFactory.allowEdit = true;
 
-<asp:PlaceHolder runat="server" ID="ScrudPlaceholder" />
+    scrudFactory.keys = [
+        {
+            property: "SalesTaxTypeId",
+            url: '/api/core/sales-tax-type-scrud-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "SalesTaxId",
+            url: '/api/core/sales-tax-scrud-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "StateSalesTaxId",
+            url: '/api/core/state-sales-tax-scrud-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "CountySalesTaxId",
+            url: '/api/core/county-sales-tax-scrud-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "TaxRateTypeCode",
+            url: '/api/core/tax-rate-type-selector-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "ReportingTaxAuthorityId",
+            url: '/api/core/tax-authority-scrud-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "CollectingTaxAuthorityId",
+            url: '/api/core/tax-authority-scrud-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "CollectingAccountId",
+            url: '/api/core/account-selector-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "UseTaxCollectingAccountId",
+            url: '/api/core/account-selector-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        },
+        {
+            property: "RoundingMethodCode",
+            url: '/api/core/rounding-method-selector-view/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        }
+    ];
+</script>
+<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
+<div data-ng-include="'/Views/Modules/FormFactory.html'"></div>

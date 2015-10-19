@@ -9,6 +9,7 @@ namespace PetaPoco
         public string ObjectName { get; set; }
         public bool HasAccess { get; private set; }
         public long LoginId { get; set; }
+        public string Catalog { get; set; }
 
         public void Validate()
         {

@@ -10,11 +10,11 @@ namespace MixERP.Net.Core.Modules.HRM.FirstSteps
         public EducationLevel()
         {
             Order = 1000;
-            Name = "Create Education Levels";
-            Category = "Human Resource Management";
+            Name = Titles.CreateEducationLevels;
+            Category = Titles.HumanResourceManagement;
             CategoryAlias = "hrm";
 
-            Description = "Create education levels applicable to your country and industry.";
+            Description = Labels.CreateEducationLevelsDescription;
             Icon = "university icon";
             NavigateUrl = "/Modules/HRM/Setup/EducationLevels.mix";
 
@@ -27,7 +27,7 @@ namespace MixERP.Net.Core.Modules.HRM.FirstSteps
                 return;
             }
 
-            Message = "No education level defined.";
+            Message = Labels.NoEducationLevelDefined;
         }
 
         private long CountEducationLevels()

@@ -40,6 +40,10 @@
       <HintPath>..\..\..\packages\Npgsql.2.2.3\lib\net45\Mono.Security.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Npgsql, Version=2.2.3.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Npgsql.2.2.3\lib\net45\Npgsql.dll</HintPath>
       <Private>True</Private>
@@ -107,6 +111,7 @@
     <Compile Include="GetUserIdByUserNameProcedure.cs" />
     <Compile Include="GetUserNameByUserIdProcedure.cs" />
     <Compile Include="HasChildOfficesProcedure.cs" />
+    <Compile Include="Holiday.cs" />
     <Compile Include="IsAdminProcedure.cs" />
     <Compile Include="IsParentOfficeProcedure.cs" />
     <Compile Include="IsPeriodicInventoryProcedure.cs" />
@@ -145,6 +150,10 @@
     <ProjectReference Include="..\..\Entities\Office\MixERP.Net.Entities.Office.csproj">
       <Project>{ECE2EA15-08D3-46D6-8906-BEC973C0568B}</Project>
       <Name>MixERP.Net.Entities.Office</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Logic\MixERP.net.Common\MixERP.Net.Common.csproj">
+      <Project>{D5A09C22-8F48-4FB2-A14D-C62C8C8FCEC0}</Project>
+      <Name>MixERP.Net.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Logic\MixERP.Net.DbFactory\MixERP.Net.DbFactory.csproj">
       <Project>{8fd9661c-2473-4581-8722-18b08d4db252}</Project>

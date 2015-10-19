@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -103,19 +104,48 @@ namespace MixERP.Net.Api.Transactions
         }
 
         /// <summary>
+        ///     Returns all collection of non gl stock tax detail.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/transactions/non-gl-stock-tax-detail/all")]
+        public IEnumerable<MixERP.Net.Entities.Transactions.NonGlStockTaxDetail> GetAll()
+        {
+            try
+            {
+                return this.NonGlStockTaxDetailContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of non gl stock tax detail for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/transactions/non-gl-stock-tax-detail/export")]
-        [Route("~/api/transactions/non-gl-stock-tax-detail/all")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.NonGlStockTaxDetail> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.NonGlStockTaxDetailContext.Get();
+                return this.NonGlStockTaxDetailContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -491,7 +521,7 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/non-gl-stock-tax-detail/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Transactions.NonGlStockTaxDetail nonGlStockTaxDetail = form[0].ToObject<MixERP.Net.Entities.Transactions.NonGlStockTaxDetail>(JsonHelper.GetJsonSerializer());
+            dynamic nonGlStockTaxDetail = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (nonGlStockTaxDetail == null)
@@ -594,9 +624,9 @@ namespace MixERP.Net.Api.Transactions
             }
         }
 
-        private List<MixERP.Net.Entities.Transactions.NonGlStockTaxDetail> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Transactions.NonGlStockTaxDetail>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -608,9 +638,9 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/transactions/non-gl-stock-tax-detail/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Transactions.NonGlStockTaxDetail> nonGlStockTaxDetailCollection = this.ParseCollection(collection);
+            List<ExpandoObject> nonGlStockTaxDetailCollection = this.ParseCollection(collection);
 
             if (nonGlStockTaxDetailCollection == null || nonGlStockTaxDetailCollection.Count.Equals(0))
             {

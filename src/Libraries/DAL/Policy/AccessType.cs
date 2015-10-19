@@ -1,28 +1,12 @@
 // ReSharper disable All
-/********************************************************************************
-Copyright (C) MixERP Inc. (http://mixof.org).
-
-This file is part of MixERP.
-
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
-
-
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************************/
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using MixERP.Net.DbFactory;
 using MixERP.Net.EntityParser;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using Npgsql;
 using PetaPoco;
 using Serilog;
@@ -75,7 +59,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -89,11 +73,11 @@ namespace MixERP.Net.Schemas.Policy.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "policy.access_types" to return a all instances of the "AccessType" class to export. 
+        /// Executes a select query on the table "policy.access_types" to return a all instances of the "AccessType" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "AccessType" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Policy.AccessType> Get()
+        public IEnumerable<MixERP.Net.Entities.Policy.AccessType> GetAll()
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -104,7 +88,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -115,6 +99,35 @@ namespace MixERP.Net.Schemas.Policy.Data
 
             const string sql = "SELECT * FROM policy.access_types ORDER BY access_type_id;";
             return Factory.Get<MixERP.Net.Entities.Policy.AccessType>(this._Catalog, sql);
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "policy.access_types" to return a all instances of the "AccessType" class to export. 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instances of "AccessType" class.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<dynamic> Export()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.ExportData, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the export entity \"AccessType\" was denied to the user with Login ID {LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.access_types ORDER BY access_type_id;";
+            return Factory.Get<dynamic>(this._Catalog, sql);
         }
 
         /// <summary>
@@ -134,7 +147,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -164,7 +177,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -194,7 +207,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -232,7 +245,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -276,7 +289,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// <param name="accessType">The instance of "AccessType" class to insert or update.</param>
         /// <param name="customFields">The custom field collection.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object AddOrEdit(MixERP.Net.Entities.Policy.AccessType accessType, List<EntityParser.CustomField> customFields)
+        public object AddOrEdit(dynamic accessType, List<EntityParser.CustomField> customFields)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -287,10 +300,10 @@ namespace MixERP.Net.Schemas.Policy.Data
 
 
 
-            if (accessType.AccessTypeId > 0)
+            if (Cast.To<int>(accessType.access_type_id) > 0)
             {
-                primaryKeyValue = accessType.AccessTypeId;
-                this.Update(accessType, accessType.AccessTypeId);
+                primaryKeyValue = accessType.access_type_id;
+                this.Update(accessType, int.Parse(accessType.access_type_id));
             }
             else
             {
@@ -327,7 +340,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// </summary>
         /// <param name="accessType">The instance of "AccessType" class to insert.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public object Add(MixERP.Net.Entities.Policy.AccessType accessType)
+        public object Add(dynamic accessType)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -338,7 +351,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Create, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Create, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -347,7 +360,7 @@ namespace MixERP.Net.Schemas.Policy.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, accessType);
+            return Factory.Insert(this._Catalog, accessType, "policy.access_types", "access_type_id");
         }
 
         /// <summary>
@@ -355,13 +368,13 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// </summary>
         /// <param name="accessTypes">List of "AccessType" class to import.</param>
         /// <returns></returns>
-        public List<object> BulkImport(List<MixERP.Net.Entities.Policy.AccessType> accessTypes)
+        public List<object> BulkImport(List<ExpandoObject> accessTypes)
         {
             if (!this.SkipValidation)
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.ImportData, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.ImportData, this._LoginId, this._Catalog, false);
                 }
 
                 if (!this.HasAccess)
@@ -379,20 +392,20 @@ namespace MixERP.Net.Schemas.Policy.Data
                 {
                     using (Transaction transaction = db.GetTransaction())
                     {
-                        foreach (var accessType in accessTypes)
+                        foreach (dynamic accessType in accessTypes)
                         {
                             line++;
 
 
 
-                            if (accessType.AccessTypeId > 0)
+                            if (Cast.To<int>(accessType.access_type_id) > 0)
                             {
-                                result.Add(accessType.AccessTypeId);
-                                db.Update(accessType, accessType.AccessTypeId);
+                                result.Add(accessType.access_type_id);
+                                db.Update("policy.access_types", "access_type_id", accessType, accessType.access_type_id);
                             }
                             else
                             {
-                                result.Add(db.Insert(accessType));
+                                result.Add(db.Insert("policy.access_types", "access_type_id", accessType));
                             }
                         }
 
@@ -429,7 +442,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         /// <param name="accessType">The instance of "AccessType" class to update.</param>
         /// <param name="accessTypeId">The value of the column "access_type_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(MixERP.Net.Entities.Policy.AccessType accessType, int accessTypeId)
+        public void Update(dynamic accessType, int accessTypeId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -440,7 +453,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Edit, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Edit, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -449,7 +462,7 @@ namespace MixERP.Net.Schemas.Policy.Data
                 }
             }
 
-            Factory.Update(this._Catalog, accessType, accessTypeId);
+            Factory.Update(this._Catalog, accessType, accessTypeId, "policy.access_types", "access_type_id");
         }
 
         /// <summary>
@@ -468,7 +481,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Delete, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Delete, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -497,7 +510,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -527,7 +540,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -565,7 +578,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -598,7 +611,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -640,7 +653,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {
@@ -674,7 +687,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             {
                 if (!this.Validated)
                 {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, false);
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
                 }
                 if (!this.HasAccess)
                 {

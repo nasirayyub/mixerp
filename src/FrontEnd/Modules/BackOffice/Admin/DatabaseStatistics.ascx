@@ -1,29 +1,63 @@
-﻿<%--
-Copyright (C) MixERP Inc. (http://mixof.org).
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="DatabaseStatistics.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.Admin.DatabaseStatistics" %>
 
-This file is part of MixERP.
+<script>
+    var scrudFactory = new Object();
 
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
+    scrudFactory.title = window.Resources.Titles.DatabaseStatistics();
+
+    scrudFactory.viewAPI = "/api/public/db-stat";
+    scrudFactory.viewTableName = "public.db_stat";
+    scrudFactory.ignoreMeta = true;
+    scrudFactory.removeKanban = true;
+    scrudFactory.removeFilter = true;
+    scrudFactory.removeImport = true;
+
+    scrudFactory.allowDelete = false;
+    scrudFactory.allowEdit = false;
 
 
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+</script>
+<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
 
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses />.
---%>
+<script type="text/javascript">
 
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="DatabaseStatistics.ascx.cs" Inherits="MixERP.Net.Core.Modules.BackOffice.Admin.DatabaseStatistics" %>
-<asp:PlaceHolder ID="ScrudPlaceholder" runat="server" />
+    var effectiveFromTextbox = $("#effective_from_textbox");
+    var endsOnTextbox = $("#ends_on_textbox");
+
+    $(document).ready(function () {
+        scrudCustomValidator();
+    });
+
+    function scrudCustomValidator() {
+        var effectiveFrom = parseDate(effectiveFromTextbox.val());
+        var endsOn = parseDate(endsOnTextbox.val());
+
+        if (endsOn < effectiveFrom) {
+            displayMessage(Resources.Warnings.DateErrorMessage());
+            return false;
+        };
+        return true;
+    };
+
+</script>
 
 <h1>Maintenance</h1>
 
 <asp:Literal ID="MessageLiteral" runat="server" />
 
-<asp:Button ID="VacuumButton" runat="server" CssClass="ui red button" OnClick="VacuumButton_Click" />
-<asp:Button ID="FullVacuumButton" runat="server" CssClass="ui red button" OnClick="FullVacuumButton_Click" />
-<asp:Button ID="AnalyzeButton" runat="server" CssClass="ui red button" OnClick="AnalyzeButton_Click" />
+<div class="ui basic buttons">
+    <asp:Button ID="VacuumButton" runat="server" 
+        CausesValidation="False"        
+        CssClass="ui basic button" 
+        OnClick="VacuumButton_Click" />
+    
+    <asp:Button ID="FullVacuumButton" runat="server" 
+        CausesValidation="False"
+        CssClass="ui basic button" 
+        OnClick="FullVacuumButton_Click" />
+    
+    <asp:Button ID="AnalyzeButton" runat="server" 
+        CausesValidation="False"
+        CssClass="ui basic button" 
+        OnClick="AnalyzeButton_Click" />
+</div>

@@ -114,7 +114,6 @@
     <Compile Include="GetEmployeeByEmployeeIdController.cs" />
     <Compile Include="GetEmployeeCodeByEmployeeIdController.cs" />
     <Compile Include="GetEmployeeNameByEmployeeIdController.cs" />
-    <Compile Include="HrmHolidayController.cs" />
     <Compile Include="JobTitleController.cs" />
     <Compile Include="LeaveApplicationController.cs" />
     <Compile Include="LeaveApplicationScrudViewController.cs" />

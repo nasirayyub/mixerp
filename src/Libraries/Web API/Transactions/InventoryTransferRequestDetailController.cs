@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -103,19 +104,48 @@ namespace MixERP.Net.Api.Transactions
         }
 
         /// <summary>
+        ///     Returns all collection of inventory transfer request detail.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/transactions/inventory-transfer-request-detail/all")]
+        public IEnumerable<MixERP.Net.Entities.Transactions.InventoryTransferRequestDetail> GetAll()
+        {
+            try
+            {
+                return this.InventoryTransferRequestDetailContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of inventory transfer request detail for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/transactions/inventory-transfer-request-detail/export")]
-        [Route("~/api/transactions/inventory-transfer-request-detail/all")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.InventoryTransferRequestDetail> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.InventoryTransferRequestDetailContext.Get();
+                return this.InventoryTransferRequestDetailContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -491,7 +521,7 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/inventory-transfer-request-detail/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Transactions.InventoryTransferRequestDetail inventoryTransferRequestDetail = form[0].ToObject<MixERP.Net.Entities.Transactions.InventoryTransferRequestDetail>(JsonHelper.GetJsonSerializer());
+            dynamic inventoryTransferRequestDetail = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (inventoryTransferRequestDetail == null)
@@ -594,9 +624,9 @@ namespace MixERP.Net.Api.Transactions
             }
         }
 
-        private List<MixERP.Net.Entities.Transactions.InventoryTransferRequestDetail> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Transactions.InventoryTransferRequestDetail>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -608,9 +638,9 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/transactions/inventory-transfer-request-detail/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Transactions.InventoryTransferRequestDetail> inventoryTransferRequestDetailCollection = this.ParseCollection(collection);
+            List<ExpandoObject> inventoryTransferRequestDetailCollection = this.ParseCollection(collection);
 
             if (inventoryTransferRequestDetailCollection == null || inventoryTransferRequestDetailCollection.Count.Equals(0))
             {

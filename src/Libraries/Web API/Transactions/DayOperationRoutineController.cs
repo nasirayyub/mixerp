@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -100,19 +101,48 @@ namespace MixERP.Net.Api.Transactions
         }
 
         /// <summary>
+        ///     Returns all collection of day operation routine.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/transactions/day-operation-routine/all")]
+        public IEnumerable<MixERP.Net.Entities.Transactions.DayOperationRoutine> GetAll()
+        {
+            try
+            {
+                return this.DayOperationRoutineContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of day operation routine for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/transactions/day-operation-routine/export")]
-        [Route("~/api/transactions/day-operation-routine/all")]
-        public IEnumerable<MixERP.Net.Entities.Transactions.DayOperationRoutine> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.DayOperationRoutineContext.Get();
+                return this.DayOperationRoutineContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -488,7 +518,7 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/day-operation-routine/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Transactions.DayOperationRoutine dayOperationRoutine = form[0].ToObject<MixERP.Net.Entities.Transactions.DayOperationRoutine>(JsonHelper.GetJsonSerializer());
+            dynamic dayOperationRoutine = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (dayOperationRoutine == null)
@@ -591,9 +621,9 @@ namespace MixERP.Net.Api.Transactions
             }
         }
 
-        private List<MixERP.Net.Entities.Transactions.DayOperationRoutine> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Transactions.DayOperationRoutine>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -605,9 +635,9 @@ namespace MixERP.Net.Api.Transactions
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/transactions/day-operation-routine/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Transactions.DayOperationRoutine> dayOperationRoutineCollection = this.ParseCollection(collection);
+            List<ExpandoObject> dayOperationRoutineCollection = this.ParseCollection(collection);
 
             if (dayOperationRoutineCollection == null || dayOperationRoutineCollection.Count.Equals(0))
             {

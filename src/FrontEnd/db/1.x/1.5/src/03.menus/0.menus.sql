@@ -7,6 +7,7 @@ SELECT * FROM core.create_menu('Marital Statuses', '~/Modules/BackOffice/Other/M
 
 SELECT * FROM core.create_menu('Default Entity Access Policy', '~/Modules/BackOffice/Policy/DefaultEntityAccess.mix', 'DEFEAPOL', 2, core.get_menu_id('SPM'));
 SELECT * FROM core.create_menu('Entity Access Policy', '~/Modules/BackOffice/Policy/EntityAccess.mix', 'EAPOL', 2, core.get_menu_id('SPM'));
+SELECT * FROM core.create_menu('Holiday Setup', '~/Modules/BackOffice/Other/HolidaySetup.mix', 'HOLIDAY', 2, core.get_menu_id('OTHR'));
 
 
 UPDATE core.menus SET menu_text = 'Inventory' WHERE menu_code = 'ITM';
@@ -45,3 +46,7 @@ UPDATE core.menus SET sort = 5, icon = 'desktop' WHERE menu_code ='STA';
 DELETE FROM policy.menu_access WHERE menu_id = core.get_menu_id_by_menu_code('SAA');
 DELETE FROM core.menu_locale WHERE menu_id = core.get_menu_id_by_menu_code('SAA');
 DELETE FROM core.menus WHERE menu_code = 'SAA';
+
+DELETE FROM policy.menu_access WHERE menu_id = core.get_menu_id_by_menu_code('OTSSFP');
+DELETE FROM core.menu_locale WHERE menu_id = core.get_menu_id_by_menu_code('OTSSFP');
+DELETE FROM core.menus WHERE menu_code = 'OTSSFP';

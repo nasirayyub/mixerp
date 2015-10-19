@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -107,19 +108,48 @@ namespace MixERP.Net.Api.Office
         }
 
         /// <summary>
+        ///     Returns all collection of user.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/office/user/all")]
+        public IEnumerable<MixERP.Net.Entities.Office.User> GetAll()
+        {
+            try
+            {
+                return this.UserContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of user for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/office/user/export")]
-        [Route("~/api/office/user/all")]
-        public IEnumerable<MixERP.Net.Entities.Office.User> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.UserContext.Get();
+                return this.UserContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -495,7 +525,7 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/user/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Office.User user = form[0].ToObject<MixERP.Net.Entities.Office.User>(JsonHelper.GetJsonSerializer());
+            dynamic user = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (user == null)
@@ -598,9 +628,9 @@ namespace MixERP.Net.Api.Office
             }
         }
 
-        private List<MixERP.Net.Entities.Office.User> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Office.User>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -612,9 +642,9 @@ namespace MixERP.Net.Api.Office
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/office/user/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Office.User> userCollection = this.ParseCollection(collection);
+            List<ExpandoObject> userCollection = this.ParseCollection(collection);
 
             if (userCollection == null || userCollection.Count.Equals(0))
             {

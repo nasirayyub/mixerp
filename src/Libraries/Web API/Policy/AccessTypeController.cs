@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -97,19 +98,48 @@ namespace MixERP.Net.Api.Policy
         }
 
         /// <summary>
+        ///     Returns all collection of access type.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/policy/access-type/all")]
+        public IEnumerable<MixERP.Net.Entities.Policy.AccessType> GetAll()
+        {
+            try
+            {
+                return this.AccessTypeContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of access type for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/policy/access-type/export")]
-        [Route("~/api/policy/access-type/all")]
-        public IEnumerable<MixERP.Net.Entities.Policy.AccessType> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.AccessTypeContext.Get();
+                return this.AccessTypeContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -485,7 +515,7 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/access-type/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Policy.AccessType accessType = form[0].ToObject<MixERP.Net.Entities.Policy.AccessType>(JsonHelper.GetJsonSerializer());
+            dynamic accessType = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (accessType == null)
@@ -588,9 +618,9 @@ namespace MixERP.Net.Api.Policy
             }
         }
 
-        private List<MixERP.Net.Entities.Policy.AccessType> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Policy.AccessType>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -602,9 +632,9 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/policy/access-type/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Policy.AccessType> accessTypeCollection = this.ParseCollection(collection);
+            List<ExpandoObject> accessTypeCollection = this.ParseCollection(collection);
 
             if (accessTypeCollection == null || accessTypeCollection.Count.Equals(0))
             {

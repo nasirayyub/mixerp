@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -110,19 +111,48 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
+        ///     Returns all collection of contract.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/hrm/contract/all")]
+        public IEnumerable<MixERP.Net.Entities.HRM.Contract> GetAll()
+        {
+            try
+            {
+                return this.ContractContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of contract for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/hrm/contract/export")]
-        [Route("~/api/hrm/contract/all")]
-        public IEnumerable<MixERP.Net.Entities.HRM.Contract> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.ContractContext.Get();
+                return this.ContractContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -498,7 +528,7 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/contract/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.HRM.Contract contract = form[0].ToObject<MixERP.Net.Entities.HRM.Contract>(JsonHelper.GetJsonSerializer());
+            dynamic contract = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (contract == null)
@@ -601,9 +631,9 @@ namespace MixERP.Net.Api.HRM
             }
         }
 
-        private List<MixERP.Net.Entities.HRM.Contract> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.HRM.Contract>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -615,9 +645,9 @@ namespace MixERP.Net.Api.HRM
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/hrm/contract/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.HRM.Contract> contractCollection = this.ParseCollection(collection);
+            List<ExpandoObject> contractCollection = this.ParseCollection(collection);
 
             if (contractCollection == null || contractCollection.Count.Equals(0))
             {

@@ -75,6 +75,7 @@
     <Compile Include="EntityAccessScrudView.cs" />
     <Compile Include="GetMenuPolicyProcedure.cs" />
     <Compile Include="GetMenuProcedure.cs" />
+    <Compile Include="HasAccessProcedure.cs" />
     <Compile Include="HttpAction.cs" />
     <Compile Include="IsElevatedUserProcedure.cs" />
     <Compile Include="IsLockedOutTillProcedure.cs" />

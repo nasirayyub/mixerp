@@ -3,7 +3,7 @@ using System.Text;
 
 namespace MixERP.Net.Framework.Extensions
 {
-    public static class StringExtendsionsMethods
+    public static class StringExtensionMethods
     {
         public static string ReplaceWholeWord(this string s, string word, string bywhat)
         {

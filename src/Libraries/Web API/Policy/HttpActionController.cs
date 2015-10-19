@@ -1,5 +1,6 @@
 // ReSharper disable All
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -96,19 +97,48 @@ namespace MixERP.Net.Api.Policy
         }
 
         /// <summary>
+        ///     Returns all collection of http action.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("all")]
+        [Route("~/api/policy/http-action/all")]
+        public IEnumerable<MixERP.Net.Entities.Policy.HttpAction> GetAll()
+        {
+            try
+            {
+                return this.HttpActionContext.GetAll();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Returns collection of http action for export.
         /// </summary>
         /// <returns></returns>
         [AcceptVerbs("GET", "HEAD")]
         [Route("export")]
-        [Route("all")]
         [Route("~/api/policy/http-action/export")]
-        [Route("~/api/policy/http-action/all")]
-        public IEnumerable<MixERP.Net.Entities.Policy.HttpAction> Get()
+        public IEnumerable<dynamic> Export()
         {
             try
             {
-                return this.HttpActionContext.Get();
+                return this.HttpActionContext.Export();
             }
             catch (UnauthorizedException)
             {
@@ -484,7 +514,7 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/http-action/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
-            MixERP.Net.Entities.Policy.HttpAction httpAction = form[0].ToObject<MixERP.Net.Entities.Policy.HttpAction>(JsonHelper.GetJsonSerializer());
+            dynamic httpAction = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
             List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
 
             if (httpAction == null)
@@ -587,9 +617,9 @@ namespace MixERP.Net.Api.Policy
             }
         }
 
-        private List<MixERP.Net.Entities.Policy.HttpAction> ParseCollection(dynamic collection)
+        private List<ExpandoObject> ParseCollection(JArray collection)
         {
-            return JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Policy.HttpAction>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<List<ExpandoObject>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
         }
 
         /// <summary>
@@ -601,9 +631,9 @@ namespace MixERP.Net.Api.Policy
         [AcceptVerbs("PUT")]
         [Route("bulk-import")]
         [Route("~/api/policy/http-action/bulk-import")]
-        public List<object> BulkImport([FromBody]dynamic collection)
+        public List<object> BulkImport([FromBody]JArray collection)
         {
-            List<MixERP.Net.Entities.Policy.HttpAction> httpActionCollection = this.ParseCollection(collection);
+            List<ExpandoObject> httpActionCollection = this.ParseCollection(collection);
 
             if (httpActionCollection == null || httpActionCollection.Count.Equals(0))
             {
