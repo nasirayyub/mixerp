@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = weekDay.week_day_id;
 
-            if (Cast.To<int>(weekDay.week_day_id) > 0)
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = weekDay.week_day_id;
                 this.Update(weekDay, int.Parse(weekDay.week_day_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-                            if (Cast.To<int>(weekDay.week_day_id) > 0)
+                            object primaryKeyValue = weekDay.week_day_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(weekDay.week_day_id);
                                 db.Update("core.week_days", "week_day_id", weekDay, weekDay.week_day_id);

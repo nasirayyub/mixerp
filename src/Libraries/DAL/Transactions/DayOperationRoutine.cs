@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = dayOperationRoutine.day_operation_routine_id;
 
-            if (Cast.To<long>(dayOperationRoutine.day_operation_routine_id) > 0)
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = dayOperationRoutine.day_operation_routine_id;
                 this.Update(dayOperationRoutine, long.Parse(dayOperationRoutine.day_operation_routine_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
 
 
-                            if (Cast.To<long>(dayOperationRoutine.day_operation_routine_id) > 0)
+                            object primaryKeyValue = dayOperationRoutine.day_operation_routine_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(dayOperationRoutine.day_operation_routine_id);
                                 db.Update("transactions.day_operation_routines", "day_operation_routine_id", dayOperationRoutine, dayOperationRoutine.day_operation_routine_id);

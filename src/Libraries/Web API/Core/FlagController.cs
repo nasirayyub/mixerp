@@ -522,7 +522,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of Flag class to bulk import.</param>
         /// <returns>Returns list of imported flagIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any Flag class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/flag/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)
@@ -591,11 +591,14 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of Flag class.
         /// </summary>
         /// <param name="flag">Your instance of flags class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/flag/add-or-edit")]
-        public void AddOrEdit([FromBody]MixERP.Net.Entities.Core.Flag flag)
+        public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
         {
+            dynamic flag = form[0].ToObject<ExpandoObject>(JsonHelper.GetJsonSerializer());
+            List<EntityParser.CustomField> customFields = form[1].ToObject<List<EntityParser.CustomField>>(JsonHelper.GetJsonSerializer());
+
             if (flag == null)
             {
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MethodNotAllowed));
@@ -603,10 +606,10 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                flag.UserId = this._UserId;
-                flag.FlaggedOn = System.DateTime.UtcNow;
+                flag.user_id = this._UserId;
+                flag.flagged_on = System.DateTime.UtcNow;
 
-                this.FlagContext.AddOrEdit(flag, null);
+                return this.FlagContext.AddOrEdit(flag, customFields);
             }
             catch (UnauthorizedException)
             {

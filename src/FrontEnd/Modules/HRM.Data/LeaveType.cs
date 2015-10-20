@@ -296,12 +296,12 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             leaveType.audit_user_id = this._UserId;
             leaveType.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(leaveType.leave_type_id) > 0)
+            object primaryKeyValue = leaveType.leave_type_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = leaveType.leave_type_id;
                 this.Update(leaveType, int.Parse(leaveType.leave_type_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                             leaveType.audit_user_id = this._UserId;
                             leaveType.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(leaveType.leave_type_id) > 0)
+                            object primaryKeyValue = leaveType.leave_type_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(leaveType.leave_type_id);
                                 db.Update("hrm.leave_types", "leave_type_id", leaveType, leaveType.leave_type_id);

@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Policy.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             storePolicyDetail.audit_user_id = this._UserId;
             storePolicyDetail.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(storePolicyDetail.store_policy_detail_id) > 0)
+            object primaryKeyValue = storePolicyDetail.store_policy_detail_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = storePolicyDetail.store_policy_detail_id;
                 this.Update(storePolicyDetail, long.Parse(storePolicyDetail.store_policy_detail_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Policy.Data
                             storePolicyDetail.audit_user_id = this._UserId;
                             storePolicyDetail.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(storePolicyDetail.store_policy_detail_id) > 0)
+                            object primaryKeyValue = storePolicyDetail.store_policy_detail_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(storePolicyDetail.store_policy_detail_id);
                                 db.Update("policy.store_policy_details", "store_policy_detail_id", storePolicyDetail, storePolicyDetail.store_policy_detail_id);

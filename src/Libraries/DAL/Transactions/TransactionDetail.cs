@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             transactionDetail.audit_user_id = this._UserId;
             transactionDetail.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(transactionDetail.transaction_detail_id) > 0)
+            object primaryKeyValue = transactionDetail.transaction_detail_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = transactionDetail.transaction_detail_id;
                 this.Update(transactionDetail, long.Parse(transactionDetail.transaction_detail_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Transactions.Data
                             transactionDetail.audit_user_id = this._UserId;
                             transactionDetail.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(transactionDetail.transaction_detail_id) > 0)
+                            object primaryKeyValue = transactionDetail.transaction_detail_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(transactionDetail.transaction_detail_id);
                                 db.Update("transactions.transaction_details", "transaction_detail_id", transactionDetail, transactionDetail.transaction_detail_id);

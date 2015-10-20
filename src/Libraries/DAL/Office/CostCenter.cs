@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Office.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             costCenter.audit_user_id = this._UserId;
             costCenter.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(costCenter.cost_center_id) > 0)
+            object primaryKeyValue = costCenter.cost_center_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = costCenter.cost_center_id;
                 this.Update(costCenter, int.Parse(costCenter.cost_center_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Office.Data
                             costCenter.audit_user_id = this._UserId;
                             costCenter.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(costCenter.cost_center_id) > 0)
+                            object primaryKeyValue = costCenter.cost_center_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(costCenter.cost_center_id);
                                 db.Update("office.cost_centers", "cost_center_id", costCenter, costCenter.cost_center_id);

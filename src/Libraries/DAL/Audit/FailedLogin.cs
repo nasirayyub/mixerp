@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Audit.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = failedLogin.failed_login_id;
 
-            if (Cast.To<long>(failedLogin.failed_login_id) > 0)
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = failedLogin.failed_login_id;
                 this.Update(failedLogin, long.Parse(failedLogin.failed_login_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Audit.Data
 
 
 
-                            if (Cast.To<long>(failedLogin.failed_login_id) > 0)
+                            object primaryKeyValue = failedLogin.failed_login_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(failedLogin.failed_login_id);
                                 db.Update("audit.failed_logins", "failed_login_id", failedLogin, failedLogin.failed_login_id);

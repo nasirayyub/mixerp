@@ -513,7 +513,7 @@ namespace MixERP.Net.Api.HRM
         ///     Adds or edits your instance of EmploymentStatusCode class.
         /// </summary>
         /// <param name="employmentStatusCode">Your instance of employment status codes class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/hrm/employment-status-code/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -632,7 +632,7 @@ namespace MixERP.Net.Api.HRM
         /// <param name="collection">Your collection of EmploymentStatusCode class to bulk import.</param>
         /// <returns>Returns list of imported employmentStatusCodeIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any EmploymentStatusCode class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/hrm/employment-status-code/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

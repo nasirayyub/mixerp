@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             taxExemptType.audit_user_id = this._UserId;
             taxExemptType.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(taxExemptType.tax_exempt_type_id) > 0)
+            object primaryKeyValue = taxExemptType.tax_exempt_type_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = taxExemptType.tax_exempt_type_id;
                 this.Update(taxExemptType, int.Parse(taxExemptType.tax_exempt_type_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             taxExemptType.audit_user_id = this._UserId;
                             taxExemptType.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(taxExemptType.tax_exempt_type_id) > 0)
+                            object primaryKeyValue = taxExemptType.tax_exempt_type_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(taxExemptType.tax_exempt_type_id);
                                 db.Update("core.tax_exempt_types", "tax_exempt_type_id", taxExemptType, taxExemptType.tax_exempt_type_id);

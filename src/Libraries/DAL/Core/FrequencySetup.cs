@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             frequencySetup.audit_user_id = this._UserId;
             frequencySetup.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(frequencySetup.frequency_setup_id) > 0)
+            object primaryKeyValue = frequencySetup.frequency_setup_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = frequencySetup.frequency_setup_id;
                 this.Update(frequencySetup, int.Parse(frequencySetup.frequency_setup_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             frequencySetup.audit_user_id = this._UserId;
                             frequencySetup.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(frequencySetup.frequency_setup_id) > 0)
+                            object primaryKeyValue = frequencySetup.frequency_setup_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(frequencySetup.frequency_setup_id);
                                 db.Update("core.frequency_setups", "frequency_setup_id", frequencySetup, frequencySetup.frequency_setup_id);

@@ -517,7 +517,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of CompoundItemDetail class.
         /// </summary>
         /// <param name="compoundItemDetail">Your instance of compound item details class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/compound-item-detail/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -636,7 +636,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of CompoundItemDetail class to bulk import.</param>
         /// <returns>Returns list of imported compoundItemDetailIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any CompoundItemDetail class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/compound-item-detail/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

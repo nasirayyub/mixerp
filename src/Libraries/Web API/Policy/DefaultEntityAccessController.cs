@@ -515,7 +515,7 @@ namespace MixERP.Net.Api.Policy
         ///     Adds or edits your instance of DefaultEntityAccess class.
         /// </summary>
         /// <param name="defaultEntityAccess">Your instance of default entity accesses class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/policy/default-entity-access/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -634,7 +634,7 @@ namespace MixERP.Net.Api.Policy
         /// <param name="collection">Your collection of DefaultEntityAccess class to bulk import.</param>
         /// <returns>Returns list of imported defaultEntityAccessIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any DefaultEntityAccess class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/policy/default-entity-access/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

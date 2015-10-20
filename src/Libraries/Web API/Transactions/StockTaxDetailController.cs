@@ -516,7 +516,7 @@ namespace MixERP.Net.Api.Transactions
         ///     Adds or edits your instance of StockTaxDetail class.
         /// </summary>
         /// <param name="stockTaxDetail">Your instance of stock tax details class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/transactions/stock-tax-detail/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -635,7 +635,7 @@ namespace MixERP.Net.Api.Transactions
         /// <param name="collection">Your collection of StockTaxDetail class to bulk import.</param>
         /// <returns>Returns list of imported stockTaxDetailIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any StockTaxDetail class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/transactions/stock-tax-detail/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

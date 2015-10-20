@@ -513,7 +513,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of TaxExemptType class.
         /// </summary>
         /// <param name="taxExemptType">Your instance of tax exempt types class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/tax-exempt-type/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -632,7 +632,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of TaxExemptType class to bulk import.</param>
         /// <returns>Returns list of imported taxExemptTypeIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any TaxExemptType class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/tax-exempt-type/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

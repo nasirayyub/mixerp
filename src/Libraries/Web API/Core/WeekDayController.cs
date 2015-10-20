@@ -511,7 +511,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of WeekDay class.
         /// </summary>
         /// <param name="weekDay">Your instance of week days class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/week-day/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -630,7 +630,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of WeekDay class to bulk import.</param>
         /// <returns>Returns list of imported weekDayIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any WeekDay class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/week-day/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

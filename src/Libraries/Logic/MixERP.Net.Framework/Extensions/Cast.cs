@@ -13,8 +13,8 @@ namespace MixERP.Net.Framework.Extensions
                 return d;
             }
 
-            TypeConverter converter = TypeDescriptor.GetConverter(typeof (T));
-            return (T) converter.ConvertFromString(input);
+            TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
+            return (T)converter.ConvertFromString(input);
         }
 
         public static T To<T>(this string input, T or)
@@ -24,8 +24,32 @@ namespace MixERP.Net.Framework.Extensions
                 return or;
             }
 
-            TypeConverter converter = TypeDescriptor.GetConverter(typeof (T));
-            return (T) converter.ConvertFromString(input);
+            TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
+            return (T)converter.ConvertFromString(input);
+        }
+
+        public static T To<T>(this object input)
+        {
+            T d = default(T);
+
+            if (input == null)
+            {
+                return d;
+            }
+
+            TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
+            return (T)converter.ConvertFromString(input.ToString());
+        }
+
+        public static T To<T>(this object input, T or)
+        {
+            if (input == null)
+            {
+                return or;
+            }
+
+            TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
+            return (T)converter.ConvertFromString(input.ToString());
         }
     }
 }

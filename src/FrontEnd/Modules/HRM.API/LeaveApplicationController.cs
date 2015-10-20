@@ -522,7 +522,7 @@ namespace MixERP.Net.Api.HRM
         ///     Adds or edits your instance of LeaveApplication class.
         /// </summary>
         /// <param name="leaveApplication">Your instance of leave applications class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/hrm/leave-application/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -641,7 +641,7 @@ namespace MixERP.Net.Api.HRM
         /// <param name="collection">Your collection of LeaveApplication class to bulk import.</param>
         /// <returns>Returns list of imported leaveApplicationIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any LeaveApplication class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/hrm/leave-application/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

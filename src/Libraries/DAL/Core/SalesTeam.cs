@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             salesTeam.audit_user_id = this._UserId;
             salesTeam.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(salesTeam.sales_team_id) > 0)
+            object primaryKeyValue = salesTeam.sales_team_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = salesTeam.sales_team_id;
                 this.Update(salesTeam, int.Parse(salesTeam.sales_team_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             salesTeam.audit_user_id = this._UserId;
                             salesTeam.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(salesTeam.sales_team_id) > 0)
+                            object primaryKeyValue = salesTeam.sales_team_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(salesTeam.sales_team_id);
                                 db.Update("core.sales_teams", "sales_team_id", salesTeam, salesTeam.sales_team_id);

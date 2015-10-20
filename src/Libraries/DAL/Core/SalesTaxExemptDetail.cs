@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             salesTaxExemptDetail.audit_user_id = this._UserId;
             salesTaxExemptDetail.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(salesTaxExemptDetail.sales_tax_exempt_detail_id) > 0)
+            object primaryKeyValue = salesTaxExemptDetail.sales_tax_exempt_detail_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = salesTaxExemptDetail.sales_tax_exempt_detail_id;
                 this.Update(salesTaxExemptDetail, int.Parse(salesTaxExemptDetail.sales_tax_exempt_detail_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             salesTaxExemptDetail.audit_user_id = this._UserId;
                             salesTaxExemptDetail.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(salesTaxExemptDetail.sales_tax_exempt_detail_id) > 0)
+                            object primaryKeyValue = salesTaxExemptDetail.sales_tax_exempt_detail_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(salesTaxExemptDetail.sales_tax_exempt_detail_id);
                                 db.Update("core.sales_tax_exempt_details", "sales_tax_exempt_detail_id", salesTaxExemptDetail, salesTaxExemptDetail.sales_tax_exempt_detail_id);

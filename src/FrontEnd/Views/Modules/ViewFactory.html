@@ -346,7 +346,7 @@
                         <a class="ui close button" onclick="loadFilter();">
                             <span data-localize="Titles.Edit"></span>
                         </a>
-                        <a class="ui close button" onclick="loadFilter();">
+                        <a class="ui close button" onclick="deleteSavedFilter();">
                             <span data-localize="Titles.Delete"></span>
                         </a>
                         <a class="ui close button">
@@ -439,6 +439,7 @@
         var viewReady = false;
         var metaDefinition;
         var falgDefinition;
+        var localizedHeaders = [];
 
         function canAdd() {
             window.scrudForm = $(".form.factory");
@@ -515,14 +516,16 @@
         function localizeHeaders(el) {
             el.find("thead tr th").each(function () {
                 var cell = $(this);
-                var text = tryParseLocalizedResource(cell.text());
+                var name = toUnderscoreCase(cell.text());
+                var text = tryParseLocalizedResource(name);
                 cell.text(text);
 
                 var column = new Object();
-                column.name = name;
-                column.text = text;
 
-                columns.push(column);
+                column.columnName = name;
+                column.localized = text;
+
+                localizedHeaders.push(column);
             });
         };
     </script>
@@ -633,9 +636,9 @@
             return page;
         };
 
-        function getFilter() {
+        function getFilterName() {
             if ($("#DefaultFilterSelect").val()) {
-                var filter = $("#DefaultFilterSelect").getSelectedValue();
+                var filter = $("#DefaultFilterSelect").getSelectedText();
                 return filter;
             };
 
@@ -662,7 +665,7 @@
                 return;
             };
 
-            var filterName = getFilter();
+            var filterName = getFilterName();
 
             var countTotalItemsAjax = countTotalItems(filterName, false);
 
@@ -728,7 +731,7 @@
         function loadColumns() {
             var el = $("#ColumnSelect");
             el.html("");
-            bindSelect(el, columns, "name", "text");
+            bindSelect(el, localizedHeaders, "columnName", "localized");
             el.dropdown();
         };
 
@@ -741,32 +744,48 @@
         });
 
         function loadFilter() {
+            function request(filterName) {
+                var url = "/api/core/filter/get-where/-1";
+                var where = [];
+
+                where.push(getAjaxColumnFilter("WHERE", "object_name", FilterConditions.IsEqualTo, scrudFactory.viewTableName));
+                where.push(getAjaxColumnFilter("AND", "filter_name", FilterConditions.IsEqualTo, filterName));
+
+                var data = JSON.stringify(where);
+                return getAjaxRequest(url, "POST", data);
+            };
+
             var filterName = $("#FilterSelect").getSelectedText();
             $("#FilterName").html(filterName);
             $("#FilterNameInputText").val(filterName);
-            var getFiltersAjax = getFilters(filterName);
+            var ajax = request(filterName);
 
-            getFiltersAjax.success(function (msg) {
-                createFilters(msg);
+            ajax.success(function (response) {
+                createFilters(response);
                 $('.filter.modal').modal('hide');
             });
 
-            getFiltersAjax.fail(function (xhr) {
+            ajax.fail(function (xhr) {
                 logAjaxErrorMessage(xhr);
             });
         };
 
-        function getFilters(filterName) {
-            var url = "/api/core/filter/get-where/1";
-            var where = [];
+        function deleteSavedFilter() {
+            function request(filterName) {
+                var url = "/api/core/filter/delete/by-name/" + filterName;
+                return getAjaxRequest(url, "DELETE");
+            };
 
-            where.push(getAjaxColumnFilter("WHERE", "object_name", FilterConditions.IsEqualTo, scrudFactory.viewTableName));
-            where.push(getAjaxColumnFilter("AND", "filter_name", FilterConditions.IsEqualTo, filterName));
-
-            var data = JSON.stringify(where);
-
-            return getAjaxRequest(url, "POST", data, true);
+            var filterName = $("#FilterSelect").val();
+            if (filterName) {
+                var ajax = request(filterName);
+                ajax.success(function () {
+                    loadFilterNames();
+                    displayMessage(Resources.Labels.TaskCompletedSuccessfully(), "success");
+                });
+            };
         };
+
     </script>
     <script>
         function loadFilterNames() {
@@ -1018,86 +1037,121 @@
 
     </script>
     <script>
-    function createCards() {
-        function getKanbanDetails(kanbanIds, resourceIds) {
-            var url = "/api/core/kanban-detail/get-by-resources/";
-            url += "?kanbanIds=";
-            url += kanbanIds.join("&kanbanIds=");
+        function createCards() {
+            function getKanbanDetails(kanbanIds, resourceIds) {
+                var url = "/api/core/kanban-detail/get-by-resources/";
+                url += "?kanbanIds=";
+                url += kanbanIds.join("&kanbanIds=");
 
-            url += "&resourceIds=";
-            url += resourceIds.join("&resourceIds=");
+                url += "&resourceIds=";
+                url += resourceIds.join("&resourceIds=");
 
-            return getAjaxRequest(url);
-        };
+                return getAjaxRequest(url);
+            };
 
-        if (!window.json) {
-            return;
-        };
+            if (!window.json) {
+                return;
+            };
 
-        if (!window.kanbans) {
-            return;
-        };
+            if (!window.kanbans) {
+                return;
+            };
 
-        var keyField = (scrudFactory.card.keyField || getIdField());
-        var resourceIds = Enumerable.From(window.json).Select(function (x) { return x[keyField]; }).ToArray();
-        var kanbanIds = Enumerable.From(window.kanbans).Select(function (x) { return x.KanbanId; }).ToArray();
+            var keyField = (scrudFactory.card.keyField || getIdField());
+            var resourceIds = Enumerable.From(window.json).Select(function (x) { return x[keyField]; }).ToArray();
+            var kanbanIds = Enumerable.From(window.kanbans).Select(function (x) { return x.KanbanId; }).ToArray();
 
-        var getKanbanDetailsAjax = getKanbanDetails(kanbanIds, resourceIds);
+            var getKanbanDetailsAjax = getKanbanDetails(kanbanIds, resourceIds);
 
-        getKanbanDetailsAjax.success(function (msg) {
-            $(".kanban.holder").html("");
+            getKanbanDetailsAjax.success(function (msg) {
+                $(".kanban.holder").html("");
 
-            $.each(window.json, function (i, v) {
-                var key = getCardKey(v);
-                var kanbanDetail = (Enumerable.From(msg).Where(function (detail) { return detail.ResourceId.toString() === key.toString() }).ToArray()[0] || new Object());
-                createCard(v, key, kanbanDetail);
+                $.each(window.json, function (i, v) {
+                    var key = getCardKey(v);
+                    var kanbanDetail = (Enumerable.From(msg).Where(function (detail) { return detail.ResourceId.toString() === key.toString() }).ToArray()[0] || new Object());
+                    createCard(v, key, kanbanDetail);
+                });
+
+                makeSortable();
+                makeRatable();
+                displayFlaggedCards();
             });
 
-            makeSortable();
-            makeRatable();
-            displayFlaggedCards();
-        });
+        };
 
-    };
+        function makeSortable() {
+            $(function () {
+                $("#kanban .segment .kanban.holder").sortable({
+                    connectWith: "#kanban .segment .kanban.holder",
+                    receive: function (event, ui) {
+                        var card = $(ui.item[0]);
 
-    function makeSortable() {
-        $(function () {
-            $("#kanban .segment .kanban.holder").sortable({
-                connectWith: "#kanban .segment .kanban.holder",
-                receive: function (event, ui) {
-                    var card = $(ui.item[0]);
+                        var kanbanDetail = new Object();
+                        kanbanDetail.kanban_detail_id = (card.attr("data-kanban-detail-id") || 0);
+                        kanbanDetail.kanban_id = parseInt(card.parent().parent().attr("id").replace("kanban", "") || 0);
+                        kanbanDetail.rating = card.find(".rating .active.icon").length;
+                        kanbanDetail.resource_id = card.attr("data-key");
 
-                    var kanbanDetail = new Object();
-                    kanbanDetail.KanbanDetailId = (card.attr("data-kanban-detail-id") || 0);
-                    kanbanDetail.KanbanId = parseInt(card.parent().parent().attr("id").replace("kanban", "") || 0);
-                    kanbanDetail.Rating = card.find(".rating .active.icon").length;
-                    kanbanDetail.ResourceId = card.attr("data-key");
+                        if (kanbanDetail.kanban_id) {
+                            var addOrEditKanbanDetailAjax = addOrEditKanbanDetail(kanbanDetail);
 
-                    if (kanbanDetail.KanbanId) {
-                        var addOrEditKanbanDetailAjax = addOrEditKanbanDetail(kanbanDetail);
-
-                        addOrEditKanbanDetailAjax.success(function (msg) {
-                            card.attr("data-kanban-detail-id", msg);
-                        });
-                    } else {
-                        if (kanbanDetail.KanbanDetailId) {
-                            var deleteKanbanDetailAjax = deleteKanbanDetail(kanbanDetail.KanbanDetailId);
-
-                            deleteKanbanDetailAjax.success(function () {
-                                card.removeAttr("data-kanban-detail-id");
+                            addOrEditKanbanDetailAjax.success(function (msg) {
+                                card.attr("data-kanban-detail-id", msg);
                             });
+                        } else {
+                            if (kanbanDetail.kanban_detail_id) {
+                                var deleteKanbanDetailAjax = deleteKanbanDetail(kanbanDetail.kanban_detail_id);
+
+                                deleteKanbanDetailAjax.success(function () {
+                                    card.removeAttr("data-kanban-detail-id");
+                                });
+                            };
                         };
-                    };
 
-                }
-            }).disableSelection();
-        });
-    };
+                    }
+                }).disableSelection();
+            });
+        };
 
-    function makeRatable() {
-        $('.ui.rating').rating();
+        function makeRatable() {
+            $('.ui.rating').rating();
 
-        function updateRating(kanbanDetail) {
+            function updateRating(kanbanDetail) {
+                var url = "/api/core/kanban-detail/add-or-edit";
+
+                var form = [];
+                form.push(kanbanDetail);
+                form.push(null);
+
+                var data = JSON.stringify(form);
+
+                return getAjaxRequest(url, "POST", data);
+            };
+
+            $('.ui.rating i').dblclick(function () {
+                var el = $(this);
+                var card = el.parent().parent().parent();
+                var kanbanDetailId = card.attr("data-kanban-detail-id");
+
+                if (kanbanDetailId) {
+                    var kanbanDetail = new Object();
+                    kanbanDetail.kanban_detail_id = kanbanDetailId;
+                    kanbanDetail.kanban_id = card.closest(".segment").attr("id").replace("kanban", "");
+                    kanbanDetail.resource_id = card.attr("data-key");
+                    kanbanDetail.rating = el.parent().find("i.active").length;
+
+                    updateRating(kanbanDetail);
+                };
+            });
+        };
+
+        function deleteKanbanDetail(kanbanDetailId) {
+            var url = "/api/core/kanban-detail/delete/" + kanbanDetailId;
+
+            return getAjaxRequest(url, "DELETE");
+        };
+
+        function addOrEditKanbanDetail(kanbanDetail) {
             var url = "/api/core/kanban-detail/add-or-edit";
 
             var form = [];
@@ -1106,339 +1160,304 @@
 
             var data = JSON.stringify(form);
 
-            return getAjaxRequest(url, "PUT", data);
+            return getAjaxRequest(url, "POST", data);
         };
 
-        $('.ui.rating i').dblclick(function () {
-            var el = $(this);
-            var card = el.parent().parent().parent();
-            var kanbanDetailId = card.attr("data-kanban-detail-id");
+        function getExtraContent(key) {
+            var extraContent = $('<div class="extra center content" />');
 
-            if (kanbanDetailId) {
-                var kanbanDetail = new Object();
-                kanbanDetail.KanbanDetailId = kanbanDetailId;
-                kanbanDetail.KanbanId = card.closest(".segment").attr("id").replace("kanban", "");
-                kanbanDetail.ResourceId = card.attr("data-key");
-                kanbanDetail.Rating = el.parent().find("i.active").length;
+            var buttons = $('<div class="ui small basic buttons" />');
 
-                updateRating(kanbanDetail);
+            if (scrudFactory.viewUrl) {
+                var url = scrudFactory.viewUrl.replace("{Key}", key);
+                var viewButton = $('<a class="ui basic button" />');
+                viewButton.attr("href", url);
+                viewButton.text(Resources.Titles.View());
+                buttons.append(viewButton);
             };
-        });
-    };
 
-    function deleteKanbanDetail(kanbanDetailId) {
-        var url = "/api/core/kanban-detail/delete/" + kanbanDetailId;
+            if (scrudFactory.allowEdit) {
+                var editButton = $('<a class="ui basic button" href="javascript:void(0);" onclick="editRow(this, true);" />');
+                editButton.text(Resources.Titles.Edit());
+                buttons.append(editButton);
+            }
 
-        return getAjaxRequest(url, "DELETE");
-    };
+            if (scrudFactory.allowDelete) {
+                var deleteButton = $('<a class="ui basic button" href="javascript:void(0);" onclick="deleteRow(this, true);" />');
+                deleteButton.text(Resources.Titles.Delete());
+                buttons.append(deleteButton);
+            };
 
-    function addOrEditKanbanDetail(kanbanDetail) {
-        var url = "/api/core/kanban-detail/add-or-edit";
 
-        var form = [];
-        form.push(kanbanDetail);
-        form.push(null);
+            extraContent.append(buttons);
 
-        var data = JSON.stringify(form);
-
-        return getAjaxRequest(url, "PUT", data);
-    };
-
-    function getExtraContent(key) {
-        var extraContent = $('<div class="extra center content" />');
-
-        var buttons = $('<div class="ui small basic buttons" />');
-
-        if (scrudFactory.viewUrl) {
-            var url = scrudFactory.viewUrl.replace("{Key}", key);
-            var viewButton = $('<a class="ui basic button" />');
-            viewButton.attr("href", url);
-            viewButton.text(Resources.Titles.View());
-            buttons.append(viewButton);
+            return extraContent;
         };
 
-        if (scrudFactory.allowEdit) {
-            var editButton = $('<a class="ui basic button" href="javascript:void(0);" onclick="editRow(this, true);" />');
-            editButton.text(Resources.Titles.Edit());
-            buttons.append(editButton);
-        }
+        function getExtra(kanbanDetail) {
+            var extra = $('<div class="extra" />');
 
-        if (scrudFactory.allowDelete) {
-            var deleteButton = $('<a class="ui basic button" href="javascript:void(0);" onclick="deleteRow(this, true);" />');
-            deleteButton.text(Resources.Titles.Delete());
-            buttons.append(deleteButton);
+            var text = $("<span />");
+            text.text(Resources.Titles.Rating());
+            extra.append(text);
+
+            var dataRating = (kanbanDetail.Rating || 0);
+
+            var rating = $('<div class="ui star rating" data-max-rating="5" />');
+            rating.attr("data-rating", dataRating);
+
+            extra.append(rating);
+
+
+            return extra;
         };
 
+        function getClassName() {
+            if (scrudFactory.className) {
+                return scrudFactory.className;
+            };
 
-        extraContent.append(buttons);
+            var table = scrudFactory.formTableName;
 
-        return extraContent;
-    };
+            if (!table) {
+                table = scrudFactory.viewTableName;
+            }
 
-    function getExtra(kanbanDetail) {
-        var extra = $('<div class="extra" />');
-
-        var text = $("<span />");
-        text.text(Resources.Titles.Rating());
-        extra.append(text);
-
-        var dataRating = (kanbanDetail.Rating || 0);
-
-        var rating = $('<div class="ui star rating" data-max-rating="5" />');
-        rating.attr("data-rating", dataRating);
-
-        extra.append(rating);
-
-
-        return extra;
-    };
-
-    function getClassName() {
-        if (scrudFactory.className) {
-            return scrudFactory.className;
+            var plural = toProperCase(table.split(".")[1]);
+            return plural.singularize();
         };
 
-        var table = scrudFactory.formTableName;
+        function getQualified(dynamic, prefix, suffixes) {
+            var qualified = "";
 
-        if (!table) {
-            table = scrudFactory.viewTableName;
-        }
+            $.each(suffixes, function (i, v) {
+                if (!qualified) {
+                    var candidate = prefix + v;
 
-        var plural = toProperCase(table.split(".")[1]);
-        return plural.singularize();
-    };
-
-    function getQualified(dynamic, prefix, suffixes) {
-        var qualified = "";
-
-        $.each(suffixes, function (i, v) {
-            if (!qualified) {
-                var candidate = prefix + v;
-
-                if (dynamic.hasOwnProperty(candidate)) {
-                    qualified = candidate;
-                    return false;
+                    if (dynamic.hasOwnProperty(candidate)) {
+                        qualified = candidate;
+                        return false;
+                    };
                 };
-            };
-        });
+            });
 
-        return qualified;
-    };
-
-    var candidates = {
-        primary: ["Code", "Number", "Name"],
-        secondary: [
-            "Party", "PartyName", "Item", "ItemName",
-            "NoticeDate", "ApprovedOn", "Reason", "Employee",
-            "EmployeeName", "EmployeeCode", "Office", "CurrencyCode"
-        ]
-    };
-
-    function getHeaderField(dynamic) {
-        var className = getClassName();
-
-        var primary = candidates.primary;
-        var qualified = getQualified(dynamic, className, primary);
-
-        if (!qualified) {
-            var secondary = candidates.secondary;
-
-            qualified = getQualified(dynamic, "", secondary);
+            return qualified;
         };
 
-        return qualified;
-    };
+        var candidates = {
+            primary: ["Code", "Number", "Name"],
+            secondary: [
+                "Party", "PartyName", "Item", "ItemName",
+                "NoticeDate", "ApprovedOn", "Reason", "Employee",
+                "EmployeeName", "EmployeeCode", "Office", "CurrencyCode"
+            ]
+        };
 
-    function getMetaField(dynamic, headerField) {
-        var className = getClassName();
+        function getHeaderField(dynamic) {
+            var className = getClassName();
 
-        var primary = Enumerable.From(candidates.primary)
-            .Where(function (x) { return x !== headerField.replace(className, "") })
-            .ToArray();
+            var primary = candidates.primary;
+            var qualified = getQualified(dynamic, className, primary);
 
-        var qualified = getQualified(dynamic, className, primary);
+            if (!qualified) {
+                var secondary = candidates.secondary;
 
-        if (!qualified) {
-            var secondary = Enumerable.From(candidates.secondary)
-                .Where(function (x) { return x !== headerField })
+                qualified = getQualified(dynamic, "", secondary);
+            };
+
+            return qualified;
+        };
+
+        function getMetaField(dynamic, headerField) {
+            var className = getClassName();
+
+            var primary = Enumerable.From(candidates.primary)
+                .Where(function (x) { return x !== headerField.replace(className, "") })
                 .ToArray();
 
-            qualified = getQualified(dynamic, "", secondary);
+            var qualified = getQualified(dynamic, className, primary);
+
+            if (!qualified) {
+                var secondary = Enumerable.From(candidates.secondary)
+                    .Where(function (x) { return x !== headerField })
+                    .ToArray();
+
+                qualified = getQualified(dynamic, "", secondary);
+            };
+
+            return qualified;
         };
 
-        return qualified;
-    };
+        function getIdField() {
+            var className = getClassName();
+            return className + "Id";
+        };
 
-    function getIdField() {
-        var className = getClassName();
-        return className + "Id";
-    };
+        function getCardKey(dynamic) {
+            var keyField = (scrudFactory.card.keyField || getIdField());
+            return dynamic[keyField];
+        };
 
-    function getCardKey(dynamic) {
-        var keyField = (scrudFactory.card.keyField || getIdField());
-        return dynamic[keyField];
-    };
+        function getImageField(entity) {
+            var imageField;
 
-    function getImageField(entity) {
-        var imageField;
+            $.each(entity, function (i) {
+                if (!imageField) {
+                    if (i.toLowerCase().indexOf("image") !== -1) {
+                        imageField = i;
+                    };
+                };
 
-        $.each(entity, function (i) {
-            if (!imageField) {
-                if (i.toLowerCase().indexOf("image") !== -1) {
-                    imageField = i;
+                if (!imageField) {
+                    if (i.toLowerCase().indexOf("logo") !== -1) {
+                        imageField = i;
+                    };
+                };
+
+                if (!imageField) {
+                    if (i.toLowerCase().indexOf("photo") !== -1) {
+                        imageField = i;
+                    };
+                };
+            });
+
+            return imageField;
+        };
+
+        function getDescriptionField(entity) {
+            var candidates = ["Email", "Url", "City", "Phone", "CompanyName", "Currency"];
+            return getQualified(entity, "", candidates);
+        };
+
+        function getCardField(card, field) {
+            var isExpression = field.substring(2, 0) === "{{" && field.slice(-2) === "}}";
+            if (isExpression) {
+                var expression = field.replace("{{", "").replace("}}", "");
+                return eval(expression);
+            };
+
+            return card[field];
+        };
+
+        function createCard(dynamic, key, kanbanDetail) {
+            var kanbanId = (kanbanDetail.KanbanId || 0);
+
+            var text;
+            var imageField = (scrudFactory.card.image || getImageField(dynamic));
+            var headerField = (scrudFactory.card.header || getHeaderField(dynamic));
+            var metaField = (scrudFactory.card.meta || getMetaField(dynamic, headerField));
+            var descriptionField = (scrudFactory.card.description || getDescriptionField(dynamic));
+
+            var card = $('<div class="ui card" />');
+            card.attr("data-kanban-detail-id", kanbanDetail.KanbanDetailId);
+            card.attr("data-key", key);
+
+
+            if (imageField) {
+                var src = getCardField(dynamic, imageField);
+                if (src) {
+                    var image = $('<div class="image" />');
+                    var img = $("<img />");
+                    img.attr("src", "/api/core/attachment/document/300/250/" + src);
+
+                    image.append(img);
+                    card.append(image);
                 };
             };
 
-            if (!imageField) {
-                if (i.toLowerCase().indexOf("logo") !== -1) {
-                    imageField = i;
+            var content = $('<div class="content" />');
+
+            var checkbox = $('<div class="ui toggle checkbox" />');
+            var input = $('<input name="public" type="checkbox">');
+
+            checkbox.append(input);
+
+            content.append(checkbox);
+
+            if (headerField) {
+                text = getCardField(dynamic, headerField);
+                if (text) {
+                    var header = $('<div class="header" />');
+
+                    header.text(text);
+                    content.append(header);
                 };
             };
 
-            if (!imageField) {
-                if (i.toLowerCase().indexOf("photo") !== -1) {
-                    imageField = i;
+            if (metaField) {
+                text = getCardField(dynamic, metaField);
+                if (text) {
+                    var meta = $('<div class="meta" />');
+
+                    meta.text(text);
+                    content.append(meta);
                 };
             };
+
+            if (descriptionField) {
+                text = getCardField(dynamic, descriptionField);
+                if (text) {
+                    var description = $('<div class="meta" />');
+
+                    description.text(text);
+                    content.append(description);
+                };
+            };
+
+            card.append(content);
+            card.append(getExtraContent(key));
+            card.append(getExtra(kanbanDetail));
+
+            $("#kanban" + kanbanId + " .kanban.holder").append(card);
+            $(".checkbox").checkbox();
+        };
+
+
+
+
+        $("#ApproveButton").click(function () {
+            var primaryKey = getPrimaryKeyValue();
+
+            if (!hasVerfication() || !primaryKey) {
+                return;
+            };
+
+            var reason = reasonTextArea.val();
+            var verificationStatusId = 2; //2 -> Approved, -3 -> Rejected
+
+            var verifyAjax = verify(primaryKey, verificationStatusId, reason);
+
+            verifyAjax.success(function () {
+                displayMessage(Resources.Labels.TaskCompletedSuccessfully(), "success");
+            });
         });
 
-        return imageField;
-    };
+        $("#RejectButton").click(function () {
+            var primaryKey = getPrimaryKeyValue();
 
-    function getDescriptionField(entity) {
-        var candidates = ["Email", "Url", "City", "Phone", "CompanyName", "Currency"];
-        return getQualified(entity, "", candidates);
-    };
-
-    function getCardField(card, field) {
-        var isExpression = field.substring(2, 0) === "{{" && field.slice(-2) === "}}";
-        if (isExpression) {
-            var expression = field.replace("{{", "").replace("}}", "");
-            return eval(expression);
-        };
-
-        return card[field];
-    };
-
-    function createCard(dynamic, key, kanbanDetail) {
-        var kanbanId = (kanbanDetail.KanbanId || 0);
-
-        var text;
-        var imageField = (scrudFactory.card.image || getImageField(dynamic));
-        var headerField = (scrudFactory.card.header || getHeaderField(dynamic));
-        var metaField = (scrudFactory.card.meta || getMetaField(dynamic, headerField));
-        var descriptionField = (scrudFactory.card.description || getDescriptionField(dynamic));
-
-        var card = $('<div class="ui card" />');
-        card.attr("data-kanban-detail-id", kanbanDetail.KanbanDetailId);
-        card.attr("data-key", key);
-
-
-        if (imageField) {
-            var src = getCardField(dynamic, imageField);
-            if (src) {
-                var image = $('<div class="image" />');
-                var img = $("<img />");
-                img.attr("src", "/api/core/attachment/document/300/250/" + src);
-
-                image.append(img);
-                card.append(image);
+            if (!hasVerfication() || !primaryKey) {
+                return;
             };
-        };
 
-        var content = $('<div class="content" />');
+            var reason = reasonTextArea.val();
+            var verificationStatusId = -3; //2 -> Approved, -3 -> Rejected
 
-        var checkbox = $('<div class="ui toggle checkbox" />');
-        var input = $('<input name="public" type="checkbox">');
+            var verifyAjax = verify(primaryKey, verificationStatusId, reason);
 
-        checkbox.append(input);
-
-        content.append(checkbox);
-
-        if (headerField) {
-            text = getCardField(dynamic, headerField);
-            if (text) {
-                var header = $('<div class="header" />');
-
-                header.text(text);
-                content.append(header);
-            };
-        };
-
-        if (metaField) {
-            text = getCardField(dynamic, metaField);
-            if (text) {
-                var meta = $('<div class="meta" />');
-
-                meta.text(text);
-                content.append(meta);
-            };
-        };
-
-        if (descriptionField) {
-            text = getCardField(dynamic, descriptionField);
-            if (text) {
-                var description = $('<div class="meta" />');
-
-                description.text(text);
-                content.append(description);
-            };
-        };
-
-        card.append(content);
-        card.append(getExtraContent(key));
-        card.append(getExtra(kanbanDetail));
-
-        $("#kanban" + kanbanId + " .kanban.holder").append(card);
-        $(".checkbox").checkbox();
-    };
-
-
-
-
-    $("#ApproveButton").click(function () {
-        var primaryKey = getPrimaryKeyValue();
-
-        if (!hasVerfication() || !primaryKey) {
-            return;
-        };
-
-        var reason = reasonTextArea.val();
-        var verificationStatusId = 2; //2 -> Approved, -3 -> Rejected
-
-        var verifyAjax = verify(primaryKey, verificationStatusId, reason);
-
-        verifyAjax.success(function () {
-            displayMessage(Resources.Labels.TaskCompletedSuccessfully(), "success");
+            verifyAjax.success(function () {
+                displayMessage(Resources.Labels.TaskCompletedSuccessfully(), "success");
+            });
         });
-    });
 
-    $("#RejectButton").click(function () {
-        var primaryKey = getPrimaryKeyValue();
+        function verify(primaryKey, verificationStatusId, reason) {
+            var url = scrudFactory.formAPI;
+            url += "/verify/";
+            url += primaryKey + "/";
+            url += verificationStatusId + "/";
+            url += reason;
 
-        if (!hasVerfication() || !primaryKey) {
-            return;
+            return getAjaxRequest(url, "PUT");
         };
-
-        var reason = reasonTextArea.val();
-        var verificationStatusId = -3; //2 -> Approved, -3 -> Rejected
-
-        var verifyAjax = verify(primaryKey, verificationStatusId, reason);
-
-        verifyAjax.success(function () {
-            displayMessage(Resources.Labels.TaskCompletedSuccessfully(), "success");
-        });
-    });
-
-    function verify(primaryKey, verificationStatusId, reason) {
-        var url = scrudFactory.formAPI;
-        url += "/verify/";
-        url += primaryKey + "/";
-        url += verificationStatusId + "/";
-        url += reason;
-
-        return getAjaxRequest(url, "PUT");
-    };
     </script>
 
     <script>
@@ -1467,6 +1486,11 @@
                 $('[data-target="import"]').remove();
                 showTarget("grid");
                 $('a[data-target="grid"]').remove();
+            };
+
+            if (scrudFactory.removeFlag) {
+                $("#FlagPopUnder").remove();
+                $("#FlagButton").remove();
             };
         };
 
@@ -1710,7 +1734,7 @@
 
         function loadGrid() {
             var pageNumber = getPageNumber();
-            var filterName = getFilter();
+            var filterName = getFilterName();
 
             if (checkIfProcedure()) {
                 $(".view.dimmer").removeClass("active");
@@ -1743,6 +1767,8 @@
             $(".view.dimmer").removeClass("active");
             createCards();
             $(".view.factory").fadeIn();
+            initializeFlag();
+            $(document).trigger("viewsuccess");
         };
 
         function triggerViewReadyEvent() {
@@ -1946,8 +1972,8 @@
                 filter.ObjectName = scrudFactory.viewTableName;
                 filter.FilterName = filterNameInputText.val();
 
-                filter.ColumnName = Enumerable.From(columns)
-                    .Where(function (x) { return x.text === columnName }).ToArray()[0].name;
+                filter.ColumnName = Enumerable.From(localizedHeaders)
+                    .Where(function (x) { return x.localized === columnName }).ToArray()[0].columnName;
 
                 filter.FilterCondition = parseInt(
                     Enumerable.From(filterConditions)
@@ -1995,11 +2021,11 @@
                     .Where(function (x) { return x.value === filterCondition.toString() })
                     .Select(function (x) { return x.text }).ToArray()[0];
 
-                column = Enumerable.From(columns)
-                    .Where(function (x) { return x.name === selectedColumn }).ToArray()[0];
+                column = Enumerable.From(localizedHeaders)
+                    .Where(function (x) { return x.columnName === selectedColumn }).ToArray()[0];
 
                 if (column) {
-                    selectedColumn = column.text;
+                    selectedColumn = column.localized;
                 } else {
                     css = "error";
                 };
@@ -2007,6 +2033,7 @@
                 addFilterRow(selectedColumn, filterCondition, value, and, css);
             });
         };
+
 
         function deleteFilter(el) {
             if (confirmAction()) {
@@ -2162,7 +2189,7 @@
         function bulkImport(entities) {
             var url = scrudFactory.formAPI + "/bulk-import";
             var data = JSON.stringify(entities);
-            return getAjaxRequest(url, "PUT", data);
+            return getAjaxRequest(url, "POST", data);
         };
     </script>
     <script>
@@ -2291,7 +2318,6 @@
             };
 
             var primaryKeyValue = getPrimaryKeyValue($(el), isCard);
-
             var tableName = scrudFactory.formTableName;
 
             if (checkIfProcedure()) {
@@ -2300,10 +2326,12 @@
 
             var getViewForEditAjax = getViewForEdit(primaryKeyValue);
 
-            $.each(scrudFactory.disabledOnEdit, function () {
-                var t = $('[data-property="' + this + '"]');
-                t.attr("disabled", "disabled");
-            });
+            if (scrudFactory.disabledOnEdit) {
+                $.each(scrudFactory.disabledOnEdit, function () {
+                    var t = $('[data-property="' + this + '"]');
+                    t.attr("disabled", "disabled");
+                });
+            };
 
             getViewForEditAjax.success(function (data) {
                 displayEdit(data, false);
@@ -2509,8 +2537,6 @@
     var reasonTextArea = $("#ReasonTextArea");
 
     $(document).on("viewready", function () {
-        initializeFlag();
-
         flagButton.click(function () {
             popUnder(flagPopUnder, flagButton);
         });
@@ -2584,8 +2610,12 @@
 
         function addFlag(flag) {
             var url = "/api/core/flag/add-or-edit";
-            var data = JSON.stringify(flag);
-            return getAjaxRequest(url, "PUT", data);
+            var form = [];
+            form.push(flag);
+            form.push(null);
+
+            var data = JSON.stringify(form);
+            return getAjaxRequest(url, "POST", data);
         };
 
         function deleteFlag(flagId) {
@@ -2620,8 +2650,8 @@
                 var card = el.closest(".card");
 
                 var selection = new Object();
-                selection.FlagId = (card.attr("data-flag-id") || 0);
-                selection.ResourceId = (card.attr("data-key") || 0);
+                selection.flag_id = (card.attr("data-flag-id") || 0);
+                selection.resource_id = (card.attr("data-key") || 0);
 
                 collection.push(selection);
             });
@@ -2645,8 +2675,8 @@
             selectedElements.each(function () {
                 var el = $(this);
                 var selection = new Object();
-                selection.FlagId = (el.attr("data-flag-id") || 0);
-                selection.ResourceId = el.find("td:nth-child(3)").text();
+                selection.flag_id = (el.attr("data-flag-id") || 0);
+                selection.resource_id = el.find("td:nth-child(3)").text();
 
                 collection.push(selection);
             });
@@ -2666,25 +2696,24 @@
             $.each(selection, function (i, v) {
                 var flag = new Object();
 
-
-                flag.FlagId = v.FlagId;
-                flag.ResourceId = v.ResourceId;
-                flag.FlagTypeId = parseInt(flagSelect.val());
-                flag.Resource = scrudFactory.viewTableName;
-                flag.ResourceKey = "";
+                flag.flag_id = v.flag_id;
+                flag.resource_id = v.resource_id;
+                flag.flag_type_id = parseInt(flagSelect.val());
+                flag.resource = scrudFactory.viewTableName;
+                flag.resource_key = "";
 
                 var flagAjax;
 
-                if (flag.FlagTypeId) {
+                if (flag.flag_type_id) {
                     flagAjax = addFlag(flag);
                 } else {
-                    flagAjax = deleteFlag(flag.FlagId);
+                    flagAjax = deleteFlag(flag.flag_id);
                 };
 
 
                 flagAjax.success(function () {
                     if (i + 1 === selection.length) {
-                        if (flag.FlagTypeId) {
+                        if (flag.flag_type_id) {
                             window.displayMessage(window.Resources.Labels.FlagSaved(), "success");
                         } else {
                             window.displayMessage(window.Resources.Labels.FlagRemoved());
@@ -2768,7 +2797,7 @@
     });
 
     var kanbanTemplate = '<div id="kanban{KanbanId}" class="ui segment">\
-                    <span class="ui purple left large label" data-kanban-id="{KanbanId}" title="{Description}">{KanbanName}</span>\
+                    <span class="ui teal left large label" data-kanban-id="{KanbanId}" title="{Description}">{KanbanName}</span>\
                     <div class="ui right floated tiny basic icon buttons">\
                         <a title="{AddNewCheckListLocalized}" class="ui basic button" href="javascript:void(0);" onclick="addKanban();"><i class="add icon"></i></a>\
                         <a title="{EditThisCheckListLocalized}" class="ui basic button" href="javascript:void(0);" onclick="editKanban(this);"><i class="edit icon"></i></a>\
@@ -2888,7 +2917,7 @@
             form.push(null);
 
             var data = JSON.stringify(form);
-            return getAjaxRequest(url, "PUT", data);
+            return getAjaxRequest(url, "POST", data);
         };
 
         var kanbanIdInputText = $("#KanbanIdInputText");

@@ -510,7 +510,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of Config class.
         /// </summary>
         /// <param name="config">Your instance of configs class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/config/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -629,7 +629,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of Config class to bulk import.</param>
         /// <returns>Returns list of imported configIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any Config class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/config/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

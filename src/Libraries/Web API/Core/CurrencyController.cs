@@ -514,7 +514,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of Currency class.
         /// </summary>
         /// <param name="currency">Your instance of currencies class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/currency/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -633,7 +633,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of Currency class to bulk import.</param>
         /// <returns>Returns list of imported currencyCodes.</returns>
         /// <exception cref="MixERPException">Thrown when your any Currency class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/currency/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

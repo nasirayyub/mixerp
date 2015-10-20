@@ -296,12 +296,12 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             employeeSocialNetworkDetail.audit_user_id = this._UserId;
             employeeSocialNetworkDetail.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(employeeSocialNetworkDetail.employee_social_network_detail_id) > 0)
+            object primaryKeyValue = employeeSocialNetworkDetail.employee_social_network_detail_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = employeeSocialNetworkDetail.employee_social_network_detail_id;
                 this.Update(employeeSocialNetworkDetail, long.Parse(employeeSocialNetworkDetail.employee_social_network_detail_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                             employeeSocialNetworkDetail.audit_user_id = this._UserId;
                             employeeSocialNetworkDetail.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(employeeSocialNetworkDetail.employee_social_network_detail_id) > 0)
+                            object primaryKeyValue = employeeSocialNetworkDetail.employee_social_network_detail_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(employeeSocialNetworkDetail.employee_social_network_detail_id);
                                 db.Update("hrm.employee_social_network_details", "employee_social_network_detail_id", employeeSocialNetworkDetail, employeeSocialNetworkDetail.employee_social_network_detail_id);

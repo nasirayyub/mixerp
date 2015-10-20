@@ -516,7 +516,7 @@ namespace MixERP.Net.Api.Office
         ///     Adds or edits your instance of CashRepository class.
         /// </summary>
         /// <param name="cashRepository">Your instance of cash repositories class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/office/cash-repository/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -635,7 +635,7 @@ namespace MixERP.Net.Api.Office
         /// <param name="collection">Your collection of CashRepository class to bulk import.</param>
         /// <returns>Returns list of imported cashRepositoryIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any CashRepository class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/office/cash-repository/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

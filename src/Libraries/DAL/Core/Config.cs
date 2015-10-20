@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = config.config_id;
 
-            if (Cast.To<int>(config.config_id) > 0)
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = config.config_id;
                 this.Update(config, int.Parse(config.config_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-                            if (Cast.To<int>(config.config_id) > 0)
+                            object primaryKeyValue = config.config_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(config.config_id);
                                 db.Update("core.config", "config_id", config, config.config_id);

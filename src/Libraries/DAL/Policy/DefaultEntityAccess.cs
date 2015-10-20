@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Policy.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             defaultEntityAccess.audit_user_id = this._UserId;
             defaultEntityAccess.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(defaultEntityAccess.default_entity_access_id) > 0)
+            object primaryKeyValue = defaultEntityAccess.default_entity_access_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = defaultEntityAccess.default_entity_access_id;
                 this.Update(defaultEntityAccess, int.Parse(defaultEntityAccess.default_entity_access_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Policy.Data
                             defaultEntityAccess.audit_user_id = this._UserId;
                             defaultEntityAccess.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(defaultEntityAccess.default_entity_access_id) > 0)
+                            object primaryKeyValue = defaultEntityAccess.default_entity_access_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(defaultEntityAccess.default_entity_access_id);
                                 db.Update("policy.default_entity_access", "default_entity_access_id", defaultEntityAccess, defaultEntityAccess.default_entity_access_id);

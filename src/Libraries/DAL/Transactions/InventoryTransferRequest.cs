@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             inventoryTransferRequest.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(inventoryTransferRequest.inventory_transfer_request_id) > 0)
+            object primaryKeyValue = inventoryTransferRequest.inventory_transfer_request_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = inventoryTransferRequest.inventory_transfer_request_id;
                 this.Update(inventoryTransferRequest, long.Parse(inventoryTransferRequest.inventory_transfer_request_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
                             inventoryTransferRequest.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(inventoryTransferRequest.inventory_transfer_request_id) > 0)
+                            object primaryKeyValue = inventoryTransferRequest.inventory_transfer_request_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(inventoryTransferRequest.inventory_transfer_request_id);
                                 db.Update("transactions.inventory_transfer_requests", "inventory_transfer_request_id", inventoryTransferRequest, inventoryTransferRequest.inventory_transfer_request_id);

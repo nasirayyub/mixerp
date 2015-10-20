@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Office.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             workCenter.audit_user_id = this._UserId;
             workCenter.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(workCenter.work_center_id) > 0)
+            object primaryKeyValue = workCenter.work_center_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = workCenter.work_center_id;
                 this.Update(workCenter, int.Parse(workCenter.work_center_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Office.Data
                             workCenter.audit_user_id = this._UserId;
                             workCenter.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(workCenter.work_center_id) > 0)
+                            object primaryKeyValue = workCenter.work_center_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(workCenter.work_center_id);
                                 db.Update("office.work_centers", "work_center_id", workCenter, workCenter.work_center_id);

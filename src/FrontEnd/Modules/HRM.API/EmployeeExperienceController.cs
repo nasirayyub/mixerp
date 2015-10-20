@@ -517,7 +517,7 @@ namespace MixERP.Net.Api.HRM
         ///     Adds or edits your instance of EmployeeExperience class.
         /// </summary>
         /// <param name="employeeExperience">Your instance of employee experiences class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/hrm/employee-experience/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -636,7 +636,7 @@ namespace MixERP.Net.Api.HRM
         /// <param name="collection">Your collection of EmployeeExperience class to bulk import.</param>
         /// <returns>Returns list of imported employeeExperienceIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any EmployeeExperience class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/hrm/employee-experience/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

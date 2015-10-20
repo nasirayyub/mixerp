@@ -526,7 +526,7 @@ namespace MixERP.Net.Api.Audit
         ///     Adds or edits your instance of LoggedAction class.
         /// </summary>
         /// <param name="loggedAction">Your instance of logged actions class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/audit/logged-action/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -645,7 +645,7 @@ namespace MixERP.Net.Api.Audit
         /// <param name="collection">Your collection of LoggedAction class to bulk import.</param>
         /// <returns>Returns list of imported eventIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any LoggedAction class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/audit/logged-action/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

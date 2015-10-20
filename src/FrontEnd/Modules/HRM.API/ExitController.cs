@@ -523,7 +523,7 @@ namespace MixERP.Net.Api.HRM
         ///     Adds or edits your instance of Exit class.
         /// </summary>
         /// <param name="exit">Your instance of exits class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/hrm/exit/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -642,7 +642,7 @@ namespace MixERP.Net.Api.HRM
         /// <param name="collection">Your collection of Exit class to bulk import.</param>
         /// <returns>Returns list of imported exitIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any Exit class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/hrm/exit/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

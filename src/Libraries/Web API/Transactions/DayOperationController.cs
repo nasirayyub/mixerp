@@ -516,7 +516,7 @@ namespace MixERP.Net.Api.Transactions
         ///     Adds or edits your instance of DayOperation class.
         /// </summary>
         /// <param name="dayOperation">Your instance of day operations class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/transactions/day-operation/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -635,7 +635,7 @@ namespace MixERP.Net.Api.Transactions
         /// <param name="collection">Your collection of DayOperation class to bulk import.</param>
         /// <returns>Returns list of imported dayIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any DayOperation class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/transactions/day-operation/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

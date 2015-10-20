@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = stockMasterNonGlRelation.stock_master_non_gl_relation_id;
 
-            if (Cast.To<long>(stockMasterNonGlRelation.stock_master_non_gl_relation_id) > 0)
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = stockMasterNonGlRelation.stock_master_non_gl_relation_id;
                 this.Update(stockMasterNonGlRelation, long.Parse(stockMasterNonGlRelation.stock_master_non_gl_relation_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
 
 
-                            if (Cast.To<long>(stockMasterNonGlRelation.stock_master_non_gl_relation_id) > 0)
+                            object primaryKeyValue = stockMasterNonGlRelation.stock_master_non_gl_relation_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(stockMasterNonGlRelation.stock_master_non_gl_relation_id);
                                 db.Update("transactions.stock_master_non_gl_relations", "stock_master_non_gl_relation_id", stockMasterNonGlRelation, stockMasterNonGlRelation.stock_master_non_gl_relation_id);

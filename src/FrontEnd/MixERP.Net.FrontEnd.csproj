@@ -169,7 +169,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\Checklist.cs" />
-    <Compile Include="Controls\Scrud.cs" />
     <Compile Include="Controls\WebReport.cs" />
     <Compile Include="Dashboard\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
@@ -177,13 +176,6 @@
     </Compile>
     <Compile Include="Dashboard\Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="General\ItemSelector.aspx.cs">
-      <DependentUpon>ItemSelector.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="General\ItemSelector.aspx.designer.cs">
-      <DependentUpon>ItemSelector.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1182,7 +1174,6 @@
     <Content Include="Site\Account\ChangePassword.aspx" />
     <Content Include="Site\Account\SignOut.aspx" />
     <Content Include="Dashboard\Index.aspx" />
-    <Content Include="General\ItemSelector.aspx" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="Site\Account\UserProfile.aspx" />
@@ -1251,6 +1242,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="General\" />
     <Folder Include="Reports\Sources\" />
   </ItemGroup>
   <ItemGroup>
@@ -1317,10 +1309,6 @@
     <ProjectReference Include="..\Libraries\Server Controls\Project\MixERP.Net.WebControls.ReportEngine\MixERP.Net.WebControls.ReportEngine.csproj">
       <Project>{81f04b78-6194-4f86-a795-5f186c602eee}</Project>
       <Name>MixERP.Net.WebControls.ReportEngine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libraries\Server Controls\Project\MixERP.Net.WebControls.ScrudFactory\MixERP.Net.WebControls.ScrudFactory.csproj">
-      <Project>{07ddce95-a18f-4a35-b892-ce09ead2aa65}</Project>
-      <Name>MixERP.Net.WebControls.ScrudFactory</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Logic\MixERP.net.Common\MixERP.Net.Common.csproj">
       <Project>{d5a09c22-8f48-4fb2-a14d-c62c8c8fcec0}</Project>

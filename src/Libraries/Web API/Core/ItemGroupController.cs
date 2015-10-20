@@ -524,7 +524,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of ItemGroup class.
         /// </summary>
         /// <param name="itemGroup">Your instance of item groups class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/item-group/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -643,7 +643,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of ItemGroup class to bulk import.</param>
         /// <returns>Returns list of imported itemGroupIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any ItemGroup class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/item-group/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

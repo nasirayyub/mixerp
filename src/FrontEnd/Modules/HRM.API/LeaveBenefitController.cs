@@ -514,7 +514,7 @@ namespace MixERP.Net.Api.HRM
         ///     Adds or edits your instance of LeaveBenefit class.
         /// </summary>
         /// <param name="leaveBenefit">Your instance of leave benefits class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/hrm/leave-benefit/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -633,7 +633,7 @@ namespace MixERP.Net.Api.HRM
         /// <param name="collection">Your collection of LeaveBenefit class to bulk import.</param>
         /// <returns>Returns list of imported leaveBenefitIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any LeaveBenefit class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/hrm/leave-benefit/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

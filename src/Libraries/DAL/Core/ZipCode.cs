@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             zipCode.audit_user_id = this._UserId;
             zipCode.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(zipCode.zip_code_id) > 0)
+            object primaryKeyValue = zipCode.zip_code_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = zipCode.zip_code_id;
                 this.Update(zipCode, long.Parse(zipCode.zip_code_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             zipCode.audit_user_id = this._UserId;
                             zipCode.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(zipCode.zip_code_id) > 0)
+                            object primaryKeyValue = zipCode.zip_code_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(zipCode.zip_code_id);
                                 db.Update("core.zip_codes", "zip_code_id", zipCode, zipCode.zip_code_id);

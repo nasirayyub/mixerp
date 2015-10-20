@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = widgetSetup.widget_setup_id;
 
-            if (Cast.To<int>(widgetSetup.widget_setup_id) > 0)
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = widgetSetup.widget_setup_id;
                 this.Update(widgetSetup, int.Parse(widgetSetup.widget_setup_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-                            if (Cast.To<int>(widgetSetup.widget_setup_id) > 0)
+                            object primaryKeyValue = widgetSetup.widget_setup_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(widgetSetup.widget_setup_id);
                                 db.Update("core.widget_setup", "widget_setup_id", widgetSetup, widgetSetup.widget_setup_id);

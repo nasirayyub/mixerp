@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             salesTaxType.audit_user_id = this._UserId;
             salesTaxType.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(salesTaxType.sales_tax_type_id) > 0)
+            object primaryKeyValue = salesTaxType.sales_tax_type_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = salesTaxType.sales_tax_type_id;
                 this.Update(salesTaxType, int.Parse(salesTaxType.sales_tax_type_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             salesTaxType.audit_user_id = this._UserId;
                             salesTaxType.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(salesTaxType.sales_tax_type_id) > 0)
+                            object primaryKeyValue = salesTaxType.sales_tax_type_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(salesTaxType.sales_tax_type_id);
                                 db.Update("core.sales_tax_types", "sales_tax_type_id", salesTaxType, salesTaxType.sales_tax_type_id);

@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Policy.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = accessType.access_type_id;
 
-            if (Cast.To<int>(accessType.access_type_id) > 0)
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = accessType.access_type_id;
                 this.Update(accessType, int.Parse(accessType.access_type_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Policy.Data
 
 
 
-                            if (Cast.To<int>(accessType.access_type_id) > 0)
+                            object primaryKeyValue = accessType.access_type_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(accessType.access_type_id);
                                 db.Update("policy.access_types", "access_type_id", accessType, accessType.access_type_id);

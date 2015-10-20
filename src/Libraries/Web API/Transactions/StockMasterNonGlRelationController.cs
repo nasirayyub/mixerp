@@ -511,7 +511,7 @@ namespace MixERP.Net.Api.Transactions
         ///     Adds or edits your instance of StockMasterNonGlRelation class.
         /// </summary>
         /// <param name="stockMasterNonGlRelation">Your instance of stock master non gl relations class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/transactions/stock-master-non-gl-relation/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -630,7 +630,7 @@ namespace MixERP.Net.Api.Transactions
         /// <param name="collection">Your collection of StockMasterNonGlRelation class to bulk import.</param>
         /// <returns>Returns list of imported stockMasterNonGlRelationIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any StockMasterNonGlRelation class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/transactions/stock-master-non-gl-relation/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

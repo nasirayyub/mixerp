@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             salespersonBonusSetup.audit_user_id = this._UserId;
             salespersonBonusSetup.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(salespersonBonusSetup.salesperson_bonus_setup_id) > 0)
+            object primaryKeyValue = salespersonBonusSetup.salesperson_bonus_setup_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = salespersonBonusSetup.salesperson_bonus_setup_id;
                 this.Update(salespersonBonusSetup, int.Parse(salespersonBonusSetup.salesperson_bonus_setup_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             salespersonBonusSetup.audit_user_id = this._UserId;
                             salespersonBonusSetup.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(salespersonBonusSetup.salesperson_bonus_setup_id) > 0)
+                            object primaryKeyValue = salespersonBonusSetup.salesperson_bonus_setup_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(salespersonBonusSetup.salesperson_bonus_setup_id);
                                 db.Update("core.salesperson_bonus_setups", "salesperson_bonus_setup_id", salespersonBonusSetup, salespersonBonusSetup.salesperson_bonus_setup_id);

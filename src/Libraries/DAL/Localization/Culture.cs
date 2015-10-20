@@ -296,9 +296,9 @@ namespace MixERP.Net.Schemas.Localization.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = culture.culture_code;
 
             if (!string.IsNullOrWhiteSpace(culture.culture_code))
             {
@@ -397,6 +397,8 @@ namespace MixERP.Net.Schemas.Localization.Data
                             line++;
 
 
+
+                            object primaryKeyValue = culture.culture_code;
 
                             if (!string.IsNullOrWhiteSpace(culture.culture_code))
                             {

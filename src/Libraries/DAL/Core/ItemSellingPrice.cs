@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             itemSellingPrice.audit_user_id = this._UserId;
             itemSellingPrice.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(itemSellingPrice.item_selling_price_id) > 0)
+            object primaryKeyValue = itemSellingPrice.item_selling_price_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = itemSellingPrice.item_selling_price_id;
                 this.Update(itemSellingPrice, long.Parse(itemSellingPrice.item_selling_price_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             itemSellingPrice.audit_user_id = this._UserId;
                             itemSellingPrice.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(itemSellingPrice.item_selling_price_id) > 0)
+                            object primaryKeyValue = itemSellingPrice.item_selling_price_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(itemSellingPrice.item_selling_price_id);
                                 db.Update("core.item_selling_prices", "item_selling_price_id", itemSellingPrice, itemSellingPrice.item_selling_price_id);

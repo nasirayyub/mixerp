@@ -520,7 +520,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of ZipCode class.
         /// </summary>
         /// <param name="zipCode">Your instance of zip codes class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/zip-code/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -639,7 +639,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of ZipCode class to bulk import.</param>
         /// <returns>Returns list of imported zipCodeIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any ZipCode class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/zip-code/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

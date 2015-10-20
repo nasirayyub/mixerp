@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             shippingMailType.audit_user_id = this._UserId;
             shippingMailType.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(shippingMailType.shipping_mail_type_id) > 0)
+            object primaryKeyValue = shippingMailType.shipping_mail_type_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = shippingMailType.shipping_mail_type_id;
                 this.Update(shippingMailType, int.Parse(shippingMailType.shipping_mail_type_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             shippingMailType.audit_user_id = this._UserId;
                             shippingMailType.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(shippingMailType.shipping_mail_type_id) > 0)
+                            object primaryKeyValue = shippingMailType.shipping_mail_type_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(shippingMailType.shipping_mail_type_id);
                                 db.Update("core.shipping_mail_types", "shipping_mail_type_id", shippingMailType, shippingMailType.shipping_mail_type_id);

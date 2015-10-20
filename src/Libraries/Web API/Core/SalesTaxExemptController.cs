@@ -521,7 +521,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of SalesTaxExempt class.
         /// </summary>
         /// <param name="salesTaxExempt">Your instance of sales tax exempts class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/sales-tax-exempt/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -640,7 +640,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of SalesTaxExempt class to bulk import.</param>
         /// <returns>Returns list of imported salesTaxExemptIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any SalesTaxExempt class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/sales-tax-exempt/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

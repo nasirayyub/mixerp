@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Policy.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = lockOut.lock_out_id;
 
-            if (Cast.To<long>(lockOut.lock_out_id) > 0)
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = lockOut.lock_out_id;
                 this.Update(lockOut, long.Parse(lockOut.lock_out_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Policy.Data
 
 
 
-                            if (Cast.To<long>(lockOut.lock_out_id) > 0)
+                            object primaryKeyValue = lockOut.lock_out_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(lockOut.lock_out_id);
                                 db.Update("policy.lock_outs", "lock_out_id", lockOut, lockOut.lock_out_id);

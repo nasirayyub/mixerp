@@ -296,10 +296,10 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             identificationType.audit_user_id = this._UserId;
             identificationType.audit_ts = System.DateTime.UtcNow;
+
+            object primaryKeyValue = identificationType.identification_type_code;
 
             if (!string.IsNullOrWhiteSpace(identificationType.identification_type_code))
             {
@@ -399,6 +399,8 @@ namespace MixERP.Net.Schemas.Core.Data
 
                             identificationType.audit_user_id = this._UserId;
                             identificationType.audit_ts = System.DateTime.UtcNow;
+
+                            object primaryKeyValue = identificationType.identification_type_code;
 
                             if (!string.IsNullOrWhiteSpace(identificationType.identification_type_code))
                             {

@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = verificationStatus.verification_status_id;
 
-            if (Cast.To<short>(verificationStatus.verification_status_id) > 0)
+            if (Cast.To<short>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = verificationStatus.verification_status_id;
                 this.Update(verificationStatus, short.Parse(verificationStatus.verification_status_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-                            if (Cast.To<short>(verificationStatus.verification_status_id) > 0)
+                            object primaryKeyValue = verificationStatus.verification_status_id;
+
+                            if (Cast.To<short>(primaryKeyValue) > 0)
                             {
                                 result.Add(verificationStatus.verification_status_id);
                                 db.Update("core.verification_statuses", "verification_status_id", verificationStatus, verificationStatus.verification_status_id);

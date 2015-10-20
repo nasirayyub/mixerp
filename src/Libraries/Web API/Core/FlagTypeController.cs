@@ -514,7 +514,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of FlagType class.
         /// </summary>
         /// <param name="flagType">Your instance of flag types class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/flag-type/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -633,7 +633,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of FlagType class to bulk import.</param>
         /// <returns>Returns list of imported flagTypeIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any FlagType class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/flag-type/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

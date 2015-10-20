@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = frequency.frequency_id;
 
-            if (Cast.To<int>(frequency.frequency_id) > 0)
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = frequency.frequency_id;
                 this.Update(frequency, int.Parse(frequency.frequency_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-                            if (Cast.To<int>(frequency.frequency_id) > 0)
+                            object primaryKeyValue = frequency.frequency_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(frequency.frequency_id);
                                 db.Update("core.frequencies", "frequency_id", frequency, frequency.frequency_id);

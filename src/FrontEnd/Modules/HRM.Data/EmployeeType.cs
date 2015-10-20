@@ -296,12 +296,12 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             employeeType.audit_user_id = this._UserId;
             employeeType.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(employeeType.employee_type_id) > 0)
+            object primaryKeyValue = employeeType.employee_type_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = employeeType.employee_type_id;
                 this.Update(employeeType, int.Parse(employeeType.employee_type_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                             employeeType.audit_user_id = this._UserId;
                             employeeType.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(employeeType.employee_type_id) > 0)
+                            object primaryKeyValue = employeeType.employee_type_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(employeeType.employee_type_id);
                                 db.Update("hrm.employee_types", "employee_type_id", employeeType, employeeType.employee_type_id);

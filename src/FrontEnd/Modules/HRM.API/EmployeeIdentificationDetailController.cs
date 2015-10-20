@@ -515,7 +515,7 @@ namespace MixERP.Net.Api.HRM
         ///     Adds or edits your instance of EmployeeIdentificationDetail class.
         /// </summary>
         /// <param name="employeeIdentificationDetail">Your instance of employee identification details class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/hrm/employee-identification-detail/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -634,7 +634,7 @@ namespace MixERP.Net.Api.HRM
         /// <param name="collection">Your collection of EmployeeIdentificationDetail class to bulk import.</param>
         /// <returns>Returns list of imported employeeIdentificationDetailIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any EmployeeIdentificationDetail class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/hrm/employee-identification-detail/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

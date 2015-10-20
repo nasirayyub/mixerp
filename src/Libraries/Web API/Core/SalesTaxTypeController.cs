@@ -514,7 +514,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of SalesTaxType class.
         /// </summary>
         /// <param name="salesTaxType">Your instance of sales tax types class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/sales-tax-type/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -633,7 +633,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of SalesTaxType class to bulk import.</param>
         /// <returns>Returns list of imported salesTaxTypeIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any SalesTaxType class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/sales-tax-type/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

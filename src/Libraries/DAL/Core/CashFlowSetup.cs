@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             cashFlowSetup.audit_user_id = this._UserId;
             cashFlowSetup.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(cashFlowSetup.cash_flow_setup_id) > 0)
+            object primaryKeyValue = cashFlowSetup.cash_flow_setup_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = cashFlowSetup.cash_flow_setup_id;
                 this.Update(cashFlowSetup, int.Parse(cashFlowSetup.cash_flow_setup_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             cashFlowSetup.audit_user_id = this._UserId;
                             cashFlowSetup.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(cashFlowSetup.cash_flow_setup_id) > 0)
+                            object primaryKeyValue = cashFlowSetup.cash_flow_setup_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(cashFlowSetup.cash_flow_setup_id);
                                 db.Update("core.cash_flow_setup", "cash_flow_setup_id", cashFlowSetup, cashFlowSetup.cash_flow_setup_id);

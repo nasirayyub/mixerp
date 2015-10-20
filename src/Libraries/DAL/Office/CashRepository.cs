@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Office.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             cashRepository.audit_user_id = this._UserId;
             cashRepository.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(cashRepository.cash_repository_id) > 0)
+            object primaryKeyValue = cashRepository.cash_repository_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = cashRepository.cash_repository_id;
                 this.Update(cashRepository, int.Parse(cashRepository.cash_repository_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Office.Data
                             cashRepository.audit_user_id = this._UserId;
                             cashRepository.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(cashRepository.cash_repository_id) > 0)
+                            object primaryKeyValue = cashRepository.cash_repository_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(cashRepository.cash_repository_id);
                                 db.Update("office.cash_repositories", "cash_repository_id", cashRepository, cashRepository.cash_repository_id);

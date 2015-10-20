@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             nonGlStockDetail.audit_user_id = this._UserId;
             nonGlStockDetail.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(nonGlStockDetail.non_gl_stock_detail_id) > 0)
+            object primaryKeyValue = nonGlStockDetail.non_gl_stock_detail_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = nonGlStockDetail.non_gl_stock_detail_id;
                 this.Update(nonGlStockDetail, long.Parse(nonGlStockDetail.non_gl_stock_detail_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Transactions.Data
                             nonGlStockDetail.audit_user_id = this._UserId;
                             nonGlStockDetail.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(nonGlStockDetail.non_gl_stock_detail_id) > 0)
+                            object primaryKeyValue = nonGlStockDetail.non_gl_stock_detail_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(nonGlStockDetail.non_gl_stock_detail_id);
                                 db.Update("transactions.non_gl_stock_details", "non_gl_stock_detail_id", nonGlStockDetail, nonGlStockDetail.non_gl_stock_detail_id);

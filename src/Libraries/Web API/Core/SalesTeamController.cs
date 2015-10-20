@@ -513,7 +513,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of SalesTeam class.
         /// </summary>
         /// <param name="salesTeam">Your instance of sales teams class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/sales-team/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -632,7 +632,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of SalesTeam class to bulk import.</param>
         /// <returns>Returns list of imported salesTeamIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any SalesTeam class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/sales-team/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

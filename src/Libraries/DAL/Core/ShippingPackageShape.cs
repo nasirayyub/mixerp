@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             shippingPackageShape.audit_user_id = this._UserId;
             shippingPackageShape.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(shippingPackageShape.shipping_package_shape_id) > 0)
+            object primaryKeyValue = shippingPackageShape.shipping_package_shape_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = shippingPackageShape.shipping_package_shape_id;
                 this.Update(shippingPackageShape, int.Parse(shippingPackageShape.shipping_package_shape_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             shippingPackageShape.audit_user_id = this._UserId;
                             shippingPackageShape.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(shippingPackageShape.shipping_package_shape_id) > 0)
+                            object primaryKeyValue = shippingPackageShape.shipping_package_shape_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(shippingPackageShape.shipping_package_shape_id);
                                 db.Update("core.shipping_package_shapes", "shipping_package_shape_id", shippingPackageShape, shippingPackageShape.shipping_package_shape_id);

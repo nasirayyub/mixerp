@@ -510,7 +510,7 @@ namespace MixERP.Net.Api.Localization
         ///     Adds or edits your instance of Culture class.
         /// </summary>
         /// <param name="culture">Your instance of cultures class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/localization/culture/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -629,7 +629,7 @@ namespace MixERP.Net.Api.Localization
         /// <param name="collection">Your collection of Culture class to bulk import.</param>
         /// <returns>Returns list of imported cultureCodes.</returns>
         /// <exception cref="MixERPException">Thrown when your any Culture class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/localization/culture/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

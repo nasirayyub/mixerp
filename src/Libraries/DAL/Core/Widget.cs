@@ -296,9 +296,9 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = widget.widget_name;
 
             if (!string.IsNullOrWhiteSpace(widget.widget_name))
             {
@@ -397,6 +397,8 @@ namespace MixERP.Net.Schemas.Core.Data
                             line++;
 
 
+
+                            object primaryKeyValue = widget.widget_name;
 
                             if (!string.IsNullOrWhiteSpace(widget.widget_name))
                             {

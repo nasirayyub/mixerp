@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             state.audit_user_id = this._UserId;
             state.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(state.state_id) > 0)
+            object primaryKeyValue = state.state_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = state.state_id;
                 this.Update(state, int.Parse(state.state_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             state.audit_user_id = this._UserId;
                             state.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(state.state_id) > 0)
+                            object primaryKeyValue = state.state_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(state.state_id);
                                 db.Update("core.states", "state_id", state, state.state_id);

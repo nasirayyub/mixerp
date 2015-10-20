@@ -512,7 +512,7 @@ namespace MixERP.Net.Api.Config
         ///     Adds or edits your instance of Switch class.
         /// </summary>
         /// <param name="switchParameter">Your instance of switches class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/config/switch/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -631,7 +631,7 @@ namespace MixERP.Net.Api.Config
         /// <param name="collection">Your collection of Switch class to bulk import.</param>
         /// <returns>Returns list of imported keys.</returns>
         /// <exception cref="MixERPException">Thrown when your any Switch class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/config/switch/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

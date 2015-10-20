@@ -514,7 +514,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of MaritalStatus class.
         /// </summary>
         /// <param name="maritalStatus">Your instance of marital statuses class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/marital-status/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -633,7 +633,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of MaritalStatus class to bulk import.</param>
         /// <returns>Returns list of imported maritalStatusIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any MaritalStatus class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/marital-status/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

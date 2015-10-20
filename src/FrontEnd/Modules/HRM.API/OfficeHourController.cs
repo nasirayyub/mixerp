@@ -516,7 +516,7 @@ namespace MixERP.Net.Api.HRM
         ///     Adds or edits your instance of OfficeHour class.
         /// </summary>
         /// <param name="officeHour">Your instance of office hours class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/hrm/office-hour/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -635,7 +635,7 @@ namespace MixERP.Net.Api.HRM
         /// <param name="collection">Your collection of OfficeHour class to bulk import.</param>
         /// <returns>Returns list of imported officeHourIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any OfficeHour class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/hrm/office-hour/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

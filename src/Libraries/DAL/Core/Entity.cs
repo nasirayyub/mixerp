@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             entity.audit_user_id = this._UserId;
             entity.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(entity.entity_id) > 0)
+            object primaryKeyValue = entity.entity_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = entity.entity_id;
                 this.Update(entity, int.Parse(entity.entity_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             entity.audit_user_id = this._UserId;
                             entity.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(entity.entity_id) > 0)
+                            object primaryKeyValue = entity.entity_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(entity.entity_id);
                                 db.Update("core.entities", "entity_id", entity, entity.entity_id);

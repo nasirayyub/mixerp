@@ -296,9 +296,9 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = roundingMethod.rounding_method_code;
 
             if (!string.IsNullOrWhiteSpace(roundingMethod.rounding_method_code))
             {
@@ -397,6 +397,8 @@ namespace MixERP.Net.Schemas.Core.Data
                             line++;
 
 
+
+                            object primaryKeyValue = roundingMethod.rounding_method_code;
 
                             if (!string.IsNullOrWhiteSpace(roundingMethod.rounding_method_code))
                             {

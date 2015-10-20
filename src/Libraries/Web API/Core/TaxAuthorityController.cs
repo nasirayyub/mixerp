@@ -526,7 +526,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of TaxAuthority class.
         /// </summary>
         /// <param name="taxAuthority">Your instance of tax authorities class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/tax-authority/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -645,7 +645,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of TaxAuthority class to bulk import.</param>
         /// <returns>Returns list of imported taxAuthorityIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any TaxAuthority class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/tax-authority/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

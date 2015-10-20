@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = stockTaxDetail.stock_tax_detail_id;
 
-            if (Cast.To<long>(stockTaxDetail.stock_tax_detail_id) > 0)
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = stockTaxDetail.stock_tax_detail_id;
                 this.Update(stockTaxDetail, long.Parse(stockTaxDetail.stock_tax_detail_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
 
 
-                            if (Cast.To<long>(stockTaxDetail.stock_tax_detail_id) > 0)
+                            object primaryKeyValue = stockTaxDetail.stock_tax_detail_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(stockTaxDetail.stock_tax_detail_id);
                                 db.Update("transactions.stock_tax_details", "stock_tax_detail_id", stockTaxDetail, stockTaxDetail.stock_tax_detail_id);

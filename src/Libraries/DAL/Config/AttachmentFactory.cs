@@ -296,10 +296,10 @@ namespace MixERP.Net.Schemas.Config.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             attachmentFactory.audit_user_id = this._UserId;
             attachmentFactory.audit_ts = System.DateTime.UtcNow;
+
+            object primaryKeyValue = attachmentFactory.key;
 
             if (!string.IsNullOrWhiteSpace(attachmentFactory.key))
             {
@@ -399,6 +399,8 @@ namespace MixERP.Net.Schemas.Config.Data
 
                             attachmentFactory.audit_user_id = this._UserId;
                             attachmentFactory.audit_ts = System.DateTime.UtcNow;
+
+                            object primaryKeyValue = attachmentFactory.key;
 
                             if (!string.IsNullOrWhiteSpace(attachmentFactory.key))
                             {

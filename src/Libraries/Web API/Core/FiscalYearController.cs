@@ -514,7 +514,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of FiscalYear class.
         /// </summary>
         /// <param name="fiscalYear">Your instance of fiscal years class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/fiscal-year/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -633,7 +633,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of FiscalYear class to bulk import.</param>
         /// <returns>Returns list of imported fiscalYearCodes.</returns>
         /// <exception cref="MixERPException">Thrown when your any FiscalYear class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/fiscal-year/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

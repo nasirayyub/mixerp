@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             stockDetail.audit_user_id = this._UserId;
             stockDetail.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(stockDetail.stock_detail_id) > 0)
+            object primaryKeyValue = stockDetail.stock_detail_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = stockDetail.stock_detail_id;
                 this.Update(stockDetail, long.Parse(stockDetail.stock_detail_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Transactions.Data
                             stockDetail.audit_user_id = this._UserId;
                             stockDetail.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(stockDetail.stock_detail_id) > 0)
+                            object primaryKeyValue = stockDetail.stock_detail_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(stockDetail.stock_detail_id);
                                 db.Update("transactions.stock_details", "stock_detail_id", stockDetail, stockDetail.stock_detail_id);

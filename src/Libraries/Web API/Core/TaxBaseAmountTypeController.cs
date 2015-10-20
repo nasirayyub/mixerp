@@ -510,7 +510,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of TaxBaseAmountType class.
         /// </summary>
         /// <param name="taxBaseAmountType">Your instance of tax base amount types class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/tax-base-amount-type/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -629,7 +629,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of TaxBaseAmountType class to bulk import.</param>
         /// <returns>Returns list of imported taxBaseAmountTypeCodes.</returns>
         /// <exception cref="MixERPException">Thrown when your any TaxBaseAmountType class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/tax-base-amount-type/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

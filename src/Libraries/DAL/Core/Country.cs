@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             country.audit_user_id = this._UserId;
             country.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(country.country_id) > 0)
+            object primaryKeyValue = country.country_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = country.country_id;
                 this.Update(country, int.Parse(country.country_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             country.audit_user_id = this._UserId;
                             country.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(country.country_id) > 0)
+                            object primaryKeyValue = country.country_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(country.country_id);
                                 db.Update("core.countries", "country_id", country, country.country_id);

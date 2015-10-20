@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             recurringInvoiceSetup.audit_user_id = this._UserId;
             recurringInvoiceSetup.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(recurringInvoiceSetup.recurring_invoice_setup_id) > 0)
+            object primaryKeyValue = recurringInvoiceSetup.recurring_invoice_setup_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = recurringInvoiceSetup.recurring_invoice_setup_id;
                 this.Update(recurringInvoiceSetup, int.Parse(recurringInvoiceSetup.recurring_invoice_setup_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             recurringInvoiceSetup.audit_user_id = this._UserId;
                             recurringInvoiceSetup.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(recurringInvoiceSetup.recurring_invoice_setup_id) > 0)
+                            object primaryKeyValue = recurringInvoiceSetup.recurring_invoice_setup_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(recurringInvoiceSetup.recurring_invoice_setup_id);
                                 db.Update("core.recurring_invoice_setup", "recurring_invoice_setup_id", recurringInvoiceSetup, recurringInvoiceSetup.recurring_invoice_setup_id);

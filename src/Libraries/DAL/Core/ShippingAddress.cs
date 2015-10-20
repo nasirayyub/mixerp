@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             shippingAddress.audit_user_id = this._UserId;
             shippingAddress.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(shippingAddress.shipping_address_id) > 0)
+            object primaryKeyValue = shippingAddress.shipping_address_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = shippingAddress.shipping_address_id;
                 this.Update(shippingAddress, long.Parse(shippingAddress.shipping_address_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             shippingAddress.audit_user_id = this._UserId;
                             shippingAddress.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(shippingAddress.shipping_address_id) > 0)
+                            object primaryKeyValue = shippingAddress.shipping_address_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(shippingAddress.shipping_address_id);
                                 db.Update("core.shipping_addresses", "shipping_address_id", shippingAddress, shippingAddress.shipping_address_id);

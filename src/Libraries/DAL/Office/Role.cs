@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Office.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             role.audit_user_id = this._UserId;
             role.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(role.role_id) > 0)
+            object primaryKeyValue = role.role_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = role.role_id;
                 this.Update(role, int.Parse(role.role_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Office.Data
                             role.audit_user_id = this._UserId;
                             role.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(role.role_id) > 0)
+                            object primaryKeyValue = role.role_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(role.role_id);
                                 db.Update("office.roles", "role_id", role, role.role_id);

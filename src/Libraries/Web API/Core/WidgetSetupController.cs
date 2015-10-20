@@ -512,7 +512,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of WidgetSetup class.
         /// </summary>
         /// <param name="widgetSetup">Your instance of widget setups class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/widget-setup/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -631,7 +631,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of WidgetSetup class to bulk import.</param>
         /// <returns>Returns list of imported widgetSetupIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any WidgetSetup class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/widget-setup/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

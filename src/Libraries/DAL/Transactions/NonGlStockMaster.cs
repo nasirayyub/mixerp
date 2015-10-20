@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             nonGlStockMaster.audit_user_id = this._UserId;
             nonGlStockMaster.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(nonGlStockMaster.non_gl_stock_master_id) > 0)
+            object primaryKeyValue = nonGlStockMaster.non_gl_stock_master_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = nonGlStockMaster.non_gl_stock_master_id;
                 this.Update(nonGlStockMaster, long.Parse(nonGlStockMaster.non_gl_stock_master_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Transactions.Data
                             nonGlStockMaster.audit_user_id = this._UserId;
                             nonGlStockMaster.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(nonGlStockMaster.non_gl_stock_master_id) > 0)
+                            object primaryKeyValue = nonGlStockMaster.non_gl_stock_master_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(nonGlStockMaster.non_gl_stock_master_id);
                                 db.Update("transactions.non_gl_stock_master", "non_gl_stock_master_id", nonGlStockMaster, nonGlStockMaster.non_gl_stock_master_id);

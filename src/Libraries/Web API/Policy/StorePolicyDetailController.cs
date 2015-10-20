@@ -514,7 +514,7 @@ namespace MixERP.Net.Api.Policy
         ///     Adds or edits your instance of StorePolicyDetail class.
         /// </summary>
         /// <param name="storePolicyDetail">Your instance of store policy details class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/policy/store-policy-detail/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -633,7 +633,7 @@ namespace MixERP.Net.Api.Policy
         /// <param name="collection">Your collection of StorePolicyDetail class to bulk import.</param>
         /// <returns>Returns list of imported storePolicyDetailIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any StorePolicyDetail class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/policy/store-policy-detail/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

@@ -513,7 +513,7 @@ namespace MixERP.Net.Api.Office
         ///     Adds or edits your instance of CostCenter class.
         /// </summary>
         /// <param name="costCenter">Your instance of cost centers class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/office/cost-center/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -632,7 +632,7 @@ namespace MixERP.Net.Api.Office
         /// <param name="collection">Your collection of CostCenter class to bulk import.</param>
         /// <returns>Returns list of imported costCenterIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any CostCenter class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/office/cost-center/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

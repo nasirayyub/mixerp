@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             county.audit_user_id = this._UserId;
             county.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(county.county_id) > 0)
+            object primaryKeyValue = county.county_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = county.county_id;
                 this.Update(county, int.Parse(county.county_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             county.audit_user_id = this._UserId;
                             county.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(county.county_id) > 0)
+                            object primaryKeyValue = county.county_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(county.county_id);
                                 db.Update("core.counties", "county_id", county, county.county_id);

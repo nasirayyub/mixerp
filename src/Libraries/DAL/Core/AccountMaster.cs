@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = accountMaster.account_master_id;
 
-            if (Cast.To<short>(accountMaster.account_master_id) > 0)
+            if (Cast.To<short>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = accountMaster.account_master_id;
                 this.Update(accountMaster, short.Parse(accountMaster.account_master_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-                            if (Cast.To<short>(accountMaster.account_master_id) > 0)
+                            object primaryKeyValue = accountMaster.account_master_id;
+
+                            if (Cast.To<short>(primaryKeyValue) > 0)
                             {
                                 result.Add(accountMaster.account_master_id);
                                 db.Update("core.account_masters", "account_master_id", accountMaster, accountMaster.account_master_id);

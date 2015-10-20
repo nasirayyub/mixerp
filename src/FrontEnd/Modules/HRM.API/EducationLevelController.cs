@@ -512,7 +512,7 @@ namespace MixERP.Net.Api.HRM
         ///     Adds or edits your instance of EducationLevel class.
         /// </summary>
         /// <param name="educationLevel">Your instance of education levels class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/hrm/education-level/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -631,7 +631,7 @@ namespace MixERP.Net.Api.HRM
         /// <param name="collection">Your collection of EducationLevel class to bulk import.</param>
         /// <returns>Returns list of imported educationLevelIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any EducationLevel class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/hrm/education-level/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

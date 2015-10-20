@@ -513,7 +513,7 @@ namespace MixERP.Net.Api.Transactions
         ///     Adds or edits your instance of Routine class.
         /// </summary>
         /// <param name="routine">Your instance of routines class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/transactions/routine/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -632,7 +632,7 @@ namespace MixERP.Net.Api.Transactions
         /// <param name="collection">Your collection of Routine class to bulk import.</param>
         /// <returns>Returns list of imported routineIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any Routine class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/transactions/routine/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

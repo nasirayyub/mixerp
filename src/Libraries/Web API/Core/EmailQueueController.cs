@@ -518,7 +518,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of EmailQueue class.
         /// </summary>
         /// <param name="emailQueue">Your instance of email queues class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/email-queue/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -637,7 +637,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of EmailQueue class to bulk import.</param>
         /// <returns>Returns list of imported queueIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any EmailQueue class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/email-queue/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

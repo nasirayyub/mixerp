@@ -296,9 +296,9 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = customFieldDataType.data_type;
 
             if (!string.IsNullOrWhiteSpace(customFieldDataType.data_type))
             {
@@ -397,6 +397,8 @@ namespace MixERP.Net.Schemas.Core.Data
                             line++;
 
 
+
+                            object primaryKeyValue = customFieldDataType.data_type;
 
                             if (!string.IsNullOrWhiteSpace(customFieldDataType.data_type))
                             {

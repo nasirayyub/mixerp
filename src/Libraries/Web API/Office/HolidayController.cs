@@ -516,7 +516,7 @@ namespace MixERP.Net.Api.Office
         ///     Adds or edits your instance of Holiday class.
         /// </summary>
         /// <param name="holiday">Your instance of holidays class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/office/holiday/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -635,7 +635,7 @@ namespace MixERP.Net.Api.Office
         /// <param name="collection">Your collection of Holiday class to bulk import.</param>
         /// <returns>Returns list of imported holidayIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any Holiday class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/office/holiday/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             account.audit_user_id = this._UserId;
             account.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(account.account_id) > 0)
+            object primaryKeyValue = account.account_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = account.account_id;
                 this.Update(account, long.Parse(account.account_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             account.audit_user_id = this._UserId;
                             account.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(account.account_id) > 0)
+                            object primaryKeyValue = account.account_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(account.account_id);
                                 db.Update("core.accounts", "account_id", account, account.account_id);

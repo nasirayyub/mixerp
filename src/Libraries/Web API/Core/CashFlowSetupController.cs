@@ -513,7 +513,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of CashFlowSetup class.
         /// </summary>
         /// <param name="cashFlowSetup">Your instance of cash flow setups class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/cash-flow-setup/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -632,7 +632,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of CashFlowSetup class to bulk import.</param>
         /// <returns>Returns list of imported cashFlowSetupIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any CashFlowSetup class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/cash-flow-setup/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

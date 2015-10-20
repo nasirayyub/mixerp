@@ -15,5 +15,27 @@
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 </div>
 
-<asp:PlaceHolder ID="ScrudPlaceholder" runat="server" />
+
+<script>
+    var scrudFactory = new Object();
+
+    scrudFactory.title = Resources.Titles.Flags();
+
+    scrudFactory.viewAPI = "/api/core/flag-type-scrud-view";
+    scrudFactory.viewTableName = "core.flag_type_scrud_view";
+    scrudFactory.removeKanban = true;
+    scrudFactory.removeFlag = true;
+
+    scrudFactory.formAPI = "/api/core/flag-type";
+    scrudFactory.formTableName = "office.flag_types";
+    scrudFactory.live = "FlagTypeName";
+
+    scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
+
+    scrudFactory.allowDelete = true;
+    scrudFactory.allowEdit = true;
+</script>
+<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
+<div data-ng-include="'/Views/Modules/FormFactory.html'"></div>
+
 <script src="/Modules/BackOffice/Scripts/Flags.ascx.js"></script>

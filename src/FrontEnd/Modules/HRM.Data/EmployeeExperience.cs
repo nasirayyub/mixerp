@@ -296,12 +296,12 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             employeeExperience.audit_user_id = this._UserId;
             employeeExperience.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(employeeExperience.employee_experience_id) > 0)
+            object primaryKeyValue = employeeExperience.employee_experience_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = employeeExperience.employee_experience_id;
                 this.Update(employeeExperience, long.Parse(employeeExperience.employee_experience_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                             employeeExperience.audit_user_id = this._UserId;
                             employeeExperience.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(employeeExperience.employee_experience_id) > 0)
+                            object primaryKeyValue = employeeExperience.employee_experience_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(employeeExperience.employee_experience_id);
                                 db.Update("hrm.employee_experiences", "employee_experience_id", employeeExperience, employeeExperience.employee_experience_id);

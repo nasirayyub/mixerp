@@ -296,10 +296,10 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             gender.audit_user_id = this._UserId;
             gender.audit_ts = System.DateTime.UtcNow;
+
+            object primaryKeyValue = gender.gender_code;
 
             if (!string.IsNullOrWhiteSpace(gender.gender_code))
             {
@@ -399,6 +399,8 @@ namespace MixERP.Net.Schemas.Core.Data
 
                             gender.audit_user_id = this._UserId;
                             gender.audit_ts = System.DateTime.UtcNow;
+
+                            object primaryKeyValue = gender.gender_code;
 
                             if (!string.IsNullOrWhiteSpace(gender.gender_code))
                             {

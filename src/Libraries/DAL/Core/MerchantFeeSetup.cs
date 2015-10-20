@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             merchantFeeSetup.audit_user_id = this._UserId;
             merchantFeeSetup.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(merchantFeeSetup.merchant_fee_setup_id) > 0)
+            object primaryKeyValue = merchantFeeSetup.merchant_fee_setup_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = merchantFeeSetup.merchant_fee_setup_id;
                 this.Update(merchantFeeSetup, int.Parse(merchantFeeSetup.merchant_fee_setup_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             merchantFeeSetup.audit_user_id = this._UserId;
                             merchantFeeSetup.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(merchantFeeSetup.merchant_fee_setup_id) > 0)
+                            object primaryKeyValue = merchantFeeSetup.merchant_fee_setup_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(merchantFeeSetup.merchant_fee_setup_id);
                                 db.Update("core.merchant_fee_setup", "merchant_fee_setup_id", merchantFeeSetup, merchantFeeSetup.merchant_fee_setup_id);
