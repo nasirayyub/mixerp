@@ -1,9 +1,23 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="RecurringInvoiceSetup.ascx.cs" Inherits="MixERP.Net.Core.Modules.Sales.Setup.RecurringInvoiceSetup" %>
-<style>
-    .disableClick {
-        pointer-events: none;
-    }
-</style>
+﻿<%--
+Copyright (C) MixERP Inc. (http://mixof.org).
+
+This file is part of MixERP.
+
+MixERP is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, version 2 of the License.
+
+
+MixERP is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with MixERP.  If not, see <http://www.gnu.org/licenses />.
+--%>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="RecurringInvoiceSetup.ascx.cs" Inherits="MixERP.Net.Core.Modules.Sales.Setup.RecurringInvoiceSetup" %>
+
 <script>
     var scrudFactory = new Object();
 
@@ -26,7 +40,7 @@
     scrudFactory.keys = [
         {
             property: "RecurringInvoiceId",
-            url: '/api/core/recurring-invoice/display-fields',
+            url: '/api/core/recurring-invoice-scrud-view/display-fields',
             data: null,
             isArray: false,
             valueField: "Key",
@@ -34,7 +48,7 @@
         },
         {
             property: "PartyId",
-            url: '/api/core/party/display-fields',
+            url: '/api/core/party-scrud-view/display-fields',
             data: null,
             isArray: false,
             valueField: "Key",
@@ -42,7 +56,7 @@
         },
         {
             property: "RecurrenceTypeId",
-            url: '/api/core/recurrence-type/display-fields',
+            url: '/api/core/recurrence-type-scrud-view/display-fields',
             data: null,
             isArray: false,
             valueField: "Key",
@@ -66,7 +80,7 @@
         },
         {
             property: "PaymentTermId",
-            url: '/api/core/payment-term/display-fields',
+            url: '/api/core/payment-term-scrud-view/display-fields',
             data: null,
             isArray: false,
             valueField: "Key",
@@ -78,29 +92,20 @@
 
 <div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
 <div data-ng-include="'/Views/Modules/FormFactory.html'"></div>
+
 <script type="text/javascript">
 
-    $(document).on("formready", function () {
+    function customFormValidator() {
         var startFromTextbox = $("#starts_from");
         var endsOnTextbox = $("#ends_on");
-        var saveButton = $("#SaveButton");
-
-        endsOnTextbox.blur(function () {
-            customValidate(startFromTextbox, endsOnTextbox, saveButton);
-        });
-    });
-
-    function customValidate(startFromTextbox, endsOnTextbox, saveButton) {
-        var startDate = parseDate(startFromTextbox.val());
-        var endDate = parseDate(endsOnTextbox.val());
+        var startDate = parseLocalizedDate(startFromTextbox.val());
+        var endDate = parseLocalizedDate(endsOnTextbox.val());
 
         if (endDate <= startDate) {
-            saveButton.addClass("disableClick");
             makeDirty(endsOnTextbox);
             displayMessage(Resources.Warnings.InvalidDate());
             return false;
-        }
-        saveButton.removeClass("disableClick");
+        };
         return true;
     };
 

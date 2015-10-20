@@ -1,4 +1,22 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BonusSlabDetails.ascx.cs"
+﻿<%--
+Copyright (C) MixERP Inc. (http://mixof.org).
+
+This file is part of MixERP.
+
+MixERP is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, version 2 of the License.
+
+
+MixERP is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with MixERP.  If not, see <http://www.gnu.org/licenses />.
+--%>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BonusSlabDetails.ascx.cs"
     Inherits="MixERP.Net.Core.Modules.Sales.Setup.BonusSlabDetails" %>
 
 <style>
@@ -29,7 +47,7 @@
     scrudFactory.keys = [
         {
             property: "BonusSlabId",
-            url: '/api/core/bonus-slab/display-fields',
+            url: '/api/core/bonus-slab-scrud-view/display-fields',
             data: null,
             isArray: false,
             valueField: "Key",
@@ -46,28 +64,17 @@
 
 <script type="text/javascript">
 
-    $(document).on("formready", function () {
+    function customFormValidator() {
         var amountFromTextBox = $("#amount_from");
         var amountToTextBox = $("#amount_to");
-        var saveButton = $("#SaveButton");
-
-        amountToTextBox.blur(function () {
-            customValidate(amountFromTextBox, amountToTextBox, saveButton);
-        });
-    });
-
-    function customValidate(amountFromTextBox, amountToTextBox, saveButton) {
         var from = parseFloat2(amountFromTextBox.val());
         var to = parseFloat2(amountToTextBox.val());
 
         if (to <= from) {
-            saveButton.addClass("disableClick");
-            displayMessage(Resources.Warnings.CompareAmountErrorMessage());
             makeDirty(amountToTextBox);
+            displayMessage(Resources.Warnings.CompareAmountErrorMessage());
             return false;
         };
-        saveButton.removeClass("disableClick");
-        removeDirty(amountToTextBox);
         return true;
     };
 
