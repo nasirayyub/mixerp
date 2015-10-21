@@ -51,7 +51,7 @@
                         <div class="vpad8 absent" style="display: none;">
                             <div class="ui field">
                                 <label>Reason</label>
-                                <textarea rows="1" data-ng-model="employee.Attendance.ReasonForAbsentism"></textarea>
+                                <textarea rows="1" data-ng-model="employee.Attendance.ReasonForAbsenteeism"></textarea>
                             </div>
                         </div>
                     </div>
@@ -168,18 +168,18 @@
         var reason = card.find("textarea").val();
 
         var attendance = new Object();
-        attendance.AttendanceId = attendanceId;
-        attendance.OfficeId = window.metaView.OfficeId;
-        attendance.EmployeeId = employeeId;
-        attendance.AttendanceDate = window.parseLocalizedDate($("#DateInputDate").val());
-        attendance.WasPresent = isPresent;
-        attendance.CheckInTime = isPresent ? checkInTime : null;
-        attendance.CheckOutTime = isPresent ? checkOutTime : null;
-        attendance.OvertimeHours = overTimeHours;
-        attendance.WasAbsent = !attendance.WasPresent;
-        attendance.ReasonForAbsentism = attendance.WasAbsent ? reason : null;
-        attendance.AuditUserId = window.userId;
-        attendance.AuditTs = new Date();
+        attendance.attendance_id = attendanceId;
+        attendance.office_id = window.metaView.OfficeId;
+        attendance.employee_id = employeeId;
+        attendance.attendance_date = window.parseLocalizedDate($("#DateInputDate").val());
+        attendance.was_present = isPresent;
+        attendance.check_in_time = isPresent ? checkInTime : null;
+        attendance.check_out_time = isPresent ? checkOutTime : null;
+        attendance.overtime_hours = overTimeHours;
+        attendance.was_absent = !attendance.was_present;
+        attendance.reason_for_absenteeism = attendance.was_absent ? reason : null;
+        attendance.audit_user_id = window.userId;
+        attendance.audit_ts = new Date();
 
         return attendance;
     };
@@ -188,7 +188,7 @@
         var url = "/api/hrm/attendance/bulk-import";
         var data = JSON.stringify(attendnaces);
 
-        return window.getAjaxRequest(url, "PUT", data);
+        return window.getAjaxRequest(url, "POST", data);
     };
 
     function sendRequest(attendances) {

@@ -26,7 +26,8 @@ SELECT
         sales_tax_code || ' (' || sales_tax_name || ')' AS sales_tax,
         reorder_unit.unit_code || ' (' || reorder_unit.unit_name || ')' AS reorder_unit,
         reorder_level,
-        reorder_quantity
+        reorder_quantity,
+        core.items.photo
 FROM core.items
 INNER JOIN core.item_groups
 ON core.items.item_group_id = core.item_groups.item_group_id

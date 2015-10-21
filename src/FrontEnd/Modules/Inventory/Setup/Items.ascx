@@ -38,6 +38,12 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
     scrudFactory.allowEdit = true;
 
     scrudFactory.queryStringKey = "ItemId";
+    scrudFactory.layout = [
+        ["ItemId", ""],
+        ["Photo", ""],
+        ["ItemCode", "ItemName", "", ""]
+        //The rest will be figured out by scrud
+    ];
 
     scrudFactory.keys = [
         {
@@ -105,7 +111,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
             textField: "Value"
         },
         {
-            property: "PartyId",
+            property: "PreferredSupplierId",
             url: '/api/core/supplier-selector-view/display-fields',
             data: null,
             isArray: false,
@@ -115,8 +121,8 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
     ];
 </script>
 
-<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
-<div data-ng-include="'/Views/Modules/FormFactory.html'"></div>
+<div data-ng-include="'/Modules/ScrudFactory/View.html'"></div>
+<div data-ng-include="'/Modules/ScrudFactory/Form.html'"></div>
 
 
 

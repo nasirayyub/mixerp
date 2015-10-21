@@ -19,5 +19,5 @@
     scrudFactory.allowEdit = true;
     scrudFactory.live = "FromEmailAddress";
 </script>
-<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
-<div data-ng-include="'/Views/Modules/FormFactory.html'"></div>
+<div data-ng-include="'/Modules/ScrudFactory/View.html'"></div>
+<div data-ng-include="'/Modules/ScrudFactory/Form.html'"></div>

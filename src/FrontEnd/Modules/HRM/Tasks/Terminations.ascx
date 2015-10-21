@@ -16,7 +16,7 @@
     scrudFactory.allowDelete = true;
     scrudFactory.allowEdit = true;
 
-    scrudFactory.live = "EmployeeId";
+    scrudFactory.live = "Reason";
 
     scrudFactory.readonlyColumns = ["EndedOn"];
     scrudFactory.hiddenColumns = ["VerificationStatusId", "VerifiedByUserId", "VerifiedOn", "VerificationReason"];
@@ -61,5 +61,5 @@
 </script>
 
 
-<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
-<div data-ng-include="'/Views/Modules/FormFactory.html'"></div>
+<div data-ng-include="'/Modules/ScrudFactory/View.html'"></div>
+<div data-ng-include="'/Modules/ScrudFactory/Form.html'"></div>

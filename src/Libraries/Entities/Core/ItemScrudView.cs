@@ -104,5 +104,9 @@ namespace MixERP.Net.Entities.Core
         [Column("reorder_quantity")]
         [ColumnDbType("int4", 0, true, "")]
         public int? ReorderQuantity { get; set; }
+
+        [Column("photo")]
+        [ColumnDbType("image", 0, true, "")]
+        public string Photo { get; set; }
     }
 }

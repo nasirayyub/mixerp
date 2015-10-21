@@ -15,7 +15,7 @@ SELECT
     hrm.attendances.check_out_time,
     hrm.attendances.overtime_hours,
     hrm.attendances.was_absent,
-    hrm.attendances.reason_for_absentism
+    hrm.attendances.reason_for_absenteeism
 FROM hrm.attendances
 INNER JOIN office.offices
 ON office.offices.office_id = hrm.attendances.office_id

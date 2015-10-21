@@ -48,4 +48,4 @@
     scrudFactory.viewAPI = "/api/transactions/procedures/get-product-view";
     scrudFactory.viewTableName = "transactions.get_product_view";
 </script>
-<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
+<div data-ng-include="'/Modules/ScrudFactory/View.html'"></div>

@@ -57,8 +57,8 @@ namespace MixERP.Net.Entities.HRM
         [ColumnDbType("bool", 0, true, "")]
         public bool? WasAbsent { get; set; }
 
-        [Column("reason_for_absentism")]
+        [Column("reason_for_absenteeism")]
         [ColumnDbType("text", 0, true, "")]
-        public string ReasonForAbsentism { get; set; }
+        public string ReasonForAbsenteeism { get; set; }
     }
 }

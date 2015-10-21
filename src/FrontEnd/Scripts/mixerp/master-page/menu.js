@@ -260,6 +260,7 @@ function loadSidebarState() {
 };
 
 function toggleSidebar(el) {
+    $("body").hide();
     var state = "visible";
 
     if ($(".sidebar").is(":visible")) {
@@ -273,7 +274,8 @@ function toggleSidebar(el) {
         localStorage["sidebar"] = state;
     };
 
-    $(".sidebar").toggle(100);
+    $(".sidebar").toggle();
+    $("body").fadeIn(500);
 };
 
 var menuPolicy;

@@ -67,7 +67,7 @@
     scrudFactory.viewAPI = "/api/transactions/procedures/get-journal-view";
     scrudFactory.viewTableName = "transactions.get_journal_view";
 </script>
-<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
+<div data-ng-include="'/Modules/ScrudFactory/View.html'"></div>
 
 <script src="/Modules/Finance/Scripts/VoucherVerification.ascx.js"></script>
 <iframe id="ChecklistFrame" style="display: none;"></iframe>

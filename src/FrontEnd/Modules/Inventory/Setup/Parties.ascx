@@ -67,12 +67,19 @@
             data: null,
             valueField: "Key",
             textField: "Value"
+        },
+        {
+            property: "CurrencyCode",
+            url: '/api/core/currency/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
         }
     ];
 </script>
 
-<div data-ng-include="'/Views/Modules/ViewFactory.html'"></div>
-<div data-ng-include="'/Views/Modules/FormFactory.html'"></div>
+<div data-ng-include="'/Modules/ScrudFactory/View.html'"></div>
+<div data-ng-include="'/Modules/ScrudFactory/Form.html'"></div>
 
 <script>
     $(document).on("formready", function() {

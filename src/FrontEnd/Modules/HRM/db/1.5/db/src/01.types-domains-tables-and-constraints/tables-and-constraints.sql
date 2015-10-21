@@ -133,7 +133,7 @@ CREATE TABLE hrm.employee_types
 CREATE TABLE hrm.employees
 (
     employee_id                             SERIAL NOT NULL PRIMARY KEY,
-    employee_code                           national character varying(12) NOT NULL,
+    employee_code                           national character varying(12) NOT NULL UNIQUE,
     first_name                              national character varying(50) NOT NULL,
     middle_name                             national character varying(50) DEFAULT(''),
     last_name                               national character varying(50) DEFAULT(''),
@@ -371,7 +371,7 @@ CREATE TABLE hrm.attendances
     check_out_time                          time NULL,
     overtime_hours                          numeric NOT NULL,
     was_absent                              boolean NOT NULL CHECK(was_absent != was_present),
-    reason_for_absentism                    text,
+    reason_for_absenteeism                  text,
     audit_user_id                           integer NULL REFERENCES office.users(user_id),
     audit_ts                                TIMESTAMP WITH TIME ZONE NULL 
                                             DEFAULT(NOW())    

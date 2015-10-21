@@ -139,7 +139,9 @@ jQuery.fn.bindAjaxData = function (ajaxData, skipSelect, selectedValue, dataValu
         dataTextField = "Text";
     };
 
-    $.each(ajaxData, function (i, v) {
+    var sv = selectedValue;
+
+    $.each(ajaxData, function () {
         var text;
         var value;
         selected = false;
