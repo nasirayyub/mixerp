@@ -296,12 +296,12 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             termination.audit_user_id = this._UserId;
             termination.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(termination.termination_id) > 0)
+            object primaryKeyValue = termination.termination_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = termination.termination_id;
                 this.Update(termination, int.Parse(termination.termination_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                             termination.audit_user_id = this._UserId;
                             termination.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(termination.termination_id) > 0)
+                            object primaryKeyValue = termination.termination_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(termination.termination_id);
                                 db.Update("hrm.terminations", "termination_id", termination, termination.termination_id);

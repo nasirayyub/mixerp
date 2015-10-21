@@ -109,6 +109,10 @@ namespace MixERP.Net.Entities.HRM
         [ColumnDbType("varchar", 128, true, "")]
         public string BankReferenceNumber { get; set; }
 
+        [Column("account_id")]
+        [ColumnDbType("int8", 0, true, "")]
+        public long? AccountId { get; set; }
+
         [Column("zip_code")]
         [ColumnDbType("varchar", 128, true, "")]
         public string ZipCode { get; set; }
@@ -216,9 +220,5 @@ namespace MixERP.Net.Entities.HRM
         [Column("audit_ts")]
         [ColumnDbType("timestamptz", 0, true, "")]
         public DateTime? AuditTs { get; set; }
-
-        [Column("account_id")]
-        [ColumnDbType("int8", 0, true, "")]
-        public long? AccountId { get; set; }
     }
 }

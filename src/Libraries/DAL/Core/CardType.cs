@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = cardType.card_type_id;
 
-            if (Cast.To<int>(cardType.card_type_id) > 0)
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = cardType.card_type_id;
                 this.Update(cardType, int.Parse(cardType.card_type_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-                            if (Cast.To<int>(cardType.card_type_id) > 0)
+                            object primaryKeyValue = cardType.card_type_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(cardType.card_type_id);
                                 db.Update("core.card_types", "card_type_id", cardType, cardType.card_type_id);

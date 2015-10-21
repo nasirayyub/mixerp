@@ -515,7 +515,7 @@ namespace MixERP.Net.Api.Policy
         ///     Adds or edits your instance of EntityAccess class.
         /// </summary>
         /// <param name="entityAccess">Your instance of entity accesses class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/policy/entity-access/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -634,7 +634,7 @@ namespace MixERP.Net.Api.Policy
         /// <param name="collection">Your collection of EntityAccess class to bulk import.</param>
         /// <returns>Returns list of imported entityAccessIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any EntityAccess class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/policy/entity-access/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

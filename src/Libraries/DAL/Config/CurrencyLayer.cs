@@ -296,10 +296,10 @@ namespace MixERP.Net.Schemas.Config.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             currencyLayer.audit_user_id = this._UserId;
             currencyLayer.audit_ts = System.DateTime.UtcNow;
+
+            object primaryKeyValue = currencyLayer.key;
 
             if (!string.IsNullOrWhiteSpace(currencyLayer.key))
             {
@@ -399,6 +399,8 @@ namespace MixERP.Net.Schemas.Config.Data
 
                             currencyLayer.audit_user_id = this._UserId;
                             currencyLayer.audit_ts = System.DateTime.UtcNow;
+
+                            object primaryKeyValue = currencyLayer.key;
 
                             if (!string.IsNullOrWhiteSpace(currencyLayer.key))
                             {

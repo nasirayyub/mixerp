@@ -515,7 +515,7 @@ namespace MixERP.Net.Api.Office
         ///     Adds or edits your instance of Counter class.
         /// </summary>
         /// <param name="counter">Your instance of counters class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/office/counter/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -634,7 +634,7 @@ namespace MixERP.Net.Api.Office
         /// <param name="collection">Your collection of Counter class to bulk import.</param>
         /// <returns>Returns list of imported counterIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any Counter class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/office/counter/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

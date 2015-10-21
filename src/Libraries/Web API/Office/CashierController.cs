@@ -514,7 +514,7 @@ namespace MixERP.Net.Api.Office
         ///     Adds or edits your instance of Cashier class.
         /// </summary>
         /// <param name="cashier">Your instance of cashiers class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/office/cashier/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -633,7 +633,7 @@ namespace MixERP.Net.Api.Office
         /// <param name="collection">Your collection of Cashier class to bulk import.</param>
         /// <returns>Returns list of imported cashierIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any Cashier class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/office/cashier/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

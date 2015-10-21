@@ -19,12 +19,12 @@ UPDATE core.menus SET sort = 500 WHERE menu_code = 'BO';
 UPDATE core.menus SET sort = 10000 WHERE menu_code = 'SET';
 
 
-UPDATE core.menus SET sort= 2, icon = 'line chart' WHERE menu_code = 'ITM';
-UPDATE core.menus SET sort= 3, icon = 'shop' WHERE menu_code = 'SA';
-UPDATE core.menus SET sort= 4, icon = 'payment' WHERE menu_code = 'PU';
-UPDATE core.menus SET sort= 5, icon = 'area chart' WHERE menu_code = 'FI';
-UPDATE core.menus SET sort= 6, icon = 'building' WHERE menu_code = 'BO';
-UPDATE core.menus SET sort= 7, icon = 'settings' WHERE menu_code IN('SET', 'SSM', 'ISM', 'FSM');
+UPDATE core.menus SET sort= 2000, icon = 'line chart' WHERE menu_code = 'ITM';
+UPDATE core.menus SET sort= 3000, icon = 'shop' WHERE menu_code = 'SA';
+UPDATE core.menus SET sort= 4000, icon = 'payment' WHERE menu_code = 'PU';
+UPDATE core.menus SET sort= 5000, icon = 'area chart' WHERE menu_code = 'FI';
+UPDATE core.menus SET sort= 6000, icon = 'building' WHERE menu_code = 'BO';
+UPDATE core.menus SET sort= 7000, icon = 'settings' WHERE menu_code IN('SET', 'SSM', 'ISM', 'FSM');
 
 UPDATE core.menus SET sort = 0, icon = 'bar chart' WHERE parent_menu_id IN 
 (

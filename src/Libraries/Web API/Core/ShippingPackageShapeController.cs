@@ -514,7 +514,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of ShippingPackageShape class.
         /// </summary>
         /// <param name="shippingPackageShape">Your instance of shipping package shapes class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/shipping-package-shape/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -633,7 +633,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of ShippingPackageShape class to bulk import.</param>
         /// <returns>Returns list of imported shippingPackageShapeIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any ShippingPackageShape class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/shipping-package-shape/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

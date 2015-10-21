@@ -514,7 +514,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of KanbanDetail class.
         /// </summary>
         /// <param name="kanbanDetail">Your instance of kanban details class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/kanban-detail/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -633,7 +633,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of KanbanDetail class to bulk import.</param>
         /// <returns>Returns list of imported kanbanDetailIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any KanbanDetail class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/kanban-detail/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

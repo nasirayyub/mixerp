@@ -296,10 +296,10 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             socialNetwork.audit_user_id = this._UserId;
             socialNetwork.audit_ts = System.DateTime.UtcNow;
+
+            object primaryKeyValue = socialNetwork.social_network_name;
 
             if (!string.IsNullOrWhiteSpace(socialNetwork.social_network_name))
             {
@@ -399,6 +399,8 @@ namespace MixERP.Net.Schemas.Core.Data
 
                             socialNetwork.audit_user_id = this._UserId;
                             socialNetwork.audit_ts = System.DateTime.UtcNow;
+
+                            object primaryKeyValue = socialNetwork.social_network_name;
 
                             if (!string.IsNullOrWhiteSpace(socialNetwork.social_network_name))
                             {

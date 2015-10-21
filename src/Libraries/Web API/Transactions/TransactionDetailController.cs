@@ -522,7 +522,7 @@ namespace MixERP.Net.Api.Transactions
         ///     Adds or edits your instance of TransactionDetail class.
         /// </summary>
         /// <param name="transactionDetail">Your instance of transaction details class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/transactions/transaction-detail/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -641,7 +641,7 @@ namespace MixERP.Net.Api.Transactions
         /// <param name="collection">Your collection of TransactionDetail class to bulk import.</param>
         /// <returns>Returns list of imported transactionDetailIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any TransactionDetail class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/transactions/transaction-detail/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

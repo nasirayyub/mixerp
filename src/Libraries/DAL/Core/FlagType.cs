@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             flagType.audit_user_id = this._UserId;
             flagType.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(flagType.flag_type_id) > 0)
+            object primaryKeyValue = flagType.flag_type_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = flagType.flag_type_id;
                 this.Update(flagType, int.Parse(flagType.flag_type_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             flagType.audit_user_id = this._UserId;
                             flagType.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(flagType.flag_type_id) > 0)
+                            object primaryKeyValue = flagType.flag_type_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(flagType.flag_type_id);
                                 db.Update("core.flag_types", "flag_type_id", flagType, flagType.flag_type_id);

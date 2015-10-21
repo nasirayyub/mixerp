@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             bonusSlabDetail.audit_user_id = this._UserId;
             bonusSlabDetail.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(bonusSlabDetail.bonus_slab_detail_id) > 0)
+            object primaryKeyValue = bonusSlabDetail.bonus_slab_detail_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = bonusSlabDetail.bonus_slab_detail_id;
                 this.Update(bonusSlabDetail, int.Parse(bonusSlabDetail.bonus_slab_detail_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             bonusSlabDetail.audit_user_id = this._UserId;
                             bonusSlabDetail.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(bonusSlabDetail.bonus_slab_detail_id) > 0)
+                            object primaryKeyValue = bonusSlabDetail.bonus_slab_detail_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(bonusSlabDetail.bonus_slab_detail_id);
                                 db.Update("core.bonus_slab_details", "bonus_slab_detail_id", bonusSlabDetail, bonusSlabDetail.bonus_slab_detail_id);

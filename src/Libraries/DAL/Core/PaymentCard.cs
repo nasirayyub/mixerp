@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             paymentCard.audit_user_id = this._UserId;
             paymentCard.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(paymentCard.payment_card_id) > 0)
+            object primaryKeyValue = paymentCard.payment_card_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = paymentCard.payment_card_id;
                 this.Update(paymentCard, int.Parse(paymentCard.payment_card_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             paymentCard.audit_user_id = this._UserId;
                             paymentCard.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(paymentCard.payment_card_id) > 0)
+                            object primaryKeyValue = paymentCard.payment_card_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(paymentCard.payment_card_id);
                                 db.Update("core.payment_cards", "payment_card_id", paymentCard, paymentCard.payment_card_id);

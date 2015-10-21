@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Policy.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             autoVerificationPolicy.audit_user_id = this._UserId;
             autoVerificationPolicy.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(autoVerificationPolicy.policy_id) > 0)
+            object primaryKeyValue = autoVerificationPolicy.policy_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = autoVerificationPolicy.policy_id;
                 this.Update(autoVerificationPolicy, int.Parse(autoVerificationPolicy.policy_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Policy.Data
                             autoVerificationPolicy.audit_user_id = this._UserId;
                             autoVerificationPolicy.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(autoVerificationPolicy.policy_id) > 0)
+                            object primaryKeyValue = autoVerificationPolicy.policy_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(autoVerificationPolicy.policy_id);
                                 db.Update("policy.auto_verification_policy", "policy_id", autoVerificationPolicy, autoVerificationPolicy.policy_id);

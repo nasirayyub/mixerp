@@ -520,7 +520,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of Filter class.
         /// </summary>
         /// <param name="filter">Your instance of filters class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/filter/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -639,7 +639,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of Filter class to bulk import.</param>
         /// <returns>Returns list of imported filterIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any Filter class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/filter/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)
@@ -704,12 +704,43 @@ namespace MixERP.Net.Api.Core
             }
         }
 
+        /// <summary>
+        ///     Deletes an existing instance of Filter class via FilterName.
+        /// </summary>
+        /// <param name="filterName">Enter the value for FilterName in order to find and delete the existing record(s).</param>
+        [AcceptVerbs("DELETE")]
+        [Route("delete/by-name/{filterName}")]
+        [Route("~/api/core/filter/delete/by-name/{filterName}")]
+        public void Delete(string filterName)
+        {
+            try
+            {
+                this.FilterContext.Delete(filterName);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
         [AcceptVerbs("PUT")]
         [Route("recreate/{objectName}/{filterName}")]
         [Route("~/api/core/filter/recreate/{objectName}/{filterName}")]
         public void RecreateFilters(string objectName, string filterName, [FromBody]dynamic collection)
         {
-            List<MixERP.Net.Entities.Core.Filter> filters = this.ParseCollection(collection);
+            List<MixERP.Net.Entities.Core.Filter> filters = JsonConvert.DeserializeObject<List<MixERP.Net.Entities.Core.Filter>>(collection.ToString(), JsonHelper.GetJsonSerializerSettings());
 
             try
             {

@@ -296,10 +296,10 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             fiscalYear.audit_user_id = this._UserId;
             fiscalYear.audit_ts = System.DateTime.UtcNow;
+
+            object primaryKeyValue = fiscalYear.fiscal_year_code;
 
             if (!string.IsNullOrWhiteSpace(fiscalYear.fiscal_year_code))
             {
@@ -399,6 +399,8 @@ namespace MixERP.Net.Schemas.Core.Data
 
                             fiscalYear.audit_user_id = this._UserId;
                             fiscalYear.audit_ts = System.DateTime.UtcNow;
+
+                            object primaryKeyValue = fiscalYear.fiscal_year_code;
 
                             if (!string.IsNullOrWhiteSpace(fiscalYear.fiscal_year_code))
                             {

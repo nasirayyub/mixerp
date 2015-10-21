@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = routine.routine_id;
 
-            if (Cast.To<int>(routine.routine_id) > 0)
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = routine.routine_id;
                 this.Update(routine, int.Parse(routine.routine_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
 
 
-                            if (Cast.To<int>(routine.routine_id) > 0)
+                            object primaryKeyValue = routine.routine_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(routine.routine_id);
                                 db.Update("transactions.routines", "routine_id", routine, routine.routine_id);

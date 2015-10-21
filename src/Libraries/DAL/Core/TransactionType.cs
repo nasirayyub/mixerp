@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = transactionType.transaction_type_id;
 
-            if (Cast.To<short>(transactionType.transaction_type_id) > 0)
+            if (Cast.To<short>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = transactionType.transaction_type_id;
                 this.Update(transactionType, short.Parse(transactionType.transaction_type_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-                            if (Cast.To<short>(transactionType.transaction_type_id) > 0)
+                            object primaryKeyValue = transactionType.transaction_type_id;
+
+                            if (Cast.To<short>(primaryKeyValue) > 0)
                             {
                                 result.Add(transactionType.transaction_type_id);
                                 db.Update("core.transaction_types", "transaction_type_id", transactionType, transactionType.transaction_type_id);

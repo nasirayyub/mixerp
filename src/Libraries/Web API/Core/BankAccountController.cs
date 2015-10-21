@@ -521,7 +521,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of BankAccount class.
         /// </summary>
         /// <param name="bankAccount">Your instance of bank accounts class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/bank-account/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -640,7 +640,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of BankAccount class to bulk import.</param>
         /// <returns>Returns list of imported accountIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any BankAccount class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/bank-account/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

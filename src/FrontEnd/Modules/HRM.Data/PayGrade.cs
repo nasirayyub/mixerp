@@ -296,12 +296,12 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             payGrade.audit_user_id = this._UserId;
             payGrade.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(payGrade.pay_grade_id) > 0)
+            object primaryKeyValue = payGrade.pay_grade_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = payGrade.pay_grade_id;
                 this.Update(payGrade, int.Parse(payGrade.pay_grade_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                             payGrade.audit_user_id = this._UserId;
                             payGrade.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(payGrade.pay_grade_id) > 0)
+                            object primaryKeyValue = payGrade.pay_grade_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(payGrade.pay_grade_id);
                                 db.Update("hrm.pay_grades", "pay_grade_id", payGrade, payGrade.pay_grade_id);

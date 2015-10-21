@@ -513,7 +513,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of Unit class.
         /// </summary>
         /// <param name="unit">Your instance of units class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/unit/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -632,7 +632,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of Unit class to bulk import.</param>
         /// <returns>Returns list of imported unitIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any Unit class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/unit/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

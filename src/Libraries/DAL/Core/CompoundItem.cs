@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             compoundItem.audit_user_id = this._UserId;
             compoundItem.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(compoundItem.compound_item_id) > 0)
+            object primaryKeyValue = compoundItem.compound_item_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = compoundItem.compound_item_id;
                 this.Update(compoundItem, int.Parse(compoundItem.compound_item_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             compoundItem.audit_user_id = this._UserId;
                             compoundItem.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(compoundItem.compound_item_id) > 0)
+                            object primaryKeyValue = compoundItem.compound_item_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(compoundItem.compound_item_id);
                                 db.Update("core.compound_items", "compound_item_id", compoundItem, compoundItem.compound_item_id);

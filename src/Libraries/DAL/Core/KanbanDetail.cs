@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             kanbanDetail.audit_user_id = this._UserId;
             kanbanDetail.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(kanbanDetail.kanban_detail_id) > 0)
+            object primaryKeyValue = kanbanDetail.kanban_detail_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = kanbanDetail.kanban_detail_id;
                 this.Update(kanbanDetail, long.Parse(kanbanDetail.kanban_detail_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             kanbanDetail.audit_user_id = this._UserId;
                             kanbanDetail.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(kanbanDetail.kanban_detail_id) > 0)
+                            object primaryKeyValue = kanbanDetail.kanban_detail_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(kanbanDetail.kanban_detail_id);
                                 db.Update("core.kanban_details", "kanban_detail_id", kanbanDetail, kanbanDetail.kanban_detail_id);

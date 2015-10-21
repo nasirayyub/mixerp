@@ -296,12 +296,12 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             educationLevel.audit_user_id = this._UserId;
             educationLevel.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(educationLevel.education_level_id) > 0)
+            object primaryKeyValue = educationLevel.education_level_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = educationLevel.education_level_id;
                 this.Update(educationLevel, int.Parse(educationLevel.education_level_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                             educationLevel.audit_user_id = this._UserId;
                             educationLevel.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(educationLevel.education_level_id) > 0)
+                            object primaryKeyValue = educationLevel.education_level_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(educationLevel.education_level_id);
                                 db.Update("hrm.education_levels", "education_level_id", educationLevel, educationLevel.education_level_id);

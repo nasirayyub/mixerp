@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Policy.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             voucherVerificationPolicy.audit_user_id = this._UserId;
             voucherVerificationPolicy.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(voucherVerificationPolicy.policy_id) > 0)
+            object primaryKeyValue = voucherVerificationPolicy.policy_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = voucherVerificationPolicy.policy_id;
                 this.Update(voucherVerificationPolicy, int.Parse(voucherVerificationPolicy.policy_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Policy.Data
                             voucherVerificationPolicy.audit_user_id = this._UserId;
                             voucherVerificationPolicy.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(voucherVerificationPolicy.policy_id) > 0)
+                            object primaryKeyValue = voucherVerificationPolicy.policy_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(voucherVerificationPolicy.policy_id);
                                 db.Update("policy.voucher_verification_policy", "policy_id", voucherVerificationPolicy, voucherVerificationPolicy.policy_id);

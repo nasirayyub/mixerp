@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             transactionMaster.audit_user_id = this._UserId;
             transactionMaster.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(transactionMaster.transaction_master_id) > 0)
+            object primaryKeyValue = transactionMaster.transaction_master_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = transactionMaster.transaction_master_id;
                 this.Update(transactionMaster, long.Parse(transactionMaster.transaction_master_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Transactions.Data
                             transactionMaster.audit_user_id = this._UserId;
                             transactionMaster.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(transactionMaster.transaction_master_id) > 0)
+                            object primaryKeyValue = transactionMaster.transaction_master_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(transactionMaster.transaction_master_id);
                                 db.Update("transactions.transaction_master", "transaction_master_id", transactionMaster, transactionMaster.transaction_master_id);

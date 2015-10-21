@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = attachment.attachment_id;
 
-            if (Cast.To<long>(attachment.attachment_id) > 0)
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = attachment.attachment_id;
                 this.Update(attachment, long.Parse(attachment.attachment_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-                            if (Cast.To<long>(attachment.attachment_id) > 0)
+                            object primaryKeyValue = attachment.attachment_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(attachment.attachment_id);
                                 db.Update("core.attachments", "attachment_id", attachment, attachment.attachment_id);

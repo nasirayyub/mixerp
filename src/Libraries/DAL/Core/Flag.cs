@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = flag.flag_id;
 
-            if (Cast.To<long>(flag.flag_id) > 0)
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = flag.flag_id;
                 this.Update(flag, long.Parse(flag.flag_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-                            if (Cast.To<long>(flag.flag_id) > 0)
+                            object primaryKeyValue = flag.flag_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(flag.flag_id);
                                 db.Update("core.flags", "flag_id", flag, flag.flag_id);

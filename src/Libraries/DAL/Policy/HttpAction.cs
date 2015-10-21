@@ -296,9 +296,9 @@ namespace MixERP.Net.Schemas.Policy.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = httpAction.http_action_code;
 
             if (!string.IsNullOrWhiteSpace(httpAction.http_action_code))
             {
@@ -397,6 +397,8 @@ namespace MixERP.Net.Schemas.Policy.Data
                             line++;
 
 
+
+                            object primaryKeyValue = httpAction.http_action_code;
 
                             if (!string.IsNullOrWhiteSpace(httpAction.http_action_code))
                             {

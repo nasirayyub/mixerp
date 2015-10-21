@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = exchangeRateDetail.exchange_rate_detail_id;
 
-            if (Cast.To<long>(exchangeRateDetail.exchange_rate_detail_id) > 0)
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = exchangeRateDetail.exchange_rate_detail_id;
                 this.Update(exchangeRateDetail, long.Parse(exchangeRateDetail.exchange_rate_detail_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-                            if (Cast.To<long>(exchangeRateDetail.exchange_rate_detail_id) > 0)
+                            object primaryKeyValue = exchangeRateDetail.exchange_rate_detail_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(exchangeRateDetail.exchange_rate_detail_id);
                                 db.Update("core.exchange_rate_details", "exchange_rate_detail_id", exchangeRateDetail, exchangeRateDetail.exchange_rate_detail_id);

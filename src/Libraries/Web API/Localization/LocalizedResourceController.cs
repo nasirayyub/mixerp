@@ -512,7 +512,7 @@ namespace MixERP.Net.Api.Localization
         ///     Adds or edits your instance of LocalizedResource class.
         /// </summary>
         /// <param name="localizedResource">Your instance of localized resources class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/localization/localized-resource/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -631,7 +631,7 @@ namespace MixERP.Net.Api.Localization
         /// <param name="collection">Your collection of LocalizedResource class to bulk import.</param>
         /// <returns>Returns list of imported localizedResourceIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any LocalizedResource class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/localization/localized-resource/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

@@ -528,7 +528,7 @@ namespace MixERP.Net.Api.Transactions
         ///     Adds or edits your instance of InventoryTransferRequest class.
         /// </summary>
         /// <param name="inventoryTransferRequest">Your instance of inventory transfer requests class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/transactions/inventory-transfer-request/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -647,7 +647,7 @@ namespace MixERP.Net.Api.Transactions
         /// <param name="collection">Your collection of InventoryTransferRequest class to bulk import.</param>
         /// <returns>Returns list of imported inventoryTransferRequestIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any InventoryTransferRequest class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/transactions/inventory-transfer-request/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

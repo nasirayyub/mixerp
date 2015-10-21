@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             maritalStatus.audit_user_id = this._UserId;
             maritalStatus.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(maritalStatus.marital_status_id) > 0)
+            object primaryKeyValue = maritalStatus.marital_status_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = maritalStatus.marital_status_id;
                 this.Update(maritalStatus, int.Parse(maritalStatus.marital_status_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             maritalStatus.audit_user_id = this._UserId;
                             maritalStatus.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(maritalStatus.marital_status_id) > 0)
+                            object primaryKeyValue = maritalStatus.marital_status_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(maritalStatus.marital_status_id);
                                 db.Update("core.marital_statuses", "marital_status_id", maritalStatus, maritalStatus.marital_status_id);

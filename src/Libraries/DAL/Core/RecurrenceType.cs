@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             recurrenceType.audit_user_id = this._UserId;
             recurrenceType.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(recurrenceType.recurrence_type_id) > 0)
+            object primaryKeyValue = recurrenceType.recurrence_type_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = recurrenceType.recurrence_type_id;
                 this.Update(recurrenceType, int.Parse(recurrenceType.recurrence_type_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             recurrenceType.audit_user_id = this._UserId;
                             recurrenceType.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(recurrenceType.recurrence_type_id) > 0)
+                            object primaryKeyValue = recurrenceType.recurrence_type_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(recurrenceType.recurrence_type_id);
                                 db.Update("core.recurrence_types", "recurrence_type_id", recurrenceType, recurrenceType.recurrence_type_id);

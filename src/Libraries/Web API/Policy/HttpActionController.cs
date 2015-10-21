@@ -509,7 +509,7 @@ namespace MixERP.Net.Api.Policy
         ///     Adds or edits your instance of HttpAction class.
         /// </summary>
         /// <param name="httpAction">Your instance of http actions class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/policy/http-action/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -628,7 +628,7 @@ namespace MixERP.Net.Api.Policy
         /// <param name="collection">Your collection of HttpAction class to bulk import.</param>
         /// <returns>Returns list of imported httpActionCodes.</returns>
         /// <exception cref="MixERPException">Thrown when your any HttpAction class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/policy/http-action/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = customerReceipt.receipt_id;
 
-            if (Cast.To<long>(customerReceipt.receipt_id) > 0)
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = customerReceipt.receipt_id;
                 this.Update(customerReceipt, long.Parse(customerReceipt.receipt_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
 
 
-                            if (Cast.To<long>(customerReceipt.receipt_id) > 0)
+                            object primaryKeyValue = customerReceipt.receipt_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(customerReceipt.receipt_id);
                                 db.Update("transactions.customer_receipts", "receipt_id", customerReceipt, customerReceipt.receipt_id);

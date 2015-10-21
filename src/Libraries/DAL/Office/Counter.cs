@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Office.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             counter.audit_user_id = this._UserId;
             counter.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(counter.counter_id) > 0)
+            object primaryKeyValue = counter.counter_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = counter.counter_id;
                 this.Update(counter, int.Parse(counter.counter_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Office.Data
                             counter.audit_user_id = this._UserId;
                             counter.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(counter.counter_id) > 0)
+                            object primaryKeyValue = counter.counter_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(counter.counter_id);
                                 db.Update("office.counters", "counter_id", counter, counter.counter_id);

@@ -95,7 +95,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
             textField: "Value"
         },
         {
-            property: "COGSAccountId",
+            property: "CostOfGoodsSoldAccountId",
             url: '/api/core/cost-of-sales-account-selector-view/display-fields',
             data: null,
             isArray: false,

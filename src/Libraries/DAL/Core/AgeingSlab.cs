@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             ageingSlab.audit_user_id = this._UserId;
             ageingSlab.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(ageingSlab.ageing_slab_id) > 0)
+            object primaryKeyValue = ageingSlab.ageing_slab_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = ageingSlab.ageing_slab_id;
                 this.Update(ageingSlab, int.Parse(ageingSlab.ageing_slab_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             ageingSlab.audit_user_id = this._UserId;
                             ageingSlab.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(ageingSlab.ageing_slab_id) > 0)
+                            object primaryKeyValue = ageingSlab.ageing_slab_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(ageingSlab.ageing_slab_id);
                                 db.Update("core.ageing_slabs", "ageing_slab_id", ageingSlab, ageingSlab.ageing_slab_id);

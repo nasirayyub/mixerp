@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = customField.custom_field_id;
 
-            if (Cast.To<long>(customField.custom_field_id) > 0)
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = customField.custom_field_id;
                 this.Update(customField, long.Parse(customField.custom_field_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-                            if (Cast.To<long>(customField.custom_field_id) > 0)
+                            object primaryKeyValue = customField.custom_field_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(customField.custom_field_id);
                                 db.Update("core.custom_fields", "custom_field_id", customField, customField.custom_field_id);

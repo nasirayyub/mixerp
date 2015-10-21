@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Audit.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = loggedAction.event_id;
 
-            if (Cast.To<long>(loggedAction.event_id) > 0)
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = loggedAction.event_id;
                 this.Update(loggedAction, long.Parse(loggedAction.event_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Audit.Data
 
 
 
-                            if (Cast.To<long>(loggedAction.event_id) > 0)
+                            object primaryKeyValue = loggedAction.event_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(loggedAction.event_id);
                                 db.Update("audit.logged_actions", "event_id", loggedAction, loggedAction.event_id);

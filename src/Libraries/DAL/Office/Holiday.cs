@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Office.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             holiday.audit_user_id = this._UserId;
             holiday.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(holiday.holiday_id) > 0)
+            object primaryKeyValue = holiday.holiday_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = holiday.holiday_id;
                 this.Update(holiday, int.Parse(holiday.holiday_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Office.Data
                             holiday.audit_user_id = this._UserId;
                             holiday.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(holiday.holiday_id) > 0)
+                            object primaryKeyValue = holiday.holiday_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(holiday.holiday_id);
                                 db.Update("office.holidays", "holiday_id", holiday, holiday.holiday_id);

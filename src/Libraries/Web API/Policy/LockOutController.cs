@@ -512,7 +512,7 @@ namespace MixERP.Net.Api.Policy
         ///     Adds or edits your instance of LockOut class.
         /// </summary>
         /// <param name="lockOut">Your instance of lock outs class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/policy/lock-out/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -631,7 +631,7 @@ namespace MixERP.Net.Api.Policy
         /// <param name="collection">Your collection of LockOut class to bulk import.</param>
         /// <returns>Returns list of imported lockOutIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any LockOut class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/policy/lock-out/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

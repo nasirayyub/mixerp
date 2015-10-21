@@ -296,9 +296,9 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = taxBaseAmountType.tax_base_amount_type_code;
 
             if (!string.IsNullOrWhiteSpace(taxBaseAmountType.tax_base_amount_type_code))
             {
@@ -397,6 +397,8 @@ namespace MixERP.Net.Schemas.Core.Data
                             line++;
 
 
+
+                            object primaryKeyValue = taxBaseAmountType.tax_base_amount_type_code;
 
                             if (!string.IsNullOrWhiteSpace(taxBaseAmountType.tax_base_amount_type_code))
                             {

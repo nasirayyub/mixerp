@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             countySalesTax.audit_user_id = this._UserId;
             countySalesTax.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(countySalesTax.county_sales_tax_id) > 0)
+            object primaryKeyValue = countySalesTax.county_sales_tax_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = countySalesTax.county_sales_tax_id;
                 this.Update(countySalesTax, int.Parse(countySalesTax.county_sales_tax_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             countySalesTax.audit_user_id = this._UserId;
                             countySalesTax.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(countySalesTax.county_sales_tax_id) > 0)
+                            object primaryKeyValue = countySalesTax.county_sales_tax_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(countySalesTax.county_sales_tax_id);
                                 db.Update("core.county_sales_taxes", "county_sales_tax_id", countySalesTax, countySalesTax.county_sales_tax_id);

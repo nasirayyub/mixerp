@@ -1,6 +1,6 @@
 ﻿function displayPreview() {
-    var background_color_textbox = $("#background_color_textbox");
-    var foreground_color_textbox = $("#foreground_color_textbox");
+    var background_color_textbox = $("#background_color");
+    var foreground_color_textbox = $("#foreground_color");
 
     var background = background_color_textbox.val();
     var foreground = foreground_color_textbox.val();
@@ -9,19 +9,11 @@
 
 };
 
-
-//This event will be called by ASP.net AJAX during
-//asynchronous partial page rendering.
-function AsyncListener() {
-    //At this point, the GridView should have already been reloaded.
-    //So, load color information on the grid once again.
+$(document).on("viewsuccess", function () {
     loadColor();
-    displayPreview();
-    addColorPicker();
-};
+});
 
-
-$(document).ready(function () {
+$(document).on("formready", function () {
     loadColor();
     addColorPicker();
 });
@@ -31,8 +23,7 @@ function scrudCustomValidator() {
 };
 
 function addColorPicker() {
-
-    $('.color').colorpicker({
+    $('[data-type="color"]').colorpicker({
         parts: 'full',
         alpha: true,
         open: function () {
@@ -48,11 +39,11 @@ function addColorPicker() {
 
 var loadColor = function () {
     //Get an instance of the form grid.
-    var grid = $("#FormGridView");
+    var grid = $("#ScrudView");
 
     //Set position of the column which contains color value.
-    var bgColorColumnPos = "4";
-    var fgColorColumnPos = "5";
+    var bgColorColumnPos = "5";
+    var fgColorColumnPos = "6";
 
     //Iterate through all the rows of the grid.
     grid.find("tr").each(function () {

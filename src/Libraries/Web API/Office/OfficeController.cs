@@ -539,7 +539,7 @@ namespace MixERP.Net.Api.Office
         ///     Adds or edits your instance of Office class.
         /// </summary>
         /// <param name="office">Your instance of offices class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/office/office/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -658,7 +658,7 @@ namespace MixERP.Net.Api.Office
         /// <param name="collection">Your collection of Office class to bulk import.</param>
         /// <returns>Returns list of imported officeIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any Office class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/office/office/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

@@ -159,7 +159,7 @@ CREATE TABLE hrm.employees
     bank_name                               national character varying(128) DEFAULT(''),
     bank_branch_name                        national character varying(128) DEFAULT(''),
     bank_reference_number                   national character varying(128) DEFAULT(''),
-    account_id                              bigint NULL REFERENCES core.account(account_id),
+    account_id                              bigint NULL REFERENCES core.accounts(account_id),
     zip_code                                national character varying(128) DEFAULT(''),
     address_line_1                          national character varying(128) DEFAULT(''),
     address_line_2                          national character varying(128) DEFAULT(''),
@@ -1297,7 +1297,7 @@ SELECT 'RES', 'Resignation' UNION ALL
 SELECT 'TER', 'Termination' UNION ALL
 SELECT 'DEC', 'Deceased';
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/99.sample/employees.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/99.sample/employees.sample --<--<--
 INSERT INTO hrm.employees(employee_code, first_name, middle_name, last_name, employee_name, gender_code, marital_status_id, joined_on, office_id, user_id, employee_type_id, current_department_id, current_role_id, current_employment_status_id, current_job_title_id, current_pay_grade_id, current_shift_id, date_of_birth, photo, bank_account_number, bank_name, bank_branch_name)
 SELECT 'MI-0001', 'Micheal', '', 'Paul', 'Paul, Micheal', 'M', '1'::int, '9/21/2015'::date, '2'::int, '2'::int, '1'::int, '1'::int, '1'::int, '1'::int, '1'::int, '1'::int, '2'::int, '3/28/1979'::date, 'sample/man-838636_640.jpg', '1-2939-3944-03', 'Bank of America', 'Myrtle Ave' UNION ALL
 SELECT 'AR-0001', 'Arjun', '', 'Rivers', 'Rivers, Arjun', 'M', '2', '9/12/2015', '2', '2', '2', '2', '2', '2', '2', '1', '2', '7/1/1997', 'sample/beautiful-19075_640.jpg', '1-2939-3944-04', 'Bank of America', 'Myrtle Ave' UNION ALL

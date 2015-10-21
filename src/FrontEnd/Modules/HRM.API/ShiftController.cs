@@ -516,7 +516,7 @@ namespace MixERP.Net.Api.HRM
         ///     Adds or edits your instance of Shift class.
         /// </summary>
         /// <param name="shift">Your instance of shifts class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/hrm/shift/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -635,7 +635,7 @@ namespace MixERP.Net.Api.HRM
         /// <param name="collection">Your collection of Shift class to bulk import.</param>
         /// <returns>Returns list of imported shiftIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any Shift class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/hrm/shift/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

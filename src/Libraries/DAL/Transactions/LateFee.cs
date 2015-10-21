@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = lateFee.transaction_master_id;
 
-            if (Cast.To<long>(lateFee.transaction_master_id) > 0)
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = lateFee.transaction_master_id;
                 this.Update(lateFee, long.Parse(lateFee.transaction_master_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
 
 
-                            if (Cast.To<long>(lateFee.transaction_master_id) > 0)
+                            object primaryKeyValue = lateFee.transaction_master_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(lateFee.transaction_master_id);
                                 db.Update("transactions.late_fee", "transaction_master_id", lateFee, lateFee.transaction_master_id);

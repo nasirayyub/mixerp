@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Config.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             smtp.audit_user_id = this._UserId;
             smtp.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(smtp.smtp_id) > 0)
+            object primaryKeyValue = smtp.smtp_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = smtp.smtp_id;
                 this.Update(smtp, int.Parse(smtp.smtp_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Config.Data
                             smtp.audit_user_id = this._UserId;
                             smtp.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(smtp.smtp_id) > 0)
+                            object primaryKeyValue = smtp.smtp_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(smtp.smtp_id);
                                 db.Update("config.smtp", "smtp_id", smtp, smtp.smtp_id);

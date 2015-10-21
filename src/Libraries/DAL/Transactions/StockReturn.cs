@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Transactions.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = stockReturn.sales_return_id;
 
-            if (Cast.To<long>(stockReturn.sales_return_id) > 0)
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = stockReturn.sales_return_id;
                 this.Update(stockReturn, long.Parse(stockReturn.sales_return_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Transactions.Data
 
 
 
-                            if (Cast.To<long>(stockReturn.sales_return_id) > 0)
+                            object primaryKeyValue = stockReturn.sales_return_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(stockReturn.sales_return_id);
                                 db.Update("transactions.stock_return", "sales_return_id", stockReturn, stockReturn.sales_return_id);

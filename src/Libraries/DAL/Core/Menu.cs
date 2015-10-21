@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             menu.audit_user_id = this._UserId;
             menu.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(menu.menu_id) > 0)
+            object primaryKeyValue = menu.menu_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = menu.menu_id;
                 this.Update(menu, int.Parse(menu.menu_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             menu.audit_user_id = this._UserId;
                             menu.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(menu.menu_id) > 0)
+                            object primaryKeyValue = menu.menu_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(menu.menu_id);
                                 db.Update("core.menus", "menu_id", menu, menu.menu_id);

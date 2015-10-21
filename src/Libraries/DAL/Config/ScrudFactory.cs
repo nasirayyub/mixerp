@@ -296,10 +296,10 @@ namespace MixERP.Net.Schemas.Config.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             scrudFactory.audit_user_id = this._UserId;
             scrudFactory.audit_ts = System.DateTime.UtcNow;
+
+            object primaryKeyValue = scrudFactory.key;
 
             if (!string.IsNullOrWhiteSpace(scrudFactory.key))
             {
@@ -399,6 +399,8 @@ namespace MixERP.Net.Schemas.Config.Data
 
                             scrudFactory.audit_user_id = this._UserId;
                             scrudFactory.audit_ts = System.DateTime.UtcNow;
+
+                            object primaryKeyValue = scrudFactory.key;
 
                             if (!string.IsNullOrWhiteSpace(scrudFactory.key))
                             {

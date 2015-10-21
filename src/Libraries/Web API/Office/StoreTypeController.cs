@@ -513,7 +513,7 @@ namespace MixERP.Net.Api.Office
         ///     Adds or edits your instance of StoreType class.
         /// </summary>
         /// <param name="storeType">Your instance of store types class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/office/store-type/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -632,7 +632,7 @@ namespace MixERP.Net.Api.Office
         /// <param name="collection">Your collection of StoreType class to bulk import.</param>
         /// <returns>Returns list of imported storeTypeIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any StoreType class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/office/store-type/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

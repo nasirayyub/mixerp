@@ -518,7 +518,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of Attachment class.
         /// </summary>
         /// <param name="attachment">Your instance of attachments class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/attachment/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -637,7 +637,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of Attachment class to bulk import.</param>
         /// <returns>Returns list of imported attachmentIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any Attachment class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/attachment/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

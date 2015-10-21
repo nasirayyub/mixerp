@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = menuLocale.menu_locale_id;
 
-            if (Cast.To<int>(menuLocale.menu_locale_id) > 0)
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = menuLocale.menu_locale_id;
                 this.Update(menuLocale, int.Parse(menuLocale.menu_locale_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-                            if (Cast.To<int>(menuLocale.menu_locale_id) > 0)
+                            object primaryKeyValue = menuLocale.menu_locale_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(menuLocale.menu_locale_id);
                                 db.Update("core.menu_locale", "menu_locale_id", menuLocale, menuLocale.menu_locale_id);

@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Office.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = cashier.cashier_id;
 
-            if (Cast.To<long>(cashier.cashier_id) > 0)
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = cashier.cashier_id;
                 this.Update(cashier, long.Parse(cashier.cashier_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Office.Data
 
 
 
-                            if (Cast.To<long>(cashier.cashier_id) > 0)
+                            object primaryKeyValue = cashier.cashier_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(cashier.cashier_id);
                                 db.Update("office.cashiers", "cashier_id", cashier, cashier.cashier_id);

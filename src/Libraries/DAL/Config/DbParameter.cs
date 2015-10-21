@@ -296,10 +296,10 @@ namespace MixERP.Net.Schemas.Config.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             dbParameter.audit_user_id = this._UserId;
             dbParameter.audit_ts = System.DateTime.UtcNow;
+
+            object primaryKeyValue = dbParameter.key;
 
             if (!string.IsNullOrWhiteSpace(dbParameter.key))
             {
@@ -399,6 +399,8 @@ namespace MixERP.Net.Schemas.Config.Data
 
                             dbParameter.audit_user_id = this._UserId;
                             dbParameter.audit_ts = System.DateTime.UtcNow;
+
+                            object primaryKeyValue = dbParameter.key;
 
                             if (!string.IsNullOrWhiteSpace(dbParameter.key))
                             {

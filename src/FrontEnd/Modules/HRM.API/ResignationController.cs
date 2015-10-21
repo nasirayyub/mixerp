@@ -522,7 +522,7 @@ namespace MixERP.Net.Api.HRM
         ///     Adds or edits your instance of Resignation class.
         /// </summary>
         /// <param name="resignation">Your instance of resignations class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/hrm/resignation/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -641,7 +641,7 @@ namespace MixERP.Net.Api.HRM
         /// <param name="collection">Your collection of Resignation class to bulk import.</param>
         /// <returns>Returns list of imported resignationIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any Resignation class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/hrm/resignation/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

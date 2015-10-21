@@ -512,7 +512,7 @@ namespace MixERP.Net.Api.Config
         ///     Adds or edits your instance of DbParameter class.
         /// </summary>
         /// <param name="dbParameter">Your instance of db parameters class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/config/db-parameter/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -631,7 +631,7 @@ namespace MixERP.Net.Api.Config
         /// <param name="collection">Your collection of DbParameter class to bulk import.</param>
         /// <returns>Returns list of imported keys.</returns>
         /// <exception cref="MixERPException">Thrown when your any DbParameter class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/config/db-parameter/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

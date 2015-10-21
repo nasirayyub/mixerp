@@ -136,15 +136,24 @@
             function getFormValue(columnName, dataType, isSerial) {
                 var el = $("#" + columnName);
                 var val = null;
-
                 if (el.length) {
                     val = el.val();
-
 
                     switch (dataType) {
                         case "System.Boolean":
                         case "bool":
                             val = val === "yes" ? true : false;
+                            break;
+                        case "DateTime":
+                            val = window.parseLocalizedDate(val) || null;
+                            break;
+                        case "short":
+                        case "int":
+                        case "long":
+                        case "float":
+                        case "double":
+                        case "decimal":
+                            val = val || null;
                             break;
                         default:
                             val = val.toString().trim();
@@ -196,9 +205,7 @@
                 });
             };
 
-
             var ajaxAddOrEdit = addOrEdit(entity, customFields);
-
 
             ajaxAddOrEdit.success(function () {
                 saveButton.removeClass("loading");
@@ -229,14 +236,16 @@
         });
 
         function resetForm() {
-            var fields = $(".form-field, .custom-field");
+            var fields = $(".form-field:not(:hidden), .custom-field:not(:hidden)");
 
             $(".uploader.field .ui.image.preview").attr("src", "/Static/images/mixerp-logo-light.png");
 
-            $.each(scrudFactory.disabledOnEdit, function () {
-                var el = $('[data-property="' + this + '"]');
-                el.removeAttr("disabled");
-            });
+            if (scrudFactory.disabledOnEdit) {
+                $.each(scrudFactory.disabledOnEdit, function () {
+                    var el = $('[data-property="' + this + '"]');
+                    el.removeAttr("disabled");
+                });
+            };
 
             $.each(fields, function () {
                 var el = $(this);
@@ -317,7 +326,7 @@
             form.push(customFields);
 
             var data = JSON.stringify(form);
-            return getAjaxRequest(url, "PUT", data);
+            return getAjaxRequest(url, "POST", data);
         };
 
     </script>

@@ -510,7 +510,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of VerificationStatus class.
         /// </summary>
         /// <param name="verificationStatus">Your instance of verification statuses class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/verification-status/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -629,7 +629,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of VerificationStatus class to bulk import.</param>
         /// <returns>Returns list of imported verificationStatusIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any VerificationStatus class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/verification-status/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

@@ -515,7 +515,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of CustomFieldSetup class.
         /// </summary>
         /// <param name="customFieldSetup">Your instance of custom field setups class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/custom-field-setup/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -634,7 +634,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of CustomFieldSetup class to bulk import.</param>
         /// <returns>Returns list of imported customFieldSetupIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any CustomFieldSetup class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/custom-field-setup/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

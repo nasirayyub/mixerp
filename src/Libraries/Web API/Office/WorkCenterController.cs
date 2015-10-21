@@ -514,7 +514,7 @@ namespace MixERP.Net.Api.Office
         ///     Adds or edits your instance of WorkCenter class.
         /// </summary>
         /// <param name="workCenter">Your instance of work centers class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/office/work-center/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -633,7 +633,7 @@ namespace MixERP.Net.Api.Office
         /// <param name="collection">Your collection of WorkCenter class to bulk import.</param>
         /// <returns>Returns list of imported workCenterIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any WorkCenter class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/office/work-center/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

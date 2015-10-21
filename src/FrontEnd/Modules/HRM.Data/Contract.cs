@@ -296,12 +296,12 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             contract.audit_user_id = this._UserId;
             contract.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(contract.contract_id) > 0)
+            object primaryKeyValue = contract.contract_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = contract.contract_id;
                 this.Update(contract, long.Parse(contract.contract_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                             contract.audit_user_id = this._UserId;
                             contract.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(contract.contract_id) > 0)
+                            object primaryKeyValue = contract.contract_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(contract.contract_id);
                                 db.Update("hrm.contracts", "contract_id", contract, contract.contract_id);

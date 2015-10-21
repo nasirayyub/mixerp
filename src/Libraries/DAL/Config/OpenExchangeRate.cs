@@ -296,10 +296,10 @@ namespace MixERP.Net.Schemas.Config.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             openExchangeRate.audit_user_id = this._UserId;
             openExchangeRate.audit_ts = System.DateTime.UtcNow;
+
+            object primaryKeyValue = openExchangeRate.key;
 
             if (!string.IsNullOrWhiteSpace(openExchangeRate.key))
             {
@@ -399,6 +399,8 @@ namespace MixERP.Net.Schemas.Config.Data
 
                             openExchangeRate.audit_user_id = this._UserId;
                             openExchangeRate.audit_ts = System.DateTime.UtcNow;
+
+                            object primaryKeyValue = openExchangeRate.key;
 
                             if (!string.IsNullOrWhiteSpace(openExchangeRate.key))
                             {

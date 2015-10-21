@@ -524,7 +524,7 @@ namespace MixERP.Net.Api.Policy
         ///     Adds or edits your instance of VoucherVerificationPolicy class.
         /// </summary>
         /// <param name="voucherVerificationPolicy">Your instance of voucher verification policies class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/policy/voucher-verification-policy/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -643,7 +643,7 @@ namespace MixERP.Net.Api.Policy
         /// <param name="collection">Your collection of VoucherVerificationPolicy class to bulk import.</param>
         /// <returns>Returns list of imported policyIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any VoucherVerificationPolicy class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/policy/voucher-verification-policy/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

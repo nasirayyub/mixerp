@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = attachmentLookup.attachment_lookup_id;
 
-            if (Cast.To<int>(attachmentLookup.attachment_lookup_id) > 0)
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = attachmentLookup.attachment_lookup_id;
                 this.Update(attachmentLookup, int.Parse(attachmentLookup.attachment_lookup_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-                            if (Cast.To<int>(attachmentLookup.attachment_lookup_id) > 0)
+                            object primaryKeyValue = attachmentLookup.attachment_lookup_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(attachmentLookup.attachment_lookup_id);
                                 db.Update("core.attachment_lookup", "attachment_lookup_id", attachmentLookup, attachmentLookup.attachment_lookup_id);

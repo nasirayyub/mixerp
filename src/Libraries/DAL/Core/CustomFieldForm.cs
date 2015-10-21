@@ -296,9 +296,9 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = customFieldForm.form_name;
 
             if (!string.IsNullOrWhiteSpace(customFieldForm.form_name))
             {
@@ -397,6 +397,8 @@ namespace MixERP.Net.Schemas.Core.Data
                             line++;
 
 
+
+                            object primaryKeyValue = customFieldForm.form_name;
 
                             if (!string.IsNullOrWhiteSpace(customFieldForm.form_name))
                             {

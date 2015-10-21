@@ -296,12 +296,12 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             shift.audit_user_id = this._UserId;
             shift.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(shift.shift_id) > 0)
+            object primaryKeyValue = shift.shift_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = shift.shift_id;
                 this.Update(shift, int.Parse(shift.shift_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Core.Modules.HRM.Data
                             shift.audit_user_id = this._UserId;
                             shift.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(shift.shift_id) > 0)
+                            object primaryKeyValue = shift.shift_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(shift.shift_id);
                                 db.Update("hrm.shifts", "shift_id", shift, shift.shift_id);

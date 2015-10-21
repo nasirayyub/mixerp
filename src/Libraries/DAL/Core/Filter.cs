@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             filter.audit_user_id = this._UserId;
             filter.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<long>(filter.filter_id) > 0)
+            object primaryKeyValue = filter.filter_id;
+
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = filter.filter_id;
                 this.Update(filter, long.Parse(filter.filter_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             filter.audit_user_id = this._UserId;
                             filter.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<long>(filter.filter_id) > 0)
+                            object primaryKeyValue = filter.filter_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(filter.filter_id);
                                 db.Update("core.filters", "filter_id", filter, filter.filter_id);
@@ -716,6 +718,35 @@ namespace MixERP.Net.Schemas.Core.Data
             return Factory.Get<MixERP.Net.Entities.Core.Filter>(this._Catalog, sql);
         }
 
+
+        /// <summary>
+        /// Deletes the row of the table "core.filters" against the supplied filter name.
+        /// </summary>
+        /// <param name="filterName">The value of the column "filter_name" which will be deleted.</param>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public void Delete(string filterName)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Delete, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to delete entity \"Filter\" with Filter Name {FilterName} was denied to the user with Login ID {LoginId}.", filterName, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "DELETE FROM core.filters WHERE filter_name=@0;";
+            Factory.NonQuery(this._Catalog, sql, filterName);
+        }
 
         public void RecreateFilters(string objectName, string filterName, List<MixERP.Net.Entities.Core.Filter> filters)
         {

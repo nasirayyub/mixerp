@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = emailQueue.queue_id;
 
-            if (Cast.To<long>(emailQueue.queue_id) > 0)
+            if (Cast.To<long>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = emailQueue.queue_id;
                 this.Update(emailQueue, long.Parse(emailQueue.queue_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Core.Data
 
 
 
-                            if (Cast.To<long>(emailQueue.queue_id) > 0)
+                            object primaryKeyValue = emailQueue.queue_id;
+
+                            if (Cast.To<long>(primaryKeyValue) > 0)
                             {
                                 result.Add(emailQueue.queue_id);
                                 db.Update("core.email_queue", "queue_id", emailQueue, emailQueue.queue_id);

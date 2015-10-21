@@ -536,10 +536,6 @@
       <Project>{81F04B78-6194-4F86-A795-5F186C602EEE}</Project>
       <Name>MixERP.Net.WebControls.ReportEngine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\Server Controls\Project\MixERP.Net.WebControls.ScrudFactory\MixERP.Net.WebControls.ScrudFactory.csproj">
-      <Project>{07ddce95-a18f-4a35-b892-ce09ead2aa65}</Project>
-      <Name>MixERP.Net.WebControls.ScrudFactory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\Server Controls\Project\MixERP.Net.WebControls.StockAdjustmentFactory\MixERP.Net.WebControls.StockAdjustmentFactory.csproj">
       <Project>{935fbcef-5f6b-4bd3-b6f3-0c65fea66a15}</Project>
       <Name>MixERP.Net.WebControls.StockAdjustmentFactory</Name>

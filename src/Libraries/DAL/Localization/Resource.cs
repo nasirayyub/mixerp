@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Localization.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = resource.resource_id;
 
-            if (Cast.To<int>(resource.resource_id) > 0)
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = resource.resource_id;
                 this.Update(resource, int.Parse(resource.resource_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Localization.Data
 
 
 
-                            if (Cast.To<int>(resource.resource_id) > 0)
+                            object primaryKeyValue = resource.resource_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(resource.resource_id);
                                 db.Update("localization.resources", "resource_id", resource, resource.resource_id);

@@ -525,7 +525,7 @@ namespace MixERP.Net.Api.Transactions
         ///     Adds or edits your instance of StockMaster class.
         /// </summary>
         /// <param name="stockMaster">Your instance of stock masters class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/transactions/stock-master/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -644,7 +644,7 @@ namespace MixERP.Net.Api.Transactions
         /// <param name="collection">Your collection of StockMaster class to bulk import.</param>
         /// <returns>Returns list of imported stockMasterIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any StockMaster class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/transactions/stock-master/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

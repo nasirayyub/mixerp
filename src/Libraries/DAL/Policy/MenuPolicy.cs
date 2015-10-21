@@ -296,11 +296,11 @@ namespace MixERP.Net.Schemas.Policy.Data
                 return null;
             }
 
-            object primaryKeyValue;
 
 
+            object primaryKeyValue = menuPolicy.policy_id;
 
-            if (Cast.To<int>(menuPolicy.policy_id) > 0)
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = menuPolicy.policy_id;
                 this.Update(menuPolicy, int.Parse(menuPolicy.policy_id));
@@ -398,7 +398,9 @@ namespace MixERP.Net.Schemas.Policy.Data
 
 
 
-                            if (Cast.To<int>(menuPolicy.policy_id) > 0)
+                            object primaryKeyValue = menuPolicy.policy_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(menuPolicy.policy_id);
                                 db.Update("policy.menu_policy", "policy_id", menuPolicy, menuPolicy.policy_id);

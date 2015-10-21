@@ -518,7 +518,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of BonusSlab class.
         /// </summary>
         /// <param name="bonusSlab">Your instance of bonus slabs class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/bonus-slab/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -637,7 +637,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of BonusSlab class to bulk import.</param>
         /// <returns>Returns list of imported bonusSlabIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any BonusSlab class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/bonus-slab/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

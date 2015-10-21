@@ -512,7 +512,7 @@ namespace MixERP.Net.Api.Core
         ///     Adds or edits your instance of ExchangeRate class.
         /// </summary>
         /// <param name="exchangeRate">Your instance of exchange rates class to add or edit.</param>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("add-or-edit")]
         [Route("~/api/core/exchange-rate/add-or-edit")]
         public object AddOrEdit([FromBody]Newtonsoft.Json.Linq.JArray form)
@@ -631,7 +631,7 @@ namespace MixERP.Net.Api.Core
         /// <param name="collection">Your collection of ExchangeRate class to bulk import.</param>
         /// <returns>Returns list of imported exchangeRateIds.</returns>
         /// <exception cref="MixERPException">Thrown when your any ExchangeRate class in the collection is invalid or malformed.</exception>
-        [AcceptVerbs("PUT")]
+        [AcceptVerbs("POST")]
         [Route("bulk-import")]
         [Route("~/api/core/exchange-rate/bulk-import")]
         public List<object> BulkImport([FromBody]JArray collection)

@@ -296,12 +296,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 return null;
             }
 
-            object primaryKeyValue;
-
             industry.audit_user_id = this._UserId;
             industry.audit_ts = System.DateTime.UtcNow;
 
-            if (Cast.To<int>(industry.industry_id) > 0)
+            object primaryKeyValue = industry.industry_id;
+
+            if (Cast.To<int>(primaryKeyValue) > 0)
             {
                 primaryKeyValue = industry.industry_id;
                 this.Update(industry, int.Parse(industry.industry_id));
@@ -400,7 +400,9 @@ namespace MixERP.Net.Schemas.Core.Data
                             industry.audit_user_id = this._UserId;
                             industry.audit_ts = System.DateTime.UtcNow;
 
-                            if (Cast.To<int>(industry.industry_id) > 0)
+                            object primaryKeyValue = industry.industry_id;
+
+                            if (Cast.To<int>(primaryKeyValue) > 0)
                             {
                                 result.Add(industry.industry_id);
                                 db.Update("core.industries", "industry_id", industry, industry.industry_id);
