@@ -45,6 +45,7 @@
     };
 
     ajax.success(function (response) {
+        window.editData = response;
         displayEdit(response, false);
 
         customFieldRequest(tableName, primaryKeyValue).success(function (msg) {

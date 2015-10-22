@@ -95,6 +95,7 @@
         });
     };
 
+    
     var ajax = request(entity, customFields);
 
     ajax.success(function () {

@@ -16,10 +16,7 @@ namespace MixERP.Net.Core.Modules.BackOffice.Admin
 {
     public partial class ChangePassword : MixERPUserControl
     {
-        public override AccessLevel AccessLevel
-        {
-            get { return AccessLevel.LocalhostAdmin; }
-        }
+        public override AccessLevel AccessLevel => AccessLevel.LocalhostAdmin;
 
         public override void OnControlLoad(object sender, EventArgs e)
         {

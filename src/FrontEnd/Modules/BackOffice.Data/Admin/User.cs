@@ -22,7 +22,7 @@ namespace MixERP.Net.Core.Modules.BackOffice.Data.Admin
         {
             try
             {
-                const string sql = "SELECT * FROM policy.change_password(@0::text, @1::text, @2::text);";
+                const string sql = "SELECT * FROM policy.change_password(@0::integer, @1::text, @2::text);";
                 Factory.NonQuery(catalog, sql, adminUserId, username, password);
             }
             catch (DbException ex)
