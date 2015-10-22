@@ -43,7 +43,7 @@
     <Reference Include="MixERP.Net.Framework">
       <HintPath>..\..\bin\MixERP.Net.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="PetaPoco, Version=1.4.0.0, Culture=neutral, PublicKeyToken=a724a47a0879d02f, processorArchitecture=MSIL">
+    <Reference Include="PetaPoco, Version=1.5.0.0, Culture=neutral, PublicKeyToken=a724a47a0879d02f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\PetaPoco.dll</HintPath>
     </Reference>

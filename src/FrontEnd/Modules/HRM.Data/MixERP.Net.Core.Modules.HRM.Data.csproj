@@ -58,7 +58,7 @@
       <HintPath>..\HRM\packages\Npgsql.2.2.3\lib\net45\Npgsql.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PetaPoco, Version=1.4.0.0, Culture=neutral, PublicKeyToken=a724a47a0879d02f, processorArchitecture=MSIL">
+    <Reference Include="PetaPoco, Version=1.5.0.0, Culture=neutral, PublicKeyToken=a724a47a0879d02f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\PetaPoco.dll</HintPath>
     </Reference>

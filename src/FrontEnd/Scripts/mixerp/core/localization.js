@@ -108,6 +108,11 @@ String.prototype.toMoment = function () {
 };
 
 String.prototype.toTime = function () {
+    function padded(num, size) {
+        var s = size - num.toString().length + 1;
+        return Array(+(s > 0 && s)).join("0") + num;
+    };
+
     if (isNullOrWhiteSpace(this)) {
         return "";
     };
@@ -120,7 +125,7 @@ String.prototype.toTime = function () {
 
     var d = new Date(val);
 
-    return d.getUTCHours() + ":" + d.getUTCMinutes();
+    return padded(d.getUTCHours(), 2) + ":" + padded(d.getUTCMinutes(), 2);
 };
 
 String.prototype.toFormattedHours = function () {
