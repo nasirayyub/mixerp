@@ -26,7 +26,11 @@ function loadAnnotation() {
 
     var ajax = request();
     ajax.success(function (response) {
-        createAnnotationFields(response);
+        if (!annotationLoaded) {
+            createAnnotationFields(response);
+        };
+
+        annotationLoaded = true;
     });
 };
 

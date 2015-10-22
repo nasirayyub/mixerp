@@ -62,16 +62,9 @@ BEGIN
                 _check_out := ('2015-09-30 16:46:19.443+00'::timestamp - '1 minute'::INTERVAL * ROUND(RANDOM() * 100))::time;
                 _overtime_hours := round(random());
             ELSE
-                _reason := CAST(
-                             regexp_replace(
-                               encode(
-                                 gen_random_bytes(40), 'base64'),
-                                 '[/=+]',
-                                 ' ', 'g'
-                           ) AS text);
+                _reason := '';
             END IF;
             
-
             
             RAISE NOTICE '% %', _employee_id, _attendance_date;
             INSERT INTO hrm.attendances(office_id, employee_id, attendance_date, was_present, check_in_time, check_out_time, overtime_hours, was_absent, reason_for_absenteeism)

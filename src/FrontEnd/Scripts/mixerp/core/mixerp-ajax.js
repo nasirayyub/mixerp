@@ -115,9 +115,6 @@ jQuery.fn.bindAjaxData = function (ajaxData, skipSelect, selectedValue, dataValu
     "use strict";
     var selected;
 
-    var valueIsExpression = dataValueField.substring(2, 0) === "{{" && dataValueField.slice(-2) === "}}";
-    var textIsExpression = dataTextField.substring(2, 0) === "{{" && dataTextField.slice(-2) === "}}";
-
     var targetControl = $(this);
     targetControl.empty();
 
@@ -139,7 +136,8 @@ jQuery.fn.bindAjaxData = function (ajaxData, skipSelect, selectedValue, dataValu
         dataTextField = "Text";
     };
 
-    var sv = selectedValue;
+    var valueIsExpression = dataValueField.substring(2, 0) === "{{" && dataValueField.slice(-2) === "}}";
+    var textIsExpression = dataTextField.substring(2, 0) === "{{" && dataTextField.slice(-2) === "}}";
 
     $.each(ajaxData, function () {
         var text;

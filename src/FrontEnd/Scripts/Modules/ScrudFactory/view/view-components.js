@@ -3,8 +3,8 @@
     var targetEl = $('div[data-target="' + target.toLowerCase() + '"]');
     targetEl.removeClass("hidden").fadeIn(500);
 
-    $('a[data-target]').removeClass("active");
-    $('a[data-target="' + target + '"]').addClass("active");
+    $('a[data-target]').removeClass("active green");
+    $('a[data-target="' + target + '"]').addClass("active green");
 };
 
 function initializeViews() {

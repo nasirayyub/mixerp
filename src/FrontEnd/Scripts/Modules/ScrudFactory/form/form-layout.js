@@ -37,10 +37,8 @@
 
     missing = window.chunk_array(missing, 2);
 
-
     $.each(missing, function () {
         fields = $("<div class='fields' />");
-
         createFieldGroup(fields, collection[this[0]], "four wide field");
 
         if (this[1] !== undefined) {

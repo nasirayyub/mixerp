@@ -30,6 +30,7 @@ namespace MixERP.Net.FrontEnd.Application
                 "~/Scripts/Modules/ScrudFactory/shared/field-factory.js",
                 "~/Scripts/Modules/ScrudFactory/shared/scrud-class.js",
                 "~/Scripts/Modules/ScrudFactory/shared/localization.js",
+                "~/Scripts/Modules/ScrudFactory/shared/view.js",
                 "~/Scripts/Modules/ScrudFactory/view/add-button.js",
                 "~/Scripts/Modules/ScrudFactory/view/ajax-load-page-count.js",
                 "~/Scripts/Modules/ScrudFactory/view/buttons-action.js",
@@ -76,10 +77,15 @@ namespace MixERP.Net.FrontEnd.Application
             return new[]
             {
                 "~/Scripts/Modules/ScrudFactory/form/initialization.js",
-                "~/Scripts/Modules/ScrudFactory/shared/localization.js",
+                "~/Scripts/Modules/ScrudFactory/shared/conversion.js",
                 "~/Scripts/Modules/ScrudFactory/shared/field-factory.js",
+                "~/Scripts/Modules/ScrudFactory/shared/scrud-class.js",
+                "~/Scripts/Modules/ScrudFactory/shared/localization.js",
+                "~/Scripts/Modules/ScrudFactory/shared/view.js",
+                "~/Scripts/Modules/ScrudFactory/form/title.js",
+                "~/Scripts/Modules/ScrudFactory/form/url.js",
+                "~/Scripts/Modules/ScrudFactory/form/visibility.js",
                 "~/Scripts/Modules/ScrudFactory/form/form-cancel.js",
-                "~/Scripts/Modules/ScrudFactory/form/form-create.js",
                 "~/Scripts/Modules/ScrudFactory/form/form-custom-fields.js",
                 "~/Scripts/Modules/ScrudFactory/form/form-edit.js",
                 "~/Scripts/Modules/ScrudFactory/form/form-layout-field-group.js",
@@ -89,15 +95,12 @@ namespace MixERP.Net.FrontEnd.Application
                 "~/Scripts/Modules/ScrudFactory/form/form-reset.js",
                 "~/Scripts/Modules/ScrudFactory/form/form-save.js",
                 "~/Scripts/Modules/ScrudFactory/form/form-validate.js",
-                "~/Scripts/Modules/ScrudFactory/form/title.js",
-                "~/Scripts/Modules/ScrudFactory/form/url.js",
-                "~/Scripts/Modules/ScrudFactory/form/view.js",
-                "~/Scripts/Modules/ScrudFactory/form/visibility.js",
-                "~/Scripts/Modules/ScrudFactory/form/event-on-ajax-stop.js",
+                "~/Scripts/Modules/ScrudFactory/form/form-create.js",
                 "~/Scripts/Modules/ScrudFactory/form/ajax-request-initialize.js",
                 "~/Scripts/Modules/ScrudFactory/form/event-on-doc-keydown.js",
                 "~/Scripts/Modules/ScrudFactory/form/event-on-doc-ready.js",
-                "~/Scripts/Modules/ScrudFactory/form/event-on-formready.js"
+                "~/Scripts/Modules/ScrudFactory/form/event-on-formready.js",
+                "~/Scripts/Modules/ScrudFactory/form/event-on-ajax-stop.js"
             };
         }
 

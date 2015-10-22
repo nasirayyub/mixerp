@@ -9,10 +9,4 @@
 
         anchor.insertAfter(flagButton);
     };
-
-    var verifyButton = $("#VerifyButton");
-
-    verifyButton.click(function () {
-        popUnder(verificationPopUnder, verifyButton);
-    });
 };

@@ -50,11 +50,23 @@ function getKanbans() {
     return getAjaxRequest(url, "POST", data, false);
 };
 
-function refreshKanbans() {
-    var getKanbansAjax = getKanbans();
+function isKanban() {
+    var target = window.getQueryStringByName("View");
+    return target.toLowerCase() === "kanban";
+};
 
-    getKanbansAjax.success(function (msg) {
-        window.kanbans = msg;
-        createKanbans(msg);
+function refreshKanbans() {
+    var ajax = getKanbans();
+
+    ajax.success(function (response) {
+        window.kanbans = response;
+
+        if (!window.kanbans.length) {
+            if (!isKanban()) {
+                showView("grid");
+            };
+        };
+
+        createKanbans(response);
     });
 };

@@ -2,7 +2,7 @@
 
 Database script files are bundled as described in this documentation:
 
-http://www.mixerp.org/documentation/database/sample-data
+http://docs.mixerp.org/docs/database/sample-data.html
 
 #What Should I Know?
 
@@ -18,11 +18,11 @@ http://www.mixerp.org/documentation/database/sample-data
 #What Should I Remember?
 * **Incremental blank SQL script** is blank database generation script of current version which includes past versions as well.
 * **Incremental sample SQL script** is sample database generation script of current version which includes past versions as well.
-* **Patch SQL script** upgrdes past versions of database
+* **Patch SQL script** upgrdes past versions of database to the current version.
 
 #Remember
 These are the latest database scripts:
 
 * blank-db.sql (for creating a blank database)
 * sample-db.sql (for creating a sample database)
-* patch.sql (for updating the previous database version)
+* patch.sql (for upgrading from the previous database version)

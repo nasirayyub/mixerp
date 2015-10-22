@@ -523,7 +523,6 @@ SELECT * FROM core.recreate_menu('Verify Exits', '~/Modules/HRM/Verification/Exi
 
 
 SELECT * FROM core.recreate_menu('Setup & Maintenance', NULL, 'HRMSSM', 1, core.get_menu_id('HRM'));
-SELECT * FROM core.recreate_menu('Holiday Setup', '~/Modules/HRM/Setup/HolidaySetup.mix', 'HOLDAY', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Employment Statuses', '~/Modules/HRM/Setup/EmploymentStatuses.mix', 'EMPSTA', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Employee Types', '~/Modules/HRM/Setup/EmployeeTypes.mix', 'EMPTYP', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Education Levels', '~/Modules/HRM/Setup/EducationLevels.mix', 'EDULVL', 2, core.get_menu_id('HRMSSM'));
@@ -1362,16 +1361,9 @@ BEGIN
                 _check_out := ('2015-09-30 16:46:19.443+00'::timestamp - '1 minute'::INTERVAL * ROUND(RANDOM() * 100))::time;
                 _overtime_hours := round(random());
             ELSE
-                _reason := CAST(
-                             regexp_replace(
-                               encode(
-                                 gen_random_bytes(40), 'base64'),
-                                 '[/=+]',
-                                 ' ', 'g'
-                           ) AS text);
+                _reason := '';
             END IF;
             
-
             
             RAISE NOTICE '% %', _employee_id, _attendance_date;
             INSERT INTO hrm.attendances(office_id, employee_id, attendance_date, was_present, check_in_time, check_out_time, overtime_hours, was_absent, reason_for_absenteeism)
@@ -1422,6 +1414,10 @@ BEGIN
         
         
         ];
+
+    IF(_user_id IS NULL) THEN
+        RETURN;
+    END IF;
 
     FOREACH _user_id IN ARRAY users
     LOOP

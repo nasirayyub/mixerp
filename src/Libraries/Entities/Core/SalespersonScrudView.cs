@@ -40,5 +40,9 @@ namespace MixERP.Net.Entities.Core
         [Column("account")]
         [ColumnDbType("text", 0, true, "")]
         public string Account { get; set; }
+
+        [Column("photo")]
+        [ColumnDbType("image", 0, true, "")]
+        public string Photo { get; set; }
     }
 }

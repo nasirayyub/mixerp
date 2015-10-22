@@ -54,7 +54,7 @@
                     </div>
                     <div class="twelve wide column">
                         <div id="RightMenu">
-                            <div class="ui inverted purple attached stackable menu">
+                            <div class="ui inverted theme attached stackable menu">
                                 <a class="item" href="http://mixerp.org/" target="_blank">
                                     <i class="anchor icon"></i>
                                     MixERP

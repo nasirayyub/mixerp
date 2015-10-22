@@ -67,6 +67,11 @@
         };
 
         var ids = getSelectedCheckBoxItemIds(2, 3, $("#ScrudView"));
+
+        if (!ids.length) {
+            return;
+        };
+
         var annotation = {
             TranIds: ids,
             Book: book

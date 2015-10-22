@@ -15,6 +15,6 @@
     };
 
     var selector = "td:nth-child(" + getKeyColumnPosition() + ")";
-    var primaryKeyValue = sender.parent().parent().find(selector).text();
+    var primaryKeyValue = sender.closest("tr").find(selector).text();
     return primaryKeyValue;
 };

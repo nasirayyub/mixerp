@@ -16,6 +16,15 @@ $(document).on("viewready", function () {
     filterButton.click(function () {
         popUnder(filterPopUnder, filterButton);
     });
+
+    if (hasVerfication()) {
+        var verifyButton = $("#VerifyButton");
+
+        verifyButton.click(function () {
+            popUnder(verificationPopUnder, verifyButton);
+        });
+    };
+
 });
 
 function triggerViewReadyEvent() {

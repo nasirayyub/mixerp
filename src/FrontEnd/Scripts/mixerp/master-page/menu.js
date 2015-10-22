@@ -3,7 +3,8 @@ var depth = 2;
 
 
 function getPath() {
-    return window.overridePath || window.location.pathname;
+    var url = window.overridePath || window.location.pathname;
+    return url.toString().toLowerCase();
 };
 
 
@@ -203,7 +204,7 @@ function getItems(nav) {
     $.each(nav, function (i, v) {
         if (i === 0) {
             menu += "<ul>";
-        }
+        };
 
         var childMenu = getItems(v.Children);
         var id = v.Menu.MenuId.toString();
@@ -212,20 +213,19 @@ function getItems(nav) {
             ? "javascript:void(0);"
             : v.Menu.Url.replace("~", "");
 
-
         var cssClass = "";
         var dataJsTree = "";
         var dataSelected = "";
 
         if (isNullOrWhiteSpace(childMenu)) {
             dataJsTree = "data-jstree='{\"type\":\"file\"}'";
-        }
+        };
 
-        if (url === getPath()) {
+        if (cleanUrl(url) === getPath()) {
             dataSelected = "data-selected='true'";
-            cssClass = "class='expanded'";
+            cssClass = "class='jstree-selected expanded'";
             dataJsTree = "data-jstree='{\"type\":\"active\"}'";
-        }
+        };
 
         var anchor = "<a href='" + url + "'>" + v.Menu.MenuText + "</a>";
 
@@ -239,7 +239,7 @@ function getItems(nav) {
 
         if (i === nav.length - 1) {
             menu += "</ul>";
-        }
+        };
     });
 
     return menu;
@@ -295,6 +295,7 @@ function cleanUrl(url) {
     url = url.replace("~", "");
     url = url.split("?")[0];
 
+    url = url.toLowerCase();
     return url;
 };
 

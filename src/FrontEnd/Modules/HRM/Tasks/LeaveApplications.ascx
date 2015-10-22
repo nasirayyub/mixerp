@@ -64,7 +64,7 @@
 <div data-ng-include="'/Modules/ScrudFactory/Form.html'"></div>
 <script>
     $(document).on("formready", function() {
-        $("#applied_on").val(window.now);
+        $("#applied_on").val(window.today);
         $("#entered_by").val(window.userId);
         $("#verification_status_id").val("0");
     });

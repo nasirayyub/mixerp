@@ -1236,6 +1236,10 @@ function getMergeModel() {
     };
 
     var mergeModel = window.localStorage.getItem('MergeModel');
+    if (!mergeModel) {
+        return;
+    };
+
     mergeModel = JSON.parse(mergeModel);
 
     updateval("#PartyCodeInputText", mergeModel[0].PartyCode);

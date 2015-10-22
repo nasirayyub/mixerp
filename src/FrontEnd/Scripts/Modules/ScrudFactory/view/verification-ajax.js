@@ -8,8 +8,20 @@
     return getAjaxRequest(url, "PUT");
 };
 
+function getSelected() {
+    var el = $("#ScrudView input:checkbox:checked").first();
+    var isCard = false;
+
+    if (isCardView()) {
+        isCard = true;
+        el = $("#kanban input:checkbox:checked").first();
+    };
+
+    return getPrimaryKeyValue(el, isCard);
+};
+
 $("#ApproveButton").click(function () {
-    var primaryKey = getPrimaryKeyValue();
+    var primaryKey = getSelected();
 
     if (!hasVerfication() || !primaryKey) {
         return;
@@ -27,7 +39,7 @@ $("#ApproveButton").click(function () {
 });
 
 $("#RejectButton").click(function () {
-    var primaryKey = getPrimaryKeyValue();
+    var primaryKey = getSelected();
 
     if (!hasVerfication() || !primaryKey) {
         return;

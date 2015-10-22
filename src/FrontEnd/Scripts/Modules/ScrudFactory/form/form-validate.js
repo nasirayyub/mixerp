@@ -1,5 +1,5 @@
 ﻿function validate() {
-    var required = $(".form.factory [required]:not(:disabled):not([readonly]):not(:hidden)");
+    var required = $(".form.factory .image.form-field, .form.factory [required]:not(:disabled):not([readonly]):not(.hidden.column)");
     required.trigger("blur");
 
     var errorFields = window.scrudForm.find(".error:not(.big.error)");

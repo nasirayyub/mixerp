@@ -37,6 +37,10 @@ BEGIN
         
         ];
 
+    IF(_user_id IS NULL) THEN
+        RETURN;
+    END IF;
+
     FOREACH _user_id IN ARRAY users
     LOOP
         FOREACH _obj IN ARRAY objects

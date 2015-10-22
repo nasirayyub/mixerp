@@ -56,7 +56,7 @@
     };
 
     if (scrudFactory.hiddenColumns.indexOf(column.PropertyName) > -1) {
-        field.addClass("hidden");
+        field.addClass("hidden column");
     };
 
     if (column.IsSerial) {

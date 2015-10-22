@@ -1,3 +1,4 @@
+On Error Resume Next
 Dim destinationPath, file1, file2
 Dim objStream1, objStream2, strData1, strData2
 Dim writer
@@ -13,12 +14,21 @@ objStream1.Open
 objStream1.LoadFromFile(file1)
 strData1 = objStream1.ReadText()
 
+If Err.Number <> 0 Then
+  WScript.Echo "Step0: " & Err.Description & " " & file1
+  Err.Clear
+End If
+
 Set objStream2 = CreateObject("ADODB.Stream")
 objStream2.CharSet = "utf-8"
 objStream2.Open
 objStream2.LoadFromFile(file2)
 strData2 = objStream2.ReadText()
 
+If Err.Number <> 0 Then
+  WScript.Echo "Step1: " & Err.Description & " " & file2
+  Err.Clear
+End If
 
 Set writer = CreateObject("ADODB.Stream")
 writer.CharSet = "utf-8"

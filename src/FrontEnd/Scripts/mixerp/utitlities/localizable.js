@@ -27,6 +27,17 @@ function localize() {
             localizable[i].parentNode.removeChild(localizable[i]);
         };
     };
+
+    $("[data-localized-resource]").each(function() {
+        var el = $(this);
+        var key = "Resources." + el.attr("data-localized-resource");
+        var localized = executeFunctionByName(key, window);
+
+        if (localized) {
+            var target = el.attr("data-localization-target");
+            el.attr(target, localized);
+        };
+    });
 };
 
 localize();

@@ -523,7 +523,6 @@ SELECT * FROM core.recreate_menu('Verify Exits', '~/Modules/HRM/Verification/Exi
 
 
 SELECT * FROM core.recreate_menu('Setup & Maintenance', NULL, 'HRMSSM', 1, core.get_menu_id('HRM'));
-SELECT * FROM core.recreate_menu('Holiday Setup', '~/Modules/HRM/Setup/HolidaySetup.mix', 'HOLDAY', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Employment Statuses', '~/Modules/HRM/Setup/EmploymentStatuses.mix', 'EMPSTA', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Employee Types', '~/Modules/HRM/Setup/EmployeeTypes.mix', 'EMPTYP', 2, core.get_menu_id('HRMSSM'));
 SELECT * FROM core.recreate_menu('Education Levels', '~/Modules/HRM/Setup/EducationLevels.mix', 'EDULVL', 2, core.get_menu_id('HRMSSM'));
@@ -1263,6 +1262,10 @@ BEGIN
         
         
         ];
+
+    IF(_user_id IS NULL) THEN
+        RETURN;
+    END IF;
 
     FOREACH _user_id IN ARRAY users
     LOOP

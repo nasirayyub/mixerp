@@ -4,6 +4,7 @@ var scrudForm = $(".form.factory");
 var scrudView = $(".view.factory");
 var addNewButton = $("#AddNewButton");
 var viewReady = false;
+var annotationLoaded = false;
 var metaDefinition;
 var falgDefinition;
 var localizedHeaders = [];

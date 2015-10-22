@@ -1,4 +1,13 @@
-﻿function displayFlaggedCards() {
+﻿function getAllKeys() {
+    var ids = [];
+    $("#ScrudView").find("td:nth-child(" + getKeyColumnPosition() + ")").each(function () {
+        ids.push($(this).text());
+    });
+
+    return ids;
+};
+
+function displayFlaggedCards() {
     if (!window.flagDefinition) {
         return;
     };
@@ -169,16 +178,6 @@ function initializeFlag() {
         });
     });
 
-
-    function getIds() {
-        var ids = [];
-        $("#ScrudView").find("td:nth-child(3)").each(function () {
-            ids.push($(this).text());
-        });
-
-        return ids;
-    };
-
     function getFlagView(resource, userId, flagIds) {
         var url = "/api/core/flag-view/get/";
         url += resource + "/";
@@ -190,7 +189,7 @@ function initializeFlag() {
     };
 
     function displayFlags() {
-        var ids = getIds();
+        var ids = getAllKeys();
 
         var getFlagViewAjax = getFlagView(scrudFactory.viewTableName, userId, ids);
 

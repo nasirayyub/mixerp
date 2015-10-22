@@ -40,36 +40,15 @@
 
 
 <div class="view factory" style="display: none;">
-    <div class="ui inverted active view dimmer">
-        <div class="content">
-            <div class="ui text loader">
-                <span data-localize="Titles.Loading"></span>
-            </div>
+<div class="ui inverted active view dimmer">
+    <div class="content">
+        <div class="ui text loader">
+            <span data-localize="Titles.Loading"></span>
         </div>
     </div>
-    <div id="VerificationPopUnder" class="ui initially hidden form popunder segment" style="width:400px;z-index:3; position: absolute;">
-        <div class="ui header">
-            <span data-localize="Titles.Verification"></span>
-        </div>
-        <div class="field">
-            <label for="ReasonTextArea">
-                <span data-localize="Titles.Reason"></span>
-            </label>
-            <textarea id="ReasonTextArea"></textarea>
-        </div>
-        <div class="ui buttons">
-            <a id="ApproveButton" class="ui green button" href="javascript:void(0);">
-                <span data-localize="Titles.Approve"></span>
-            </a>
-            <a id="RejectButton" class="ui orange button" href="javascript:void(0);">
-                <span data-localize="Titles.Reject"></span>
-            </a>
+</div>
 
-            <a href="javascript:void(0);" class="ui red button" onclick="$('#VerificationPopUnder').fadeOut(500);">
-                <span data-localize="Titles.Close"></span>
-            </a>
-        </div>
-    </div>
+
 
     <div id="FlagPopUnder" class="ui initially hidden form popunder segment" style="width:400px;z-index:3; position: absolute;">
         <div class="ui grey header">
@@ -110,6 +89,29 @@
         </p>
     </div>
 
+    <div id="VerificationPopUnder" class="ui initially hidden form popunder segment" style="width:400px;z-index:3; position: absolute;">
+        <div class="ui header">
+            <span data-localize="Titles.Verification"></span>
+        </div>
+        <div class="field">
+            <label for="ReasonTextArea">
+                <span data-localize="Titles.Reason"></span>
+            </label>
+            <textarea id="ReasonTextArea"></textarea>
+        </div>
+        <div class="ui buttons">
+            <a id="ApproveButton" class="ui green button" href="javascript:void(0);">
+                <span data-localize="Titles.Approve"></span>
+            </a>
+            <a id="RejectButton" class="ui orange button" href="javascript:void(0);">
+                <span data-localize="Titles.Reject"></span>
+            </a>
+
+            <a href="javascript:void(0);" class="ui red button" onclick="$('#VerificationPopUnder').fadeOut(500);">
+                <span data-localize="Titles.Close"></span>
+            </a>
+        </div>
+    </div>
 
     <div class="ui stackable grid">
         <div class="ui sixteen wide column">
@@ -213,7 +215,7 @@
                         <i class="corner add icon"></i>
                     </i>
                 </a>
-                <a class="ui active basic button" data-target="kanban" title="Kanban View">
+                <a class="ui active green basic button" data-target="kanban" title="Kanban View">
                     <i class="block layout icon"></i>
                 </a>
                 <a class="ui basic button" data-target="grid" title="Grid View">

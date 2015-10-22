@@ -746,7 +746,7 @@
     <Content Include="Scripts\Modules\ScrudFactory\form\form-validate.js" />
     <Content Include="Scripts\Modules\ScrudFactory\form\form-reset.js" />
     <Content Include="Scripts\Modules\ScrudFactory\form\form-cancel.js" />
-    <Content Include="Scripts\Modules\ScrudFactory\form\view.js" />
+    <Content Include="Scripts\Modules\ScrudFactory\shared\view.js" />
     <Content Include="Scripts\Modules\ScrudFactory\form\initialization.js" />
     <Content Include="Scripts\Modules\ScrudFactory\form\form-save.js" />
     <Content Include="Scripts\Modules\ScrudFactory\form\title.js" />
