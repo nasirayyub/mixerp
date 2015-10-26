@@ -51,6 +51,7 @@ and produce reports of all child offices it contains.
 - [Change Password](core-concepts/change-password.md)
 
 ##Modules
+- [Human Resource Management](human-resource-management/index.md)
 - [Sales](sales/index.md)
 - [Purchase](purchase/index.md)
 - [Inventory](inventory/index.md)
