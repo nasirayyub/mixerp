@@ -30,7 +30,7 @@ To create a new employee, press the "Add New" button.
     <tr>
         <th>Employee Code
         </th>
-        <td>Enter the alpha-number code of your new employee.
+        <td>Enter the alpha-numeric code of this employee.
         </td>
     </tr>
     <tr>
