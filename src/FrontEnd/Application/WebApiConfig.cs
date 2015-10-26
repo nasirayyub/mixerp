@@ -15,7 +15,14 @@ namespace MixERP.Net.FrontEnd.Application
             config.Routes.MapHttpRoute("VersionedApi", "api/v1.5/{schema}/{controller}/{action}/{id}", new { id = RouteParameter.Optional });
             config.Routes.MapHttpRoute("DefaultApi", "api/{schema}/{controller}/{action}/{id}", new { id = RouteParameter.Optional });
 
-            config.Services.Replace(typeof(IAssembliesResolver), new MixERPAssemblyResolver());
+            if (HttpRuntime.IISVersion < new Version("8.0.0.0"))
+            {
+                config.Services.Replace(typeof(IAssembliesResolver), new ClassicAssemblyResolver());
+            }
+            else
+            {
+                config.Services.Replace(typeof(IAssembliesResolver), new MixERPAssemblyResolver());
+            }
 
             config.EnsureInitialized();
         }
