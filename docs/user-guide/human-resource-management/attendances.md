@@ -52,7 +52,7 @@ To update attendance, please follow these steps:
 Recording attendance is a two-step task. During the first hour, you 
 can enter the the check-in time of each employee and mark those
 who are absent. You can then immidately update the attendance
-by click on the button **Update All** at the bottom of the page.
+by clicking on the button **Update All** at the bottom of the page.
 
 Similarly, during the last hour, enter the check-out time and overtime
 hours of each employee and again click the button **Update All**.
