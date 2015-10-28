@@ -1,6 +1,6 @@
 # Exit Verification
 
-Once an employee exit is posted to MixERP, it is send to the verification
+Once an employee exit is posted to MixERP, it is sent to the verification
 queue. In the verification queue, you can decide to either
 approve the exit or reject it stating a reason why
 you want to do that.

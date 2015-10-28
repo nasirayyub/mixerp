@@ -1,6 +1,6 @@
 # Resignation Verification
 
-Once an employee applies to resign from the job, it is send to the verification
+Once an employee applies to resign from the job, it is sent to the verification
 queue. In the verification queue, you can decide to either
 approve a resignation or reject it stating a reason why
 you want to do that.

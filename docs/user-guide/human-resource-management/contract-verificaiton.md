@@ -1,6 +1,6 @@
 # Contract Verification
 
-When you create a new contract, it is send to the verification
+When you create a new contract, it is sent to the verification
 queue. In the verification queue, you can decide to either
 approve a contract or reject it stating a reason why
 it was approved or rejected.
