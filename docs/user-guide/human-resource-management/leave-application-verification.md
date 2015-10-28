@@ -1,6 +1,6 @@
 # Leave Application Verification
 
-Once an employee applies for a leave, it is send to the verification
+Once an employee applies for a leave, it is sent to the verification
 queue. In the verification queue, you can decide to either
 approve a leave appplication or reject it stating a reason why
 you want to do that.
