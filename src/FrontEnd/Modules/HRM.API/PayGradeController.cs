@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.HRM
     public class PayGradeController : ApiController
     {
         /// <summary>
-        ///     The PayGrade data context.
+        ///     The PayGrade repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.PayGrade PayGradeContext;
+        private readonly IPayGradeRepository PayGradeRepository;
 
         public PayGradeController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.PayGradeContext = new MixERP.Net.Core.Modules.HRM.Data.PayGrade
+            this.PayGradeRepository = new MixERP.Net.Core.Modules.HRM.Data.PayGrade
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public PayGradeController(IPayGradeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.PayGradeRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/pay-grade/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "pay_grade_id",
@@ -83,7 +99,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.PayGradeContext.Count();
+                return this.PayGradeRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -114,7 +130,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.PayGradeContext.GetAll();
+                return this.PayGradeRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -145,7 +161,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.PayGradeContext.Export();
+                return this.PayGradeRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -177,7 +193,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.PayGradeContext.Get(payGradeId);
+                return this.PayGradeRepository.Get(payGradeId);
             }
             catch (UnauthorizedException)
             {
@@ -204,7 +220,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.PayGradeContext.Get(payGradeIds);
+                return this.PayGradeRepository.Get(payGradeIds);
             }
             catch (UnauthorizedException)
             {
@@ -235,7 +251,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.PayGradeContext.GetPaginatedResult();
+                return this.PayGradeRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -267,7 +283,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.PayGradeContext.GetPaginatedResult(pageNumber);
+                return this.PayGradeRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -300,7 +316,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.PayGradeContext.CountWhere(f);
+                return this.PayGradeRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -334,7 +350,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.PayGradeContext.GetWhere(pageNumber, f);
+                return this.PayGradeRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -366,7 +382,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.PayGradeContext.CountFiltered(filterName);
+                return this.PayGradeRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -399,7 +415,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.PayGradeContext.GetFiltered(pageNumber, filterName);
+                return this.PayGradeRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -430,7 +446,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.PayGradeContext.GetDisplayFields();
+                return this.PayGradeRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -461,7 +477,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.PayGradeContext.GetCustomFields(null);
+                return this.PayGradeRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -492,7 +508,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.PayGradeContext.GetCustomFields(resourceId);
+                return this.PayGradeRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -531,7 +547,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.PayGradeContext.AddOrEdit(payGrade, customFields);
+                return this.PayGradeRepository.AddOrEdit(payGrade, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -567,7 +583,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.PayGradeContext.Add(payGrade);
+                this.PayGradeRepository.Add(payGrade);
             }
             catch (UnauthorizedException)
             {
@@ -604,7 +620,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.PayGradeContext.Update(payGrade, payGradeId);
+                this.PayGradeRepository.Update(payGrade, payGradeId);
             }
             catch (UnauthorizedException)
             {
@@ -649,7 +665,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.PayGradeContext.BulkImport(payGradeCollection);
+                return this.PayGradeRepository.BulkImport(payGradeCollection);
             }
             catch (UnauthorizedException)
             {
@@ -680,7 +696,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                this.PayGradeContext.Delete(payGradeId);
+                this.PayGradeRepository.Delete(payGradeId);
             }
             catch (UnauthorizedException)
             {

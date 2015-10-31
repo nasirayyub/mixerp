@@ -16,7 +16,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database table "core.widget_groups".
     /// </summary>
-    public class WidgetGroup : DbAccess
+    public class WidgetGroup : DbAccess, IWidgetGroupRepository
     {
         /// <summary>
         /// The schema of this table. Returns literal "core".
@@ -73,7 +73,7 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.widget_groups" to return a all instances of the "WidgetGroup" class. 
+        /// Executes a select query on the table "core.widget_groups" to return all instances of the "WidgetGroup" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "WidgetGroup" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -102,7 +102,7 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.widget_groups" to return a all instances of the "WidgetGroup" class to export. 
+        /// Executes a select query on the table "core.widget_groups" to return all instances of the "WidgetGroup" class to export. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "WidgetGroup" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -557,7 +557,7 @@ namespace MixERP.Net.Schemas.Core.Data
             return Factory.Get<MixERP.Net.Entities.Core.WidgetGroup>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='core.widget_groups' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

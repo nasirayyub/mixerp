@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database view "core.tax_base_amount_type_selector_view".
     /// </summary>
-    public class TaxBaseAmountTypeSelectorView : DbAccess
+    public class TaxBaseAmountTypeSelectorView : DbAccess, ITaxBaseAmountTypeSelectorViewRepository
     {
         /// <summary>
         /// The schema of this view. Returns literal "core".
@@ -71,7 +71,7 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the view "core.tax_base_amount_type_selector_view" to return a all instances of the "TaxBaseAmountTypeSelectorView" class. 
+        /// Executes a select query on the view "core.tax_base_amount_type_selector_view" to return all instances of the "TaxBaseAmountTypeSelectorView" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "TaxBaseAmountTypeSelectorView" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -218,7 +218,7 @@ namespace MixERP.Net.Schemas.Core.Data
             return Factory.Get<MixERP.Net.Entities.Core.TaxBaseAmountTypeSelectorView>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='core.tax_base_amount_type_selector_view' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Office
         /// </summary>
         public string _Catalog { get; set; }
 
-        private IsValidOfficeIdProcedure procedure;
+        /// <summary>
+        ///     The IsValidOfficeId repository.
+        /// </summary>
+        private readonly IIsValidOfficeIdRepository repository;
+
         public class Annotation
         {
             public int OfficeId { get; set; }
         }
+
 
         public IsValidOfficeIdController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Office
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new IsValidOfficeIdProcedure
+
+            this.repository = new IsValidOfficeIdProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public IsValidOfficeIdController(IIsValidOfficeIdRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "is valid office id" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/procedures/is-valid-office-id/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -78,6 +99,8 @@ namespace MixERP.Net.Api.Office
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/office/procedures/is-valid-office-id/execute")]
@@ -85,10 +108,10 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                this.procedure.OfficeId = annotation.OfficeId;
+                this.repository.OfficeId = annotation.OfficeId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

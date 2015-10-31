@@ -16,7 +16,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database table "core.menu_locale".
     /// </summary>
-    public class MenuLocale : DbAccess
+    public class MenuLocale : DbAccess, IMenuLocaleRepository
     {
         /// <summary>
         /// The schema of this table. Returns literal "core".
@@ -73,7 +73,7 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.menu_locale" to return a all instances of the "MenuLocale" class. 
+        /// Executes a select query on the table "core.menu_locale" to return all instances of the "MenuLocale" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "MenuLocale" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -102,7 +102,7 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.menu_locale" to return a all instances of the "MenuLocale" class to export. 
+        /// Executes a select query on the table "core.menu_locale" to return all instances of the "MenuLocale" class to export. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "MenuLocale" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -557,7 +557,7 @@ namespace MixERP.Net.Schemas.Core.Data
             return Factory.Get<MixERP.Net.Entities.Core.MenuLocale>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='core.menu_locale' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.post_purchase_return(_transaction_master_id bigint, _office_id integer, _user_id integer, _login_id bigint, _value_date date, _store_id integer, _party_code character varying, _price_type_id integer, _reference_number character varying, _statement_reference text, _details transactions.stock_detail_type[], _attachments core.attachment_type[])" on the database.
     /// </summary>
-    public class PostPurchaseReturnProcedure : DbAccess
+    public class PostPurchaseReturnProcedure : DbAccess, IPostPurchaseReturnRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

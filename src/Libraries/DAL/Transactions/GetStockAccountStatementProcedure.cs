@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_stock_account_statement(_value_date_from date, _value_date_to date, _user_id integer, _item_id integer, _store_id integer)" on the database.
     /// </summary>
-    public class GetStockAccountStatementProcedure : DbAccess
+    public class GetStockAccountStatementProcedure : DbAccess, IGetStockAccountStatementRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

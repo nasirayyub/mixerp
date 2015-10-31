@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Office.Data;
 
 namespace MixERP.Net.Api.Office
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Office
     public class WorkCenterController : ApiController
     {
         /// <summary>
-        ///     The WorkCenter data context.
+        ///     The WorkCenter repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Office.Data.WorkCenter WorkCenterContext;
+        private readonly IWorkCenterRepository WorkCenterRepository;
 
         public WorkCenterController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Office
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.WorkCenterContext = new MixERP.Net.Schemas.Office.Data.WorkCenter
+            this.WorkCenterRepository = new MixERP.Net.Schemas.Office.Data.WorkCenter
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public WorkCenterController(IWorkCenterRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.WorkCenterRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/work-center/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "work_center_id",
@@ -81,7 +97,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.WorkCenterContext.Count();
+                return this.WorkCenterRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -112,7 +128,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.WorkCenterContext.GetAll();
+                return this.WorkCenterRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -143,7 +159,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.WorkCenterContext.Export();
+                return this.WorkCenterRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -175,7 +191,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.WorkCenterContext.Get(workCenterId);
+                return this.WorkCenterRepository.Get(workCenterId);
             }
             catch (UnauthorizedException)
             {
@@ -202,7 +218,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.WorkCenterContext.Get(workCenterIds);
+                return this.WorkCenterRepository.Get(workCenterIds);
             }
             catch (UnauthorizedException)
             {
@@ -233,7 +249,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.WorkCenterContext.GetPaginatedResult();
+                return this.WorkCenterRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -265,7 +281,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.WorkCenterContext.GetPaginatedResult(pageNumber);
+                return this.WorkCenterRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -298,7 +314,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.WorkCenterContext.CountWhere(f);
+                return this.WorkCenterRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -332,7 +348,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.WorkCenterContext.GetWhere(pageNumber, f);
+                return this.WorkCenterRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -364,7 +380,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.WorkCenterContext.CountFiltered(filterName);
+                return this.WorkCenterRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -397,7 +413,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.WorkCenterContext.GetFiltered(pageNumber, filterName);
+                return this.WorkCenterRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -428,7 +444,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.WorkCenterContext.GetDisplayFields();
+                return this.WorkCenterRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -459,7 +475,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.WorkCenterContext.GetCustomFields(null);
+                return this.WorkCenterRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -490,7 +506,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.WorkCenterContext.GetCustomFields(resourceId);
+                return this.WorkCenterRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -529,7 +545,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                return this.WorkCenterContext.AddOrEdit(workCenter, customFields);
+                return this.WorkCenterRepository.AddOrEdit(workCenter, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -565,7 +581,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                this.WorkCenterContext.Add(workCenter);
+                this.WorkCenterRepository.Add(workCenter);
             }
             catch (UnauthorizedException)
             {
@@ -602,7 +618,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                this.WorkCenterContext.Update(workCenter, workCenterId);
+                this.WorkCenterRepository.Update(workCenter, workCenterId);
             }
             catch (UnauthorizedException)
             {
@@ -647,7 +663,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                return this.WorkCenterContext.BulkImport(workCenterCollection);
+                return this.WorkCenterRepository.BulkImport(workCenterCollection);
             }
             catch (UnauthorizedException)
             {
@@ -678,7 +694,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                this.WorkCenterContext.Delete(workCenterId);
+                this.WorkCenterRepository.Delete(workCenterId);
             }
             catch (UnauthorizedException)
             {

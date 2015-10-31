@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_income_expenditure_statement(_date_from date, _date_to date, _user_id integer, _office_id integer, _compact boolean)" on the database.
     /// </summary>
-    public class GetIncomeExpenditureStatementProcedure : DbAccess
+    public class GetIncomeExpenditureStatementProcedure : DbAccess, IGetIncomeExpenditureStatementRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.is_valid_party_by_transaction_master_id(_transaction_master_id bigint, _party_id bigint)" on the database.
     /// </summary>
-    public class IsValidPartyByTransactionMasterIdProcedure : DbAccess
+    public class IsValidPartyByTransactionMasterIdProcedure : DbAccess, IIsValidPartyByTransactionMasterIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

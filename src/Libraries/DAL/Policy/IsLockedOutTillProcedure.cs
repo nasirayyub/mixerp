@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Policy.Data
     /// <summary>
     /// Prepares, validates, and executes the function "policy.is_locked_out_till(user_id integer_strict)" on the database.
     /// </summary>
-    public class IsLockedOutTillProcedure : DbAccess
+    public class IsLockedOutTillProcedure : DbAccess, IIsLockedOutTillRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

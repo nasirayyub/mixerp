@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetProfitAndLossStatementProcedure procedure;
+        /// <summary>
+        ///     The GetProfitAndLossStatement repository.
+        /// </summary>
+        private readonly IGetProfitAndLossStatementRepository repository;
+
         public class Annotation
         {
             public DateTime DateFrom { get; set; }
@@ -51,19 +55,32 @@ namespace MixERP.Net.Api.Transactions
             public bool Compact { get; set; }
         }
 
+
         public GetProfitAndLossStatementController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetProfitAndLossStatementProcedure
+
+            this.repository = new GetProfitAndLossStatementProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetProfitAndLossStatementController(IGetProfitAndLossStatementRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get profit and loss statement" annotation.
         /// </summary>
@@ -73,6 +90,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-profit-and-loss-statement/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -88,6 +109,8 @@ namespace MixERP.Net.Api.Transactions
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/get-profit-and-loss-statement/execute")]
@@ -95,15 +118,15 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.DateFrom = annotation.DateFrom;
-                this.procedure.DateTo = annotation.DateTo;
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.Factor = annotation.Factor;
-                this.procedure.Compact = annotation.Compact;
+                this.repository.DateFrom = annotation.DateFrom;
+                this.repository.DateTo = annotation.DateTo;
+                this.repository.UserId = annotation.UserId;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.Factor = annotation.Factor;
+                this.repository.Compact = annotation.Compact;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

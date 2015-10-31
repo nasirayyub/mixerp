@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Config.Data;
 
 namespace MixERP.Net.Api.Config
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Config
     public class SmtpController : ApiController
     {
         /// <summary>
-        ///     The Smtp data context.
+        ///     The Smtp repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Config.Data.Smtp SmtpContext;
+        private readonly ISmtpRepository SmtpRepository;
 
         public SmtpController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Config
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.SmtpContext = new MixERP.Net.Schemas.Config.Data.Smtp
+            this.SmtpRepository = new MixERP.Net.Schemas.Config.Data.Smtp
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public SmtpController(ISmtpRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.SmtpRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Config
         [Route("~/api/config/smtp/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "smtp_id",
@@ -67,12 +83,12 @@ namespace MixERP.Net.Api.Config
                                         new EntityColumn { ColumnName = "from_display_name",  PropertyName = "FromDisplayName",  DataType = "string",  DbDataType = "varchar",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 256 },
                                         new EntityColumn { ColumnName = "from_email_address",  PropertyName = "FromEmailAddress",  DataType = "string",  DbDataType = "varchar",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 256 },
                                         new EntityColumn { ColumnName = "smtp_host",  PropertyName = "SmtpHost",  DataType = "string",  DbDataType = "varchar",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 256 },
-                                        new EntityColumn { ColumnName = "smtp_port",  PropertyName = "SmtpPort",  DataType = "int",  DbDataType = "integer_strict",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "smtp_enable_ssl",  PropertyName = "SmtpEnableSsl",  DataType = "bool",  DbDataType = "bool",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "smtp_username",  PropertyName = "SmtpUsername",  DataType = "string",  DbDataType = "varchar",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 256 },
                                         new EntityColumn { ColumnName = "smtp_password",  PropertyName = "SmtpPassword",  DataType = "string",  DbDataType = "varchar",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 256 },
                                         new EntityColumn { ColumnName = "audit_user_id",  PropertyName = "AuditUserId",  DataType = "int",  DbDataType = "int4",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
-                                        new EntityColumn { ColumnName = "audit_ts",  PropertyName = "AuditTs",  DataType = "DateTime",  DbDataType = "timestamptz",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                        new EntityColumn { ColumnName = "audit_ts",  PropertyName = "AuditTs",  DataType = "DateTime",  DbDataType = "timestamptz",  IsNullable = true,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "smtp_port",  PropertyName = "SmtpPort",  DataType = "int",  DbDataType = "integer_strict",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
                                 }
             };
         }
@@ -88,7 +104,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SmtpContext.Count();
+                return this.SmtpRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -119,7 +135,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SmtpContext.GetAll();
+                return this.SmtpRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -150,7 +166,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SmtpContext.Export();
+                return this.SmtpRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -182,7 +198,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SmtpContext.Get(smtpId);
+                return this.SmtpRepository.Get(smtpId);
             }
             catch (UnauthorizedException)
             {
@@ -209,7 +225,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SmtpContext.Get(smtpIds);
+                return this.SmtpRepository.Get(smtpIds);
             }
             catch (UnauthorizedException)
             {
@@ -240,7 +256,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SmtpContext.GetPaginatedResult();
+                return this.SmtpRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -272,7 +288,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SmtpContext.GetPaginatedResult(pageNumber);
+                return this.SmtpRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -305,7 +321,7 @@ namespace MixERP.Net.Api.Config
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SmtpContext.CountWhere(f);
+                return this.SmtpRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -339,7 +355,7 @@ namespace MixERP.Net.Api.Config
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SmtpContext.GetWhere(pageNumber, f);
+                return this.SmtpRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -371,7 +387,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SmtpContext.CountFiltered(filterName);
+                return this.SmtpRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -404,7 +420,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SmtpContext.GetFiltered(pageNumber, filterName);
+                return this.SmtpRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -435,7 +451,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SmtpContext.GetDisplayFields();
+                return this.SmtpRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -466,7 +482,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SmtpContext.GetCustomFields(null);
+                return this.SmtpRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -497,7 +513,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SmtpContext.GetCustomFields(resourceId);
+                return this.SmtpRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -536,7 +552,7 @@ namespace MixERP.Net.Api.Config
 
             try
             {
-                return this.SmtpContext.AddOrEdit(smtp, customFields);
+                return this.SmtpRepository.AddOrEdit(smtp, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -572,7 +588,7 @@ namespace MixERP.Net.Api.Config
 
             try
             {
-                this.SmtpContext.Add(smtp);
+                this.SmtpRepository.Add(smtp);
             }
             catch (UnauthorizedException)
             {
@@ -609,7 +625,7 @@ namespace MixERP.Net.Api.Config
 
             try
             {
-                this.SmtpContext.Update(smtp, smtpId);
+                this.SmtpRepository.Update(smtp, smtpId);
             }
             catch (UnauthorizedException)
             {
@@ -654,7 +670,7 @@ namespace MixERP.Net.Api.Config
 
             try
             {
-                return this.SmtpContext.BulkImport(smtpCollection);
+                return this.SmtpRepository.BulkImport(smtpCollection);
             }
             catch (UnauthorizedException)
             {
@@ -685,7 +701,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                this.SmtpContext.Delete(smtpId);
+                this.SmtpRepository.Delete(smtpId);
             }
             catch (UnauthorizedException)
             {

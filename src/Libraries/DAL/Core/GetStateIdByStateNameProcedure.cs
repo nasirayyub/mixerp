@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_state_id_by_state_name(pg_arg0 text)" on the database.
     /// </summary>
-    public class GetStateIdByStateNameProcedure : DbAccess
+    public class GetStateIdByStateNameProcedure : DbAccess, IGetStateIdByStateNameRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private RecreateMenuProcedure procedure;
+        /// <summary>
+        ///     The RecreateMenu repository.
+        /// </summary>
+        private readonly IRecreateMenuRepository repository;
+
         public class Annotation
         {
             public string MenuText { get; set; }
@@ -50,19 +54,32 @@ namespace MixERP.Net.Api.Core
             public int ParentMenuId { get; set; }
         }
 
+
         public RecreateMenuController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new RecreateMenuProcedure
+
+            this.repository = new RecreateMenuProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public RecreateMenuController(IRecreateMenuRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "recreate menu" annotation.
         /// </summary>
@@ -72,6 +89,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/recreate-menu/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -85,6 +106,7 @@ namespace MixERP.Net.Api.Core
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "recreate menu" entity.
         /// </summary>
@@ -94,6 +116,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/recreate-menu/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -102,6 +128,7 @@ namespace MixERP.Net.Api.Core
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/recreate-menu/execute")]
@@ -109,14 +136,14 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.MenuText = annotation.MenuText;
-                this.procedure.Url = annotation.Url;
-                this.procedure.MenuCode = annotation.MenuCode;
-                this.procedure.Level = annotation.Level;
-                this.procedure.ParentMenuId = annotation.ParentMenuId;
+                this.repository.MenuText = annotation.MenuText;
+                this.repository.Url = annotation.Url;
+                this.repository.MenuCode = annotation.MenuCode;
+                this.repository.Level = annotation.Level;
+                this.repository.ParentMenuId = annotation.ParentMenuId;
 
 
-                this.procedure.Execute();
+                this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

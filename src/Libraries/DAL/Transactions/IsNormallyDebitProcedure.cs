@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.is_normally_debit(_account_id bigint)" on the database.
     /// </summary>
-    public class IsNormallyDebitProcedure : DbAccess
+    public class IsNormallyDebitProcedure : DbAccess, IIsNormallyDebitRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

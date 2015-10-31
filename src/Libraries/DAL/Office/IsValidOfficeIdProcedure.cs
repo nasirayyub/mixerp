@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.is_valid_office_id(_office_id integer)" on the database.
     /// </summary>
-    public class IsValidOfficeIdProcedure : DbAccess
+    public class IsValidOfficeIdProcedure : DbAccess, IIsValidOfficeIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

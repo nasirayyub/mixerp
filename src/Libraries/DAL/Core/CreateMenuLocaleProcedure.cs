@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.create_menu_locale(_menu_id integer, _culture text, _menu_text text)" on the database.
     /// </summary>
-    public class CreateMenuLocaleProcedure : DbAccess
+    public class CreateMenuLocaleProcedure : DbAccess, ICreateMenuLocaleRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

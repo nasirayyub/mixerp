@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private VerifyTransactionProcedure procedure;
+        /// <summary>
+        ///     The VerifyTransaction repository.
+        /// </summary>
+        private readonly IVerifyTransactionRepository repository;
+
         public class Annotation
         {
             public long TransactionMasterId { get; set; }
@@ -51,19 +55,32 @@ namespace MixERP.Net.Api.Transactions
             public string Reason { get; set; }
         }
 
+
         public VerifyTransactionController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new VerifyTransactionProcedure
+
+            this.repository = new VerifyTransactionProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public VerifyTransactionController(IVerifyTransactionRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "verify transaction" annotation.
         /// </summary>
@@ -73,6 +90,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/verify-transaction/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -88,6 +109,8 @@ namespace MixERP.Net.Api.Transactions
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/verify-transaction/execute")]
@@ -95,15 +118,15 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.TransactionMasterId = annotation.TransactionMasterId;
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.LoginId = annotation.LoginId;
-                this.procedure.VerificationStatusId = annotation.VerificationStatusId;
-                this.procedure.Reason = annotation.Reason;
+                this.repository.TransactionMasterId = annotation.TransactionMasterId;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.UserId = annotation.UserId;
+                this.repository.LoginId = annotation.LoginId;
+                this.repository.VerificationStatusId = annotation.VerificationStatusId;
+                this.repository.Reason = annotation.Reason;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

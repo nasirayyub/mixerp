@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private PostStockAdjustmentProcedure procedure;
+        /// <summary>
+        ///     The PostStockAdjustment repository.
+        /// </summary>
+        private readonly IPostStockAdjustmentRepository repository;
+
         public class Annotation
         {
             public int OfficeId { get; set; }
@@ -52,19 +56,32 @@ namespace MixERP.Net.Api.Transactions
             public MixERP.Net.Entities.Transactions.StockAdjustmentType[] Details { get; set; }
         }
 
+
         public PostStockAdjustmentController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new PostStockAdjustmentProcedure
+
+            this.repository = new PostStockAdjustmentProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public PostStockAdjustmentController(IPostStockAdjustmentRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "post stock adjustment" annotation.
         /// </summary>
@@ -74,6 +91,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/post-stock-adjustment/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -90,6 +111,8 @@ namespace MixERP.Net.Api.Transactions
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/post-stock-adjustment/execute")]
@@ -97,16 +120,16 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.LoginId = annotation.LoginId;
-                this.procedure.ValueDate = annotation.ValueDate;
-                this.procedure.ReferenceNumber = annotation.ReferenceNumber;
-                this.procedure.StatementReference = annotation.StatementReference;
-                this.procedure.Details = annotation.Details;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.UserId = annotation.UserId;
+                this.repository.LoginId = annotation.LoginId;
+                this.repository.ValueDate = annotation.ValueDate;
+                this.repository.ReferenceNumber = annotation.ReferenceNumber;
+                this.repository.StatementReference = annotation.StatementReference;
+                this.repository.Details = annotation.Details;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

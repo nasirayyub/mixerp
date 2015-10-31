@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.HRM
     public class ExitController : ApiController
     {
         /// <summary>
-        ///     The Exit data context.
+        ///     The Exit repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.Exit ExitContext;
+        private readonly IExitRepository ExitRepository;
 
         public ExitController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ExitContext = new MixERP.Net.Core.Modules.HRM.Data.Exit
+            this.ExitRepository = new MixERP.Net.Core.Modules.HRM.Data.Exit
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ExitController(IExitRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ExitRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/exit/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "exit_id",
@@ -90,7 +106,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ExitContext.Count();
+                return this.ExitRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -121,7 +137,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ExitContext.GetAll();
+                return this.ExitRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +168,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ExitContext.Export();
+                return this.ExitRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -184,7 +200,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ExitContext.Get(exitId);
+                return this.ExitRepository.Get(exitId);
             }
             catch (UnauthorizedException)
             {
@@ -211,7 +227,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ExitContext.Get(exitIds);
+                return this.ExitRepository.Get(exitIds);
             }
             catch (UnauthorizedException)
             {
@@ -242,7 +258,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ExitContext.GetPaginatedResult();
+                return this.ExitRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -274,7 +290,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ExitContext.GetPaginatedResult(pageNumber);
+                return this.ExitRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -307,7 +323,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ExitContext.CountWhere(f);
+                return this.ExitRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -341,7 +357,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ExitContext.GetWhere(pageNumber, f);
+                return this.ExitRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -373,7 +389,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ExitContext.CountFiltered(filterName);
+                return this.ExitRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -406,7 +422,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ExitContext.GetFiltered(pageNumber, filterName);
+                return this.ExitRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -437,7 +453,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ExitContext.GetDisplayFields();
+                return this.ExitRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -468,7 +484,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ExitContext.GetCustomFields(null);
+                return this.ExitRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -499,7 +515,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ExitContext.GetCustomFields(resourceId);
+                return this.ExitRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -538,7 +554,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.ExitContext.AddOrEdit(exit, customFields);
+                return this.ExitRepository.AddOrEdit(exit, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -574,7 +590,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.ExitContext.Add(exit);
+                this.ExitRepository.Add(exit);
             }
             catch (UnauthorizedException)
             {
@@ -611,7 +627,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.ExitContext.Update(exit, exitId);
+                this.ExitRepository.Update(exit, exitId);
             }
             catch (UnauthorizedException)
             {
@@ -656,7 +672,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.ExitContext.BulkImport(exitCollection);
+                return this.ExitRepository.BulkImport(exitCollection);
             }
             catch (UnauthorizedException)
             {
@@ -687,7 +703,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                this.ExitContext.Delete(exitId);
+                this.ExitRepository.Delete(exitId);
             }
             catch (UnauthorizedException)
             {
@@ -720,7 +736,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                this.ExitContext.Verify(exitId, verificationStatusId, reason);
+                this.ExitRepository.Verify(exitId, verificationStatusId, reason);
             }
             catch (UnauthorizedException)
             {

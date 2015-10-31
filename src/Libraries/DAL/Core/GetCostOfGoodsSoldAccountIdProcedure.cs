@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_cost_of_goods_sold_account_id(_item_id integer)" on the database.
     /// </summary>
-    public class GetCostOfGoodsSoldAccountIdProcedure : DbAccess
+    public class GetCostOfGoodsSoldAccountIdProcedure : DbAccess, IGetCostOfGoodsSoldAccountIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

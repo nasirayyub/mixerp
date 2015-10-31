@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Public.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database view "public.db_stat".
     /// </summary>
-    public class DbStat : DbAccess
+    public class DbStat : DbAccess, IDbStatRepository
     {
         /// <summary>
         /// The schema of this view. Returns literal "public".
@@ -71,7 +71,7 @@ namespace MixERP.Net.Schemas.Public.Data
         }
 
         /// <summary>
-        /// Executes a select query on the view "public.db_stat" to return a all instances of the "DbStat" class. 
+        /// Executes a select query on the view "public.db_stat" to return all instances of the "DbStat" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "DbStat" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -162,7 +162,7 @@ namespace MixERP.Net.Schemas.Public.Data
             return Factory.Get<MixERP.Net.Entities.Public.DbStat>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='public.db_stat' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_base_quantity_by_unit_name(pg_arg0 text, pg_arg1 integer)" on the database.
     /// </summary>
-    public class GetBaseQuantityByUnitNameProcedure : DbAccess
+    public class GetBaseQuantityByUnitNameProcedure : DbAccess, IGetBaseQuantityByUnitNameRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

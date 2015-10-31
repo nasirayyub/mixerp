@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.cast_frequency(_frequency_code text)" on the database.
     /// </summary>
-    public class CastFrequencyProcedure : DbAccess
+    public class CastFrequencyProcedure : DbAccess, ICastFrequencyRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Localization.Data
     /// <summary>
     /// Prepares, validates, and executes the function "localization.get_menu_table(_culture_code text)" on the database.
     /// </summary>
-    public class GetMenuTableProcedure : DbAccess
+    public class GetMenuTableProcedure : DbAccess, IGetMenuTableRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

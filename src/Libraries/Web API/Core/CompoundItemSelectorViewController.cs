@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class CompoundItemSelectorViewController : ApiController
     {
         /// <summary>
-        ///     The CompoundItemSelectorView data context.
+        ///     The CompoundItemSelectorView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.CompoundItemSelectorView CompoundItemSelectorViewContext;
+        private readonly ICompoundItemSelectorViewRepository CompoundItemSelectorViewRepository;
 
         public CompoundItemSelectorViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.CompoundItemSelectorViewContext = new MixERP.Net.Schemas.Core.Data.CompoundItemSelectorView
+            this.CompoundItemSelectorViewRepository = new MixERP.Net.Schemas.Core.Data.CompoundItemSelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public CompoundItemSelectorViewController(ICompoundItemSelectorViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.CompoundItemSelectorViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CompoundItemSelectorViewContext.Count();
+                return this.CompoundItemSelectorViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CompoundItemSelectorViewContext.Get();
+                return this.CompoundItemSelectorViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CompoundItemSelectorViewContext.GetPaginatedResult();
+                return this.CompoundItemSelectorViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CompoundItemSelectorViewContext.GetPaginatedResult(pageNumber);
+                return this.CompoundItemSelectorViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CompoundItemSelectorViewContext.GetDisplayFields();
+                return this.CompoundItemSelectorViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CompoundItemSelectorViewContext.CountWhere(f);
+                return this.CompoundItemSelectorViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CompoundItemSelectorViewContext.GetWhere(pageNumber, f);
+                return this.CompoundItemSelectorViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CompoundItemSelectorViewContext.CountFiltered(filterName);
+                return this.CompoundItemSelectorViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CompoundItemSelectorViewContext.GetFiltered(pageNumber, filterName);
+                return this.CompoundItemSelectorViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

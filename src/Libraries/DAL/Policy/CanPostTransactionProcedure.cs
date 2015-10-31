@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Policy.Data
     /// <summary>
     /// Prepares, validates, and executes the function "policy.can_post_transaction(_login_id bigint, _user_id integer, _office_id integer, transaction_book text, _value_date date)" on the database.
     /// </summary>
-    public class CanPostTransactionProcedure : DbAccess
+    public class CanPostTransactionProcedure : DbAccess, ICanPostTransactionRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

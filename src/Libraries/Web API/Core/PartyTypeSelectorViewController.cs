@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class PartyTypeSelectorViewController : ApiController
     {
         /// <summary>
-        ///     The PartyTypeSelectorView data context.
+        ///     The PartyTypeSelectorView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.PartyTypeSelectorView PartyTypeSelectorViewContext;
+        private readonly IPartyTypeSelectorViewRepository PartyTypeSelectorViewRepository;
 
         public PartyTypeSelectorViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.PartyTypeSelectorViewContext = new MixERP.Net.Schemas.Core.Data.PartyTypeSelectorView
+            this.PartyTypeSelectorViewRepository = new MixERP.Net.Schemas.Core.Data.PartyTypeSelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public PartyTypeSelectorViewController(IPartyTypeSelectorViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.PartyTypeSelectorViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeSelectorViewContext.Count();
+                return this.PartyTypeSelectorViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeSelectorViewContext.Get();
+                return this.PartyTypeSelectorViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeSelectorViewContext.GetPaginatedResult();
+                return this.PartyTypeSelectorViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeSelectorViewContext.GetPaginatedResult(pageNumber);
+                return this.PartyTypeSelectorViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeSelectorViewContext.GetDisplayFields();
+                return this.PartyTypeSelectorViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.PartyTypeSelectorViewContext.CountWhere(f);
+                return this.PartyTypeSelectorViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.PartyTypeSelectorViewContext.GetWhere(pageNumber, f);
+                return this.PartyTypeSelectorViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeSelectorViewContext.CountFiltered(filterName);
+                return this.PartyTypeSelectorViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeSelectorViewContext.GetFiltered(pageNumber, filterName);
+                return this.PartyTypeSelectorViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

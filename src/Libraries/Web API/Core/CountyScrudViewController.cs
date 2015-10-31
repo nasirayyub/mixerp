@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class CountyScrudViewController : ApiController
     {
         /// <summary>
-        ///     The CountyScrudView data context.
+        ///     The CountyScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.CountyScrudView CountyScrudViewContext;
+        private readonly ICountyScrudViewRepository CountyScrudViewRepository;
 
         public CountyScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.CountyScrudViewContext = new MixERP.Net.Schemas.Core.Data.CountyScrudView
+            this.CountyScrudViewRepository = new MixERP.Net.Schemas.Core.Data.CountyScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public CountyScrudViewController(ICountyScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.CountyScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CountyScrudViewContext.Count();
+                return this.CountyScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CountyScrudViewContext.Get();
+                return this.CountyScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CountyScrudViewContext.GetPaginatedResult();
+                return this.CountyScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CountyScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.CountyScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CountyScrudViewContext.GetDisplayFields();
+                return this.CountyScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CountyScrudViewContext.CountWhere(f);
+                return this.CountyScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CountyScrudViewContext.GetWhere(pageNumber, f);
+                return this.CountyScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CountyScrudViewContext.CountFiltered(filterName);
+                return this.CountyScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CountyScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.CountyScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

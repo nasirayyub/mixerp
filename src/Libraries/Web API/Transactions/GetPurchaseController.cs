@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetPurchaseProcedure procedure;
+        /// <summary>
+        ///     The GetPurchase repository.
+        /// </summary>
+        private readonly IGetPurchaseRepository repository;
+
         public class Annotation
         {
             public DateTime DateFrom { get; set; }
@@ -48,19 +52,32 @@ namespace MixERP.Net.Api.Transactions
             public int OfficeId { get; set; }
         }
 
+
         public GetPurchaseController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetPurchaseProcedure
+
+            this.repository = new GetPurchaseProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetPurchaseController(IGetPurchaseRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get purchase" annotation.
         /// </summary>
@@ -70,6 +87,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-purchase/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -82,6 +103,8 @@ namespace MixERP.Net.Api.Transactions
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/get-purchase/execute")]
@@ -89,12 +112,12 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.DateFrom = annotation.DateFrom;
-                this.procedure.DateTo = annotation.DateTo;
-                this.procedure.OfficeId = annotation.OfficeId;
+                this.repository.DateFrom = annotation.DateFrom;
+                this.repository.DateTo = annotation.DateTo;
+                this.repository.OfficeId = annotation.OfficeId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class TaxRateTypeController : ApiController
     {
         /// <summary>
-        ///     The TaxRateType data context.
+        ///     The TaxRateType repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.TaxRateType TaxRateTypeContext;
+        private readonly ITaxRateTypeRepository TaxRateTypeRepository;
 
         public TaxRateTypeController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.TaxRateTypeContext = new MixERP.Net.Schemas.Core.Data.TaxRateType
+            this.TaxRateTypeRepository = new MixERP.Net.Schemas.Core.Data.TaxRateType
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public TaxRateTypeController(ITaxRateTypeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.TaxRateTypeRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/tax-rate-type/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "tax_rate_type_code",
@@ -77,7 +93,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxRateTypeContext.Count();
+                return this.TaxRateTypeRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -108,7 +124,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxRateTypeContext.GetAll();
+                return this.TaxRateTypeRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -139,7 +155,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxRateTypeContext.Export();
+                return this.TaxRateTypeRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -171,7 +187,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxRateTypeContext.Get(taxRateTypeCode);
+                return this.TaxRateTypeRepository.Get(taxRateTypeCode);
             }
             catch (UnauthorizedException)
             {
@@ -198,7 +214,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxRateTypeContext.Get(taxRateTypeCodes);
+                return this.TaxRateTypeRepository.Get(taxRateTypeCodes);
             }
             catch (UnauthorizedException)
             {
@@ -229,7 +245,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxRateTypeContext.GetPaginatedResult();
+                return this.TaxRateTypeRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -261,7 +277,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxRateTypeContext.GetPaginatedResult(pageNumber);
+                return this.TaxRateTypeRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -294,7 +310,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.TaxRateTypeContext.CountWhere(f);
+                return this.TaxRateTypeRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -328,7 +344,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.TaxRateTypeContext.GetWhere(pageNumber, f);
+                return this.TaxRateTypeRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -360,7 +376,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxRateTypeContext.CountFiltered(filterName);
+                return this.TaxRateTypeRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -393,7 +409,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxRateTypeContext.GetFiltered(pageNumber, filterName);
+                return this.TaxRateTypeRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -424,7 +440,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxRateTypeContext.GetDisplayFields();
+                return this.TaxRateTypeRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -455,7 +471,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxRateTypeContext.GetCustomFields(null);
+                return this.TaxRateTypeRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -486,7 +502,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxRateTypeContext.GetCustomFields(resourceId);
+                return this.TaxRateTypeRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -525,7 +541,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.TaxRateTypeContext.AddOrEdit(taxRateType, customFields);
+                return this.TaxRateTypeRepository.AddOrEdit(taxRateType, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -561,7 +577,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.TaxRateTypeContext.Add(taxRateType);
+                this.TaxRateTypeRepository.Add(taxRateType);
             }
             catch (UnauthorizedException)
             {
@@ -598,7 +614,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.TaxRateTypeContext.Update(taxRateType, taxRateTypeCode);
+                this.TaxRateTypeRepository.Update(taxRateType, taxRateTypeCode);
             }
             catch (UnauthorizedException)
             {
@@ -643,7 +659,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.TaxRateTypeContext.BulkImport(taxRateTypeCollection);
+                return this.TaxRateTypeRepository.BulkImport(taxRateTypeCollection);
             }
             catch (UnauthorizedException)
             {
@@ -674,7 +690,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.TaxRateTypeContext.Delete(taxRateTypeCode);
+                this.TaxRateTypeRepository.Delete(taxRateTypeCode);
             }
             catch (UnauthorizedException)
             {

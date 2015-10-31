@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Office.Data;
 
 namespace MixERP.Net.Api.Office
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Office
     public class CostCenterScrudViewController : ApiController
     {
         /// <summary>
-        ///     The CostCenterScrudView data context.
+        ///     The CostCenterScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Office.Data.CostCenterScrudView CostCenterScrudViewContext;
+        private readonly ICostCenterScrudViewRepository CostCenterScrudViewRepository;
 
         public CostCenterScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Office
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.CostCenterScrudViewContext = new MixERP.Net.Schemas.Office.Data.CostCenterScrudView
+            this.CostCenterScrudViewRepository = new MixERP.Net.Schemas.Office.Data.CostCenterScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public CostCenterScrudViewController(ICostCenterScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.CostCenterScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterScrudViewContext.Count();
+                return this.CostCenterScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterScrudViewContext.Get();
+                return this.CostCenterScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterScrudViewContext.GetPaginatedResult();
+                return this.CostCenterScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.CostCenterScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterScrudViewContext.GetDisplayFields();
+                return this.CostCenterScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CostCenterScrudViewContext.CountWhere(f);
+                return this.CostCenterScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CostCenterScrudViewContext.GetWhere(pageNumber, f);
+                return this.CostCenterScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterScrudViewContext.CountFiltered(filterName);
+                return this.CostCenterScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.CostCenterScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

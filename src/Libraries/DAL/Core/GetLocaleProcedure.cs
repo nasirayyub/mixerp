@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_locale()" on the database.
     /// </summary>
-    public class GetLocaleProcedure : DbAccess
+    public class GetLocaleProcedure : DbAccess, IGetLocaleRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

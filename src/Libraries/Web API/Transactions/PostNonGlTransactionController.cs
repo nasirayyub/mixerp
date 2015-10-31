@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private PostNonGlTransactionProcedure procedure;
+        /// <summary>
+        ///     The PostNonGlTransaction repository.
+        /// </summary>
+        private readonly IPostNonGlTransactionRepository repository;
+
         public class Annotation
         {
             public string BookName { get; set; }
@@ -62,19 +66,32 @@ namespace MixERP.Net.Api.Transactions
             public MixERP.Net.Entities.Core.AttachmentType[] Attachments { get; set; }
         }
 
+
         public PostNonGlTransactionController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new PostNonGlTransactionProcedure
+
+            this.repository = new PostNonGlTransactionProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public PostNonGlTransactionController(IPostNonGlTransactionRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "post non gl transaction" annotation.
         /// </summary>
@@ -84,6 +101,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/post-non-gl-transaction/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -110,6 +131,8 @@ namespace MixERP.Net.Api.Transactions
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/post-non-gl-transaction/execute")]
@@ -117,26 +140,26 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.BookName = annotation.BookName;
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.LoginId = annotation.LoginId;
-                this.procedure.ValueDate = annotation.ValueDate;
-                this.procedure.ReferenceNumber = annotation.ReferenceNumber;
-                this.procedure.StatementReference = annotation.StatementReference;
-                this.procedure.PartyCode = annotation.PartyCode;
-                this.procedure.PriceTypeId = annotation.PriceTypeId;
-                this.procedure.IsNonTaxableSales = annotation.IsNonTaxableSales;
-                this.procedure.SalespersonId = annotation.SalespersonId;
-                this.procedure.ShipperId = annotation.ShipperId;
-                this.procedure.ShippingAddressCode = annotation.ShippingAddressCode;
-                this.procedure.StoreId = annotation.StoreId;
-                this.procedure.TranIds = annotation.TranIds;
-                this.procedure.Details = annotation.Details;
-                this.procedure.Attachments = annotation.Attachments;
+                this.repository.BookName = annotation.BookName;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.UserId = annotation.UserId;
+                this.repository.LoginId = annotation.LoginId;
+                this.repository.ValueDate = annotation.ValueDate;
+                this.repository.ReferenceNumber = annotation.ReferenceNumber;
+                this.repository.StatementReference = annotation.StatementReference;
+                this.repository.PartyCode = annotation.PartyCode;
+                this.repository.PriceTypeId = annotation.PriceTypeId;
+                this.repository.IsNonTaxableSales = annotation.IsNonTaxableSales;
+                this.repository.SalespersonId = annotation.SalespersonId;
+                this.repository.ShipperId = annotation.ShipperId;
+                this.repository.ShippingAddressCode = annotation.ShippingAddressCode;
+                this.repository.StoreId = annotation.StoreId;
+                this.repository.TranIds = annotation.TranIds;
+                this.repository.Details = annotation.Details;
+                this.repository.Attachments = annotation.Attachments;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

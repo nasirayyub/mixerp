@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_exchange_rate(office_id integer, source_currency_code character varying, destination_currency_code character varying)" on the database.
     /// </summary>
-    public class GetExchangeRateProcedure : DbAccess
+    public class GetExchangeRateProcedure : DbAccess, IGetExchangeRateRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

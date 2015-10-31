@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_value_date(_office_id integer)" on the database.
     /// </summary>
-    public class GetValueDateProcedure : DbAccess
+    public class GetValueDateProcedure : DbAccess, IGetValueDateRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

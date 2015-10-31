@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_price_type_name_by_price_type_id(pg_arg0 integer)" on the database.
     /// </summary>
-    public class GetPriceTypeNameByPriceTypeIdProcedure : DbAccess
+    public class GetPriceTypeNameByPriceTypeIdProcedure : DbAccess, IGetPriceTypeNameByPriceTypeIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private PostLateFeeProcedure procedure;
+        /// <summary>
+        ///     The PostLateFee repository.
+        /// </summary>
+        private readonly IPostLateFeeRepository repository;
+
         public class Annotation
         {
             public int UserId { get; set; }
@@ -49,19 +53,32 @@ namespace MixERP.Net.Api.Transactions
             public DateTime ValueDate { get; set; }
         }
 
+
         public PostLateFeeController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new PostLateFeeProcedure
+
+            this.repository = new PostLateFeeProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public PostLateFeeController(IPostLateFeeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "post late fee" annotation.
         /// </summary>
@@ -71,6 +88,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/post-late-fee/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -83,6 +104,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "post late fee" entity.
         /// </summary>
@@ -92,6 +114,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/post-late-fee/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -100,6 +126,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/post-late-fee/execute")]
@@ -107,13 +134,13 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.LoginId = annotation.LoginId;
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.ValueDate = annotation.ValueDate;
+                this.repository.UserId = annotation.UserId;
+                this.repository.LoginId = annotation.LoginId;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.ValueDate = annotation.ValueDate;
 
 
-                this.procedure.Execute();
+                this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

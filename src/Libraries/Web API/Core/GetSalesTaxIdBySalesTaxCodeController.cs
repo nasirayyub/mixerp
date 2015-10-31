@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetSalesTaxIdBySalesTaxCodeProcedure procedure;
+        /// <summary>
+        ///     The GetSalesTaxIdBySalesTaxCode repository.
+        /// </summary>
+        private readonly IGetSalesTaxIdBySalesTaxCodeRepository repository;
+
         public class Annotation
         {
             public string SalesTaxCode { get; set; }
         }
+
 
         public GetSalesTaxIdBySalesTaxCodeController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Core
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetSalesTaxIdBySalesTaxCodeProcedure
+
+            this.repository = new GetSalesTaxIdBySalesTaxCodeProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetSalesTaxIdBySalesTaxCodeController(IGetSalesTaxIdBySalesTaxCodeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get sales tax id by sales tax code" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/get-sales-tax-id-by-sales-tax-code/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -78,6 +99,8 @@ namespace MixERP.Net.Api.Core
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/get-sales-tax-id-by-sales-tax-code/execute")]
@@ -85,10 +108,10 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.SalesTaxCode = annotation.SalesTaxCode;
+                this.repository.SalesTaxCode = annotation.SalesTaxCode;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

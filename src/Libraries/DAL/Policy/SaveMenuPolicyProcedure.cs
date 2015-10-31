@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Policy.Data
     /// <summary>
     /// Prepares, validates, and executes the function "policy.save_menu_policy(_user_id integer, _office_id integer, _menu_ids integer[])" on the database.
     /// </summary>
-    public class SaveMenuPolicyProcedure : DbAccess
+    public class SaveMenuPolicyProcedure : DbAccess, ISaveMenuPolicyRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

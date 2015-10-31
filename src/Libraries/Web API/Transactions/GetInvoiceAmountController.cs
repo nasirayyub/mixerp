@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetInvoiceAmountProcedure procedure;
+        /// <summary>
+        ///     The GetInvoiceAmount repository.
+        /// </summary>
+        private readonly IGetInvoiceAmountRepository repository;
+
         public class Annotation
         {
             public long TransactionMasterId { get; set; }
         }
+
 
         public GetInvoiceAmountController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Transactions
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetInvoiceAmountProcedure
+
+            this.repository = new GetInvoiceAmountProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetInvoiceAmountController(IGetInvoiceAmountRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get invoice amount" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-invoice-amount/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -76,6 +97,7 @@ namespace MixERP.Net.Api.Transactions
                                 }
             };
         }
+
 
         /// <summary>
         ///     Creates meta information of "get invoice amount" entity.
@@ -86,6 +108,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-invoice-amount/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -94,6 +120,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/get-invoice-amount/execute")]
@@ -101,10 +128,10 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.TransactionMasterId = annotation.TransactionMasterId;
+                this.repository.TransactionMasterId = annotation.TransactionMasterId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

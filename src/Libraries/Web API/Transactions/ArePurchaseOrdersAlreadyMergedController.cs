@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private ArePurchaseOrdersAlreadyMergedProcedure procedure;
+        /// <summary>
+        ///     The ArePurchaseOrdersAlreadyMerged repository.
+        /// </summary>
+        private readonly IArePurchaseOrdersAlreadyMergedRepository repository;
+
         public class Annotation
         {
             public long[] Arr { get; set; }
         }
+
 
         public ArePurchaseOrdersAlreadyMergedController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Transactions
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new ArePurchaseOrdersAlreadyMergedProcedure
+
+            this.repository = new ArePurchaseOrdersAlreadyMergedProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public ArePurchaseOrdersAlreadyMergedController(IArePurchaseOrdersAlreadyMergedRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "are purchase orders already merged" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/are-purchase-orders-already-merged/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -78,6 +99,8 @@ namespace MixERP.Net.Api.Transactions
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/are-purchase-orders-already-merged/execute")]
@@ -85,10 +108,10 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.Arr = annotation.Arr;
+                this.repository.Arr = annotation.Arr;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

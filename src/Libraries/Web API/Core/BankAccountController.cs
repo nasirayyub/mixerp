@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class BankAccountController : ApiController
     {
         /// <summary>
-        ///     The BankAccount data context.
+        ///     The BankAccount repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.BankAccount BankAccountContext;
+        private readonly IBankAccountRepository BankAccountRepository;
 
         public BankAccountController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.BankAccountContext = new MixERP.Net.Schemas.Core.Data.BankAccount
+            this.BankAccountRepository = new MixERP.Net.Schemas.Core.Data.BankAccount
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public BankAccountController(IBankAccountRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.BankAccountRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/bank-account/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "account_id",
@@ -88,7 +104,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountContext.Count();
+                return this.BankAccountRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -119,7 +135,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountContext.GetAll();
+                return this.BankAccountRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -150,7 +166,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountContext.Export();
+                return this.BankAccountRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -182,7 +198,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountContext.Get(accountId);
+                return this.BankAccountRepository.Get(accountId);
             }
             catch (UnauthorizedException)
             {
@@ -209,7 +225,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountContext.Get(accountIds);
+                return this.BankAccountRepository.Get(accountIds);
             }
             catch (UnauthorizedException)
             {
@@ -240,7 +256,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountContext.GetPaginatedResult();
+                return this.BankAccountRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -272,7 +288,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountContext.GetPaginatedResult(pageNumber);
+                return this.BankAccountRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -305,7 +321,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.BankAccountContext.CountWhere(f);
+                return this.BankAccountRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -339,7 +355,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.BankAccountContext.GetWhere(pageNumber, f);
+                return this.BankAccountRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -371,7 +387,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountContext.CountFiltered(filterName);
+                return this.BankAccountRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -404,7 +420,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountContext.GetFiltered(pageNumber, filterName);
+                return this.BankAccountRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -435,7 +451,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountContext.GetDisplayFields();
+                return this.BankAccountRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -466,7 +482,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountContext.GetCustomFields(null);
+                return this.BankAccountRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -497,7 +513,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountContext.GetCustomFields(resourceId);
+                return this.BankAccountRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -536,7 +552,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.BankAccountContext.AddOrEdit(bankAccount, customFields);
+                return this.BankAccountRepository.AddOrEdit(bankAccount, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -572,7 +588,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.BankAccountContext.Add(bankAccount);
+                this.BankAccountRepository.Add(bankAccount);
             }
             catch (UnauthorizedException)
             {
@@ -609,7 +625,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.BankAccountContext.Update(bankAccount, accountId);
+                this.BankAccountRepository.Update(bankAccount, accountId);
             }
             catch (UnauthorizedException)
             {
@@ -654,7 +670,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.BankAccountContext.BulkImport(bankAccountCollection);
+                return this.BankAccountRepository.BulkImport(bankAccountCollection);
             }
             catch (UnauthorizedException)
             {
@@ -685,7 +701,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.BankAccountContext.Delete(accountId);
+                this.BankAccountRepository.Delete(accountId);
             }
             catch (UnauthorizedException)
             {

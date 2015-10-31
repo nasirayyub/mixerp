@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Office.Data;
 
 namespace MixERP.Net.Api.Office
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Office
     public class StoreTypeSelectorViewController : ApiController
     {
         /// <summary>
-        ///     The StoreTypeSelectorView data context.
+        ///     The StoreTypeSelectorView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Office.Data.StoreTypeSelectorView StoreTypeSelectorViewContext;
+        private readonly IStoreTypeSelectorViewRepository StoreTypeSelectorViewRepository;
 
         public StoreTypeSelectorViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Office
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.StoreTypeSelectorViewContext = new MixERP.Net.Schemas.Office.Data.StoreTypeSelectorView
+            this.StoreTypeSelectorViewRepository = new MixERP.Net.Schemas.Office.Data.StoreTypeSelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public StoreTypeSelectorViewController(IStoreTypeSelectorViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.StoreTypeSelectorViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.StoreTypeSelectorViewContext.Count();
+                return this.StoreTypeSelectorViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.StoreTypeSelectorViewContext.Get();
+                return this.StoreTypeSelectorViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.StoreTypeSelectorViewContext.GetPaginatedResult();
+                return this.StoreTypeSelectorViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.StoreTypeSelectorViewContext.GetPaginatedResult(pageNumber);
+                return this.StoreTypeSelectorViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.StoreTypeSelectorViewContext.GetDisplayFields();
+                return this.StoreTypeSelectorViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.StoreTypeSelectorViewContext.CountWhere(f);
+                return this.StoreTypeSelectorViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.StoreTypeSelectorViewContext.GetWhere(pageNumber, f);
+                return this.StoreTypeSelectorViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.StoreTypeSelectorViewContext.CountFiltered(filterName);
+                return this.StoreTypeSelectorViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.StoreTypeSelectorViewContext.GetFiltered(pageNumber, filterName);
+                return this.StoreTypeSelectorViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

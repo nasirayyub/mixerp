@@ -16,7 +16,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database table "office.cost_centers".
     /// </summary>
-    public class CostCenter : DbAccess
+    public class CostCenter : DbAccess, ICostCenterRepository
     {
         /// <summary>
         /// The schema of this table. Returns literal "office".
@@ -73,7 +73,7 @@ namespace MixERP.Net.Schemas.Office.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "office.cost_centers" to return a all instances of the "CostCenter" class. 
+        /// Executes a select query on the table "office.cost_centers" to return all instances of the "CostCenter" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "CostCenter" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -102,7 +102,7 @@ namespace MixERP.Net.Schemas.Office.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "office.cost_centers" to return a all instances of the "CostCenter" class to export. 
+        /// Executes a select query on the table "office.cost_centers" to return all instances of the "CostCenter" class to export. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "CostCenter" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -559,7 +559,7 @@ namespace MixERP.Net.Schemas.Office.Data
             return Factory.Get<MixERP.Net.Entities.Office.CostCenter>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='office.cost_centers' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

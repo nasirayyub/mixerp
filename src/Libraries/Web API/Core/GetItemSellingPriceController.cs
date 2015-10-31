@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetItemSellingPriceProcedure procedure;
+        /// <summary>
+        ///     The GetItemSellingPrice repository.
+        /// </summary>
+        private readonly IGetItemSellingPriceRepository repository;
+
         public class Annotation
         {
             public int ItemId { get; set; }
@@ -49,19 +53,32 @@ namespace MixERP.Net.Api.Core
             public int UnitId { get; set; }
         }
 
+
         public GetItemSellingPriceController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetItemSellingPriceProcedure
+
+            this.repository = new GetItemSellingPriceProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetItemSellingPriceController(IGetItemSellingPriceRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get item selling price" annotation.
         /// </summary>
@@ -71,6 +88,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/get-item-selling-price/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -83,6 +104,7 @@ namespace MixERP.Net.Api.Core
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "get item selling price" entity.
         /// </summary>
@@ -92,6 +114,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/get-item-selling-price/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -100,6 +126,7 @@ namespace MixERP.Net.Api.Core
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/get-item-selling-price/execute")]
@@ -107,13 +134,13 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.ItemId = annotation.ItemId;
-                this.procedure.PartyTypeId = annotation.PartyTypeId;
-                this.procedure.PriceTypeId = annotation.PriceTypeId;
-                this.procedure.UnitId = annotation.UnitId;
+                this.repository.ItemId = annotation.ItemId;
+                this.repository.PartyTypeId = annotation.PartyTypeId;
+                this.repository.PriceTypeId = annotation.PriceTypeId;
+                this.repository.UnitId = annotation.UnitId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_eoy_profit_summary(_office_id integer)" on the database.
     /// </summary>
-    public class GetEoyProfitSummaryProcedure : DbAccess
+    public class GetEoyProfitSummaryProcedure : DbAccess, IGetEoyProfitSummaryRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

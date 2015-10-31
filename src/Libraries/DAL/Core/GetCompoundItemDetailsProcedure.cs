@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_compound_item_details(_compound_item_code character varying, _sales_tax_code character varying, _tran_book character varying, _store_id integer, _party_code character varying, _price_type_id integer)" on the database.
     /// </summary>
-    public class GetCompoundItemDetailsProcedure : DbAccess
+    public class GetCompoundItemDetailsProcedure : DbAccess, IGetCompoundItemDetailsRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

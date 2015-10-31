@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.get_cost_of_good_method(_office_id integer)" on the database.
     /// </summary>
-    public class GetCostOfGoodMethodProcedure : DbAccess
+    public class GetCostOfGoodMethodProcedure : DbAccess, IGetCostOfGoodMethodRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

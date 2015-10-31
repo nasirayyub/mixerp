@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private CreatePaymentCardProcedure procedure;
+        /// <summary>
+        ///     The CreatePaymentCard repository.
+        /// </summary>
+        private readonly ICreatePaymentCardRepository repository;
+
         public class Annotation
         {
             public string PaymentCardCode { get; set; }
@@ -48,19 +52,32 @@ namespace MixERP.Net.Api.Core
             public int CardTypeId { get; set; }
         }
 
+
         public CreatePaymentCardController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new CreatePaymentCardProcedure
+
+            this.repository = new CreatePaymentCardProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public CreatePaymentCardController(ICreatePaymentCardRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "create payment card" annotation.
         /// </summary>
@@ -70,6 +87,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/create-payment-card/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -81,6 +102,7 @@ namespace MixERP.Net.Api.Core
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "create payment card" entity.
         /// </summary>
@@ -90,6 +112,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/create-payment-card/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -98,6 +124,7 @@ namespace MixERP.Net.Api.Core
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/create-payment-card/execute")]
@@ -105,12 +132,12 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.PaymentCardCode = annotation.PaymentCardCode;
-                this.procedure.PaymentCardName = annotation.PaymentCardName;
-                this.procedure.CardTypeId = annotation.CardTypeId;
+                this.repository.PaymentCardCode = annotation.PaymentCardCode;
+                this.repository.PaymentCardName = annotation.PaymentCardName;
+                this.repository.CardTypeId = annotation.CardTypeId;
 
 
-                this.procedure.Execute();
+                this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

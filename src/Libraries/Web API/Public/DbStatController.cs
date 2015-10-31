@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Public.Data;
 
 namespace MixERP.Net.Api.Public
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Public
     public class DbStatController : ApiController
     {
         /// <summary>
-        ///     The DbStat data context.
+        ///     The DbStat repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Public.Data.DbStat DbStatContext;
+        private readonly IDbStatRepository DbStatRepository;
 
         public DbStatController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Public
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.DbStatContext = new MixERP.Net.Schemas.Public.Data.DbStat
+            this.DbStatRepository = new MixERP.Net.Schemas.Public.Data.DbStat
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public DbStatController(IDbStatRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.DbStatRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Public
         {
             try
             {
-                return this.DbStatContext.Count();
+                return this.DbStatRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Public
         {
             try
             {
-                return this.DbStatContext.Get();
+                return this.DbStatRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Public
         {
             try
             {
-                return this.DbStatContext.GetPaginatedResult();
+                return this.DbStatRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Public
         {
             try
             {
-                return this.DbStatContext.GetPaginatedResult(pageNumber);
+                return this.DbStatRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -186,7 +197,7 @@ namespace MixERP.Net.Api.Public
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.DbStatContext.CountWhere(f);
+                return this.DbStatRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -220,7 +231,7 @@ namespace MixERP.Net.Api.Public
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.DbStatContext.GetWhere(pageNumber, f);
+                return this.DbStatRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -252,7 +263,7 @@ namespace MixERP.Net.Api.Public
         {
             try
             {
-                return this.DbStatContext.CountFiltered(filterName);
+                return this.DbStatRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -286,7 +297,7 @@ namespace MixERP.Net.Api.Public
         {
             try
             {
-                return this.DbStatContext.GetFiltered(pageNumber, filterName);
+                return this.DbStatRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

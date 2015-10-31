@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class KanbanController : ApiController
     {
         /// <summary>
-        ///     The Kanban data context.
+        ///     The Kanban repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.Kanban KanbanContext;
+        private readonly IKanbanRepository KanbanRepository;
 
         public KanbanController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.KanbanContext = new MixERP.Net.Schemas.Core.Data.Kanban
+            this.KanbanRepository = new MixERP.Net.Schemas.Core.Data.Kanban
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public KanbanController(IKanbanRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.KanbanRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/kanban/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "kanban_id",
@@ -82,7 +98,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.KanbanContext.Count();
+                return this.KanbanRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -113,7 +129,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.KanbanContext.GetAll();
+                return this.KanbanRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -144,7 +160,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.KanbanContext.Export();
+                return this.KanbanRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -176,7 +192,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.KanbanContext.Get(kanbanId);
+                return this.KanbanRepository.Get(kanbanId);
             }
             catch (UnauthorizedException)
             {
@@ -203,7 +219,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.KanbanContext.Get(kanbanIds);
+                return this.KanbanRepository.Get(kanbanIds);
             }
             catch (UnauthorizedException)
             {
@@ -234,7 +250,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.KanbanContext.GetPaginatedResult();
+                return this.KanbanRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -266,7 +282,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.KanbanContext.GetPaginatedResult(pageNumber);
+                return this.KanbanRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -299,7 +315,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.KanbanContext.CountWhere(f);
+                return this.KanbanRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -333,7 +349,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.KanbanContext.GetWhere(pageNumber, f);
+                return this.KanbanRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -365,7 +381,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.KanbanContext.CountFiltered(filterName);
+                return this.KanbanRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -398,7 +414,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.KanbanContext.GetFiltered(pageNumber, filterName);
+                return this.KanbanRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -429,7 +445,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.KanbanContext.GetDisplayFields();
+                return this.KanbanRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -460,7 +476,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.KanbanContext.GetCustomFields(null);
+                return this.KanbanRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -491,7 +507,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.KanbanContext.GetCustomFields(resourceId);
+                return this.KanbanRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -530,7 +546,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.KanbanContext.AddOrEdit(kanban, customFields);
+                return this.KanbanRepository.AddOrEdit(kanban, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -566,7 +582,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.KanbanContext.Add(kanban);
+                this.KanbanRepository.Add(kanban);
             }
             catch (UnauthorizedException)
             {
@@ -603,7 +619,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.KanbanContext.Update(kanban, kanbanId);
+                this.KanbanRepository.Update(kanban, kanbanId);
             }
             catch (UnauthorizedException)
             {
@@ -648,7 +664,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.KanbanContext.BulkImport(kanbanCollection);
+                return this.KanbanRepository.BulkImport(kanbanCollection);
             }
             catch (UnauthorizedException)
             {
@@ -679,7 +695,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.KanbanContext.Delete(kanbanId);
+                this.KanbanRepository.Delete(kanbanId);
             }
             catch (UnauthorizedException)
             {

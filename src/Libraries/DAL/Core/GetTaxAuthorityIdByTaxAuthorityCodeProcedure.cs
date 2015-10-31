@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_tax_authority_id_by_tax_authority_code(_tax_authority_code character varying)" on the database.
     /// </summary>
-    public class GetTaxAuthorityIdByTaxAuthorityCodeProcedure : DbAccess
+    public class GetTaxAuthorityIdByTaxAuthorityCodeProcedure : DbAccess, IGetTaxAuthorityIdByTaxAuthorityCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

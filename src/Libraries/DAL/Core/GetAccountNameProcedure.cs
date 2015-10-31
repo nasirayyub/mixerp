@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_account_name(pg_arg0 bigint)" on the database.
     /// </summary>
-    public class GetAccountNameProcedure : DbAccess
+    public class GetAccountNameProcedure : DbAccess, IGetAccountNameRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

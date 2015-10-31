@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class LateFeeAccountSelectorViewController : ApiController
     {
         /// <summary>
-        ///     The LateFeeAccountSelectorView data context.
+        ///     The LateFeeAccountSelectorView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.LateFeeAccountSelectorView LateFeeAccountSelectorViewContext;
+        private readonly ILateFeeAccountSelectorViewRepository LateFeeAccountSelectorViewRepository;
 
         public LateFeeAccountSelectorViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.LateFeeAccountSelectorViewContext = new MixERP.Net.Schemas.Core.Data.LateFeeAccountSelectorView
+            this.LateFeeAccountSelectorViewRepository = new MixERP.Net.Schemas.Core.Data.LateFeeAccountSelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public LateFeeAccountSelectorViewController(ILateFeeAccountSelectorViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.LateFeeAccountSelectorViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeAccountSelectorViewContext.Count();
+                return this.LateFeeAccountSelectorViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeAccountSelectorViewContext.Get();
+                return this.LateFeeAccountSelectorViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeAccountSelectorViewContext.GetPaginatedResult();
+                return this.LateFeeAccountSelectorViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeAccountSelectorViewContext.GetPaginatedResult(pageNumber);
+                return this.LateFeeAccountSelectorViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeAccountSelectorViewContext.GetDisplayFields();
+                return this.LateFeeAccountSelectorViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LateFeeAccountSelectorViewContext.CountWhere(f);
+                return this.LateFeeAccountSelectorViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LateFeeAccountSelectorViewContext.GetWhere(pageNumber, f);
+                return this.LateFeeAccountSelectorViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeAccountSelectorViewContext.CountFiltered(filterName);
+                return this.LateFeeAccountSelectorViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeAccountSelectorViewContext.GetFiltered(pageNumber, filterName);
+                return this.LateFeeAccountSelectorViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

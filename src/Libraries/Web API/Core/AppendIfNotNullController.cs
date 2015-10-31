@@ -40,12 +40,17 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private AppendIfNotNullProcedure procedure;
+        /// <summary>
+        ///     The AppendIfNotNull repository.
+        /// </summary>
+        private readonly IAppendIfNotNullRepository repository;
+
         public class Annotation
         {
             public string Source { get; set; }
             public string ToAppend { get; set; }
         }
+
 
         public AppendIfNotNullController()
         {
@@ -53,13 +58,25 @@ namespace MixERP.Net.Api.Core
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new AppendIfNotNullProcedure
+
+            this.repository = new AppendIfNotNullProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public AppendIfNotNullController(IAppendIfNotNullRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "append if not null" annotation.
         /// </summary>
@@ -69,6 +86,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/append-if-not-null/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -80,6 +101,8 @@ namespace MixERP.Net.Api.Core
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/append-if-not-null/execute")]
@@ -87,11 +110,11 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.Source = annotation.Source;
-                this.procedure.ToAppend = annotation.ToAppend;
+                this.repository.Source = annotation.Source;
+                this.repository.ToAppend = annotation.ToAppend;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

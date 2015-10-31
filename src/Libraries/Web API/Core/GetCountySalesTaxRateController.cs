@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetCountySalesTaxRateProcedure procedure;
+        /// <summary>
+        ///     The GetCountySalesTaxRate repository.
+        /// </summary>
+        private readonly IGetCountySalesTaxRateRepository repository;
+
         public class Annotation
         {
             public int CountySalesTaxId { get; set; }
         }
+
 
         public GetCountySalesTaxRateController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Core
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetCountySalesTaxRateProcedure
+
+            this.repository = new GetCountySalesTaxRateProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetCountySalesTaxRateController(IGetCountySalesTaxRateRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get county sales tax rate" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/get-county-sales-tax-rate/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -76,6 +97,7 @@ namespace MixERP.Net.Api.Core
                                 }
             };
         }
+
 
         /// <summary>
         ///     Creates meta information of "get county sales tax rate" entity.
@@ -86,6 +108,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/get-county-sales-tax-rate/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -94,6 +120,7 @@ namespace MixERP.Net.Api.Core
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/get-county-sales-tax-rate/execute")]
@@ -101,10 +128,10 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.CountySalesTaxId = annotation.CountySalesTaxId;
+                this.repository.CountySalesTaxId = annotation.CountySalesTaxId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

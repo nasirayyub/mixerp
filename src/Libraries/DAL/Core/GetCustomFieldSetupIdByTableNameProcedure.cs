@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_custom_field_setup_id_by_table_name(_table_name character varying, _field_name character varying)" on the database.
     /// </summary>
-    public class GetCustomFieldSetupIdByTableNameProcedure : DbAccess
+    public class GetCustomFieldSetupIdByTableNameProcedure : DbAccess, IGetCustomFieldSetupIdByTableNameRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

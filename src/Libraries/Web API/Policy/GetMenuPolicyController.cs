@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Policy
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetMenuPolicyProcedure procedure;
+        /// <summary>
+        ///     The GetMenuPolicy repository.
+        /// </summary>
+        private readonly IGetMenuPolicyRepository repository;
+
         public class Annotation
         {
             public int UserId { get; set; }
@@ -48,19 +52,32 @@ namespace MixERP.Net.Api.Policy
             public string Culture { get; set; }
         }
 
+
         public GetMenuPolicyController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetMenuPolicyProcedure
+
+            this.repository = new GetMenuPolicyProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetMenuPolicyController(IGetMenuPolicyRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get menu policy" annotation.
         /// </summary>
@@ -70,6 +87,10 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/procedures/get-menu-policy/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -81,6 +102,7 @@ namespace MixERP.Net.Api.Policy
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "get menu policy" entity.
         /// </summary>
@@ -90,6 +112,10 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/procedures/get-menu-policy/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -104,6 +130,7 @@ namespace MixERP.Net.Api.Policy
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/policy/procedures/get-menu-policy/execute")]
@@ -111,12 +138,12 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.Culture = annotation.Culture;
+                this.repository.UserId = annotation.UserId;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.Culture = annotation.Culture;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

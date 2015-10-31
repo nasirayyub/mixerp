@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class MerchantAccountSelectorViewController : ApiController
     {
         /// <summary>
-        ///     The MerchantAccountSelectorView data context.
+        ///     The MerchantAccountSelectorView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.MerchantAccountSelectorView MerchantAccountSelectorViewContext;
+        private readonly IMerchantAccountSelectorViewRepository MerchantAccountSelectorViewRepository;
 
         public MerchantAccountSelectorViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.MerchantAccountSelectorViewContext = new MixERP.Net.Schemas.Core.Data.MerchantAccountSelectorView
+            this.MerchantAccountSelectorViewRepository = new MixERP.Net.Schemas.Core.Data.MerchantAccountSelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public MerchantAccountSelectorViewController(IMerchantAccountSelectorViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.MerchantAccountSelectorViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantAccountSelectorViewContext.Count();
+                return this.MerchantAccountSelectorViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantAccountSelectorViewContext.Get();
+                return this.MerchantAccountSelectorViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantAccountSelectorViewContext.GetPaginatedResult();
+                return this.MerchantAccountSelectorViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantAccountSelectorViewContext.GetPaginatedResult(pageNumber);
+                return this.MerchantAccountSelectorViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantAccountSelectorViewContext.GetDisplayFields();
+                return this.MerchantAccountSelectorViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.MerchantAccountSelectorViewContext.CountWhere(f);
+                return this.MerchantAccountSelectorViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.MerchantAccountSelectorViewContext.GetWhere(pageNumber, f);
+                return this.MerchantAccountSelectorViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantAccountSelectorViewContext.CountFiltered(filterName);
+                return this.MerchantAccountSelectorViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantAccountSelectorViewContext.GetFiltered(pageNumber, filterName);
+                return this.MerchantAccountSelectorViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

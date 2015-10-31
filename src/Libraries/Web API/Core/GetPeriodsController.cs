@@ -40,12 +40,17 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetPeriodsProcedure procedure;
+        /// <summary>
+        ///     The GetPeriods repository.
+        /// </summary>
+        private readonly IGetPeriodsRepository repository;
+
         public class Annotation
         {
             public DateTime DateFrom { get; set; }
             public DateTime DateTo { get; set; }
         }
+
 
         public GetPeriodsController()
         {
@@ -53,13 +58,25 @@ namespace MixERP.Net.Api.Core
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetPeriodsProcedure
+
+            this.repository = new GetPeriodsProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetPeriodsController(IGetPeriodsRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get periods" annotation.
         /// </summary>
@@ -69,6 +86,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/get-periods/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -80,6 +101,8 @@ namespace MixERP.Net.Api.Core
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/get-periods/execute")]
@@ -87,11 +110,11 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.DateFrom = annotation.DateFrom;
-                this.procedure.DateTo = annotation.DateTo;
+                this.repository.DateFrom = annotation.DateFrom;
+                this.repository.DateTo = annotation.DateTo;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

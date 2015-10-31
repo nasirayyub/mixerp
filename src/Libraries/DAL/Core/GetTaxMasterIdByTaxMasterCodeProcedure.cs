@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_tax_master_id_by_tax_master_code(pg_arg0 text)" on the database.
     /// </summary>
-    public class GetTaxMasterIdByTaxMasterCodeProcedure : DbAccess
+    public class GetTaxMasterIdByTaxMasterCodeProcedure : DbAccess, IGetTaxMasterIdByTaxMasterCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_verification_status_name_by_verification_status_id(pg_arg0 integer)" on the database.
     /// </summary>
-    public class GetVerificationStatusNameByVerificationStatusIdProcedure : DbAccess
+    public class GetVerificationStatusNameByVerificationStatusIdProcedure : DbAccess, IGetVerificationStatusNameByVerificationStatusIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

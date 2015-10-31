@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_custom_field_form_name(_table_name character varying)" on the database.
     /// </summary>
-    public class GetCustomFieldFormNameProcedure : DbAccess
+    public class GetCustomFieldFormNameProcedure : DbAccess, IGetCustomFieldFormNameRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

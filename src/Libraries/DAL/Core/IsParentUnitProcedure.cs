@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.is_parent_unit(parent integer, child integer)" on the database.
     /// </summary>
-    public class IsParentUnitProcedure : DbAccess
+    public class IsParentUnitProcedure : DbAccess, IIsParentUnitRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

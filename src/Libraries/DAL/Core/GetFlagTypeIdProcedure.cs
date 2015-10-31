@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_flag_type_id(user_id_ integer, resource_ text, resource_key_ text, resource_id_ text)" on the database.
     /// </summary>
-    public class GetFlagTypeIdProcedure : DbAccess
+    public class GetFlagTypeIdProcedure : DbAccess, IGetFlagTypeIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

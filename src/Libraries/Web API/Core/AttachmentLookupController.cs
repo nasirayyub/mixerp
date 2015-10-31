@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class AttachmentLookupController : ApiController
     {
         /// <summary>
-        ///     The AttachmentLookup data context.
+        ///     The AttachmentLookup repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.AttachmentLookup AttachmentLookupContext;
+        private readonly IAttachmentLookupRepository AttachmentLookupRepository;
 
         public AttachmentLookupController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.AttachmentLookupContext = new MixERP.Net.Schemas.Core.Data.AttachmentLookup
+            this.AttachmentLookupRepository = new MixERP.Net.Schemas.Core.Data.AttachmentLookup
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public AttachmentLookupController(IAttachmentLookupRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.AttachmentLookupRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/attachment-lookup/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "attachment_lookup_id",
@@ -79,7 +95,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentLookupContext.Count();
+                return this.AttachmentLookupRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -110,7 +126,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentLookupContext.GetAll();
+                return this.AttachmentLookupRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -141,7 +157,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentLookupContext.Export();
+                return this.AttachmentLookupRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -173,7 +189,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentLookupContext.Get(attachmentLookupId);
+                return this.AttachmentLookupRepository.Get(attachmentLookupId);
             }
             catch (UnauthorizedException)
             {
@@ -200,7 +216,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentLookupContext.Get(attachmentLookupIds);
+                return this.AttachmentLookupRepository.Get(attachmentLookupIds);
             }
             catch (UnauthorizedException)
             {
@@ -231,7 +247,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentLookupContext.GetPaginatedResult();
+                return this.AttachmentLookupRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -263,7 +279,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentLookupContext.GetPaginatedResult(pageNumber);
+                return this.AttachmentLookupRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -296,7 +312,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AttachmentLookupContext.CountWhere(f);
+                return this.AttachmentLookupRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -330,7 +346,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AttachmentLookupContext.GetWhere(pageNumber, f);
+                return this.AttachmentLookupRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -362,7 +378,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentLookupContext.CountFiltered(filterName);
+                return this.AttachmentLookupRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -395,7 +411,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentLookupContext.GetFiltered(pageNumber, filterName);
+                return this.AttachmentLookupRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -426,7 +442,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentLookupContext.GetDisplayFields();
+                return this.AttachmentLookupRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -457,7 +473,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentLookupContext.GetCustomFields(null);
+                return this.AttachmentLookupRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -488,7 +504,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentLookupContext.GetCustomFields(resourceId);
+                return this.AttachmentLookupRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -527,7 +543,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.AttachmentLookupContext.AddOrEdit(attachmentLookup, customFields);
+                return this.AttachmentLookupRepository.AddOrEdit(attachmentLookup, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -563,7 +579,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.AttachmentLookupContext.Add(attachmentLookup);
+                this.AttachmentLookupRepository.Add(attachmentLookup);
             }
             catch (UnauthorizedException)
             {
@@ -600,7 +616,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.AttachmentLookupContext.Update(attachmentLookup, attachmentLookupId);
+                this.AttachmentLookupRepository.Update(attachmentLookup, attachmentLookupId);
             }
             catch (UnauthorizedException)
             {
@@ -645,7 +661,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.AttachmentLookupContext.BulkImport(attachmentLookupCollection);
+                return this.AttachmentLookupRepository.BulkImport(attachmentLookupCollection);
             }
             catch (UnauthorizedException)
             {
@@ -676,7 +692,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.AttachmentLookupContext.Delete(attachmentLookupId);
+                this.AttachmentLookupRepository.Delete(attachmentLookupId);
             }
             catch (UnauthorizedException)
             {

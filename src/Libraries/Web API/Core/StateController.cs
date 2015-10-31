@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class StateController : ApiController
     {
         /// <summary>
-        ///     The State data context.
+        ///     The State repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.State StateContext;
+        private readonly IStateRepository StateRepository;
 
         public StateController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.StateContext = new MixERP.Net.Schemas.Core.Data.State
+            this.StateRepository = new MixERP.Net.Schemas.Core.Data.State
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public StateController(IStateRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.StateRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/state/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "state_id",
@@ -81,7 +97,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.StateContext.Count();
+                return this.StateRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -112,7 +128,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.StateContext.GetAll();
+                return this.StateRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -143,7 +159,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.StateContext.Export();
+                return this.StateRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -175,7 +191,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.StateContext.Get(stateId);
+                return this.StateRepository.Get(stateId);
             }
             catch (UnauthorizedException)
             {
@@ -202,7 +218,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.StateContext.Get(stateIds);
+                return this.StateRepository.Get(stateIds);
             }
             catch (UnauthorizedException)
             {
@@ -233,7 +249,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.StateContext.GetPaginatedResult();
+                return this.StateRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -265,7 +281,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.StateContext.GetPaginatedResult(pageNumber);
+                return this.StateRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -298,7 +314,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.StateContext.CountWhere(f);
+                return this.StateRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -332,7 +348,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.StateContext.GetWhere(pageNumber, f);
+                return this.StateRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -364,7 +380,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.StateContext.CountFiltered(filterName);
+                return this.StateRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -397,7 +413,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.StateContext.GetFiltered(pageNumber, filterName);
+                return this.StateRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -428,7 +444,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.StateContext.GetDisplayFields();
+                return this.StateRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -459,7 +475,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.StateContext.GetCustomFields(null);
+                return this.StateRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -490,7 +506,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.StateContext.GetCustomFields(resourceId);
+                return this.StateRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -529,7 +545,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.StateContext.AddOrEdit(state, customFields);
+                return this.StateRepository.AddOrEdit(state, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -565,7 +581,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.StateContext.Add(state);
+                this.StateRepository.Add(state);
             }
             catch (UnauthorizedException)
             {
@@ -602,7 +618,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.StateContext.Update(state, stateId);
+                this.StateRepository.Update(state, stateId);
             }
             catch (UnauthorizedException)
             {
@@ -647,7 +663,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.StateContext.BulkImport(stateCollection);
+                return this.StateRepository.BulkImport(stateCollection);
             }
             catch (UnauthorizedException)
             {
@@ -678,7 +694,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.StateContext.Delete(stateId);
+                this.StateRepository.Delete(stateId);
             }
             catch (UnauthorizedException)
             {

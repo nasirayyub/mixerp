@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_net_profit(_date_from date, _date_to date, _office_id integer, _factor integer, _no_provison boolean)" on the database.
     /// </summary>
-    public class GetNetProfitProcedure : DbAccess
+    public class GetNetProfitProcedure : DbAccess, IGetNetProfitRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

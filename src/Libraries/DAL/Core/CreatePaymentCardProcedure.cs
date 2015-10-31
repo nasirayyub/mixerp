@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.create_payment_card(_payment_card_code character varying, _payment_card_name character varying, _card_type_id integer)" on the database.
     /// </summary>
-    public class CreatePaymentCardProcedure : DbAccess
+    public class CreatePaymentCardProcedure : DbAccess, ICreatePaymentCardRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Policy
         /// </summary>
         public string _Catalog { get; set; }
 
-        private IsElevatedUserProcedure procedure;
+        /// <summary>
+        ///     The IsElevatedUser repository.
+        /// </summary>
+        private readonly IIsElevatedUserRepository repository;
+
         public class Annotation
         {
             public int UserId { get; set; }
         }
+
 
         public IsElevatedUserController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Policy
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new IsElevatedUserProcedure
+
+            this.repository = new IsElevatedUserProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public IsElevatedUserController(IIsElevatedUserRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "is elevated user" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/procedures/is-elevated-user/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -78,6 +99,8 @@ namespace MixERP.Net.Api.Policy
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/policy/procedures/is-elevated-user/execute")]
@@ -85,10 +108,10 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                this.procedure.UserId = annotation.UserId;
+                this.repository.UserId = annotation.UserId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

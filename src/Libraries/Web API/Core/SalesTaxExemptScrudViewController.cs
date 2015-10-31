@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class SalesTaxExemptScrudViewController : ApiController
     {
         /// <summary>
-        ///     The SalesTaxExemptScrudView data context.
+        ///     The SalesTaxExemptScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.SalesTaxExemptScrudView SalesTaxExemptScrudViewContext;
+        private readonly ISalesTaxExemptScrudViewRepository SalesTaxExemptScrudViewRepository;
 
         public SalesTaxExemptScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.SalesTaxExemptScrudViewContext = new MixERP.Net.Schemas.Core.Data.SalesTaxExemptScrudView
+            this.SalesTaxExemptScrudViewRepository = new MixERP.Net.Schemas.Core.Data.SalesTaxExemptScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public SalesTaxExemptScrudViewController(ISalesTaxExemptScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.SalesTaxExemptScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptScrudViewContext.Count();
+                return this.SalesTaxExemptScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptScrudViewContext.Get();
+                return this.SalesTaxExemptScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptScrudViewContext.GetPaginatedResult();
+                return this.SalesTaxExemptScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.SalesTaxExemptScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptScrudViewContext.GetDisplayFields();
+                return this.SalesTaxExemptScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SalesTaxExemptScrudViewContext.CountWhere(f);
+                return this.SalesTaxExemptScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SalesTaxExemptScrudViewContext.GetWhere(pageNumber, f);
+                return this.SalesTaxExemptScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptScrudViewContext.CountFiltered(filterName);
+                return this.SalesTaxExemptScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.SalesTaxExemptScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class SocialNetworkController : ApiController
     {
         /// <summary>
-        ///     The SocialNetwork data context.
+        ///     The SocialNetwork repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.SocialNetwork SocialNetworkContext;
+        private readonly ISocialNetworkRepository SocialNetworkRepository;
 
         public SocialNetworkController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.SocialNetworkContext = new MixERP.Net.Schemas.Core.Data.SocialNetwork
+            this.SocialNetworkRepository = new MixERP.Net.Schemas.Core.Data.SocialNetwork
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public SocialNetworkController(ISocialNetworkRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.SocialNetworkRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/social-network/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "social_network_name",
@@ -81,7 +97,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SocialNetworkContext.Count();
+                return this.SocialNetworkRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -112,7 +128,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SocialNetworkContext.GetAll();
+                return this.SocialNetworkRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -143,7 +159,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SocialNetworkContext.Export();
+                return this.SocialNetworkRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -175,7 +191,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SocialNetworkContext.Get(socialNetworkName);
+                return this.SocialNetworkRepository.Get(socialNetworkName);
             }
             catch (UnauthorizedException)
             {
@@ -202,7 +218,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SocialNetworkContext.Get(socialNetworkNames);
+                return this.SocialNetworkRepository.Get(socialNetworkNames);
             }
             catch (UnauthorizedException)
             {
@@ -233,7 +249,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SocialNetworkContext.GetPaginatedResult();
+                return this.SocialNetworkRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -265,7 +281,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SocialNetworkContext.GetPaginatedResult(pageNumber);
+                return this.SocialNetworkRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -298,7 +314,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SocialNetworkContext.CountWhere(f);
+                return this.SocialNetworkRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -332,7 +348,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SocialNetworkContext.GetWhere(pageNumber, f);
+                return this.SocialNetworkRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -364,7 +380,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SocialNetworkContext.CountFiltered(filterName);
+                return this.SocialNetworkRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -397,7 +413,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SocialNetworkContext.GetFiltered(pageNumber, filterName);
+                return this.SocialNetworkRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -428,7 +444,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SocialNetworkContext.GetDisplayFields();
+                return this.SocialNetworkRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -459,7 +475,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SocialNetworkContext.GetCustomFields(null);
+                return this.SocialNetworkRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -490,7 +506,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SocialNetworkContext.GetCustomFields(resourceId);
+                return this.SocialNetworkRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -529,7 +545,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.SocialNetworkContext.AddOrEdit(socialNetwork, customFields);
+                return this.SocialNetworkRepository.AddOrEdit(socialNetwork, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -565,7 +581,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.SocialNetworkContext.Add(socialNetwork);
+                this.SocialNetworkRepository.Add(socialNetwork);
             }
             catch (UnauthorizedException)
             {
@@ -602,7 +618,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.SocialNetworkContext.Update(socialNetwork, socialNetworkName);
+                this.SocialNetworkRepository.Update(socialNetwork, socialNetworkName);
             }
             catch (UnauthorizedException)
             {
@@ -647,7 +663,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.SocialNetworkContext.BulkImport(socialNetworkCollection);
+                return this.SocialNetworkRepository.BulkImport(socialNetworkCollection);
             }
             catch (UnauthorizedException)
             {
@@ -678,7 +694,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.SocialNetworkContext.Delete(socialNetworkName);
+                this.SocialNetworkRepository.Delete(socialNetworkName);
             }
             catch (UnauthorizedException)
             {

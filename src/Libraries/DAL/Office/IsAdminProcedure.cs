@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.is_admin(_user_id integer)" on the database.
     /// </summary>
-    public class IsAdminProcedure : DbAccess
+    public class IsAdminProcedure : DbAccess, IIsAdminRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.get_income_tax_rate(_office_id integer)" on the database.
     /// </summary>
-    public class GetIncomeTaxRateProcedure : DbAccess
+    public class GetIncomeTaxRateProcedure : DbAccess, IGetIncomeTaxRateRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

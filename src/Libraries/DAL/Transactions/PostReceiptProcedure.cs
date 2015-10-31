@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.post_receipt(_user_id integer, _office_id integer, _login_id bigint, _party_code character varying, _currency_code character varying, _amount money_strict, _exchange_rate_debit decimal_strict, _exchange_rate_credit decimal_strict, _reference_number character varying, _statement_reference character varying, _cost_center_id integer, _cash_repository_id integer, _posted_date date, _bank_account_id bigint, _payment_card_id integer, _bank_instrument_code character varying, _bank_tran_code character varying, _cascading_tran_id bigint)" on the database.
     /// </summary>
-    public class PostReceiptProcedure : DbAccess
+    public class PostReceiptProcedure : DbAccess, IPostReceiptRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

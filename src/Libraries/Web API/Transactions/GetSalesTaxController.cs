@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetSalesTaxProcedure procedure;
+        /// <summary>
+        ///     The GetSalesTax repository.
+        /// </summary>
+        private readonly IGetSalesTaxRepository repository;
+
         public class Annotation
         {
             public string TranBook { get; set; }
@@ -56,19 +60,32 @@ namespace MixERP.Net.Api.Transactions
             public int SalesTaxId { get; set; }
         }
 
+
         public GetSalesTaxController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetSalesTaxProcedure
+
+            this.repository = new GetSalesTaxProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetSalesTaxController(IGetSalesTaxRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get sales tax" annotation.
         /// </summary>
@@ -78,6 +95,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-sales-tax/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -97,6 +118,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "get sales tax" entity.
         /// </summary>
@@ -106,6 +128,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-sales-tax/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -134,6 +160,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/get-sales-tax/execute")]
@@ -141,20 +168,20 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.TranBook = annotation.TranBook;
-                this.procedure.StoreId = annotation.StoreId;
-                this.procedure.PartyCode = annotation.PartyCode;
-                this.procedure.ShippingAddressCode = annotation.ShippingAddressCode;
-                this.procedure.PriceTypeId = annotation.PriceTypeId;
-                this.procedure.ItemCode = annotation.ItemCode;
-                this.procedure.Price = annotation.Price;
-                this.procedure.Quantity = annotation.Quantity;
-                this.procedure.Discount = annotation.Discount;
-                this.procedure.ShippingCharge = annotation.ShippingCharge;
-                this.procedure.SalesTaxId = annotation.SalesTaxId;
+                this.repository.TranBook = annotation.TranBook;
+                this.repository.StoreId = annotation.StoreId;
+                this.repository.PartyCode = annotation.PartyCode;
+                this.repository.ShippingAddressCode = annotation.ShippingAddressCode;
+                this.repository.PriceTypeId = annotation.PriceTypeId;
+                this.repository.ItemCode = annotation.ItemCode;
+                this.repository.Price = annotation.Price;
+                this.repository.Quantity = annotation.Quantity;
+                this.repository.Discount = annotation.Discount;
+                this.repository.ShippingCharge = annotation.ShippingCharge;
+                this.repository.SalesTaxId = annotation.SalesTaxId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

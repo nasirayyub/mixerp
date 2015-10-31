@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.create_user(_role_id integer, _department_id integer, _office_id integer, _user_name text, _password text, _full_name text, _elevated boolean)" on the database.
     /// </summary>
-    public class CreateUserProcedure : DbAccess
+    public class CreateUserProcedure : DbAccess, ICreateUserRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

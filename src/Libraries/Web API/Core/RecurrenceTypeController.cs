@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class RecurrenceTypeController : ApiController
     {
         /// <summary>
-        ///     The RecurrenceType data context.
+        ///     The RecurrenceType repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.RecurrenceType RecurrenceTypeContext;
+        private readonly IRecurrenceTypeRepository RecurrenceTypeRepository;
 
         public RecurrenceTypeController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.RecurrenceTypeContext = new MixERP.Net.Schemas.Core.Data.RecurrenceType
+            this.RecurrenceTypeRepository = new MixERP.Net.Schemas.Core.Data.RecurrenceType
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public RecurrenceTypeController(IRecurrenceTypeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.RecurrenceTypeRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/recurrence-type/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "recurrence_type_id",
@@ -81,7 +97,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeContext.Count();
+                return this.RecurrenceTypeRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -112,7 +128,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeContext.GetAll();
+                return this.RecurrenceTypeRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -143,7 +159,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeContext.Export();
+                return this.RecurrenceTypeRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -175,7 +191,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeContext.Get(recurrenceTypeId);
+                return this.RecurrenceTypeRepository.Get(recurrenceTypeId);
             }
             catch (UnauthorizedException)
             {
@@ -202,7 +218,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeContext.Get(recurrenceTypeIds);
+                return this.RecurrenceTypeRepository.Get(recurrenceTypeIds);
             }
             catch (UnauthorizedException)
             {
@@ -233,7 +249,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeContext.GetPaginatedResult();
+                return this.RecurrenceTypeRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -265,7 +281,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeContext.GetPaginatedResult(pageNumber);
+                return this.RecurrenceTypeRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -298,7 +314,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.RecurrenceTypeContext.CountWhere(f);
+                return this.RecurrenceTypeRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -332,7 +348,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.RecurrenceTypeContext.GetWhere(pageNumber, f);
+                return this.RecurrenceTypeRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -364,7 +380,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeContext.CountFiltered(filterName);
+                return this.RecurrenceTypeRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -397,7 +413,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeContext.GetFiltered(pageNumber, filterName);
+                return this.RecurrenceTypeRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -428,7 +444,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeContext.GetDisplayFields();
+                return this.RecurrenceTypeRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -459,7 +475,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeContext.GetCustomFields(null);
+                return this.RecurrenceTypeRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -490,7 +506,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeContext.GetCustomFields(resourceId);
+                return this.RecurrenceTypeRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -529,7 +545,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.RecurrenceTypeContext.AddOrEdit(recurrenceType, customFields);
+                return this.RecurrenceTypeRepository.AddOrEdit(recurrenceType, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -565,7 +581,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.RecurrenceTypeContext.Add(recurrenceType);
+                this.RecurrenceTypeRepository.Add(recurrenceType);
             }
             catch (UnauthorizedException)
             {
@@ -602,7 +618,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.RecurrenceTypeContext.Update(recurrenceType, recurrenceTypeId);
+                this.RecurrenceTypeRepository.Update(recurrenceType, recurrenceTypeId);
             }
             catch (UnauthorizedException)
             {
@@ -647,7 +663,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.RecurrenceTypeContext.BulkImport(recurrenceTypeCollection);
+                return this.RecurrenceTypeRepository.BulkImport(recurrenceTypeCollection);
             }
             catch (UnauthorizedException)
             {
@@ -678,7 +694,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.RecurrenceTypeContext.Delete(recurrenceTypeId);
+                this.RecurrenceTypeRepository.Delete(recurrenceTypeId);
             }
             catch (UnauthorizedException)
             {

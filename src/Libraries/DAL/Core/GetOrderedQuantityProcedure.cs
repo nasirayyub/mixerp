@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_ordered_quantity(_item_id integer, _unit_id integer, _office_id integer)" on the database.
     /// </summary>
-    public class GetOrderedQuantityProcedure : DbAccess
+    public class GetOrderedQuantityProcedure : DbAccess, IGetOrderedQuantityRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

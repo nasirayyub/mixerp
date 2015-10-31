@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private CalculateInterestProcedure procedure;
+        /// <summary>
+        ///     The CalculateInterest repository.
+        /// </summary>
+        private readonly ICalculateInterestRepository repository;
+
         public class Annotation
         {
             public decimal Principal { get; set; }
@@ -50,19 +54,32 @@ namespace MixERP.Net.Api.Core
             public int NumOfDaysInYear { get; set; }
         }
 
+
         public CalculateInterestController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new CalculateInterestProcedure
+
+            this.repository = new CalculateInterestProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public CalculateInterestController(ICalculateInterestRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "calculate interest" annotation.
         /// </summary>
@@ -72,6 +89,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/calculate-interest/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -86,6 +107,8 @@ namespace MixERP.Net.Api.Core
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/calculate-interest/execute")]
@@ -93,14 +116,14 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.Principal = annotation.Principal;
-                this.procedure.Rate = annotation.Rate;
-                this.procedure.Days = annotation.Days;
-                this.procedure.RoundUp = annotation.RoundUp;
-                this.procedure.NumOfDaysInYear = annotation.NumOfDaysInYear;
+                this.repository.Principal = annotation.Principal;
+                this.repository.Rate = annotation.Rate;
+                this.repository.Days = annotation.Days;
+                this.repository.RoundUp = annotation.RoundUp;
+                this.repository.NumOfDaysInYear = annotation.NumOfDaysInYear;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_quarter_end_date(_office_id integer)" on the database.
     /// </summary>
-    public class GetQuarterEndDateProcedure : DbAccess
+    public class GetQuarterEndDateProcedure : DbAccess, IGetQuarterEndDateRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.is_parent_office(parent integer_strict, child integer_strict)" on the database.
     /// </summary>
-    public class IsParentOfficeProcedure : DbAccess
+    public class IsParentOfficeProcedure : DbAccess, IIsParentOfficeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

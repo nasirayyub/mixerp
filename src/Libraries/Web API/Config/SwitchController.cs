@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Config.Data;
 
 namespace MixERP.Net.Api.Config
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Config
     public class SwitchController : ApiController
     {
         /// <summary>
-        ///     The Switch data context.
+        ///     The Switch repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Config.Data.Switch SwitchContext;
+        private readonly ISwitchRepository SwitchRepository;
 
         public SwitchController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Config
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.SwitchContext = new MixERP.Net.Schemas.Config.Data.Switch
+            this.SwitchRepository = new MixERP.Net.Schemas.Config.Data.Switch
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public SwitchController(ISwitchRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.SwitchRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Config
         [Route("~/api/config/switch/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "key",
@@ -79,7 +95,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SwitchContext.Count();
+                return this.SwitchRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -110,7 +126,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SwitchContext.GetAll();
+                return this.SwitchRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -141,7 +157,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SwitchContext.Export();
+                return this.SwitchRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -173,7 +189,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SwitchContext.Get(key);
+                return this.SwitchRepository.Get(key);
             }
             catch (UnauthorizedException)
             {
@@ -200,7 +216,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SwitchContext.Get(keys);
+                return this.SwitchRepository.Get(keys);
             }
             catch (UnauthorizedException)
             {
@@ -231,7 +247,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SwitchContext.GetPaginatedResult();
+                return this.SwitchRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -263,7 +279,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SwitchContext.GetPaginatedResult(pageNumber);
+                return this.SwitchRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -296,7 +312,7 @@ namespace MixERP.Net.Api.Config
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SwitchContext.CountWhere(f);
+                return this.SwitchRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -330,7 +346,7 @@ namespace MixERP.Net.Api.Config
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SwitchContext.GetWhere(pageNumber, f);
+                return this.SwitchRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -362,7 +378,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SwitchContext.CountFiltered(filterName);
+                return this.SwitchRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -395,7 +411,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SwitchContext.GetFiltered(pageNumber, filterName);
+                return this.SwitchRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -426,7 +442,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SwitchContext.GetDisplayFields();
+                return this.SwitchRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -457,7 +473,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SwitchContext.GetCustomFields(null);
+                return this.SwitchRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -488,7 +504,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.SwitchContext.GetCustomFields(resourceId);
+                return this.SwitchRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -527,7 +543,7 @@ namespace MixERP.Net.Api.Config
 
             try
             {
-                return this.SwitchContext.AddOrEdit(switchParameter, customFields);
+                return this.SwitchRepository.AddOrEdit(switchParameter, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -563,7 +579,7 @@ namespace MixERP.Net.Api.Config
 
             try
             {
-                this.SwitchContext.Add(switchParameter);
+                this.SwitchRepository.Add(switchParameter);
             }
             catch (UnauthorizedException)
             {
@@ -600,7 +616,7 @@ namespace MixERP.Net.Api.Config
 
             try
             {
-                this.SwitchContext.Update(switchParameter, key);
+                this.SwitchRepository.Update(switchParameter, key);
             }
             catch (UnauthorizedException)
             {
@@ -645,7 +661,7 @@ namespace MixERP.Net.Api.Config
 
             try
             {
-                return this.SwitchContext.BulkImport(switchParameterCollection);
+                return this.SwitchRepository.BulkImport(switchParameterCollection);
             }
             catch (UnauthorizedException)
             {
@@ -676,7 +692,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                this.SwitchContext.Delete(key);
+                this.SwitchRepository.Delete(key);
             }
             catch (UnauthorizedException)
             {

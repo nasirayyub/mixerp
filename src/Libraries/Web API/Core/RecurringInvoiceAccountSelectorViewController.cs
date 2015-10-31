@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class RecurringInvoiceAccountSelectorViewController : ApiController
     {
         /// <summary>
-        ///     The RecurringInvoiceAccountSelectorView data context.
+        ///     The RecurringInvoiceAccountSelectorView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.RecurringInvoiceAccountSelectorView RecurringInvoiceAccountSelectorViewContext;
+        private readonly IRecurringInvoiceAccountSelectorViewRepository RecurringInvoiceAccountSelectorViewRepository;
 
         public RecurringInvoiceAccountSelectorViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.RecurringInvoiceAccountSelectorViewContext = new MixERP.Net.Schemas.Core.Data.RecurringInvoiceAccountSelectorView
+            this.RecurringInvoiceAccountSelectorViewRepository = new MixERP.Net.Schemas.Core.Data.RecurringInvoiceAccountSelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public RecurringInvoiceAccountSelectorViewController(IRecurringInvoiceAccountSelectorViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.RecurringInvoiceAccountSelectorViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurringInvoiceAccountSelectorViewContext.Count();
+                return this.RecurringInvoiceAccountSelectorViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurringInvoiceAccountSelectorViewContext.Get();
+                return this.RecurringInvoiceAccountSelectorViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurringInvoiceAccountSelectorViewContext.GetPaginatedResult();
+                return this.RecurringInvoiceAccountSelectorViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurringInvoiceAccountSelectorViewContext.GetPaginatedResult(pageNumber);
+                return this.RecurringInvoiceAccountSelectorViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurringInvoiceAccountSelectorViewContext.GetDisplayFields();
+                return this.RecurringInvoiceAccountSelectorViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.RecurringInvoiceAccountSelectorViewContext.CountWhere(f);
+                return this.RecurringInvoiceAccountSelectorViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.RecurringInvoiceAccountSelectorViewContext.GetWhere(pageNumber, f);
+                return this.RecurringInvoiceAccountSelectorViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurringInvoiceAccountSelectorViewContext.CountFiltered(filterName);
+                return this.RecurringInvoiceAccountSelectorViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurringInvoiceAccountSelectorViewContext.GetFiltered(pageNumber, filterName);
+                return this.RecurringInvoiceAccountSelectorViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

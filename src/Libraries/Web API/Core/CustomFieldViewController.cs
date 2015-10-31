@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class CustomFieldViewController : ApiController
     {
         /// <summary>
-        ///     The CustomFieldView data context.
+        ///     The CustomFieldView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.CustomFieldView CustomFieldViewContext;
+        private readonly ICustomFieldViewRepository CustomFieldViewRepository;
 
         public CustomFieldViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.CustomFieldViewContext = new MixERP.Net.Schemas.Core.Data.CustomFieldView
+            this.CustomFieldViewRepository = new MixERP.Net.Schemas.Core.Data.CustomFieldView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public CustomFieldViewController(ICustomFieldViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.CustomFieldViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CustomFieldViewContext.Count();
+                return this.CustomFieldViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CustomFieldViewContext.Get();
+                return this.CustomFieldViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CustomFieldViewContext.GetPaginatedResult();
+                return this.CustomFieldViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CustomFieldViewContext.GetPaginatedResult(pageNumber);
+                return this.CustomFieldViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -186,7 +197,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CustomFieldViewContext.CountWhere(f);
+                return this.CustomFieldViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -220,7 +231,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CustomFieldViewContext.GetWhere(pageNumber, f);
+                return this.CustomFieldViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -252,7 +263,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CustomFieldViewContext.CountFiltered(filterName);
+                return this.CustomFieldViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -286,7 +297,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CustomFieldViewContext.GetFiltered(pageNumber, filterName);
+                return this.CustomFieldViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

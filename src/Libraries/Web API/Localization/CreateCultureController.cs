@@ -40,12 +40,17 @@ namespace MixERP.Net.Api.Localization
         /// </summary>
         public string _Catalog { get; set; }
 
-        private CreateCultureProcedure procedure;
+        /// <summary>
+        ///     The CreateCulture repository.
+        /// </summary>
+        private readonly ICreateCultureRepository repository;
+
         public class Annotation
         {
             public string CultureCode { get; set; }
             public string CultureName { get; set; }
         }
+
 
         public CreateCultureController()
         {
@@ -53,13 +58,25 @@ namespace MixERP.Net.Api.Localization
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new CreateCultureProcedure
+
+            this.repository = new CreateCultureProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public CreateCultureController(ICreateCultureRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "create culture" annotation.
         /// </summary>
@@ -69,6 +86,10 @@ namespace MixERP.Net.Api.Localization
         [Route("~/api/localization/procedures/create-culture/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -79,6 +100,7 @@ namespace MixERP.Net.Api.Localization
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "create culture" entity.
         /// </summary>
@@ -88,6 +110,10 @@ namespace MixERP.Net.Api.Localization
         [Route("~/api/localization/procedures/create-culture/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -96,6 +122,7 @@ namespace MixERP.Net.Api.Localization
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/localization/procedures/create-culture/execute")]
@@ -103,11 +130,11 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                this.procedure.CultureCode = annotation.CultureCode;
-                this.procedure.CultureName = annotation.CultureName;
+                this.repository.CultureCode = annotation.CultureCode;
+                this.repository.CultureName = annotation.CultureName;
 
 
-                this.procedure.Execute();
+                this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

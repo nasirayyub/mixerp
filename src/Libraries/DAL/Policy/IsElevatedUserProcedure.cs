@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Policy.Data
     /// <summary>
     /// Prepares, validates, and executes the function "policy.is_elevated_user(_user_id integer)" on the database.
     /// </summary>
-    public class IsElevatedUserProcedure : DbAccess
+    public class IsElevatedUserProcedure : DbAccess, IIsElevatedUserRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

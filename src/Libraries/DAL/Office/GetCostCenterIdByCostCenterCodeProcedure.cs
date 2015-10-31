@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.get_cost_center_id_by_cost_center_code(_cost_center_code text)" on the database.
     /// </summary>
-    public class GetCostCenterIdByCostCenterCodeProcedure : DbAccess
+    public class GetCostCenterIdByCostCenterCodeProcedure : DbAccess, IGetCostCenterIdByCostCenterCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_unit_id_by_unit_code(pg_arg0 text)" on the database.
     /// </summary>
-    public class GetUnitIdByUnitCodeProcedure : DbAccess
+    public class GetUnitIdByUnitCodeProcedure : DbAccess, IGetUnitIdByUnitCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

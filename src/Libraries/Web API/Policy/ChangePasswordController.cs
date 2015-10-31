@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Policy
         /// </summary>
         public string _Catalog { get; set; }
 
-        private ChangePasswordProcedure procedure;
+        /// <summary>
+        ///     The ChangePassword repository.
+        /// </summary>
+        private readonly IChangePasswordRepository repository;
+
         public class Annotation
         {
             public int AdminUserId { get; set; }
@@ -48,19 +52,32 @@ namespace MixERP.Net.Api.Policy
             public string NewPassword { get; set; }
         }
 
+
         public ChangePasswordController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new ChangePasswordProcedure
+
+            this.repository = new ChangePasswordProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public ChangePasswordController(IChangePasswordRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "change password" annotation.
         /// </summary>
@@ -70,16 +87,21 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/procedures/change-password/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
                                 {
+                                        new EntityColumn { ColumnName = "_admin_user_id",  PropertyName = "AdminUserId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "_user_name",  PropertyName = "UserName",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
-                                        new EntityColumn { ColumnName = "_current_password",  PropertyName = "CurrentPassword",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "_new_password",  PropertyName = "NewPassword",  DataType = "string",  DbDataType = "text",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
                                 }
             };
         }
+
 
         /// <summary>
         ///     Creates meta information of "change password" entity.
@@ -90,6 +112,10 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/procedures/change-password/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -98,6 +124,7 @@ namespace MixERP.Net.Api.Policy
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/policy/procedures/change-password/execute")]
@@ -105,12 +132,12 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                this.procedure.AdminUserId = annotation.AdminUserId;
-                this.procedure.UserName = annotation.UserName;
-                this.procedure.NewPassword = annotation.NewPassword;
+                this.repository.AdminUserId = annotation.AdminUserId;
+                this.repository.UserName = annotation.UserName;
+                this.repository.NewPassword = annotation.NewPassword;
 
 
-                this.procedure.Execute();
+                this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

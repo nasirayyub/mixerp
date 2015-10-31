@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class WidgetGroupController : ApiController
     {
         /// <summary>
-        ///     The WidgetGroup data context.
+        ///     The WidgetGroup repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.WidgetGroup WidgetGroupContext;
+        private readonly IWidgetGroupRepository WidgetGroupRepository;
 
         public WidgetGroupController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.WidgetGroupContext = new MixERP.Net.Schemas.Core.Data.WidgetGroup
+            this.WidgetGroupRepository = new MixERP.Net.Schemas.Core.Data.WidgetGroup
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public WidgetGroupController(IWidgetGroupRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.WidgetGroupRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/widget-group/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "widget_group_name",
@@ -77,7 +93,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WidgetGroupContext.Count();
+                return this.WidgetGroupRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -108,7 +124,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WidgetGroupContext.GetAll();
+                return this.WidgetGroupRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -139,7 +155,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WidgetGroupContext.Export();
+                return this.WidgetGroupRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -171,7 +187,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WidgetGroupContext.Get(widgetGroupName);
+                return this.WidgetGroupRepository.Get(widgetGroupName);
             }
             catch (UnauthorizedException)
             {
@@ -198,7 +214,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WidgetGroupContext.Get(widgetGroupNames);
+                return this.WidgetGroupRepository.Get(widgetGroupNames);
             }
             catch (UnauthorizedException)
             {
@@ -229,7 +245,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WidgetGroupContext.GetPaginatedResult();
+                return this.WidgetGroupRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -261,7 +277,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WidgetGroupContext.GetPaginatedResult(pageNumber);
+                return this.WidgetGroupRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -294,7 +310,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.WidgetGroupContext.CountWhere(f);
+                return this.WidgetGroupRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -328,7 +344,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.WidgetGroupContext.GetWhere(pageNumber, f);
+                return this.WidgetGroupRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -360,7 +376,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WidgetGroupContext.CountFiltered(filterName);
+                return this.WidgetGroupRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -393,7 +409,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WidgetGroupContext.GetFiltered(pageNumber, filterName);
+                return this.WidgetGroupRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -424,7 +440,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WidgetGroupContext.GetDisplayFields();
+                return this.WidgetGroupRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -455,7 +471,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WidgetGroupContext.GetCustomFields(null);
+                return this.WidgetGroupRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -486,7 +502,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WidgetGroupContext.GetCustomFields(resourceId);
+                return this.WidgetGroupRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -525,7 +541,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.WidgetGroupContext.AddOrEdit(widgetGroup, customFields);
+                return this.WidgetGroupRepository.AddOrEdit(widgetGroup, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -561,7 +577,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.WidgetGroupContext.Add(widgetGroup);
+                this.WidgetGroupRepository.Add(widgetGroup);
             }
             catch (UnauthorizedException)
             {
@@ -598,7 +614,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.WidgetGroupContext.Update(widgetGroup, widgetGroupName);
+                this.WidgetGroupRepository.Update(widgetGroup, widgetGroupName);
             }
             catch (UnauthorizedException)
             {
@@ -643,7 +659,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.WidgetGroupContext.BulkImport(widgetGroupCollection);
+                return this.WidgetGroupRepository.BulkImport(widgetGroupCollection);
             }
             catch (UnauthorizedException)
             {
@@ -674,7 +690,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.WidgetGroupContext.Delete(widgetGroupName);
+                this.WidgetGroupRepository.Delete(widgetGroupName);
             }
             catch (UnauthorizedException)
             {

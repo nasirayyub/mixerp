@@ -65,6 +65,13 @@
     <Compile Include="GetOfficeIdByLoginIdProcedure.cs" />
     <Compile Include="GetOfficeInformationModelProcedure.cs" />
     <Compile Include="GetUserIdByLoginIdProcedure.cs" />
+    <Compile Include="IFailedLoginRepository.cs" />
+    <Compile Include="IGetOfficeIdByLoginIdRepository.cs" />
+    <Compile Include="IGetOfficeInformationModelRepository.cs" />
+    <Compile Include="IGetUserIdByLoginIdRepository.cs" />
+    <Compile Include="IIsValidLoginIdRepository.cs" />
+    <Compile Include="ILoggedActionRepository.cs" />
+    <Compile Include="ILoginRepository.cs" />
     <Compile Include="IsValidLoginIdProcedure.cs" />
     <Compile Include="LoggedAction.cs" />
     <Compile Include="Login.cs" />

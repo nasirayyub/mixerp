@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_total_due(office_id integer, party_id bigint)" on the database.
     /// </summary>
-    public class GetTotalDueProcedure : DbAccess
+    public class GetTotalDueProcedure : DbAccess, IGetTotalDueRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

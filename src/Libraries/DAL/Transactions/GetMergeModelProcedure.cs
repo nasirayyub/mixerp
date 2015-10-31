@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_merge_model(_tran_ids bigint[], _book text)" on the database.
     /// </summary>
-    public class GetMergeModelProcedure : DbAccess
+    public class GetMergeModelProcedure : DbAccess, IGetMergeModelRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

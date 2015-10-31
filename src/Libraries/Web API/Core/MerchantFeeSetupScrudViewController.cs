@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class MerchantFeeSetupScrudViewController : ApiController
     {
         /// <summary>
-        ///     The MerchantFeeSetupScrudView data context.
+        ///     The MerchantFeeSetupScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.MerchantFeeSetupScrudView MerchantFeeSetupScrudViewContext;
+        private readonly IMerchantFeeSetupScrudViewRepository MerchantFeeSetupScrudViewRepository;
 
         public MerchantFeeSetupScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.MerchantFeeSetupScrudViewContext = new MixERP.Net.Schemas.Core.Data.MerchantFeeSetupScrudView
+            this.MerchantFeeSetupScrudViewRepository = new MixERP.Net.Schemas.Core.Data.MerchantFeeSetupScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public MerchantFeeSetupScrudViewController(IMerchantFeeSetupScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.MerchantFeeSetupScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupScrudViewContext.Count();
+                return this.MerchantFeeSetupScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupScrudViewContext.Get();
+                return this.MerchantFeeSetupScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupScrudViewContext.GetPaginatedResult();
+                return this.MerchantFeeSetupScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.MerchantFeeSetupScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupScrudViewContext.GetDisplayFields();
+                return this.MerchantFeeSetupScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.MerchantFeeSetupScrudViewContext.CountWhere(f);
+                return this.MerchantFeeSetupScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.MerchantFeeSetupScrudViewContext.GetWhere(pageNumber, f);
+                return this.MerchantFeeSetupScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupScrudViewContext.CountFiltered(filterName);
+                return this.MerchantFeeSetupScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.MerchantFeeSetupScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

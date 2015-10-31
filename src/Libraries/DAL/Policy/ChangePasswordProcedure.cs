@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Policy.Data
     /// <summary>
     /// Prepares, validates, and executes the function "policy.change_password(_admin_user_id integer, _user_name text, _new_password text)" on the database.
     /// </summary>
-    public class ChangePasswordProcedure : DbAccess
+    public class ChangePasswordProcedure : DbAccess, IChangePasswordRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

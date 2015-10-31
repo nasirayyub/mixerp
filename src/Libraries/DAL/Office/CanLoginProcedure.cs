@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.can_login(user_id integer_strict, office_id integer_strict)" on the database.
     /// </summary>
-    public class CanLoginProcedure : DbAccess
+    public class CanLoginProcedure : DbAccess, ICanLoginRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

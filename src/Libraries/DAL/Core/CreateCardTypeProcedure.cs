@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.create_card_type(_card_type_id integer, _card_type_code character varying, _card_type_name character varying)" on the database.
     /// </summary>
-    public class CreateCardTypeProcedure : DbAccess
+    public class CreateCardTypeProcedure : DbAccess, ICreateCardTypeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

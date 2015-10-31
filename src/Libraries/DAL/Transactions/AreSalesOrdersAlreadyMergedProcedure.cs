@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.are_sales_orders_already_merged(arr bigint[])" on the database.
     /// </summary>
-    public class AreSalesOrdersAlreadyMergedProcedure : DbAccess
+    public class AreSalesOrdersAlreadyMergedProcedure : DbAccess, IAreSalesOrdersAlreadyMergedRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

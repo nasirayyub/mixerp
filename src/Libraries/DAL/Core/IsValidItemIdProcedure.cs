@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.is_valid_item_id(pg_arg0 integer)" on the database.
     /// </summary>
-    public class IsValidItemIdProcedure : DbAccess
+    public class IsValidItemIdProcedure : DbAccess, IIsValidItemIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

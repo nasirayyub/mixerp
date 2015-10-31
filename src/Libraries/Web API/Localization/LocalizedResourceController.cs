@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Localization.Data;
 
 namespace MixERP.Net.Api.Localization
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Localization
     public class LocalizedResourceController : ApiController
     {
         /// <summary>
-        ///     The LocalizedResource data context.
+        ///     The LocalizedResource repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Localization.Data.LocalizedResource LocalizedResourceContext;
+        private readonly ILocalizedResourceRepository LocalizedResourceRepository;
 
         public LocalizedResourceController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Localization
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.LocalizedResourceContext = new MixERP.Net.Schemas.Localization.Data.LocalizedResource
+            this.LocalizedResourceRepository = new MixERP.Net.Schemas.Localization.Data.LocalizedResource
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public LocalizedResourceController(ILocalizedResourceRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.LocalizedResourceRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Localization
         [Route("~/api/localization/localized-resource/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "localized_resource_id",
@@ -79,7 +95,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.LocalizedResourceContext.Count();
+                return this.LocalizedResourceRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -110,7 +126,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.LocalizedResourceContext.GetAll();
+                return this.LocalizedResourceRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -141,7 +157,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.LocalizedResourceContext.Export();
+                return this.LocalizedResourceRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -173,7 +189,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.LocalizedResourceContext.Get(localizedResourceId);
+                return this.LocalizedResourceRepository.Get(localizedResourceId);
             }
             catch (UnauthorizedException)
             {
@@ -200,7 +216,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.LocalizedResourceContext.Get(localizedResourceIds);
+                return this.LocalizedResourceRepository.Get(localizedResourceIds);
             }
             catch (UnauthorizedException)
             {
@@ -231,7 +247,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.LocalizedResourceContext.GetPaginatedResult();
+                return this.LocalizedResourceRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -263,7 +279,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.LocalizedResourceContext.GetPaginatedResult(pageNumber);
+                return this.LocalizedResourceRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -296,7 +312,7 @@ namespace MixERP.Net.Api.Localization
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LocalizedResourceContext.CountWhere(f);
+                return this.LocalizedResourceRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -330,7 +346,7 @@ namespace MixERP.Net.Api.Localization
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LocalizedResourceContext.GetWhere(pageNumber, f);
+                return this.LocalizedResourceRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -362,7 +378,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.LocalizedResourceContext.CountFiltered(filterName);
+                return this.LocalizedResourceRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -395,7 +411,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.LocalizedResourceContext.GetFiltered(pageNumber, filterName);
+                return this.LocalizedResourceRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -426,7 +442,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.LocalizedResourceContext.GetDisplayFields();
+                return this.LocalizedResourceRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -457,7 +473,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.LocalizedResourceContext.GetCustomFields(null);
+                return this.LocalizedResourceRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -488,7 +504,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.LocalizedResourceContext.GetCustomFields(resourceId);
+                return this.LocalizedResourceRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -527,7 +543,7 @@ namespace MixERP.Net.Api.Localization
 
             try
             {
-                return this.LocalizedResourceContext.AddOrEdit(localizedResource, customFields);
+                return this.LocalizedResourceRepository.AddOrEdit(localizedResource, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -563,7 +579,7 @@ namespace MixERP.Net.Api.Localization
 
             try
             {
-                this.LocalizedResourceContext.Add(localizedResource);
+                this.LocalizedResourceRepository.Add(localizedResource);
             }
             catch (UnauthorizedException)
             {
@@ -600,7 +616,7 @@ namespace MixERP.Net.Api.Localization
 
             try
             {
-                this.LocalizedResourceContext.Update(localizedResource, localizedResourceId);
+                this.LocalizedResourceRepository.Update(localizedResource, localizedResourceId);
             }
             catch (UnauthorizedException)
             {
@@ -645,7 +661,7 @@ namespace MixERP.Net.Api.Localization
 
             try
             {
-                return this.LocalizedResourceContext.BulkImport(localizedResourceCollection);
+                return this.LocalizedResourceRepository.BulkImport(localizedResourceCollection);
             }
             catch (UnauthorizedException)
             {
@@ -676,7 +692,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                this.LocalizedResourceContext.Delete(localizedResourceId);
+                this.LocalizedResourceRepository.Delete(localizedResourceId);
             }
             catch (UnauthorizedException)
             {

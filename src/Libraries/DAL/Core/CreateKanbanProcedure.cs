@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.create_kanban(_object_name character varying, _user_id integer, _kanban_name character varying, _description text)" on the database.
     /// </summary>
-    public class CreateKanbanProcedure : DbAccess
+    public class CreateKanbanProcedure : DbAccess, ICreateKanbanRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

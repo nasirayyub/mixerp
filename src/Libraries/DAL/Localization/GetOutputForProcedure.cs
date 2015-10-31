@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Localization.Data
     /// <summary>
     /// Prepares, validates, and executes the function "localization.get_output_for(_culture_code character varying)" on the database.
     /// </summary>
-    public class GetOutputForProcedure : DbAccess
+    public class GetOutputForProcedure : DbAccess, IGetOutputForRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

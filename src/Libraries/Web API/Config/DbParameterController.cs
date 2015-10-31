@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Config.Data;
 
 namespace MixERP.Net.Api.Config
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Config
     public class DbParameterController : ApiController
     {
         /// <summary>
-        ///     The DbParameter data context.
+        ///     The DbParameter repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Config.Data.DbParameter DbParameterContext;
+        private readonly IDbParameterRepository DbParameterRepository;
 
         public DbParameterController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Config
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.DbParameterContext = new MixERP.Net.Schemas.Config.Data.DbParameter
+            this.DbParameterRepository = new MixERP.Net.Schemas.Config.Data.DbParameter
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public DbParameterController(IDbParameterRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.DbParameterRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Config
         [Route("~/api/config/db-parameter/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "key",
@@ -79,7 +95,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterContext.Count();
+                return this.DbParameterRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -110,7 +126,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterContext.GetAll();
+                return this.DbParameterRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -141,7 +157,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterContext.Export();
+                return this.DbParameterRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -173,7 +189,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterContext.Get(key);
+                return this.DbParameterRepository.Get(key);
             }
             catch (UnauthorizedException)
             {
@@ -200,7 +216,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterContext.Get(keys);
+                return this.DbParameterRepository.Get(keys);
             }
             catch (UnauthorizedException)
             {
@@ -231,7 +247,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterContext.GetPaginatedResult();
+                return this.DbParameterRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -263,7 +279,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterContext.GetPaginatedResult(pageNumber);
+                return this.DbParameterRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -296,7 +312,7 @@ namespace MixERP.Net.Api.Config
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.DbParameterContext.CountWhere(f);
+                return this.DbParameterRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -330,7 +346,7 @@ namespace MixERP.Net.Api.Config
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.DbParameterContext.GetWhere(pageNumber, f);
+                return this.DbParameterRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -362,7 +378,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterContext.CountFiltered(filterName);
+                return this.DbParameterRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -395,7 +411,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterContext.GetFiltered(pageNumber, filterName);
+                return this.DbParameterRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -426,7 +442,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterContext.GetDisplayFields();
+                return this.DbParameterRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -457,7 +473,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterContext.GetCustomFields(null);
+                return this.DbParameterRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -488,7 +504,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterContext.GetCustomFields(resourceId);
+                return this.DbParameterRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -527,7 +543,7 @@ namespace MixERP.Net.Api.Config
 
             try
             {
-                return this.DbParameterContext.AddOrEdit(dbParameter, customFields);
+                return this.DbParameterRepository.AddOrEdit(dbParameter, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -563,7 +579,7 @@ namespace MixERP.Net.Api.Config
 
             try
             {
-                this.DbParameterContext.Add(dbParameter);
+                this.DbParameterRepository.Add(dbParameter);
             }
             catch (UnauthorizedException)
             {
@@ -600,7 +616,7 @@ namespace MixERP.Net.Api.Config
 
             try
             {
-                this.DbParameterContext.Update(dbParameter, key);
+                this.DbParameterRepository.Update(dbParameter, key);
             }
             catch (UnauthorizedException)
             {
@@ -645,7 +661,7 @@ namespace MixERP.Net.Api.Config
 
             try
             {
-                return this.DbParameterContext.BulkImport(dbParameterCollection);
+                return this.DbParameterRepository.BulkImport(dbParameterCollection);
             }
             catch (UnauthorizedException)
             {
@@ -676,7 +692,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                this.DbParameterContext.Delete(key);
+                this.DbParameterRepository.Delete(key);
             }
             catch (UnauthorizedException)
             {

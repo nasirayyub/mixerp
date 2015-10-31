@@ -14,7 +14,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
     /// <summary>
     /// Prepares, validates, and executes the function "hrm.get_employee_code_by_employee_id(_employee_id integer)" on the database.
     /// </summary>
-    public class GetEmployeeCodeByEmployeeIdProcedure : DbAccess
+    public class GetEmployeeCodeByEmployeeIdProcedure : DbAccess, IGetEmployeeCodeByEmployeeIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

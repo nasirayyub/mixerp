@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_transaction_code(value_date date, office_id integer, user_id integer, login_id bigint)" on the database.
     /// </summary>
-    public class GetTransactionCodeProcedure : DbAccess
+    public class GetTransactionCodeProcedure : DbAccess, IGetTransactionCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

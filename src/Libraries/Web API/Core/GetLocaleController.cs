@@ -40,10 +40,15 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetLocaleProcedure procedure;
+        /// <summary>
+        ///     The GetLocale repository.
+        /// </summary>
+        private readonly IGetLocaleRepository repository;
+
         public class Annotation
         {
         }
+
 
         public GetLocaleController()
         {
@@ -51,13 +56,27 @@ namespace MixERP.Net.Api.Core
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetLocaleProcedure
+
+            this.repository = new GetLocaleProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetLocaleController(IGetLocaleRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
+
+
 
 
         [AcceptVerbs("POST")]
@@ -69,7 +88,7 @@ namespace MixERP.Net.Api.Core
             {
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

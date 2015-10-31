@@ -16,7 +16,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database table "core.frequency_setups".
     /// </summary>
-    public class FrequencySetup : DbAccess
+    public class FrequencySetup : DbAccess, IFrequencySetupRepository
     {
         /// <summary>
         /// The schema of this table. Returns literal "core".
@@ -73,7 +73,7 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.frequency_setups" to return a all instances of the "FrequencySetup" class. 
+        /// Executes a select query on the table "core.frequency_setups" to return all instances of the "FrequencySetup" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "FrequencySetup" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -102,7 +102,7 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.frequency_setups" to return a all instances of the "FrequencySetup" class to export. 
+        /// Executes a select query on the table "core.frequency_setups" to return all instances of the "FrequencySetup" class to export. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "FrequencySetup" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -559,7 +559,7 @@ namespace MixERP.Net.Schemas.Core.Data
             return Factory.Get<MixERP.Net.Entities.Core.FrequencySetup>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='core.frequency_setups' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

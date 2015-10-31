@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.contains_incompatible_taxes(arr bigint[])" on the database.
     /// </summary>
-    public class ContainsIncompatibleTaxesProcedure : DbAccess
+    public class ContainsIncompatibleTaxesProcedure : DbAccess, IContainsIncompatibleTaxesRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

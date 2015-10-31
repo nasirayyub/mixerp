@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.recreate_menu(_menu_text text, _url text, _menu_code text, _level integer, _parent_menu_id integer)" on the database.
     /// </summary>
-    public class RecreateMenuProcedure : DbAccess
+    public class RecreateMenuProcedure : DbAccess, IRecreateMenuRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

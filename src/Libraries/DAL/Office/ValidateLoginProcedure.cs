@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.validate_login(user_name text, password text, challenge text)" on the database.
     /// </summary>
-    public class ValidateLoginProcedure : DbAccess
+    public class ValidateLoginProcedure : DbAccess, IValidateLoginRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class RoundingMethodSelectorViewController : ApiController
     {
         /// <summary>
-        ///     The RoundingMethodSelectorView data context.
+        ///     The RoundingMethodSelectorView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.RoundingMethodSelectorView RoundingMethodSelectorViewContext;
+        private readonly IRoundingMethodSelectorViewRepository RoundingMethodSelectorViewRepository;
 
         public RoundingMethodSelectorViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.RoundingMethodSelectorViewContext = new MixERP.Net.Schemas.Core.Data.RoundingMethodSelectorView
+            this.RoundingMethodSelectorViewRepository = new MixERP.Net.Schemas.Core.Data.RoundingMethodSelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public RoundingMethodSelectorViewController(IRoundingMethodSelectorViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.RoundingMethodSelectorViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RoundingMethodSelectorViewContext.Count();
+                return this.RoundingMethodSelectorViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RoundingMethodSelectorViewContext.Get();
+                return this.RoundingMethodSelectorViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RoundingMethodSelectorViewContext.GetPaginatedResult();
+                return this.RoundingMethodSelectorViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RoundingMethodSelectorViewContext.GetPaginatedResult(pageNumber);
+                return this.RoundingMethodSelectorViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RoundingMethodSelectorViewContext.GetDisplayFields();
+                return this.RoundingMethodSelectorViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.RoundingMethodSelectorViewContext.CountWhere(f);
+                return this.RoundingMethodSelectorViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.RoundingMethodSelectorViewContext.GetWhere(pageNumber, f);
+                return this.RoundingMethodSelectorViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RoundingMethodSelectorViewContext.CountFiltered(filterName);
+                return this.RoundingMethodSelectorViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RoundingMethodSelectorViewContext.GetFiltered(pageNumber, filterName);
+                return this.RoundingMethodSelectorViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

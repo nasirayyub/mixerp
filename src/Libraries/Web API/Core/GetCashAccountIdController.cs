@@ -40,10 +40,15 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetCashAccountIdProcedure procedure;
+        /// <summary>
+        ///     The GetCashAccountId repository.
+        /// </summary>
+        private readonly IGetCashAccountIdRepository repository;
+
         public class Annotation
         {
         }
+
 
         public GetCashAccountIdController()
         {
@@ -51,13 +56,27 @@ namespace MixERP.Net.Api.Core
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetCashAccountIdProcedure
+
+            this.repository = new GetCashAccountIdProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetCashAccountIdController(IGetCashAccountIdRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
+
+
 
 
         [AcceptVerbs("POST")]
@@ -69,7 +88,7 @@ namespace MixERP.Net.Api.Core
             {
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

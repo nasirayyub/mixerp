@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class ExchangeRateDetailController : ApiController
     {
         /// <summary>
-        ///     The ExchangeRateDetail data context.
+        ///     The ExchangeRateDetail repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.ExchangeRateDetail ExchangeRateDetailContext;
+        private readonly IExchangeRateDetailRepository ExchangeRateDetailRepository;
 
         public ExchangeRateDetailController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ExchangeRateDetailContext = new MixERP.Net.Schemas.Core.Data.ExchangeRateDetail
+            this.ExchangeRateDetailRepository = new MixERP.Net.Schemas.Core.Data.ExchangeRateDetail
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ExchangeRateDetailController(IExchangeRateDetailRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ExchangeRateDetailRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/exchange-rate-detail/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "exchange_rate_detail_id",
@@ -81,7 +97,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ExchangeRateDetailContext.Count();
+                return this.ExchangeRateDetailRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -112,7 +128,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ExchangeRateDetailContext.GetAll();
+                return this.ExchangeRateDetailRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -143,7 +159,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ExchangeRateDetailContext.Export();
+                return this.ExchangeRateDetailRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -175,7 +191,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ExchangeRateDetailContext.Get(exchangeRateDetailId);
+                return this.ExchangeRateDetailRepository.Get(exchangeRateDetailId);
             }
             catch (UnauthorizedException)
             {
@@ -202,7 +218,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ExchangeRateDetailContext.Get(exchangeRateDetailIds);
+                return this.ExchangeRateDetailRepository.Get(exchangeRateDetailIds);
             }
             catch (UnauthorizedException)
             {
@@ -233,7 +249,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ExchangeRateDetailContext.GetPaginatedResult();
+                return this.ExchangeRateDetailRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -265,7 +281,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ExchangeRateDetailContext.GetPaginatedResult(pageNumber);
+                return this.ExchangeRateDetailRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -298,7 +314,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ExchangeRateDetailContext.CountWhere(f);
+                return this.ExchangeRateDetailRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -332,7 +348,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ExchangeRateDetailContext.GetWhere(pageNumber, f);
+                return this.ExchangeRateDetailRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -364,7 +380,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ExchangeRateDetailContext.CountFiltered(filterName);
+                return this.ExchangeRateDetailRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -397,7 +413,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ExchangeRateDetailContext.GetFiltered(pageNumber, filterName);
+                return this.ExchangeRateDetailRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -428,7 +444,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ExchangeRateDetailContext.GetDisplayFields();
+                return this.ExchangeRateDetailRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -459,7 +475,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ExchangeRateDetailContext.GetCustomFields(null);
+                return this.ExchangeRateDetailRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -490,7 +506,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ExchangeRateDetailContext.GetCustomFields(resourceId);
+                return this.ExchangeRateDetailRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -529,7 +545,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ExchangeRateDetailContext.AddOrEdit(exchangeRateDetail, customFields);
+                return this.ExchangeRateDetailRepository.AddOrEdit(exchangeRateDetail, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -565,7 +581,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ExchangeRateDetailContext.Add(exchangeRateDetail);
+                this.ExchangeRateDetailRepository.Add(exchangeRateDetail);
             }
             catch (UnauthorizedException)
             {
@@ -602,7 +618,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ExchangeRateDetailContext.Update(exchangeRateDetail, exchangeRateDetailId);
+                this.ExchangeRateDetailRepository.Update(exchangeRateDetail, exchangeRateDetailId);
             }
             catch (UnauthorizedException)
             {
@@ -647,7 +663,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ExchangeRateDetailContext.BulkImport(exchangeRateDetailCollection);
+                return this.ExchangeRateDetailRepository.BulkImport(exchangeRateDetailCollection);
             }
             catch (UnauthorizedException)
             {
@@ -678,7 +694,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.ExchangeRateDetailContext.Delete(exchangeRateDetailId);
+                this.ExchangeRateDetailRepository.Delete(exchangeRateDetailId);
             }
             catch (UnauthorizedException)
             {

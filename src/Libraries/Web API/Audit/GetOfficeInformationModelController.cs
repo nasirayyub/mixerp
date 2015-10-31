@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Audit
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetOfficeInformationModelProcedure procedure;
+        /// <summary>
+        ///     The GetOfficeInformationModel repository.
+        /// </summary>
+        private readonly IGetOfficeInformationModelRepository repository;
+
         public class Annotation
         {
             public int PgArg0 { get; set; }
         }
+
 
         public GetOfficeInformationModelController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Audit
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetOfficeInformationModelProcedure
+
+            this.repository = new GetOfficeInformationModelProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetOfficeInformationModelController(IGetOfficeInformationModelRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get office information model" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Audit
         [Route("~/api/audit/procedures/get-office-information-model/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -76,6 +97,7 @@ namespace MixERP.Net.Api.Audit
                                 }
             };
         }
+
 
         /// <summary>
         ///     Creates meta information of "get office information model" entity.
@@ -86,6 +108,10 @@ namespace MixERP.Net.Api.Audit
         [Route("~/api/audit/procedures/get-office-information-model/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -102,6 +128,7 @@ namespace MixERP.Net.Api.Audit
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/audit/procedures/get-office-information-model/execute")]
@@ -109,10 +136,10 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                this.procedure.PgArg0 = annotation.PgArg0;
+                this.repository.PgArg0 = annotation.PgArg0;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

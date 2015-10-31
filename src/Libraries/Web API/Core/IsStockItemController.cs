@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private IsStockItemProcedure procedure;
+        /// <summary>
+        ///     The IsStockItem repository.
+        /// </summary>
+        private readonly IIsStockItemRepository repository;
+
         public class Annotation
         {
             public int ItemId { get; set; }
         }
+
 
         public IsStockItemController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Core
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new IsStockItemProcedure
+
+            this.repository = new IsStockItemProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public IsStockItemController(IIsStockItemRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "is stock item" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/is-stock-item/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -78,6 +99,8 @@ namespace MixERP.Net.Api.Core
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/is-stock-item/execute")]
@@ -85,10 +108,10 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.ItemId = annotation.ItemId;
+                this.repository.ItemId = annotation.ItemId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

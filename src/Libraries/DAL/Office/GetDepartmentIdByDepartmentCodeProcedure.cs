@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.get_department_id_by_department_code(_department_code text)" on the database.
     /// </summary>
-    public class GetDepartmentIdByDepartmentCodeProcedure : DbAccess
+    public class GetDepartmentIdByDepartmentCodeProcedure : DbAccess, IGetDepartmentIdByDepartmentCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

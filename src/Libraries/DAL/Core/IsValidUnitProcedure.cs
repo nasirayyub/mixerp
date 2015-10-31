@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.is_valid_unit(_item_id integer, _unit_id integer)" on the database.
     /// </summary>
-    public class IsValidUnitProcedure : DbAccess
+    public class IsValidUnitProcedure : DbAccess, IIsValidUnitRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

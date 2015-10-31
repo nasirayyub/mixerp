@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Localization
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetMenuTableProcedure procedure;
+        /// <summary>
+        ///     The GetMenuTable repository.
+        /// </summary>
+        private readonly IGetMenuTableRepository repository;
+
         public class Annotation
         {
             public string CultureCode { get; set; }
         }
+
 
         public GetMenuTableController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Localization
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetMenuTableProcedure
+
+            this.repository = new GetMenuTableProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetMenuTableController(IGetMenuTableRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get menu table" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Localization
         [Route("~/api/localization/procedures/get-menu-table/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -76,6 +97,7 @@ namespace MixERP.Net.Api.Localization
                                 }
             };
         }
+
 
         /// <summary>
         ///     Creates meta information of "get menu table" entity.
@@ -86,6 +108,10 @@ namespace MixERP.Net.Api.Localization
         [Route("~/api/localization/procedures/get-menu-table/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -97,6 +123,7 @@ namespace MixERP.Net.Api.Localization
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/localization/procedures/get-menu-table/execute")]
@@ -104,10 +131,10 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                this.procedure.CultureCode = annotation.CultureCode;
+                this.repository.CultureCode = annotation.CultureCode;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

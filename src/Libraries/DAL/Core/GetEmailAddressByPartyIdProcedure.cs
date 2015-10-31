@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_email_address_by_party_id(pg_arg0 bigint)" on the database.
     /// </summary>
-    public class GetEmailAddressByPartyIdProcedure : DbAccess
+    public class GetEmailAddressByPartyIdProcedure : DbAccess, IGetEmailAddressByPartyIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

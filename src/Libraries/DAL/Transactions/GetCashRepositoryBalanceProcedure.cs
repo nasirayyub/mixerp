@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_cash_repository_balance(_cash_repository_id integer, _currency_code character varying)" on the database.
     /// </summary>
-    public class GetCashRepositoryBalanceProcedure : DbAccess
+    public class GetCashRepositoryBalanceProcedure : DbAccess, IGetCashRepositoryBalanceRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

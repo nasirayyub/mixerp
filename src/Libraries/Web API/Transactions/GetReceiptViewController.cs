@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetReceiptViewProcedure procedure;
+        /// <summary>
+        ///     The GetReceiptView repository.
+        /// </summary>
+        private readonly IGetReceiptViewRepository repository;
+
         public class Annotation
         {
             public int UserId { get; set; }
@@ -54,19 +58,32 @@ namespace MixERP.Net.Api.Transactions
             public string StatementReference { get; set; }
         }
 
+
         public GetReceiptViewController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetReceiptViewProcedure
+
+            this.repository = new GetReceiptViewProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetReceiptViewController(IGetReceiptViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get receipt view" annotation.
         /// </summary>
@@ -76,6 +93,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-receipt-view/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -93,6 +114,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "get receipt view" entity.
         /// </summary>
@@ -102,6 +124,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-receipt-view/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -122,6 +148,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/get-receipt-view/execute")]
@@ -129,18 +156,18 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.DateFrom = annotation.DateFrom;
-                this.procedure.DateTo = annotation.DateTo;
-                this.procedure.Office = annotation.Office;
-                this.procedure.Party = annotation.Party;
-                this.procedure.User = annotation.User;
-                this.procedure.ReferenceNumber = annotation.ReferenceNumber;
-                this.procedure.StatementReference = annotation.StatementReference;
+                this.repository.UserId = annotation.UserId;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.DateFrom = annotation.DateFrom;
+                this.repository.DateTo = annotation.DateTo;
+                this.repository.Office = annotation.Office;
+                this.repository.Party = annotation.Party;
+                this.repository.User = annotation.User;
+                this.repository.ReferenceNumber = annotation.ReferenceNumber;
+                this.repository.StatementReference = annotation.StatementReference;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

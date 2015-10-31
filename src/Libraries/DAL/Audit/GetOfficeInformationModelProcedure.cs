@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Audit.Data
     /// <summary>
     /// Prepares, validates, and executes the function "audit.get_office_information_model(pg_arg0 integer)" on the database.
     /// </summary>
-    public class GetOfficeInformationModelProcedure : DbAccess
+    public class GetOfficeInformationModelProcedure : DbAccess, IGetOfficeInformationModelRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetJournalViewProcedure procedure;
+        /// <summary>
+        ///     The GetJournalView repository.
+        /// </summary>
+        private readonly IGetJournalViewRepository repository;
+
         public class Annotation
         {
             public int UserId { get; set; }
@@ -59,19 +63,32 @@ namespace MixERP.Net.Api.Transactions
             public string Reason { get; set; }
         }
 
+
         public GetJournalViewController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetJournalViewProcedure
+
+            this.repository = new GetJournalViewProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetJournalViewController(IGetJournalViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get journal view" annotation.
         /// </summary>
@@ -81,6 +98,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-journal-view/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -103,6 +124,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "get journal view" entity.
         /// </summary>
@@ -112,6 +134,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-journal-view/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -133,6 +159,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/get-journal-view/execute")]
@@ -140,23 +167,23 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.From = annotation.From;
-                this.procedure.To = annotation.To;
-                this.procedure.TranId = annotation.TranId;
-                this.procedure.TranCode = annotation.TranCode;
-                this.procedure.Book = annotation.Book;
-                this.procedure.ReferenceNumber = annotation.ReferenceNumber;
-                this.procedure.StatementReference = annotation.StatementReference;
-                this.procedure.PostedBy = annotation.PostedBy;
-                this.procedure.Office = annotation.Office;
-                this.procedure.Status = annotation.Status;
-                this.procedure.VerifiedBy = annotation.VerifiedBy;
-                this.procedure.Reason = annotation.Reason;
+                this.repository.UserId = annotation.UserId;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.From = annotation.From;
+                this.repository.To = annotation.To;
+                this.repository.TranId = annotation.TranId;
+                this.repository.TranCode = annotation.TranCode;
+                this.repository.Book = annotation.Book;
+                this.repository.ReferenceNumber = annotation.ReferenceNumber;
+                this.repository.StatementReference = annotation.StatementReference;
+                this.repository.PostedBy = annotation.PostedBy;
+                this.repository.Office = annotation.Office;
+                this.repository.Status = annotation.Status;
+                this.repository.VerifiedBy = annotation.VerifiedBy;
+                this.repository.Reason = annotation.Reason;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

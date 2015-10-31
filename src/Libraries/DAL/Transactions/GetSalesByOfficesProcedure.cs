@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_sales_by_offices(office_id integer, divide_by integer)" on the database.
     /// </summary>
-    public class GetSalesByOfficesProcedure : DbAccess
+    public class GetSalesByOfficesProcedure : DbAccess, IGetSalesByOfficesRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class CashFlowSetupController : ApiController
     {
         /// <summary>
-        ///     The CashFlowSetup data context.
+        ///     The CashFlowSetup repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.CashFlowSetup CashFlowSetupContext;
+        private readonly ICashFlowSetupRepository CashFlowSetupRepository;
 
         public CashFlowSetupController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.CashFlowSetupContext = new MixERP.Net.Schemas.Core.Data.CashFlowSetup
+            this.CashFlowSetupRepository = new MixERP.Net.Schemas.Core.Data.CashFlowSetup
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public CashFlowSetupController(ICashFlowSetupRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.CashFlowSetupRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/cash-flow-setup/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "cash_flow_setup_id",
@@ -80,7 +96,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupContext.Count();
+                return this.CashFlowSetupRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -111,7 +127,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupContext.GetAll();
+                return this.CashFlowSetupRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -142,7 +158,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupContext.Export();
+                return this.CashFlowSetupRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -174,7 +190,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupContext.Get(cashFlowSetupId);
+                return this.CashFlowSetupRepository.Get(cashFlowSetupId);
             }
             catch (UnauthorizedException)
             {
@@ -201,7 +217,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupContext.Get(cashFlowSetupIds);
+                return this.CashFlowSetupRepository.Get(cashFlowSetupIds);
             }
             catch (UnauthorizedException)
             {
@@ -232,7 +248,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupContext.GetPaginatedResult();
+                return this.CashFlowSetupRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -264,7 +280,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupContext.GetPaginatedResult(pageNumber);
+                return this.CashFlowSetupRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -297,7 +313,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CashFlowSetupContext.CountWhere(f);
+                return this.CashFlowSetupRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -331,7 +347,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CashFlowSetupContext.GetWhere(pageNumber, f);
+                return this.CashFlowSetupRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -363,7 +379,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupContext.CountFiltered(filterName);
+                return this.CashFlowSetupRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -396,7 +412,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupContext.GetFiltered(pageNumber, filterName);
+                return this.CashFlowSetupRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -427,7 +443,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupContext.GetDisplayFields();
+                return this.CashFlowSetupRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -458,7 +474,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupContext.GetCustomFields(null);
+                return this.CashFlowSetupRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -489,7 +505,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupContext.GetCustomFields(resourceId);
+                return this.CashFlowSetupRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -528,7 +544,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.CashFlowSetupContext.AddOrEdit(cashFlowSetup, customFields);
+                return this.CashFlowSetupRepository.AddOrEdit(cashFlowSetup, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -564,7 +580,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.CashFlowSetupContext.Add(cashFlowSetup);
+                this.CashFlowSetupRepository.Add(cashFlowSetup);
             }
             catch (UnauthorizedException)
             {
@@ -601,7 +617,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.CashFlowSetupContext.Update(cashFlowSetup, cashFlowSetupId);
+                this.CashFlowSetupRepository.Update(cashFlowSetup, cashFlowSetupId);
             }
             catch (UnauthorizedException)
             {
@@ -646,7 +662,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.CashFlowSetupContext.BulkImport(cashFlowSetupCollection);
+                return this.CashFlowSetupRepository.BulkImport(cashFlowSetupCollection);
             }
             catch (UnauthorizedException)
             {
@@ -677,7 +693,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.CashFlowSetupContext.Delete(cashFlowSetupId);
+                this.CashFlowSetupRepository.Delete(cashFlowSetupId);
             }
             catch (UnauthorizedException)
             {

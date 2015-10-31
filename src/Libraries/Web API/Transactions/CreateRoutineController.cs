@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private CreateRoutineProcedure procedure;
+        /// <summary>
+        ///     The CreateRoutine repository.
+        /// </summary>
+        private readonly ICreateRoutineRepository repository;
+
         public class Annotation
         {
             public string RoutineCode { get; set; }
@@ -48,19 +52,32 @@ namespace MixERP.Net.Api.Transactions
             public int Order { get; set; }
         }
 
+
         public CreateRoutineController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new CreateRoutineProcedure
+
+            this.repository = new CreateRoutineProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public CreateRoutineController(ICreateRoutineRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "create routine" annotation.
         /// </summary>
@@ -70,6 +87,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/create-routine/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -81,6 +102,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "create routine" entity.
         /// </summary>
@@ -90,6 +112,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/create-routine/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -98,6 +124,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/create-routine/execute")]
@@ -105,12 +132,12 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.RoutineCode = annotation.RoutineCode;
-                this.procedure.Routine = annotation.Routine;
-                this.procedure.Order = annotation.Order;
+                this.repository.RoutineCode = annotation.RoutineCode;
+                this.repository.Routine = annotation.Routine;
+                this.repository.Order = annotation.Order;
 
 
-                this.procedure.Execute();
+                this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

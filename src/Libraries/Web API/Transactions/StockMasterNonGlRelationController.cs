@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Transactions.Data;
 
 namespace MixERP.Net.Api.Transactions
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Transactions
     public class StockMasterNonGlRelationController : ApiController
     {
         /// <summary>
-        ///     The StockMasterNonGlRelation data context.
+        ///     The StockMasterNonGlRelation repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Transactions.Data.StockMasterNonGlRelation StockMasterNonGlRelationContext;
+        private readonly IStockMasterNonGlRelationRepository StockMasterNonGlRelationRepository;
 
         public StockMasterNonGlRelationController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Transactions
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.StockMasterNonGlRelationContext = new MixERP.Net.Schemas.Transactions.Data.StockMasterNonGlRelation
+            this.StockMasterNonGlRelationRepository = new MixERP.Net.Schemas.Transactions.Data.StockMasterNonGlRelation
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public StockMasterNonGlRelationController(IStockMasterNonGlRelationRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.StockMasterNonGlRelationRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/stock-master-non-gl-relation/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "stock_master_non_gl_relation_id",
@@ -78,7 +94,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockMasterNonGlRelationContext.Count();
+                return this.StockMasterNonGlRelationRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -109,7 +125,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockMasterNonGlRelationContext.GetAll();
+                return this.StockMasterNonGlRelationRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -140,7 +156,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockMasterNonGlRelationContext.Export();
+                return this.StockMasterNonGlRelationRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -172,7 +188,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockMasterNonGlRelationContext.Get(stockMasterNonGlRelationId);
+                return this.StockMasterNonGlRelationRepository.Get(stockMasterNonGlRelationId);
             }
             catch (UnauthorizedException)
             {
@@ -199,7 +215,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockMasterNonGlRelationContext.Get(stockMasterNonGlRelationIds);
+                return this.StockMasterNonGlRelationRepository.Get(stockMasterNonGlRelationIds);
             }
             catch (UnauthorizedException)
             {
@@ -230,7 +246,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockMasterNonGlRelationContext.GetPaginatedResult();
+                return this.StockMasterNonGlRelationRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -262,7 +278,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockMasterNonGlRelationContext.GetPaginatedResult(pageNumber);
+                return this.StockMasterNonGlRelationRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -295,7 +311,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.StockMasterNonGlRelationContext.CountWhere(f);
+                return this.StockMasterNonGlRelationRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -329,7 +345,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.StockMasterNonGlRelationContext.GetWhere(pageNumber, f);
+                return this.StockMasterNonGlRelationRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -361,7 +377,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockMasterNonGlRelationContext.CountFiltered(filterName);
+                return this.StockMasterNonGlRelationRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -394,7 +410,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockMasterNonGlRelationContext.GetFiltered(pageNumber, filterName);
+                return this.StockMasterNonGlRelationRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -425,7 +441,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockMasterNonGlRelationContext.GetDisplayFields();
+                return this.StockMasterNonGlRelationRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -456,7 +472,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockMasterNonGlRelationContext.GetCustomFields(null);
+                return this.StockMasterNonGlRelationRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -487,7 +503,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockMasterNonGlRelationContext.GetCustomFields(resourceId);
+                return this.StockMasterNonGlRelationRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -526,7 +542,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.StockMasterNonGlRelationContext.AddOrEdit(stockMasterNonGlRelation, customFields);
+                return this.StockMasterNonGlRelationRepository.AddOrEdit(stockMasterNonGlRelation, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -562,7 +578,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.StockMasterNonGlRelationContext.Add(stockMasterNonGlRelation);
+                this.StockMasterNonGlRelationRepository.Add(stockMasterNonGlRelation);
             }
             catch (UnauthorizedException)
             {
@@ -599,7 +615,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.StockMasterNonGlRelationContext.Update(stockMasterNonGlRelation, stockMasterNonGlRelationId);
+                this.StockMasterNonGlRelationRepository.Update(stockMasterNonGlRelation, stockMasterNonGlRelationId);
             }
             catch (UnauthorizedException)
             {
@@ -644,7 +660,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.StockMasterNonGlRelationContext.BulkImport(stockMasterNonGlRelationCollection);
+                return this.StockMasterNonGlRelationRepository.BulkImport(stockMasterNonGlRelationCollection);
             }
             catch (UnauthorizedException)
             {
@@ -675,7 +691,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.StockMasterNonGlRelationContext.Delete(stockMasterNonGlRelationId);
+                this.StockMasterNonGlRelationRepository.Delete(stockMasterNonGlRelationId);
             }
             catch (UnauthorizedException)
             {

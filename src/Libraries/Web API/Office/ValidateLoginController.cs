@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Office
         /// </summary>
         public string _Catalog { get; set; }
 
-        private ValidateLoginProcedure procedure;
+        /// <summary>
+        ///     The ValidateLogin repository.
+        /// </summary>
+        private readonly IValidateLoginRepository repository;
+
         public class Annotation
         {
             public string UserName { get; set; }
@@ -48,19 +52,32 @@ namespace MixERP.Net.Api.Office
             public string Challenge { get; set; }
         }
 
+
         public ValidateLoginController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new ValidateLoginProcedure
+
+            this.repository = new ValidateLoginProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public ValidateLoginController(IValidateLoginRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "validate login" annotation.
         /// </summary>
@@ -70,6 +87,10 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/procedures/validate-login/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -82,6 +103,8 @@ namespace MixERP.Net.Api.Office
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/office/procedures/validate-login/execute")]
@@ -89,12 +112,12 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                this.procedure.UserName = annotation.UserName;
-                this.procedure.Password = annotation.Password;
-                this.procedure.Challenge = annotation.Challenge;
+                this.repository.UserName = annotation.UserName;
+                this.repository.Password = annotation.Password;
+                this.repository.Challenge = annotation.Challenge;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

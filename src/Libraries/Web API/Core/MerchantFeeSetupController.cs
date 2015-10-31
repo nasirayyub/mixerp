@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class MerchantFeeSetupController : ApiController
     {
         /// <summary>
-        ///     The MerchantFeeSetup data context.
+        ///     The MerchantFeeSetup repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.MerchantFeeSetup MerchantFeeSetupContext;
+        private readonly IMerchantFeeSetupRepository MerchantFeeSetupRepository;
 
         public MerchantFeeSetupController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.MerchantFeeSetupContext = new MixERP.Net.Schemas.Core.Data.MerchantFeeSetup
+            this.MerchantFeeSetupRepository = new MixERP.Net.Schemas.Core.Data.MerchantFeeSetup
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public MerchantFeeSetupController(IMerchantFeeSetupRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.MerchantFeeSetupRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/merchant-fee-setup/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "merchant_fee_setup_id",
@@ -84,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupContext.Count();
+                return this.MerchantFeeSetupRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -115,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupContext.GetAll();
+                return this.MerchantFeeSetupRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -146,7 +162,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupContext.Export();
+                return this.MerchantFeeSetupRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -178,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupContext.Get(merchantFeeSetupId);
+                return this.MerchantFeeSetupRepository.Get(merchantFeeSetupId);
             }
             catch (UnauthorizedException)
             {
@@ -205,7 +221,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupContext.Get(merchantFeeSetupIds);
+                return this.MerchantFeeSetupRepository.Get(merchantFeeSetupIds);
             }
             catch (UnauthorizedException)
             {
@@ -236,7 +252,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupContext.GetPaginatedResult();
+                return this.MerchantFeeSetupRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -268,7 +284,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupContext.GetPaginatedResult(pageNumber);
+                return this.MerchantFeeSetupRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -301,7 +317,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.MerchantFeeSetupContext.CountWhere(f);
+                return this.MerchantFeeSetupRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -335,7 +351,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.MerchantFeeSetupContext.GetWhere(pageNumber, f);
+                return this.MerchantFeeSetupRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -367,7 +383,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupContext.CountFiltered(filterName);
+                return this.MerchantFeeSetupRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -400,7 +416,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupContext.GetFiltered(pageNumber, filterName);
+                return this.MerchantFeeSetupRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -431,7 +447,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupContext.GetDisplayFields();
+                return this.MerchantFeeSetupRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -462,7 +478,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupContext.GetCustomFields(null);
+                return this.MerchantFeeSetupRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -493,7 +509,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupContext.GetCustomFields(resourceId);
+                return this.MerchantFeeSetupRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -532,7 +548,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.MerchantFeeSetupContext.AddOrEdit(merchantFeeSetup, customFields);
+                return this.MerchantFeeSetupRepository.AddOrEdit(merchantFeeSetup, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -568,7 +584,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.MerchantFeeSetupContext.Add(merchantFeeSetup);
+                this.MerchantFeeSetupRepository.Add(merchantFeeSetup);
             }
             catch (UnauthorizedException)
             {
@@ -605,7 +621,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.MerchantFeeSetupContext.Update(merchantFeeSetup, merchantFeeSetupId);
+                this.MerchantFeeSetupRepository.Update(merchantFeeSetup, merchantFeeSetupId);
             }
             catch (UnauthorizedException)
             {
@@ -650,7 +666,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.MerchantFeeSetupContext.BulkImport(merchantFeeSetupCollection);
+                return this.MerchantFeeSetupRepository.BulkImport(merchantFeeSetupCollection);
             }
             catch (UnauthorizedException)
             {
@@ -681,7 +697,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.MerchantFeeSetupContext.Delete(merchantFeeSetupId);
+                this.MerchantFeeSetupRepository.Delete(merchantFeeSetupId);
             }
             catch (UnauthorizedException)
             {

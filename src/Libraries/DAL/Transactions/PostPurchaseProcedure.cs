@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.post_purchase(_book_name character varying, _office_id integer, _user_id integer, _login_id bigint, _value_date date, _cost_center_id integer, _reference_number character varying, _statement_reference text, _is_credit boolean, _party_code character varying, _price_type_id integer, _shipper_id integer, _store_id integer, _tran_ids bigint[], _details transactions.stock_detail_type[], _attachments core.attachment_type[])" on the database.
     /// </summary>
-    public class PostPurchaseProcedure : DbAccess
+    public class PostPurchaseProcedure : DbAccess, IPostPurchaseRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_entity_id_by_party_id(_party_id bigint)" on the database.
     /// </summary>
-    public class GetEntityIdByPartyIdProcedure : DbAccess
+    public class GetEntityIdByPartyIdProcedure : DbAccess, IGetEntityIdByPartyIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

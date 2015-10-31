@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class BrandController : ApiController
     {
         /// <summary>
-        ///     The Brand data context.
+        ///     The Brand repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.Brand BrandContext;
+        private readonly IBrandRepository BrandRepository;
 
         public BrandController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.BrandContext = new MixERP.Net.Schemas.Core.Data.Brand
+            this.BrandRepository = new MixERP.Net.Schemas.Core.Data.Brand
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public BrandController(IBrandRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.BrandRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/brand/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "brand_id",
@@ -80,7 +96,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BrandContext.Count();
+                return this.BrandRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -111,7 +127,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BrandContext.GetAll();
+                return this.BrandRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -142,7 +158,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BrandContext.Export();
+                return this.BrandRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -174,7 +190,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BrandContext.Get(brandId);
+                return this.BrandRepository.Get(brandId);
             }
             catch (UnauthorizedException)
             {
@@ -201,7 +217,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BrandContext.Get(brandIds);
+                return this.BrandRepository.Get(brandIds);
             }
             catch (UnauthorizedException)
             {
@@ -232,7 +248,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BrandContext.GetPaginatedResult();
+                return this.BrandRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -264,7 +280,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BrandContext.GetPaginatedResult(pageNumber);
+                return this.BrandRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -297,7 +313,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.BrandContext.CountWhere(f);
+                return this.BrandRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -331,7 +347,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.BrandContext.GetWhere(pageNumber, f);
+                return this.BrandRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -363,7 +379,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BrandContext.CountFiltered(filterName);
+                return this.BrandRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -396,7 +412,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BrandContext.GetFiltered(pageNumber, filterName);
+                return this.BrandRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -427,7 +443,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BrandContext.GetDisplayFields();
+                return this.BrandRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -458,7 +474,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BrandContext.GetCustomFields(null);
+                return this.BrandRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -489,7 +505,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BrandContext.GetCustomFields(resourceId);
+                return this.BrandRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -528,7 +544,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.BrandContext.AddOrEdit(brand, customFields);
+                return this.BrandRepository.AddOrEdit(brand, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -564,7 +580,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.BrandContext.Add(brand);
+                this.BrandRepository.Add(brand);
             }
             catch (UnauthorizedException)
             {
@@ -601,7 +617,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.BrandContext.Update(brand, brandId);
+                this.BrandRepository.Update(brand, brandId);
             }
             catch (UnauthorizedException)
             {
@@ -646,7 +662,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.BrandContext.BulkImport(brandCollection);
+                return this.BrandRepository.BulkImport(brandCollection);
             }
             catch (UnauthorizedException)
             {
@@ -677,7 +693,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.BrandContext.Delete(brandId);
+                this.BrandRepository.Delete(brandId);
             }
             catch (UnauthorizedException)
             {

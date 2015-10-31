@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class BonusSlabSelectorViewController : ApiController
     {
         /// <summary>
-        ///     The BonusSlabSelectorView data context.
+        ///     The BonusSlabSelectorView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.BonusSlabSelectorView BonusSlabSelectorViewContext;
+        private readonly IBonusSlabSelectorViewRepository BonusSlabSelectorViewRepository;
 
         public BonusSlabSelectorViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.BonusSlabSelectorViewContext = new MixERP.Net.Schemas.Core.Data.BonusSlabSelectorView
+            this.BonusSlabSelectorViewRepository = new MixERP.Net.Schemas.Core.Data.BonusSlabSelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public BonusSlabSelectorViewController(IBonusSlabSelectorViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.BonusSlabSelectorViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabSelectorViewContext.Count();
+                return this.BonusSlabSelectorViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabSelectorViewContext.Get();
+                return this.BonusSlabSelectorViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabSelectorViewContext.GetPaginatedResult();
+                return this.BonusSlabSelectorViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabSelectorViewContext.GetPaginatedResult(pageNumber);
+                return this.BonusSlabSelectorViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabSelectorViewContext.GetDisplayFields();
+                return this.BonusSlabSelectorViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.BonusSlabSelectorViewContext.CountWhere(f);
+                return this.BonusSlabSelectorViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.BonusSlabSelectorViewContext.GetWhere(pageNumber, f);
+                return this.BonusSlabSelectorViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabSelectorViewContext.CountFiltered(filterName);
+                return this.BonusSlabSelectorViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabSelectorViewContext.GetFiltered(pageNumber, filterName);
+                return this.BonusSlabSelectorViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

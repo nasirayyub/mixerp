@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Policy
         /// </summary>
         public string _Catalog { get; set; }
 
-        private CanPostTransactionProcedure procedure;
+        /// <summary>
+        ///     The CanPostTransaction repository.
+        /// </summary>
+        private readonly ICanPostTransactionRepository repository;
+
         public class Annotation
         {
             public long LoginId { get; set; }
@@ -50,19 +54,32 @@ namespace MixERP.Net.Api.Policy
             public DateTime ValueDate { get; set; }
         }
 
+
         public CanPostTransactionController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new CanPostTransactionProcedure
+
+            this.repository = new CanPostTransactionProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public CanPostTransactionController(ICanPostTransactionRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "can post transaction" annotation.
         /// </summary>
@@ -72,6 +89,10 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/procedures/can-post-transaction/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -86,6 +107,8 @@ namespace MixERP.Net.Api.Policy
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/policy/procedures/can-post-transaction/execute")]
@@ -93,14 +116,14 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                this.procedure.LoginId = annotation.LoginId;
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.TransactionBook = annotation.TransactionBook;
-                this.procedure.ValueDate = annotation.ValueDate;
+                this.repository.LoginId = annotation.LoginId;
+                this.repository.UserId = annotation.UserId;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.TransactionBook = annotation.TransactionBook;
+                this.repository.ValueDate = annotation.ValueDate;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

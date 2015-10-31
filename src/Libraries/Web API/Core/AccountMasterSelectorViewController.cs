@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class AccountMasterSelectorViewController : ApiController
     {
         /// <summary>
-        ///     The AccountMasterSelectorView data context.
+        ///     The AccountMasterSelectorView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.AccountMasterSelectorView AccountMasterSelectorViewContext;
+        private readonly IAccountMasterSelectorViewRepository AccountMasterSelectorViewRepository;
 
         public AccountMasterSelectorViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.AccountMasterSelectorViewContext = new MixERP.Net.Schemas.Core.Data.AccountMasterSelectorView
+            this.AccountMasterSelectorViewRepository = new MixERP.Net.Schemas.Core.Data.AccountMasterSelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public AccountMasterSelectorViewController(IAccountMasterSelectorViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.AccountMasterSelectorViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AccountMasterSelectorViewContext.Count();
+                return this.AccountMasterSelectorViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AccountMasterSelectorViewContext.Get();
+                return this.AccountMasterSelectorViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AccountMasterSelectorViewContext.GetPaginatedResult();
+                return this.AccountMasterSelectorViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AccountMasterSelectorViewContext.GetPaginatedResult(pageNumber);
+                return this.AccountMasterSelectorViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AccountMasterSelectorViewContext.GetDisplayFields();
+                return this.AccountMasterSelectorViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AccountMasterSelectorViewContext.CountWhere(f);
+                return this.AccountMasterSelectorViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AccountMasterSelectorViewContext.GetWhere(pageNumber, f);
+                return this.AccountMasterSelectorViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AccountMasterSelectorViewContext.CountFiltered(filterName);
+                return this.AccountMasterSelectorViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AccountMasterSelectorViewContext.GetFiltered(pageNumber, filterName);
+                return this.AccountMasterSelectorViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

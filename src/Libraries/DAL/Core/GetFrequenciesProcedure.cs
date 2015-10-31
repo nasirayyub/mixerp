@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_frequencies(_frequency_id integer)" on the database.
     /// </summary>
-    public class GetFrequenciesProcedure : DbAccess
+    public class GetFrequenciesProcedure : DbAccess, IGetFrequenciesRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

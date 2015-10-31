@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Audit.Data
     /// <summary>
     /// Prepares, validates, and executes the function "audit.is_valid_login_id(pg_arg0 bigint)" on the database.
     /// </summary>
-    public class IsValidLoginIdProcedure : DbAccess
+    public class IsValidLoginIdProcedure : DbAccess, IIsValidLoginIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

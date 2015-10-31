@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.HRM
     public class OfficeHourController : ApiController
     {
         /// <summary>
-        ///     The OfficeHour data context.
+        ///     The OfficeHour repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.OfficeHour OfficeHourContext;
+        private readonly IOfficeHourRepository OfficeHourRepository;
 
         public OfficeHourController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.OfficeHourContext = new MixERP.Net.Core.Modules.HRM.Data.OfficeHour
+            this.OfficeHourRepository = new MixERP.Net.Core.Modules.HRM.Data.OfficeHour
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public OfficeHourController(IOfficeHourRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.OfficeHourRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/office-hour/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "office_hour_id",
@@ -83,7 +99,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourContext.Count();
+                return this.OfficeHourRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -114,7 +130,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourContext.GetAll();
+                return this.OfficeHourRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -145,7 +161,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourContext.Export();
+                return this.OfficeHourRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -177,7 +193,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourContext.Get(officeHourId);
+                return this.OfficeHourRepository.Get(officeHourId);
             }
             catch (UnauthorizedException)
             {
@@ -204,7 +220,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourContext.Get(officeHourIds);
+                return this.OfficeHourRepository.Get(officeHourIds);
             }
             catch (UnauthorizedException)
             {
@@ -235,7 +251,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourContext.GetPaginatedResult();
+                return this.OfficeHourRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -267,7 +283,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourContext.GetPaginatedResult(pageNumber);
+                return this.OfficeHourRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -300,7 +316,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.OfficeHourContext.CountWhere(f);
+                return this.OfficeHourRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -334,7 +350,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.OfficeHourContext.GetWhere(pageNumber, f);
+                return this.OfficeHourRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -366,7 +382,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourContext.CountFiltered(filterName);
+                return this.OfficeHourRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -399,7 +415,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourContext.GetFiltered(pageNumber, filterName);
+                return this.OfficeHourRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -430,7 +446,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourContext.GetDisplayFields();
+                return this.OfficeHourRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -461,7 +477,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourContext.GetCustomFields(null);
+                return this.OfficeHourRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -492,7 +508,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourContext.GetCustomFields(resourceId);
+                return this.OfficeHourRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -531,7 +547,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.OfficeHourContext.AddOrEdit(officeHour, customFields);
+                return this.OfficeHourRepository.AddOrEdit(officeHour, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -567,7 +583,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.OfficeHourContext.Add(officeHour);
+                this.OfficeHourRepository.Add(officeHour);
             }
             catch (UnauthorizedException)
             {
@@ -604,7 +620,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.OfficeHourContext.Update(officeHour, officeHourId);
+                this.OfficeHourRepository.Update(officeHour, officeHourId);
             }
             catch (UnauthorizedException)
             {
@@ -649,7 +665,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.OfficeHourContext.BulkImport(officeHourCollection);
+                return this.OfficeHourRepository.BulkImport(officeHourCollection);
             }
             catch (UnauthorizedException)
             {
@@ -680,7 +696,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                this.OfficeHourContext.Delete(officeHourId);
+                this.OfficeHourRepository.Delete(officeHourId);
             }
             catch (UnauthorizedException)
             {

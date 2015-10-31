@@ -40,10 +40,15 @@ namespace MixERP.Net.Api.Policy
         /// </summary>
         public string _Catalog { get; set; }
 
-        private IsRestrictedModeProcedure procedure;
+        /// <summary>
+        ///     The IsRestrictedMode repository.
+        /// </summary>
+        private readonly IIsRestrictedModeRepository repository;
+
         public class Annotation
         {
         }
+
 
         public IsRestrictedModeController()
         {
@@ -51,13 +56,27 @@ namespace MixERP.Net.Api.Policy
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new IsRestrictedModeProcedure
+
+            this.repository = new IsRestrictedModeProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public IsRestrictedModeController(IIsRestrictedModeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
+
+
 
 
         [AcceptVerbs("POST")]
@@ -69,7 +88,7 @@ namespace MixERP.Net.Api.Policy
             {
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

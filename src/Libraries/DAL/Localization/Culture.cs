@@ -16,7 +16,7 @@ namespace MixERP.Net.Schemas.Localization.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database table "localization.cultures".
     /// </summary>
-    public class Culture : DbAccess
+    public class Culture : DbAccess, ICultureRepository
     {
         /// <summary>
         /// The schema of this table. Returns literal "localization".
@@ -73,7 +73,7 @@ namespace MixERP.Net.Schemas.Localization.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "localization.cultures" to return a all instances of the "Culture" class. 
+        /// Executes a select query on the table "localization.cultures" to return all instances of the "Culture" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Culture" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -102,7 +102,7 @@ namespace MixERP.Net.Schemas.Localization.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "localization.cultures" to return a all instances of the "Culture" class to export. 
+        /// Executes a select query on the table "localization.cultures" to return all instances of the "Culture" class to export. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "Culture" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -557,7 +557,7 @@ namespace MixERP.Net.Schemas.Localization.Data
             return Factory.Get<MixERP.Net.Entities.Localization.Culture>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='localization.cultures' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

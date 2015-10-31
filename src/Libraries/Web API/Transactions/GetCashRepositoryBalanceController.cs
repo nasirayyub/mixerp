@@ -40,12 +40,17 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetCashRepositoryBalanceProcedure procedure;
+        /// <summary>
+        ///     The GetCashRepositoryBalance repository.
+        /// </summary>
+        private readonly IGetCashRepositoryBalanceRepository repository;
+
         public class Annotation
         {
             public int CashRepositoryId { get; set; }
             public string CurrencyCode { get; set; }
         }
+
 
         public GetCashRepositoryBalanceController()
         {
@@ -53,13 +58,25 @@ namespace MixERP.Net.Api.Transactions
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetCashRepositoryBalanceProcedure
+
+            this.repository = new GetCashRepositoryBalanceProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetCashRepositoryBalanceController(IGetCashRepositoryBalanceRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get cash repository balance" annotation.
         /// </summary>
@@ -69,15 +86,19 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-cash-repository-balance/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
                                 {
-                                        new EntityColumn { ColumnName = "_cash_repository_id",  PropertyName = "CashRepositoryId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
-                                        new EntityColumn { ColumnName = "_currency_code",  PropertyName = "CurrencyCode",  DataType = "string",  DbDataType = "character varying",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
+                                        new EntityColumn { ColumnName = "_cash_repository_id",  PropertyName = "CashRepositoryId",  DataType = "int",  DbDataType = "integer",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
                                 }
             };
         }
+
 
         /// <summary>
         ///     Creates meta information of "get cash repository balance" entity.
@@ -88,6 +109,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-cash-repository-balance/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -96,6 +121,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/get-cash-repository-balance/execute")]
@@ -103,11 +129,11 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.CashRepositoryId = annotation.CashRepositoryId;
-                this.procedure.CurrencyCode = annotation.CurrencyCode;
+                this.repository.CashRepositoryId = annotation.CashRepositoryId;
+                this.repository.CurrencyCode = annotation.CurrencyCode;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

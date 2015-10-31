@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.create_flag(user_id_ integer, flag_type_id_ integer, resource_ text, resource_key_ text, resource_id_ text)" on the database.
     /// </summary>
-    public class CreateFlagProcedure : DbAccess
+    public class CreateFlagProcedure : DbAccess, ICreateFlagRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

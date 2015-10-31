@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetStockAccountStatementProcedure procedure;
+        /// <summary>
+        ///     The GetStockAccountStatement repository.
+        /// </summary>
+        private readonly IGetStockAccountStatementRepository repository;
+
         public class Annotation
         {
             public DateTime ValueDateFrom { get; set; }
@@ -50,19 +54,32 @@ namespace MixERP.Net.Api.Transactions
             public int StoreId { get; set; }
         }
 
+
         public GetStockAccountStatementController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetStockAccountStatementProcedure
+
+            this.repository = new GetStockAccountStatementProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetStockAccountStatementController(IGetStockAccountStatementRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get stock account statement" annotation.
         /// </summary>
@@ -72,6 +89,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-stock-account-statement/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -85,6 +106,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "get stock account statement" entity.
         /// </summary>
@@ -94,6 +116,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-stock-account-statement/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -119,6 +145,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/get-stock-account-statement/execute")]
@@ -126,14 +153,14 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.ValueDateFrom = annotation.ValueDateFrom;
-                this.procedure.ValueDateTo = annotation.ValueDateTo;
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.ItemId = annotation.ItemId;
-                this.procedure.StoreId = annotation.StoreId;
+                this.repository.ValueDateFrom = annotation.ValueDateFrom;
+                this.repository.ValueDateTo = annotation.ValueDateTo;
+                this.repository.UserId = annotation.UserId;
+                this.repository.ItemId = annotation.ItemId;
+                this.repository.StoreId = annotation.StoreId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class SalesTaxExemptDetailController : ApiController
     {
         /// <summary>
-        ///     The SalesTaxExemptDetail data context.
+        ///     The SalesTaxExemptDetail repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.SalesTaxExemptDetail SalesTaxExemptDetailContext;
+        private readonly ISalesTaxExemptDetailRepository SalesTaxExemptDetailRepository;
 
         public SalesTaxExemptDetailController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.SalesTaxExemptDetailContext = new MixERP.Net.Schemas.Core.Data.SalesTaxExemptDetail
+            this.SalesTaxExemptDetailRepository = new MixERP.Net.Schemas.Core.Data.SalesTaxExemptDetail
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public SalesTaxExemptDetailController(ISalesTaxExemptDetailRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.SalesTaxExemptDetailRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/sales-tax-exempt-detail/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "sales_tax_exempt_detail_id",
@@ -85,7 +101,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptDetailContext.Count();
+                return this.SalesTaxExemptDetailRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -116,7 +132,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptDetailContext.GetAll();
+                return this.SalesTaxExemptDetailRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -147,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptDetailContext.Export();
+                return this.SalesTaxExemptDetailRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -179,7 +195,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptDetailContext.Get(salesTaxExemptDetailId);
+                return this.SalesTaxExemptDetailRepository.Get(salesTaxExemptDetailId);
             }
             catch (UnauthorizedException)
             {
@@ -206,7 +222,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptDetailContext.Get(salesTaxExemptDetailIds);
+                return this.SalesTaxExemptDetailRepository.Get(salesTaxExemptDetailIds);
             }
             catch (UnauthorizedException)
             {
@@ -237,7 +253,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptDetailContext.GetPaginatedResult();
+                return this.SalesTaxExemptDetailRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -269,7 +285,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptDetailContext.GetPaginatedResult(pageNumber);
+                return this.SalesTaxExemptDetailRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -302,7 +318,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SalesTaxExemptDetailContext.CountWhere(f);
+                return this.SalesTaxExemptDetailRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -336,7 +352,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SalesTaxExemptDetailContext.GetWhere(pageNumber, f);
+                return this.SalesTaxExemptDetailRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -368,7 +384,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptDetailContext.CountFiltered(filterName);
+                return this.SalesTaxExemptDetailRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -401,7 +417,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptDetailContext.GetFiltered(pageNumber, filterName);
+                return this.SalesTaxExemptDetailRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -432,7 +448,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptDetailContext.GetDisplayFields();
+                return this.SalesTaxExemptDetailRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -463,7 +479,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptDetailContext.GetCustomFields(null);
+                return this.SalesTaxExemptDetailRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -494,7 +510,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.SalesTaxExemptDetailContext.GetCustomFields(resourceId);
+                return this.SalesTaxExemptDetailRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -533,7 +549,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.SalesTaxExemptDetailContext.AddOrEdit(salesTaxExemptDetail, customFields);
+                return this.SalesTaxExemptDetailRepository.AddOrEdit(salesTaxExemptDetail, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -569,7 +585,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.SalesTaxExemptDetailContext.Add(salesTaxExemptDetail);
+                this.SalesTaxExemptDetailRepository.Add(salesTaxExemptDetail);
             }
             catch (UnauthorizedException)
             {
@@ -606,7 +622,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.SalesTaxExemptDetailContext.Update(salesTaxExemptDetail, salesTaxExemptDetailId);
+                this.SalesTaxExemptDetailRepository.Update(salesTaxExemptDetail, salesTaxExemptDetailId);
             }
             catch (UnauthorizedException)
             {
@@ -651,7 +667,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.SalesTaxExemptDetailContext.BulkImport(salesTaxExemptDetailCollection);
+                return this.SalesTaxExemptDetailRepository.BulkImport(salesTaxExemptDetailCollection);
             }
             catch (UnauthorizedException)
             {
@@ -682,7 +698,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.SalesTaxExemptDetailContext.Delete(salesTaxExemptDetailId);
+                this.SalesTaxExemptDetailRepository.Delete(salesTaxExemptDetailId);
             }
             catch (UnauthorizedException)
             {

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_cost_of_goods_sold(_item_id integer, _unit_id integer, _store_id integer, _quantity integer)" on the database.
     /// </summary>
-    public class GetCostOfGoodsSoldProcedure : DbAccess
+    public class GetCostOfGoodsSoldProcedure : DbAccess, IGetCostOfGoodsSoldRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

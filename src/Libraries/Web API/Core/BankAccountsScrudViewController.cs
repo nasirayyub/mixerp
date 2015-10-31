@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class BankAccountsScrudViewController : ApiController
     {
         /// <summary>
-        ///     The BankAccountsScrudView data context.
+        ///     The BankAccountsScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.BankAccountsScrudView BankAccountsScrudViewContext;
+        private readonly IBankAccountsScrudViewRepository BankAccountsScrudViewRepository;
 
         public BankAccountsScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.BankAccountsScrudViewContext = new MixERP.Net.Schemas.Core.Data.BankAccountsScrudView
+            this.BankAccountsScrudViewRepository = new MixERP.Net.Schemas.Core.Data.BankAccountsScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public BankAccountsScrudViewController(IBankAccountsScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.BankAccountsScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountsScrudViewContext.Count();
+                return this.BankAccountsScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountsScrudViewContext.Get();
+                return this.BankAccountsScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountsScrudViewContext.GetPaginatedResult();
+                return this.BankAccountsScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountsScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.BankAccountsScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountsScrudViewContext.GetDisplayFields();
+                return this.BankAccountsScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.BankAccountsScrudViewContext.CountWhere(f);
+                return this.BankAccountsScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.BankAccountsScrudViewContext.GetWhere(pageNumber, f);
+                return this.BankAccountsScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountsScrudViewContext.CountFiltered(filterName);
+                return this.BankAccountsScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BankAccountsScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.BankAccountsScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

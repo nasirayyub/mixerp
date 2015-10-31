@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Policy.Data;
 
 namespace MixERP.Net.Api.Policy
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Policy
     public class EntityAccessController : ApiController
     {
         /// <summary>
-        ///     The EntityAccess data context.
+        ///     The EntityAccess repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Policy.Data.EntityAccess EntityAccessContext;
+        private readonly IEntityAccessRepository EntityAccessRepository;
 
         public EntityAccessController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Policy
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.EntityAccessContext = new MixERP.Net.Schemas.Policy.Data.EntityAccess
+            this.EntityAccessRepository = new MixERP.Net.Schemas.Policy.Data.EntityAccess
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public EntityAccessController(IEntityAccessRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.EntityAccessRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/entity-access/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "entity_access_id",
@@ -82,7 +98,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.EntityAccessContext.Count();
+                return this.EntityAccessRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -113,7 +129,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.EntityAccessContext.GetAll();
+                return this.EntityAccessRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -144,7 +160,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.EntityAccessContext.Export();
+                return this.EntityAccessRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -176,7 +192,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.EntityAccessContext.Get(entityAccessId);
+                return this.EntityAccessRepository.Get(entityAccessId);
             }
             catch (UnauthorizedException)
             {
@@ -203,7 +219,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.EntityAccessContext.Get(entityAccessIds);
+                return this.EntityAccessRepository.Get(entityAccessIds);
             }
             catch (UnauthorizedException)
             {
@@ -234,7 +250,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.EntityAccessContext.GetPaginatedResult();
+                return this.EntityAccessRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -266,7 +282,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.EntityAccessContext.GetPaginatedResult(pageNumber);
+                return this.EntityAccessRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -299,7 +315,7 @@ namespace MixERP.Net.Api.Policy
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.EntityAccessContext.CountWhere(f);
+                return this.EntityAccessRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -333,7 +349,7 @@ namespace MixERP.Net.Api.Policy
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.EntityAccessContext.GetWhere(pageNumber, f);
+                return this.EntityAccessRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -365,7 +381,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.EntityAccessContext.CountFiltered(filterName);
+                return this.EntityAccessRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -398,7 +414,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.EntityAccessContext.GetFiltered(pageNumber, filterName);
+                return this.EntityAccessRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -429,7 +445,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.EntityAccessContext.GetDisplayFields();
+                return this.EntityAccessRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -460,7 +476,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.EntityAccessContext.GetCustomFields(null);
+                return this.EntityAccessRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -491,7 +507,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.EntityAccessContext.GetCustomFields(resourceId);
+                return this.EntityAccessRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -530,7 +546,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                return this.EntityAccessContext.AddOrEdit(entityAccess, customFields);
+                return this.EntityAccessRepository.AddOrEdit(entityAccess, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -566,7 +582,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                this.EntityAccessContext.Add(entityAccess);
+                this.EntityAccessRepository.Add(entityAccess);
             }
             catch (UnauthorizedException)
             {
@@ -603,7 +619,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                this.EntityAccessContext.Update(entityAccess, entityAccessId);
+                this.EntityAccessRepository.Update(entityAccess, entityAccessId);
             }
             catch (UnauthorizedException)
             {
@@ -648,7 +664,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                return this.EntityAccessContext.BulkImport(entityAccessCollection);
+                return this.EntityAccessRepository.BulkImport(entityAccessCollection);
             }
             catch (UnauthorizedException)
             {
@@ -679,7 +695,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                this.EntityAccessContext.Delete(entityAccessId);
+                this.EntityAccessRepository.Delete(entityAccessId);
             }
             catch (UnauthorizedException)
             {

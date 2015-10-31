@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_fiscal_year_end_date(_office_id integer)" on the database.
     /// </summary>
-    public class GetFiscalYearEndDateProcedure : DbAccess
+    public class GetFiscalYearEndDateProcedure : DbAccess, IGetFiscalYearEndDateRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

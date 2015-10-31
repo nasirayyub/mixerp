@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Config.Data;
 
 namespace MixERP.Net.Api.Config
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Config
     public class DbParameterScrudViewController : ApiController
     {
         /// <summary>
-        ///     The DbParameterScrudView data context.
+        ///     The DbParameterScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Config.Data.DbParameterScrudView DbParameterScrudViewContext;
+        private readonly IDbParameterScrudViewRepository DbParameterScrudViewRepository;
 
         public DbParameterScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Config
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.DbParameterScrudViewContext = new MixERP.Net.Schemas.Config.Data.DbParameterScrudView
+            this.DbParameterScrudViewRepository = new MixERP.Net.Schemas.Config.Data.DbParameterScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public DbParameterScrudViewController(IDbParameterScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.DbParameterScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterScrudViewContext.Count();
+                return this.DbParameterScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterScrudViewContext.Get();
+                return this.DbParameterScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterScrudViewContext.GetPaginatedResult();
+                return this.DbParameterScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.DbParameterScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -186,7 +197,7 @@ namespace MixERP.Net.Api.Config
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.DbParameterScrudViewContext.CountWhere(f);
+                return this.DbParameterScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -220,7 +231,7 @@ namespace MixERP.Net.Api.Config
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.DbParameterScrudViewContext.GetWhere(pageNumber, f);
+                return this.DbParameterScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -252,7 +263,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterScrudViewContext.CountFiltered(filterName);
+                return this.DbParameterScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -286,7 +297,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.DbParameterScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.DbParameterScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

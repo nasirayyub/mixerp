@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.is_cash_equivalent(_account_id bigint)" on the database.
     /// </summary>
-    public class IsCashEquivalentProcedure : DbAccess
+    public class IsCashEquivalentProcedure : DbAccess, IIsCashEquivalentRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

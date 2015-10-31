@@ -16,7 +16,7 @@ namespace MixERP.Net.Schemas.Config.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database table "config.scrud_factory".
     /// </summary>
-    public class ScrudFactory : DbAccess
+    public class ScrudFactory : DbAccess, IScrudFactoryRepository
     {
         /// <summary>
         /// The schema of this table. Returns literal "config".
@@ -73,7 +73,7 @@ namespace MixERP.Net.Schemas.Config.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "config.scrud_factory" to return a all instances of the "ScrudFactory" class. 
+        /// Executes a select query on the table "config.scrud_factory" to return all instances of the "ScrudFactory" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "ScrudFactory" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -102,7 +102,7 @@ namespace MixERP.Net.Schemas.Config.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "config.scrud_factory" to return a all instances of the "ScrudFactory" class to export. 
+        /// Executes a select query on the table "config.scrud_factory" to return all instances of the "ScrudFactory" class to export. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "ScrudFactory" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -559,7 +559,7 @@ namespace MixERP.Net.Schemas.Config.Data
             return Factory.Get<MixERP.Net.Entities.Config.ScrudFactory>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='config.scrud_factory' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

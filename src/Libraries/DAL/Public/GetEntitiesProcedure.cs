@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Public.Data
     /// <summary>
     /// Prepares, validates, and executes the function "public.get_entities()" on the database.
     /// </summary>
-    public class GetEntitiesProcedure : DbAccess
+    public class GetEntitiesProcedure : DbAccess, IGetEntitiesRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

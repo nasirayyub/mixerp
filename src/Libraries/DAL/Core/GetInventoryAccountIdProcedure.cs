@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_inventory_account_id(_item_id integer)" on the database.
     /// </summary>
-    public class GetInventoryAccountIdProcedure : DbAccess
+    public class GetInventoryAccountIdProcedure : DbAccess, IGetInventoryAccountIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

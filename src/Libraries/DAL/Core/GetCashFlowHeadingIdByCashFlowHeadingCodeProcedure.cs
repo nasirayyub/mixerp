@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_cash_flow_heading_id_by_cash_flow_heading_code(_cash_flow_heading_code character varying)" on the database.
     /// </summary>
-    public class GetCashFlowHeadingIdByCashFlowHeadingCodeProcedure : DbAccess
+    public class GetCashFlowHeadingIdByCashFlowHeadingCodeProcedure : DbAccess, IGetCashFlowHeadingIdByCashFlowHeadingCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class BonusSlabDetailController : ApiController
     {
         /// <summary>
-        ///     The BonusSlabDetail data context.
+        ///     The BonusSlabDetail repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.BonusSlabDetail BonusSlabDetailContext;
+        private readonly IBonusSlabDetailRepository BonusSlabDetailRepository;
 
         public BonusSlabDetailController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.BonusSlabDetailContext = new MixERP.Net.Schemas.Core.Data.BonusSlabDetail
+            this.BonusSlabDetailRepository = new MixERP.Net.Schemas.Core.Data.BonusSlabDetail
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public BonusSlabDetailController(IBonusSlabDetailRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.BonusSlabDetailRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/bonus-slab-detail/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "bonus_slab_detail_id",
@@ -82,7 +98,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabDetailContext.Count();
+                return this.BonusSlabDetailRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -113,7 +129,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabDetailContext.GetAll();
+                return this.BonusSlabDetailRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -144,7 +160,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabDetailContext.Export();
+                return this.BonusSlabDetailRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -176,7 +192,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabDetailContext.Get(bonusSlabDetailId);
+                return this.BonusSlabDetailRepository.Get(bonusSlabDetailId);
             }
             catch (UnauthorizedException)
             {
@@ -203,7 +219,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabDetailContext.Get(bonusSlabDetailIds);
+                return this.BonusSlabDetailRepository.Get(bonusSlabDetailIds);
             }
             catch (UnauthorizedException)
             {
@@ -234,7 +250,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabDetailContext.GetPaginatedResult();
+                return this.BonusSlabDetailRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -266,7 +282,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabDetailContext.GetPaginatedResult(pageNumber);
+                return this.BonusSlabDetailRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -299,7 +315,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.BonusSlabDetailContext.CountWhere(f);
+                return this.BonusSlabDetailRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -333,7 +349,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.BonusSlabDetailContext.GetWhere(pageNumber, f);
+                return this.BonusSlabDetailRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -365,7 +381,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabDetailContext.CountFiltered(filterName);
+                return this.BonusSlabDetailRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -398,7 +414,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabDetailContext.GetFiltered(pageNumber, filterName);
+                return this.BonusSlabDetailRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -429,7 +445,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabDetailContext.GetDisplayFields();
+                return this.BonusSlabDetailRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -460,7 +476,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabDetailContext.GetCustomFields(null);
+                return this.BonusSlabDetailRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -491,7 +507,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.BonusSlabDetailContext.GetCustomFields(resourceId);
+                return this.BonusSlabDetailRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -530,7 +546,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.BonusSlabDetailContext.AddOrEdit(bonusSlabDetail, customFields);
+                return this.BonusSlabDetailRepository.AddOrEdit(bonusSlabDetail, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -566,7 +582,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.BonusSlabDetailContext.Add(bonusSlabDetail);
+                this.BonusSlabDetailRepository.Add(bonusSlabDetail);
             }
             catch (UnauthorizedException)
             {
@@ -603,7 +619,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.BonusSlabDetailContext.Update(bonusSlabDetail, bonusSlabDetailId);
+                this.BonusSlabDetailRepository.Update(bonusSlabDetail, bonusSlabDetailId);
             }
             catch (UnauthorizedException)
             {
@@ -648,7 +664,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.BonusSlabDetailContext.BulkImport(bonusSlabDetailCollection);
+                return this.BonusSlabDetailRepository.BulkImport(bonusSlabDetailCollection);
             }
             catch (UnauthorizedException)
             {
@@ -679,7 +695,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.BonusSlabDetailContext.Delete(bonusSlabDetailId);
+                this.BonusSlabDetailRepository.Delete(bonusSlabDetailId);
             }
             catch (UnauthorizedException)
             {

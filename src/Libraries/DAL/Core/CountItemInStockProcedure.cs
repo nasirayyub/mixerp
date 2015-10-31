@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.count_item_in_stock(_item_id integer, _unit_id integer, _store_id integer)" on the database.
     /// </summary>
-    public class CountItemInStockProcedure : DbAccess
+    public class CountItemInStockProcedure : DbAccess, ICountItemInStockRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

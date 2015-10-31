@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Localization.Data;
 
 namespace MixERP.Net.Api.Localization
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Localization
     public class ResourceViewController : ApiController
     {
         /// <summary>
-        ///     The ResourceView data context.
+        ///     The ResourceView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Localization.Data.ResourceView ResourceViewContext;
+        private readonly IResourceViewRepository ResourceViewRepository;
 
         public ResourceViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Localization
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ResourceViewContext = new MixERP.Net.Schemas.Localization.Data.ResourceView
+            this.ResourceViewRepository = new MixERP.Net.Schemas.Localization.Data.ResourceView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ResourceViewController(IResourceViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ResourceViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.ResourceViewContext.Count();
+                return this.ResourceViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.ResourceViewContext.Get();
+                return this.ResourceViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.ResourceViewContext.GetPaginatedResult();
+                return this.ResourceViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.ResourceViewContext.GetPaginatedResult(pageNumber);
+                return this.ResourceViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -186,7 +197,7 @@ namespace MixERP.Net.Api.Localization
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ResourceViewContext.CountWhere(f);
+                return this.ResourceViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -220,7 +231,7 @@ namespace MixERP.Net.Api.Localization
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ResourceViewContext.GetWhere(pageNumber, f);
+                return this.ResourceViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -252,7 +263,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.ResourceViewContext.CountFiltered(filterName);
+                return this.ResourceViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -286,7 +297,7 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                return this.ResourceViewContext.GetFiltered(pageNumber, filterName);
+                return this.ResourceViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

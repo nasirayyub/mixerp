@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class CurrencyController : ApiController
     {
         /// <summary>
-        ///     The Currency data context.
+        ///     The Currency repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.Currency CurrencyContext;
+        private readonly ICurrencyRepository CurrencyRepository;
 
         public CurrencyController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.CurrencyContext = new MixERP.Net.Schemas.Core.Data.Currency
+            this.CurrencyRepository = new MixERP.Net.Schemas.Core.Data.Currency
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public CurrencyController(ICurrencyRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.CurrencyRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/currency/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "currency_code",
@@ -81,7 +97,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CurrencyContext.Count();
+                return this.CurrencyRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -112,7 +128,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CurrencyContext.GetAll();
+                return this.CurrencyRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -143,7 +159,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CurrencyContext.Export();
+                return this.CurrencyRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -175,7 +191,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CurrencyContext.Get(currencyCode);
+                return this.CurrencyRepository.Get(currencyCode);
             }
             catch (UnauthorizedException)
             {
@@ -202,7 +218,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CurrencyContext.Get(currencyCodes);
+                return this.CurrencyRepository.Get(currencyCodes);
             }
             catch (UnauthorizedException)
             {
@@ -233,7 +249,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CurrencyContext.GetPaginatedResult();
+                return this.CurrencyRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -265,7 +281,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CurrencyContext.GetPaginatedResult(pageNumber);
+                return this.CurrencyRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -298,7 +314,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CurrencyContext.CountWhere(f);
+                return this.CurrencyRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -332,7 +348,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CurrencyContext.GetWhere(pageNumber, f);
+                return this.CurrencyRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -364,7 +380,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CurrencyContext.CountFiltered(filterName);
+                return this.CurrencyRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -397,7 +413,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CurrencyContext.GetFiltered(pageNumber, filterName);
+                return this.CurrencyRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -428,7 +444,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CurrencyContext.GetDisplayFields();
+                return this.CurrencyRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -459,7 +475,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CurrencyContext.GetCustomFields(null);
+                return this.CurrencyRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -490,7 +506,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CurrencyContext.GetCustomFields(resourceId);
+                return this.CurrencyRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -529,7 +545,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.CurrencyContext.AddOrEdit(currency, customFields);
+                return this.CurrencyRepository.AddOrEdit(currency, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -565,7 +581,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.CurrencyContext.Add(currency);
+                this.CurrencyRepository.Add(currency);
             }
             catch (UnauthorizedException)
             {
@@ -602,7 +618,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.CurrencyContext.Update(currency, currencyCode);
+                this.CurrencyRepository.Update(currency, currencyCode);
             }
             catch (UnauthorizedException)
             {
@@ -647,7 +663,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.CurrencyContext.BulkImport(currencyCollection);
+                return this.CurrencyRepository.BulkImport(currencyCollection);
             }
             catch (UnauthorizedException)
             {
@@ -678,7 +694,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.CurrencyContext.Delete(currencyCode);
+                this.CurrencyRepository.Delete(currencyCode);
             }
             catch (UnauthorizedException)
             {

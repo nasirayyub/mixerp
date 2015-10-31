@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Policy
         /// </summary>
         public string _Catalog { get; set; }
 
-        private SaveMenuPolicyProcedure procedure;
+        /// <summary>
+        ///     The SaveMenuPolicy repository.
+        /// </summary>
+        private readonly ISaveMenuPolicyRepository repository;
+
         public class Annotation
         {
             public int UserId { get; set; }
@@ -48,19 +52,32 @@ namespace MixERP.Net.Api.Policy
             public int[] MenuIds { get; set; }
         }
 
+
         public SaveMenuPolicyController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new SaveMenuPolicyProcedure
+
+            this.repository = new SaveMenuPolicyProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public SaveMenuPolicyController(ISaveMenuPolicyRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "save menu policy" annotation.
         /// </summary>
@@ -70,6 +87,10 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/procedures/save-menu-policy/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -81,6 +102,7 @@ namespace MixERP.Net.Api.Policy
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "save menu policy" entity.
         /// </summary>
@@ -90,6 +112,10 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/procedures/save-menu-policy/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -98,6 +124,7 @@ namespace MixERP.Net.Api.Policy
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/policy/procedures/save-menu-policy/execute")]
@@ -105,12 +132,12 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.MenuIds = annotation.MenuIds;
+                this.repository.UserId = annotation.UserId;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.MenuIds = annotation.MenuIds;
 
 
-                this.procedure.Execute();
+                this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

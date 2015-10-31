@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Transactions.Data;
 
 namespace MixERP.Net.Api.Transactions
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Transactions
     public class VerifiedStockDetailsViewController : ApiController
     {
         /// <summary>
-        ///     The VerifiedStockDetailsView data context.
+        ///     The VerifiedStockDetailsView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Transactions.Data.VerifiedStockDetailsView VerifiedStockDetailsViewContext;
+        private readonly IVerifiedStockDetailsViewRepository VerifiedStockDetailsViewRepository;
 
         public VerifiedStockDetailsViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Transactions
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.VerifiedStockDetailsViewContext = new MixERP.Net.Schemas.Transactions.Data.VerifiedStockDetailsView
+            this.VerifiedStockDetailsViewRepository = new MixERP.Net.Schemas.Transactions.Data.VerifiedStockDetailsView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public VerifiedStockDetailsViewController(IVerifiedStockDetailsViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.VerifiedStockDetailsViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.VerifiedStockDetailsViewContext.Count();
+                return this.VerifiedStockDetailsViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.VerifiedStockDetailsViewContext.Get();
+                return this.VerifiedStockDetailsViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.VerifiedStockDetailsViewContext.GetPaginatedResult();
+                return this.VerifiedStockDetailsViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.VerifiedStockDetailsViewContext.GetPaginatedResult(pageNumber);
+                return this.VerifiedStockDetailsViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.VerifiedStockDetailsViewContext.GetDisplayFields();
+                return this.VerifiedStockDetailsViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.VerifiedStockDetailsViewContext.CountWhere(f);
+                return this.VerifiedStockDetailsViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.VerifiedStockDetailsViewContext.GetWhere(pageNumber, f);
+                return this.VerifiedStockDetailsViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.VerifiedStockDetailsViewContext.CountFiltered(filterName);
+                return this.VerifiedStockDetailsViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.VerifiedStockDetailsViewContext.GetFiltered(pageNumber, filterName);
+                return this.VerifiedStockDetailsViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

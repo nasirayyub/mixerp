@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private CreateRecurringInvoicesProcedure procedure;
+        /// <summary>
+        ///     The CreateRecurringInvoices repository.
+        /// </summary>
+        private readonly ICreateRecurringInvoicesRepository repository;
+
         public class Annotation
         {
             public long PgArg0 { get; set; }
         }
+
 
         public CreateRecurringInvoicesController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Transactions
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new CreateRecurringInvoicesProcedure
+
+            this.repository = new CreateRecurringInvoicesProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public CreateRecurringInvoicesController(ICreateRecurringInvoicesRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "create recurring invoices" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/create-recurring-invoices/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -76,6 +97,7 @@ namespace MixERP.Net.Api.Transactions
                                 }
             };
         }
+
 
         /// <summary>
         ///     Creates meta information of "create recurring invoices" entity.
@@ -86,6 +108,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/create-recurring-invoices/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -94,6 +120,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/create-recurring-invoices/execute")]
@@ -101,10 +128,10 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.PgArg0 = annotation.PgArg0;
+                this.repository.PgArg0 = annotation.PgArg0;
 
 
-                this.procedure.Execute();
+                this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

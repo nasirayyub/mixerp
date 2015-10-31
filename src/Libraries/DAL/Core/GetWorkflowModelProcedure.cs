@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_workflow_model()" on the database.
     /// </summary>
-    public class GetWorkflowModelProcedure : DbAccess
+    public class GetWorkflowModelProcedure : DbAccess, IGetWorkflowModelRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

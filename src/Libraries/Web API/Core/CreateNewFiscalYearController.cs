@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private CreateNewFiscalYearProcedure procedure;
+        /// <summary>
+        ///     The CreateNewFiscalYear repository.
+        /// </summary>
+        private readonly ICreateNewFiscalYearRepository repository;
+
         public class Annotation
         {
             public int OfficeId { get; set; }
@@ -49,19 +53,32 @@ namespace MixERP.Net.Api.Core
             public string FiscalYearName { get; set; }
         }
 
+
         public CreateNewFiscalYearController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new CreateNewFiscalYearProcedure
+
+            this.repository = new CreateNewFiscalYearProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public CreateNewFiscalYearController(ICreateNewFiscalYearRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "create new fiscal year" annotation.
         /// </summary>
@@ -71,6 +88,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/create-new-fiscal-year/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -83,6 +104,7 @@ namespace MixERP.Net.Api.Core
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "create new fiscal year" entity.
         /// </summary>
@@ -92,6 +114,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/create-new-fiscal-year/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -100,6 +126,7 @@ namespace MixERP.Net.Api.Core
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/create-new-fiscal-year/execute")]
@@ -107,13 +134,13 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.FiscalYearCode = annotation.FiscalYearCode;
-                this.procedure.FiscalYearName = annotation.FiscalYearName;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.UserId = annotation.UserId;
+                this.repository.FiscalYearCode = annotation.FiscalYearCode;
+                this.repository.FiscalYearName = annotation.FiscalYearName;
 
 
-                this.procedure.Execute();
+                this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

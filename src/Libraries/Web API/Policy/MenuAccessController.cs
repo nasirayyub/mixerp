@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Policy.Data;
 
 namespace MixERP.Net.Api.Policy
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Policy
     public class MenuAccessController : ApiController
     {
         /// <summary>
-        ///     The MenuAccess data context.
+        ///     The MenuAccess repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Policy.Data.MenuAccess MenuAccessContext;
+        private readonly IMenuAccessRepository MenuAccessRepository;
 
         public MenuAccessController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Policy
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.MenuAccessContext = new MixERP.Net.Schemas.Policy.Data.MenuAccess
+            this.MenuAccessRepository = new MixERP.Net.Schemas.Policy.Data.MenuAccess
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public MenuAccessController(IMenuAccessRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.MenuAccessRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/menu-access/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "access_id",
@@ -79,7 +95,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.MenuAccessContext.Count();
+                return this.MenuAccessRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -110,7 +126,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.MenuAccessContext.GetAll();
+                return this.MenuAccessRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -141,7 +157,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.MenuAccessContext.Export();
+                return this.MenuAccessRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -173,7 +189,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.MenuAccessContext.Get(accessId);
+                return this.MenuAccessRepository.Get(accessId);
             }
             catch (UnauthorizedException)
             {
@@ -200,7 +216,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.MenuAccessContext.Get(accessIds);
+                return this.MenuAccessRepository.Get(accessIds);
             }
             catch (UnauthorizedException)
             {
@@ -231,7 +247,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.MenuAccessContext.GetPaginatedResult();
+                return this.MenuAccessRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -263,7 +279,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.MenuAccessContext.GetPaginatedResult(pageNumber);
+                return this.MenuAccessRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -296,7 +312,7 @@ namespace MixERP.Net.Api.Policy
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.MenuAccessContext.CountWhere(f);
+                return this.MenuAccessRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -330,7 +346,7 @@ namespace MixERP.Net.Api.Policy
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.MenuAccessContext.GetWhere(pageNumber, f);
+                return this.MenuAccessRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -362,7 +378,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.MenuAccessContext.CountFiltered(filterName);
+                return this.MenuAccessRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -395,7 +411,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.MenuAccessContext.GetFiltered(pageNumber, filterName);
+                return this.MenuAccessRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -426,7 +442,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.MenuAccessContext.GetDisplayFields();
+                return this.MenuAccessRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -457,7 +473,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.MenuAccessContext.GetCustomFields(null);
+                return this.MenuAccessRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -488,7 +504,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.MenuAccessContext.GetCustomFields(resourceId);
+                return this.MenuAccessRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -527,7 +543,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                return this.MenuAccessContext.AddOrEdit(menuAccess, customFields);
+                return this.MenuAccessRepository.AddOrEdit(menuAccess, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -563,7 +579,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                this.MenuAccessContext.Add(menuAccess);
+                this.MenuAccessRepository.Add(menuAccess);
             }
             catch (UnauthorizedException)
             {
@@ -600,7 +616,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                this.MenuAccessContext.Update(menuAccess, accessId);
+                this.MenuAccessRepository.Update(menuAccess, accessId);
             }
             catch (UnauthorizedException)
             {
@@ -645,7 +661,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                return this.MenuAccessContext.BulkImport(menuAccessCollection);
+                return this.MenuAccessRepository.BulkImport(menuAccessCollection);
             }
             catch (UnauthorizedException)
             {
@@ -676,7 +692,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                this.MenuAccessContext.Delete(accessId);
+                this.MenuAccessRepository.Delete(accessId);
             }
             catch (UnauthorizedException)
             {

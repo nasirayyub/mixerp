@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class TaxBaseAmountTypeSelectorViewController : ApiController
     {
         /// <summary>
-        ///     The TaxBaseAmountTypeSelectorView data context.
+        ///     The TaxBaseAmountTypeSelectorView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.TaxBaseAmountTypeSelectorView TaxBaseAmountTypeSelectorViewContext;
+        private readonly ITaxBaseAmountTypeSelectorViewRepository TaxBaseAmountTypeSelectorViewRepository;
 
         public TaxBaseAmountTypeSelectorViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.TaxBaseAmountTypeSelectorViewContext = new MixERP.Net.Schemas.Core.Data.TaxBaseAmountTypeSelectorView
+            this.TaxBaseAmountTypeSelectorViewRepository = new MixERP.Net.Schemas.Core.Data.TaxBaseAmountTypeSelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public TaxBaseAmountTypeSelectorViewController(ITaxBaseAmountTypeSelectorViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.TaxBaseAmountTypeSelectorViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxBaseAmountTypeSelectorViewContext.Count();
+                return this.TaxBaseAmountTypeSelectorViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxBaseAmountTypeSelectorViewContext.Get();
+                return this.TaxBaseAmountTypeSelectorViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxBaseAmountTypeSelectorViewContext.GetPaginatedResult();
+                return this.TaxBaseAmountTypeSelectorViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxBaseAmountTypeSelectorViewContext.GetPaginatedResult(pageNumber);
+                return this.TaxBaseAmountTypeSelectorViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxBaseAmountTypeSelectorViewContext.GetDisplayFields();
+                return this.TaxBaseAmountTypeSelectorViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.TaxBaseAmountTypeSelectorViewContext.CountWhere(f);
+                return this.TaxBaseAmountTypeSelectorViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.TaxBaseAmountTypeSelectorViewContext.GetWhere(pageNumber, f);
+                return this.TaxBaseAmountTypeSelectorViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxBaseAmountTypeSelectorViewContext.CountFiltered(filterName);
+                return this.TaxBaseAmountTypeSelectorViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxBaseAmountTypeSelectorViewContext.GetFiltered(pageNumber, filterName);
+                return this.TaxBaseAmountTypeSelectorViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

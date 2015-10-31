@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Transactions.Data;
 
 namespace MixERP.Net.Api.Transactions
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Transactions
     public class DayOperationRoutineController : ApiController
     {
         /// <summary>
-        ///     The DayOperationRoutine data context.
+        ///     The DayOperationRoutine repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Transactions.Data.DayOperationRoutine DayOperationRoutineContext;
+        private readonly IDayOperationRoutineRepository DayOperationRoutineRepository;
 
         public DayOperationRoutineController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Transactions
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.DayOperationRoutineContext = new MixERP.Net.Schemas.Transactions.Data.DayOperationRoutine
+            this.DayOperationRoutineRepository = new MixERP.Net.Schemas.Transactions.Data.DayOperationRoutine
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public DayOperationRoutineController(IDayOperationRoutineRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.DayOperationRoutineRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/day-operation-routine/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "day_operation_routine_id",
@@ -80,7 +96,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationRoutineContext.Count();
+                return this.DayOperationRoutineRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -111,7 +127,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationRoutineContext.GetAll();
+                return this.DayOperationRoutineRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -142,7 +158,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationRoutineContext.Export();
+                return this.DayOperationRoutineRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -174,7 +190,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationRoutineContext.Get(dayOperationRoutineId);
+                return this.DayOperationRoutineRepository.Get(dayOperationRoutineId);
             }
             catch (UnauthorizedException)
             {
@@ -201,7 +217,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationRoutineContext.Get(dayOperationRoutineIds);
+                return this.DayOperationRoutineRepository.Get(dayOperationRoutineIds);
             }
             catch (UnauthorizedException)
             {
@@ -232,7 +248,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationRoutineContext.GetPaginatedResult();
+                return this.DayOperationRoutineRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -264,7 +280,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationRoutineContext.GetPaginatedResult(pageNumber);
+                return this.DayOperationRoutineRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -297,7 +313,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.DayOperationRoutineContext.CountWhere(f);
+                return this.DayOperationRoutineRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -331,7 +347,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.DayOperationRoutineContext.GetWhere(pageNumber, f);
+                return this.DayOperationRoutineRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -363,7 +379,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationRoutineContext.CountFiltered(filterName);
+                return this.DayOperationRoutineRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -396,7 +412,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationRoutineContext.GetFiltered(pageNumber, filterName);
+                return this.DayOperationRoutineRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -427,7 +443,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationRoutineContext.GetDisplayFields();
+                return this.DayOperationRoutineRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -458,7 +474,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationRoutineContext.GetCustomFields(null);
+                return this.DayOperationRoutineRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -489,7 +505,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationRoutineContext.GetCustomFields(resourceId);
+                return this.DayOperationRoutineRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -528,7 +544,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.DayOperationRoutineContext.AddOrEdit(dayOperationRoutine, customFields);
+                return this.DayOperationRoutineRepository.AddOrEdit(dayOperationRoutine, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -564,7 +580,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.DayOperationRoutineContext.Add(dayOperationRoutine);
+                this.DayOperationRoutineRepository.Add(dayOperationRoutine);
             }
             catch (UnauthorizedException)
             {
@@ -601,7 +617,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.DayOperationRoutineContext.Update(dayOperationRoutine, dayOperationRoutineId);
+                this.DayOperationRoutineRepository.Update(dayOperationRoutine, dayOperationRoutineId);
             }
             catch (UnauthorizedException)
             {
@@ -646,7 +662,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.DayOperationRoutineContext.BulkImport(dayOperationRoutineCollection);
+                return this.DayOperationRoutineRepository.BulkImport(dayOperationRoutineCollection);
             }
             catch (UnauthorizedException)
             {
@@ -677,7 +693,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.DayOperationRoutineContext.Delete(dayOperationRoutineId);
+                this.DayOperationRoutineRepository.Delete(dayOperationRoutineId);
             }
             catch (UnauthorizedException)
             {

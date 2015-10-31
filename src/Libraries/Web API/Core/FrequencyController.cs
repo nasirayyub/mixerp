@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class FrequencyController : ApiController
     {
         /// <summary>
-        ///     The Frequency data context.
+        ///     The Frequency repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.Frequency FrequencyContext;
+        private readonly IFrequencyRepository FrequencyRepository;
 
         public FrequencyController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.FrequencyContext = new MixERP.Net.Schemas.Core.Data.Frequency
+            this.FrequencyRepository = new MixERP.Net.Schemas.Core.Data.Frequency
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public FrequencyController(IFrequencyRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.FrequencyRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/frequency/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "frequency_id",
@@ -78,7 +94,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencyContext.Count();
+                return this.FrequencyRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -109,7 +125,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencyContext.GetAll();
+                return this.FrequencyRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -140,7 +156,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencyContext.Export();
+                return this.FrequencyRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -172,7 +188,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencyContext.Get(frequencyId);
+                return this.FrequencyRepository.Get(frequencyId);
             }
             catch (UnauthorizedException)
             {
@@ -199,7 +215,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencyContext.Get(frequencyIds);
+                return this.FrequencyRepository.Get(frequencyIds);
             }
             catch (UnauthorizedException)
             {
@@ -230,7 +246,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencyContext.GetPaginatedResult();
+                return this.FrequencyRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -262,7 +278,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencyContext.GetPaginatedResult(pageNumber);
+                return this.FrequencyRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -295,7 +311,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.FrequencyContext.CountWhere(f);
+                return this.FrequencyRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -329,7 +345,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.FrequencyContext.GetWhere(pageNumber, f);
+                return this.FrequencyRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -361,7 +377,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencyContext.CountFiltered(filterName);
+                return this.FrequencyRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -394,7 +410,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencyContext.GetFiltered(pageNumber, filterName);
+                return this.FrequencyRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -425,7 +441,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencyContext.GetDisplayFields();
+                return this.FrequencyRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -456,7 +472,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencyContext.GetCustomFields(null);
+                return this.FrequencyRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -487,7 +503,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencyContext.GetCustomFields(resourceId);
+                return this.FrequencyRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -526,7 +542,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.FrequencyContext.AddOrEdit(frequency, customFields);
+                return this.FrequencyRepository.AddOrEdit(frequency, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -562,7 +578,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.FrequencyContext.Add(frequency);
+                this.FrequencyRepository.Add(frequency);
             }
             catch (UnauthorizedException)
             {
@@ -599,7 +615,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.FrequencyContext.Update(frequency, frequencyId);
+                this.FrequencyRepository.Update(frequency, frequencyId);
             }
             catch (UnauthorizedException)
             {
@@ -644,7 +660,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.FrequencyContext.BulkImport(frequencyCollection);
+                return this.FrequencyRepository.BulkImport(frequencyCollection);
             }
             catch (UnauthorizedException)
             {
@@ -675,7 +691,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.FrequencyContext.Delete(frequencyId);
+                this.FrequencyRepository.Delete(frequencyId);
             }
             catch (UnauthorizedException)
             {

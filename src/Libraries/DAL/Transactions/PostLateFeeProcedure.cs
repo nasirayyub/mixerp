@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.post_late_fee(_user_id integer, _login_id bigint, _office_id integer, _value_date date)" on the database.
     /// </summary>
-    public class PostLateFeeProcedure : DbAccess
+    public class PostLateFeeProcedure : DbAccess, IPostLateFeeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

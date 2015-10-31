@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.get_user_id_by_user_name(user_name text)" on the database.
     /// </summary>
-    public class GetUserIdByUserNameProcedure : DbAccess
+    public class GetUserIdByUserNameProcedure : DbAccess, IGetUserIdByUserNameRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

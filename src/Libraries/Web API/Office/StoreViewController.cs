@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Office.Data;
 
 namespace MixERP.Net.Api.Office
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Office
     public class StoreViewController : ApiController
     {
         /// <summary>
-        ///     The StoreView data context.
+        ///     The StoreView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Office.Data.StoreView StoreViewContext;
+        private readonly IStoreViewRepository StoreViewRepository;
 
         public StoreViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Office
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.StoreViewContext = new MixERP.Net.Schemas.Office.Data.StoreView
+            this.StoreViewRepository = new MixERP.Net.Schemas.Office.Data.StoreView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public StoreViewController(IStoreViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.StoreViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.StoreViewContext.Count();
+                return this.StoreViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.StoreViewContext.Get();
+                return this.StoreViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.StoreViewContext.GetPaginatedResult();
+                return this.StoreViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.StoreViewContext.GetPaginatedResult(pageNumber);
+                return this.StoreViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.StoreViewContext.GetDisplayFields();
+                return this.StoreViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.StoreViewContext.CountWhere(f);
+                return this.StoreViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.StoreViewContext.GetWhere(pageNumber, f);
+                return this.StoreViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.StoreViewContext.CountFiltered(filterName);
+                return this.StoreViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.StoreViewContext.GetFiltered(pageNumber, filterName);
+                return this.StoreViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

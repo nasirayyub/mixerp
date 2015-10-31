@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.verify_transaction(_transaction_master_id bigint, _office_id integer, _user_id integer, _login_id bigint, _verification_status_id smallint, _reason character varying)" on the database.
     /// </summary>
-    public class VerifyTransactionProcedure : DbAccess
+    public class VerifyTransactionProcedure : DbAccess, IVerifyTransactionRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

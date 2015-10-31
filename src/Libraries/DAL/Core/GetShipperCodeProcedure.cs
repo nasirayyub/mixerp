@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_shipper_code(pg_arg0 text)" on the database.
     /// </summary>
-    public class GetShipperCodeProcedure : DbAccess
+    public class GetShipperCodeProcedure : DbAccess, IGetShipperCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

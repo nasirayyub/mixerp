@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Audit.Data
     /// <summary>
     /// Prepares, validates, and executes the function "audit.get_office_id_by_login_id(pg_arg0 bigint)" on the database.
     /// </summary>
-    public class GetOfficeIdByLoginIdProcedure : DbAccess
+    public class GetOfficeIdByLoginIdProcedure : DbAccess, IGetOfficeIdByLoginIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

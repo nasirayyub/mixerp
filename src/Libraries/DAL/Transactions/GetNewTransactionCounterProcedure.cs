@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_new_transaction_counter(pg_arg0 date)" on the database.
     /// </summary>
-    public class GetNewTransactionCounterProcedure : DbAccess
+    public class GetNewTransactionCounterProcedure : DbAccess, IGetNewTransactionCounterRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

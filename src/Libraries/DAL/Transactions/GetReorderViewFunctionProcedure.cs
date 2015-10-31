@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_reorder_view_function(office_id integer)" on the database.
     /// </summary>
-    public class GetReorderViewFunctionProcedure : DbAccess
+    public class GetReorderViewFunctionProcedure : DbAccess, IGetReorderViewFunctionRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

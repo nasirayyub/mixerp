@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.refresh_materialized_views(_user_id integer, _login_id bigint, _office_id integer, _value_date date)" on the database.
     /// </summary>
-    public class RefreshMaterializedViewsProcedure : DbAccess
+    public class RefreshMaterializedViewsProcedure : DbAccess, IRefreshMaterializedViewsRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

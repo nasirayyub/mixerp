@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_pl_appropriation_data(_office_id integer)" on the database.
     /// </summary>
-    public class GetPlAppropriationDataProcedure : DbAccess
+    public class GetPlAppropriationDataProcedure : DbAccess, IGetPlAppropriationDataRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.get_office_id_by_office_code(office_code text)" on the database.
     /// </summary>
-    public class GetOfficeIdByOfficeCodeProcedure : DbAccess
+    public class GetOfficeIdByOfficeCodeProcedure : DbAccess, IGetOfficeIdByOfficeCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

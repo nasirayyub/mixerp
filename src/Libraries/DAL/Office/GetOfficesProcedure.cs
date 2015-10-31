@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.get_offices()" on the database.
     /// </summary>
-    public class GetOfficesProcedure : DbAccess
+    public class GetOfficesProcedure : DbAccess, IGetOfficesRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.get_cash_repository_id_by_cash_repository_name(_cash_repository_name text)" on the database.
     /// </summary>
-    public class GetCashRepositoryIdByCashRepositoryNameProcedure : DbAccess
+    public class GetCashRepositoryIdByCashRepositoryNameProcedure : DbAccess, IGetCashRepositoryIdByCashRepositoryNameRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

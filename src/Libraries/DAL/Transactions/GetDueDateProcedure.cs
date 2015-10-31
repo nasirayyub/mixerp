@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_due_date(_value_date date, _payment_term_id integer)" on the database.
     /// </summary>
-    public class GetDueDateProcedure : DbAccess
+    public class GetDueDateProcedure : DbAccess, IGetDueDateRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

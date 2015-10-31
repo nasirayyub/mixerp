@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_last_receipt_date(office_id integer, party_id bigint)" on the database.
     /// </summary>
-    public class GetLastReceiptDateProcedure : DbAccess
+    public class GetLastReceiptDateProcedure : DbAccess, IGetLastReceiptDateRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

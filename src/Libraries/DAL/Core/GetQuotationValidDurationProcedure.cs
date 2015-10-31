@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_quotation_valid_duration(_office_id integer)" on the database.
     /// </summary>
-    public class GetQuotationValidDurationProcedure : DbAccess
+    public class GetQuotationValidDurationProcedure : DbAccess, IGetQuotationValidDurationRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

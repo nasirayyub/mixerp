@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Policy.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database view "policy.auto_verification_policy_scrud_view".
     /// </summary>
-    public class AutoVerificationPolicyScrudView : DbAccess
+    public class AutoVerificationPolicyScrudView : DbAccess, IAutoVerificationPolicyScrudViewRepository
     {
         /// <summary>
         /// The schema of this view. Returns literal "policy".
@@ -71,7 +71,7 @@ namespace MixERP.Net.Schemas.Policy.Data
         }
 
         /// <summary>
-        /// Executes a select query on the view "policy.auto_verification_policy_scrud_view" to return a all instances of the "AutoVerificationPolicyScrudView" class. 
+        /// Executes a select query on the view "policy.auto_verification_policy_scrud_view" to return all instances of the "AutoVerificationPolicyScrudView" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "AutoVerificationPolicyScrudView" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -218,7 +218,7 @@ namespace MixERP.Net.Schemas.Policy.Data
             return Factory.Get<MixERP.Net.Entities.Policy.AutoVerificationPolicyScrudView>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='policy.auto_verification_policy_scrud_view' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

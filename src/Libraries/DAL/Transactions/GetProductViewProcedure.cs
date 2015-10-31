@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_product_view(user_id_ integer, book_ text, office_id_ integer, date_from_ date, date_to_ date, office_ character varying, party_ text, price_type_ text, user_ character varying, reference_number_ character varying, statement_reference_ text)" on the database.
     /// </summary>
-    public class GetProductViewProcedure : DbAccess
+    public class GetProductViewProcedure : DbAccess, IGetProductViewRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

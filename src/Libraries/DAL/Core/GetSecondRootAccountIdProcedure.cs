@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_second_root_account_id(_account_id bigint, _parent bigint)" on the database.
     /// </summary>
-    public class GetSecondRootAccountIdProcedure : DbAccess
+    public class GetSecondRootAccountIdProcedure : DbAccess, IGetSecondRootAccountIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

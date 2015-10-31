@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.list_closing_stock(_store_id integer)" on the database.
     /// </summary>
-    public class ListClosingStockProcedure : DbAccess
+    public class ListClosingStockProcedure : DbAccess, IListClosingStockRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

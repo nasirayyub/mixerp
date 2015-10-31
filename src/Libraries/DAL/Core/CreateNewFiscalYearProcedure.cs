@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.create_new_fiscal_year(_office_id integer, _user_id integer, _fiscal_year_code character varying, _fiscal_year_name character varying)" on the database.
     /// </summary>
-    public class CreateNewFiscalYearProcedure : DbAccess
+    public class CreateNewFiscalYearProcedure : DbAccess, ICreateNewFiscalYearRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

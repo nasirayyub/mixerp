@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class PurchaseDiscountAccountSelectorViewController : ApiController
     {
         /// <summary>
-        ///     The PurchaseDiscountAccountSelectorView data context.
+        ///     The PurchaseDiscountAccountSelectorView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.PurchaseDiscountAccountSelectorView PurchaseDiscountAccountSelectorViewContext;
+        private readonly IPurchaseDiscountAccountSelectorViewRepository PurchaseDiscountAccountSelectorViewRepository;
 
         public PurchaseDiscountAccountSelectorViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.PurchaseDiscountAccountSelectorViewContext = new MixERP.Net.Schemas.Core.Data.PurchaseDiscountAccountSelectorView
+            this.PurchaseDiscountAccountSelectorViewRepository = new MixERP.Net.Schemas.Core.Data.PurchaseDiscountAccountSelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public PurchaseDiscountAccountSelectorViewController(IPurchaseDiscountAccountSelectorViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.PurchaseDiscountAccountSelectorViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PurchaseDiscountAccountSelectorViewContext.Count();
+                return this.PurchaseDiscountAccountSelectorViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PurchaseDiscountAccountSelectorViewContext.Get();
+                return this.PurchaseDiscountAccountSelectorViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PurchaseDiscountAccountSelectorViewContext.GetPaginatedResult();
+                return this.PurchaseDiscountAccountSelectorViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PurchaseDiscountAccountSelectorViewContext.GetPaginatedResult(pageNumber);
+                return this.PurchaseDiscountAccountSelectorViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PurchaseDiscountAccountSelectorViewContext.GetDisplayFields();
+                return this.PurchaseDiscountAccountSelectorViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.PurchaseDiscountAccountSelectorViewContext.CountWhere(f);
+                return this.PurchaseDiscountAccountSelectorViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.PurchaseDiscountAccountSelectorViewContext.GetWhere(pageNumber, f);
+                return this.PurchaseDiscountAccountSelectorViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PurchaseDiscountAccountSelectorViewContext.CountFiltered(filterName);
+                return this.PurchaseDiscountAccountSelectorViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PurchaseDiscountAccountSelectorViewContext.GetFiltered(pageNumber, filterName);
+                return this.PurchaseDiscountAccountSelectorViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

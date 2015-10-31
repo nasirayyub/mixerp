@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_default_currency_code(cash_repository_id integer)" on the database.
     /// </summary>
-    public class GetDefaultCurrencyCodeProcedure : DbAccess
+    public class GetDefaultCurrencyCodeProcedure : DbAccess, IGetDefaultCurrencyCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

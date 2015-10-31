@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class ShippingAddressScrudViewController : ApiController
     {
         /// <summary>
-        ///     The ShippingAddressScrudView data context.
+        ///     The ShippingAddressScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.ShippingAddressScrudView ShippingAddressScrudViewContext;
+        private readonly IShippingAddressScrudViewRepository ShippingAddressScrudViewRepository;
 
         public ShippingAddressScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ShippingAddressScrudViewContext = new MixERP.Net.Schemas.Core.Data.ShippingAddressScrudView
+            this.ShippingAddressScrudViewRepository = new MixERP.Net.Schemas.Core.Data.ShippingAddressScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ShippingAddressScrudViewController(IShippingAddressScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ShippingAddressScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingAddressScrudViewContext.Count();
+                return this.ShippingAddressScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingAddressScrudViewContext.Get();
+                return this.ShippingAddressScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingAddressScrudViewContext.GetPaginatedResult();
+                return this.ShippingAddressScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingAddressScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.ShippingAddressScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingAddressScrudViewContext.GetDisplayFields();
+                return this.ShippingAddressScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ShippingAddressScrudViewContext.CountWhere(f);
+                return this.ShippingAddressScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ShippingAddressScrudViewContext.GetWhere(pageNumber, f);
+                return this.ShippingAddressScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingAddressScrudViewContext.CountFiltered(filterName);
+                return this.ShippingAddressScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingAddressScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.ShippingAddressScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

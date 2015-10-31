@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_journal_view(_user_id integer, _office_id integer, _from date, _to date, _tran_id bigint, _tran_code character varying, _book character varying, _reference_number character varying, _statement_reference character varying, _posted_by character varying, _office character varying, _status character varying, _verified_by character varying, _reason character varying)" on the database.
     /// </summary>
-    public class GetJournalViewProcedure : DbAccess
+    public class GetJournalViewProcedure : DbAccess, IGetJournalViewRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

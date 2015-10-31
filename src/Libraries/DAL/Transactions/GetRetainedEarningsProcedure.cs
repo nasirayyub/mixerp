@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_retained_earnings(_date_to date, _office_id integer, _factor integer)" on the database.
     /// </summary>
-    public class GetRetainedEarningsProcedure : DbAccess
+    public class GetRetainedEarningsProcedure : DbAccess, IGetRetainedEarningsRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private PostStockTransferAcknowledgementProcedure procedure;
+        /// <summary>
+        ///     The PostStockTransferAcknowledgement repository.
+        /// </summary>
+        private readonly IPostStockTransferAcknowledgementRepository repository;
+
         public class Annotation
         {
             public int OfficeId { get; set; }
@@ -49,19 +53,32 @@ namespace MixERP.Net.Api.Transactions
             public long RequestId { get; set; }
         }
 
+
         public PostStockTransferAcknowledgementController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new PostStockTransferAcknowledgementProcedure
+
+            this.repository = new PostStockTransferAcknowledgementProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public PostStockTransferAcknowledgementController(IPostStockTransferAcknowledgementRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "post stock transfer acknowledgement" annotation.
         /// </summary>
@@ -71,6 +88,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/post-stock-transfer-acknowledgement/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -84,6 +105,8 @@ namespace MixERP.Net.Api.Transactions
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/post-stock-transfer-acknowledgement/execute")]
@@ -91,13 +114,13 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.LoginId = annotation.LoginId;
-                this.procedure.RequestId = annotation.RequestId;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.UserId = annotation.UserId;
+                this.repository.LoginId = annotation.LoginId;
+                this.repository.RequestId = annotation.RequestId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

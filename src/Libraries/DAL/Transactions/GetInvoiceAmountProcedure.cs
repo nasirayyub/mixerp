@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_invoice_amount(transaction_master_id_ bigint)" on the database.
     /// </summary>
-    public class GetInvoiceAmountProcedure : DbAccess
+    public class GetInvoiceAmountProcedure : DbAccess, IGetInvoiceAmountRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.is_periodic_inventory(_office_id integer)" on the database.
     /// </summary>
-    public class IsPeriodicInventoryProcedure : DbAccess
+    public class IsPeriodicInventoryProcedure : DbAccess, IIsPeriodicInventoryRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -16,7 +16,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database table "transactions.transaction_master".
     /// </summary>
-    public class TransactionMaster : DbAccess
+    public class TransactionMaster : DbAccess, ITransactionMasterRepository
     {
         /// <summary>
         /// The schema of this table. Returns literal "transactions".
@@ -73,7 +73,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "transactions.transaction_master" to return a all instances of the "TransactionMaster" class. 
+        /// Executes a select query on the table "transactions.transaction_master" to return all instances of the "TransactionMaster" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "TransactionMaster" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -102,7 +102,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "transactions.transaction_master" to return a all instances of the "TransactionMaster" class to export. 
+        /// Executes a select query on the table "transactions.transaction_master" to return all instances of the "TransactionMaster" class to export. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "TransactionMaster" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -559,7 +559,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
             return Factory.Get<MixERP.Net.Entities.Transactions.TransactionMaster>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='transactions.transaction_master' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

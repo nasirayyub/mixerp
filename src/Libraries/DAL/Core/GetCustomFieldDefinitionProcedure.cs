@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_custom_field_definition(_table_name text, _resource_id text)" on the database.
     /// </summary>
-    public class GetCustomFieldDefinitionProcedure : DbAccess
+    public class GetCustomFieldDefinitionProcedure : DbAccess, IGetCustomFieldDefinitionRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

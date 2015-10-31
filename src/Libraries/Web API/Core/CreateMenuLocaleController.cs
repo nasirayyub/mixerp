@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private CreateMenuLocaleProcedure procedure;
+        /// <summary>
+        ///     The CreateMenuLocale repository.
+        /// </summary>
+        private readonly ICreateMenuLocaleRepository repository;
+
         public class Annotation
         {
             public int MenuId { get; set; }
@@ -48,19 +52,32 @@ namespace MixERP.Net.Api.Core
             public string MenuText { get; set; }
         }
 
+
         public CreateMenuLocaleController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new CreateMenuLocaleProcedure
+
+            this.repository = new CreateMenuLocaleProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public CreateMenuLocaleController(ICreateMenuLocaleRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "create menu locale" annotation.
         /// </summary>
@@ -70,6 +87,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/create-menu-locale/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -81,6 +102,7 @@ namespace MixERP.Net.Api.Core
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "create menu locale" entity.
         /// </summary>
@@ -90,6 +112,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/create-menu-locale/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -98,6 +124,7 @@ namespace MixERP.Net.Api.Core
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/create-menu-locale/execute")]
@@ -105,12 +132,12 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.MenuId = annotation.MenuId;
-                this.procedure.Culture = annotation.Culture;
-                this.procedure.MenuText = annotation.MenuText;
+                this.repository.MenuId = annotation.MenuId;
+                this.repository.Culture = annotation.Culture;
+                this.repository.MenuText = annotation.MenuText;
 
 
-                this.procedure.Execute();
+                this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

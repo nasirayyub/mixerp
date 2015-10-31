@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Localization.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database view "localization.resource_view".
     /// </summary>
-    public class ResourceView : DbAccess
+    public class ResourceView : DbAccess, IResourceViewRepository
     {
         /// <summary>
         /// The schema of this view. Returns literal "localization".
@@ -71,7 +71,7 @@ namespace MixERP.Net.Schemas.Localization.Data
         }
 
         /// <summary>
-        /// Executes a select query on the view "localization.resource_view" to return a all instances of the "ResourceView" class. 
+        /// Executes a select query on the view "localization.resource_view" to return all instances of the "ResourceView" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "ResourceView" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -162,7 +162,7 @@ namespace MixERP.Net.Schemas.Localization.Data
             return Factory.Get<MixERP.Net.Entities.Localization.ResourceView>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='localization.resource_view' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

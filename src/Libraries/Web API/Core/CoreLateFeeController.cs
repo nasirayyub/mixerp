@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class CoreLateFeeController : ApiController
     {
         /// <summary>
-        ///     The LateFee data context.
+        ///     The LateFee repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.LateFee LateFeeContext;
+        private readonly ILateFeeRepository LateFeeRepository;
 
         public CoreLateFeeController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.LateFeeContext = new MixERP.Net.Schemas.Core.Data.LateFee
+            this.LateFeeRepository = new MixERP.Net.Schemas.Core.Data.LateFee
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public CoreLateFeeController(ILateFeeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.LateFeeRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/late-fee/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "late_fee_id",
@@ -83,7 +99,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeContext.Count();
+                return this.LateFeeRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -114,7 +130,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeContext.GetAll();
+                return this.LateFeeRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -145,7 +161,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeContext.Export();
+                return this.LateFeeRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -177,7 +193,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeContext.Get(lateFeeId);
+                return this.LateFeeRepository.Get(lateFeeId);
             }
             catch (UnauthorizedException)
             {
@@ -204,7 +220,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeContext.Get(lateFeeIds);
+                return this.LateFeeRepository.Get(lateFeeIds);
             }
             catch (UnauthorizedException)
             {
@@ -235,7 +251,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeContext.GetPaginatedResult();
+                return this.LateFeeRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -267,7 +283,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeContext.GetPaginatedResult(pageNumber);
+                return this.LateFeeRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -300,7 +316,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LateFeeContext.CountWhere(f);
+                return this.LateFeeRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -334,7 +350,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LateFeeContext.GetWhere(pageNumber, f);
+                return this.LateFeeRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -366,7 +382,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeContext.CountFiltered(filterName);
+                return this.LateFeeRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -399,7 +415,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeContext.GetFiltered(pageNumber, filterName);
+                return this.LateFeeRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -430,7 +446,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeContext.GetDisplayFields();
+                return this.LateFeeRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -461,7 +477,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeContext.GetCustomFields(null);
+                return this.LateFeeRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -492,7 +508,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.LateFeeContext.GetCustomFields(resourceId);
+                return this.LateFeeRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -531,7 +547,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.LateFeeContext.AddOrEdit(lateFee, customFields);
+                return this.LateFeeRepository.AddOrEdit(lateFee, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -567,7 +583,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.LateFeeContext.Add(lateFee);
+                this.LateFeeRepository.Add(lateFee);
             }
             catch (UnauthorizedException)
             {
@@ -604,7 +620,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.LateFeeContext.Update(lateFee, lateFeeId);
+                this.LateFeeRepository.Update(lateFee, lateFeeId);
             }
             catch (UnauthorizedException)
             {
@@ -649,7 +665,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.LateFeeContext.BulkImport(lateFeeCollection);
+                return this.LateFeeRepository.BulkImport(lateFeeCollection);
             }
             catch (UnauthorizedException)
             {
@@ -680,7 +696,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.LateFeeContext.Delete(lateFeeId);
+                this.LateFeeRepository.Delete(lateFeeId);
             }
             catch (UnauthorizedException)
             {

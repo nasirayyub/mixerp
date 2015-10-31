@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Office.Data;
 
 namespace MixERP.Net.Api.Office
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Office
     public class CashRepositoryController : ApiController
     {
         /// <summary>
-        ///     The CashRepository data context.
+        ///     The CashRepository repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Office.Data.CashRepository CashRepositoryContext;
+        private readonly ICashRepositoryRepository CashRepositoryRepository;
 
         public CashRepositoryController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Office
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.CashRepositoryContext = new MixERP.Net.Schemas.Office.Data.CashRepository
+            this.CashRepositoryRepository = new MixERP.Net.Schemas.Office.Data.CashRepository
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public CashRepositoryController(ICashRepositoryRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.CashRepositoryRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/cash-repository/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "cash_repository_id",
@@ -83,7 +99,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositoryContext.Count();
+                return this.CashRepositoryRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -114,7 +130,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositoryContext.GetAll();
+                return this.CashRepositoryRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -145,7 +161,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositoryContext.Export();
+                return this.CashRepositoryRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -177,7 +193,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositoryContext.Get(cashRepositoryId);
+                return this.CashRepositoryRepository.Get(cashRepositoryId);
             }
             catch (UnauthorizedException)
             {
@@ -204,7 +220,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositoryContext.Get(cashRepositoryIds);
+                return this.CashRepositoryRepository.Get(cashRepositoryIds);
             }
             catch (UnauthorizedException)
             {
@@ -235,7 +251,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositoryContext.GetPaginatedResult();
+                return this.CashRepositoryRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -267,7 +283,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositoryContext.GetPaginatedResult(pageNumber);
+                return this.CashRepositoryRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -300,7 +316,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CashRepositoryContext.CountWhere(f);
+                return this.CashRepositoryRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -334,7 +350,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CashRepositoryContext.GetWhere(pageNumber, f);
+                return this.CashRepositoryRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -366,7 +382,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositoryContext.CountFiltered(filterName);
+                return this.CashRepositoryRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -399,7 +415,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositoryContext.GetFiltered(pageNumber, filterName);
+                return this.CashRepositoryRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -430,7 +446,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositoryContext.GetDisplayFields();
+                return this.CashRepositoryRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -461,7 +477,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositoryContext.GetCustomFields(null);
+                return this.CashRepositoryRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -492,7 +508,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositoryContext.GetCustomFields(resourceId);
+                return this.CashRepositoryRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -531,7 +547,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                return this.CashRepositoryContext.AddOrEdit(cashRepository, customFields);
+                return this.CashRepositoryRepository.AddOrEdit(cashRepository, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -567,7 +583,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                this.CashRepositoryContext.Add(cashRepository);
+                this.CashRepositoryRepository.Add(cashRepository);
             }
             catch (UnauthorizedException)
             {
@@ -604,7 +620,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                this.CashRepositoryContext.Update(cashRepository, cashRepositoryId);
+                this.CashRepositoryRepository.Update(cashRepository, cashRepositoryId);
             }
             catch (UnauthorizedException)
             {
@@ -649,7 +665,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                return this.CashRepositoryContext.BulkImport(cashRepositoryCollection);
+                return this.CashRepositoryRepository.BulkImport(cashRepositoryCollection);
             }
             catch (UnauthorizedException)
             {
@@ -680,7 +696,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                this.CashRepositoryContext.Delete(cashRepositoryId);
+                this.CashRepositoryRepository.Delete(cashRepositoryId);
             }
             catch (UnauthorizedException)
             {

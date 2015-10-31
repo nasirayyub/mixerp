@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class RecurrenceTypeScrudViewController : ApiController
     {
         /// <summary>
-        ///     The RecurrenceTypeScrudView data context.
+        ///     The RecurrenceTypeScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.RecurrenceTypeScrudView RecurrenceTypeScrudViewContext;
+        private readonly IRecurrenceTypeScrudViewRepository RecurrenceTypeScrudViewRepository;
 
         public RecurrenceTypeScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.RecurrenceTypeScrudViewContext = new MixERP.Net.Schemas.Core.Data.RecurrenceTypeScrudView
+            this.RecurrenceTypeScrudViewRepository = new MixERP.Net.Schemas.Core.Data.RecurrenceTypeScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public RecurrenceTypeScrudViewController(IRecurrenceTypeScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.RecurrenceTypeScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeScrudViewContext.Count();
+                return this.RecurrenceTypeScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeScrudViewContext.Get();
+                return this.RecurrenceTypeScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeScrudViewContext.GetPaginatedResult();
+                return this.RecurrenceTypeScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.RecurrenceTypeScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeScrudViewContext.GetDisplayFields();
+                return this.RecurrenceTypeScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.RecurrenceTypeScrudViewContext.CountWhere(f);
+                return this.RecurrenceTypeScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.RecurrenceTypeScrudViewContext.GetWhere(pageNumber, f);
+                return this.RecurrenceTypeScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeScrudViewContext.CountFiltered(filterName);
+                return this.RecurrenceTypeScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.RecurrenceTypeScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.RecurrenceTypeScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

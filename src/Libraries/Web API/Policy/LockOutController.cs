@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Policy.Data;
 
 namespace MixERP.Net.Api.Policy
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Policy
     public class LockOutController : ApiController
     {
         /// <summary>
-        ///     The LockOut data context.
+        ///     The LockOut repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Policy.Data.LockOut LockOutContext;
+        private readonly ILockOutRepository LockOutRepository;
 
         public LockOutController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Policy
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.LockOutContext = new MixERP.Net.Schemas.Policy.Data.LockOut
+            this.LockOutRepository = new MixERP.Net.Schemas.Policy.Data.LockOut
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public LockOutController(ILockOutRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.LockOutRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/lock-out/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "lock_out_id",
@@ -79,7 +95,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.LockOutContext.Count();
+                return this.LockOutRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -110,7 +126,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.LockOutContext.GetAll();
+                return this.LockOutRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -141,7 +157,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.LockOutContext.Export();
+                return this.LockOutRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -173,7 +189,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.LockOutContext.Get(lockOutId);
+                return this.LockOutRepository.Get(lockOutId);
             }
             catch (UnauthorizedException)
             {
@@ -200,7 +216,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.LockOutContext.Get(lockOutIds);
+                return this.LockOutRepository.Get(lockOutIds);
             }
             catch (UnauthorizedException)
             {
@@ -231,7 +247,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.LockOutContext.GetPaginatedResult();
+                return this.LockOutRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -263,7 +279,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.LockOutContext.GetPaginatedResult(pageNumber);
+                return this.LockOutRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -296,7 +312,7 @@ namespace MixERP.Net.Api.Policy
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LockOutContext.CountWhere(f);
+                return this.LockOutRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -330,7 +346,7 @@ namespace MixERP.Net.Api.Policy
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LockOutContext.GetWhere(pageNumber, f);
+                return this.LockOutRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -362,7 +378,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.LockOutContext.CountFiltered(filterName);
+                return this.LockOutRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -395,7 +411,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.LockOutContext.GetFiltered(pageNumber, filterName);
+                return this.LockOutRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -426,7 +442,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.LockOutContext.GetDisplayFields();
+                return this.LockOutRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -457,7 +473,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.LockOutContext.GetCustomFields(null);
+                return this.LockOutRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -488,7 +504,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.LockOutContext.GetCustomFields(resourceId);
+                return this.LockOutRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -527,7 +543,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                return this.LockOutContext.AddOrEdit(lockOut, customFields);
+                return this.LockOutRepository.AddOrEdit(lockOut, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -563,7 +579,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                this.LockOutContext.Add(lockOut);
+                this.LockOutRepository.Add(lockOut);
             }
             catch (UnauthorizedException)
             {
@@ -600,7 +616,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                this.LockOutContext.Update(lockOut, lockOutId);
+                this.LockOutRepository.Update(lockOut, lockOutId);
             }
             catch (UnauthorizedException)
             {
@@ -645,7 +661,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                return this.LockOutContext.BulkImport(lockOutCollection);
+                return this.LockOutRepository.BulkImport(lockOutCollection);
             }
             catch (UnauthorizedException)
             {
@@ -676,7 +692,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                this.LockOutContext.Delete(lockOutId);
+                this.LockOutRepository.Delete(lockOutId);
             }
             catch (UnauthorizedException)
             {

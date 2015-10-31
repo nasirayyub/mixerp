@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class ShippingPackageShapeSelectorViewController : ApiController
     {
         /// <summary>
-        ///     The ShippingPackageShapeSelectorView data context.
+        ///     The ShippingPackageShapeSelectorView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.ShippingPackageShapeSelectorView ShippingPackageShapeSelectorViewContext;
+        private readonly IShippingPackageShapeSelectorViewRepository ShippingPackageShapeSelectorViewRepository;
 
         public ShippingPackageShapeSelectorViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ShippingPackageShapeSelectorViewContext = new MixERP.Net.Schemas.Core.Data.ShippingPackageShapeSelectorView
+            this.ShippingPackageShapeSelectorViewRepository = new MixERP.Net.Schemas.Core.Data.ShippingPackageShapeSelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ShippingPackageShapeSelectorViewController(IShippingPackageShapeSelectorViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ShippingPackageShapeSelectorViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeSelectorViewContext.Count();
+                return this.ShippingPackageShapeSelectorViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeSelectorViewContext.Get();
+                return this.ShippingPackageShapeSelectorViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeSelectorViewContext.GetPaginatedResult();
+                return this.ShippingPackageShapeSelectorViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeSelectorViewContext.GetPaginatedResult(pageNumber);
+                return this.ShippingPackageShapeSelectorViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeSelectorViewContext.GetDisplayFields();
+                return this.ShippingPackageShapeSelectorViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ShippingPackageShapeSelectorViewContext.CountWhere(f);
+                return this.ShippingPackageShapeSelectorViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ShippingPackageShapeSelectorViewContext.GetWhere(pageNumber, f);
+                return this.ShippingPackageShapeSelectorViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeSelectorViewContext.CountFiltered(filterName);
+                return this.ShippingPackageShapeSelectorViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeSelectorViewContext.GetFiltered(pageNumber, filterName);
+                return this.ShippingPackageShapeSelectorViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

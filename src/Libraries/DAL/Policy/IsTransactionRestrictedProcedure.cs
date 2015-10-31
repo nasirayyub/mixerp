@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Policy.Data
     /// <summary>
     /// Prepares, validates, and executes the function "policy.is_transaction_restricted(_office_id integer)" on the database.
     /// </summary>
-    public class IsTransactionRestrictedProcedure : DbAccess
+    public class IsTransactionRestrictedProcedure : DbAccess, IIsTransactionRestrictedRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

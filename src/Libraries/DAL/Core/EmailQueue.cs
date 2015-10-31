@@ -16,7 +16,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database table "core.email_queue".
     /// </summary>
-    public class EmailQueue : DbAccess
+    public class EmailQueue : DbAccess, IEmailQueueRepository
     {
         /// <summary>
         /// The schema of this table. Returns literal "core".
@@ -73,7 +73,7 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.email_queue" to return a all instances of the "EmailQueue" class. 
+        /// Executes a select query on the table "core.email_queue" to return all instances of the "EmailQueue" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "EmailQueue" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -102,7 +102,7 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.email_queue" to return a all instances of the "EmailQueue" class to export. 
+        /// Executes a select query on the table "core.email_queue" to return all instances of the "EmailQueue" class to export. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "EmailQueue" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -557,7 +557,7 @@ namespace MixERP.Net.Schemas.Core.Data
             return Factory.Get<MixERP.Net.Entities.Core.EmailQueue>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='core.email_queue' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

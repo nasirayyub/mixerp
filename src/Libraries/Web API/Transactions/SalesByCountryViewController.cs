@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Transactions.Data;
 
 namespace MixERP.Net.Api.Transactions
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Transactions
     public class SalesByCountryViewController : ApiController
     {
         /// <summary>
-        ///     The SalesByCountryView data context.
+        ///     The SalesByCountryView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Transactions.Data.SalesByCountryView SalesByCountryViewContext;
+        private readonly ISalesByCountryViewRepository SalesByCountryViewRepository;
 
         public SalesByCountryViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Transactions
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.SalesByCountryViewContext = new MixERP.Net.Schemas.Transactions.Data.SalesByCountryView
+            this.SalesByCountryViewRepository = new MixERP.Net.Schemas.Transactions.Data.SalesByCountryView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public SalesByCountryViewController(ISalesByCountryViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.SalesByCountryViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesByCountryViewContext.Count();
+                return this.SalesByCountryViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesByCountryViewContext.Get();
+                return this.SalesByCountryViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesByCountryViewContext.GetPaginatedResult();
+                return this.SalesByCountryViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesByCountryViewContext.GetPaginatedResult(pageNumber);
+                return this.SalesByCountryViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesByCountryViewContext.GetDisplayFields();
+                return this.SalesByCountryViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SalesByCountryViewContext.CountWhere(f);
+                return this.SalesByCountryViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SalesByCountryViewContext.GetWhere(pageNumber, f);
+                return this.SalesByCountryViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesByCountryViewContext.CountFiltered(filterName);
+                return this.SalesByCountryViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesByCountryViewContext.GetFiltered(pageNumber, filterName);
+                return this.SalesByCountryViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class FrequencySetupScrudViewController : ApiController
     {
         /// <summary>
-        ///     The FrequencySetupScrudView data context.
+        ///     The FrequencySetupScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.FrequencySetupScrudView FrequencySetupScrudViewContext;
+        private readonly IFrequencySetupScrudViewRepository FrequencySetupScrudViewRepository;
 
         public FrequencySetupScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.FrequencySetupScrudViewContext = new MixERP.Net.Schemas.Core.Data.FrequencySetupScrudView
+            this.FrequencySetupScrudViewRepository = new MixERP.Net.Schemas.Core.Data.FrequencySetupScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public FrequencySetupScrudViewController(IFrequencySetupScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.FrequencySetupScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencySetupScrudViewContext.Count();
+                return this.FrequencySetupScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencySetupScrudViewContext.Get();
+                return this.FrequencySetupScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencySetupScrudViewContext.GetPaginatedResult();
+                return this.FrequencySetupScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencySetupScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.FrequencySetupScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencySetupScrudViewContext.GetDisplayFields();
+                return this.FrequencySetupScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.FrequencySetupScrudViewContext.CountWhere(f);
+                return this.FrequencySetupScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.FrequencySetupScrudViewContext.GetWhere(pageNumber, f);
+                return this.FrequencySetupScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencySetupScrudViewContext.CountFiltered(filterName);
+                return this.FrequencySetupScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FrequencySetupScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.FrequencySetupScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

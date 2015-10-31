@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_verification_status(_tran_id bigint)" on the database.
     /// </summary>
-    public class GetVerificationStatusProcedure : DbAccess
+    public class GetVerificationStatusProcedure : DbAccess, IGetVerificationStatusRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

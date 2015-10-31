@@ -16,7 +16,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database table "hrm.employment_status_codes".
     /// </summary>
-    public class EmploymentStatusCode : DbAccess
+    public class EmploymentStatusCode : DbAccess, IEmploymentStatusCodeRepository
     {
         /// <summary>
         /// The schema of this table. Returns literal "hrm".
@@ -73,7 +73,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.employment_status_codes" to return a all instances of the "EmploymentStatusCode" class. 
+        /// Executes a select query on the table "hrm.employment_status_codes" to return all instances of the "EmploymentStatusCode" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "EmploymentStatusCode" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -102,7 +102,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.employment_status_codes" to return a all instances of the "EmploymentStatusCode" class to export. 
+        /// Executes a select query on the table "hrm.employment_status_codes" to return all instances of the "EmploymentStatusCode" class to export. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "EmploymentStatusCode" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -559,7 +559,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             return Factory.Get<MixERP.Net.Entities.HRM.EmploymentStatusCode>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='hrm.employment_status_codes' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.HRM
     public class EmployeeSocialNetworkDetailController : ApiController
     {
         /// <summary>
-        ///     The EmployeeSocialNetworkDetail data context.
+        ///     The EmployeeSocialNetworkDetail repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.EmployeeSocialNetworkDetail EmployeeSocialNetworkDetailContext;
+        private readonly IEmployeeSocialNetworkDetailRepository EmployeeSocialNetworkDetailRepository;
 
         public EmployeeSocialNetworkDetailController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.EmployeeSocialNetworkDetailContext = new MixERP.Net.Core.Modules.HRM.Data.EmployeeSocialNetworkDetail
+            this.EmployeeSocialNetworkDetailRepository = new MixERP.Net.Core.Modules.HRM.Data.EmployeeSocialNetworkDetail
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public EmployeeSocialNetworkDetailController(IEmployeeSocialNetworkDetailRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.EmployeeSocialNetworkDetailRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/employee-social-network-detail/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "employee_social_network_detail_id",
@@ -81,7 +97,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeSocialNetworkDetailContext.Count();
+                return this.EmployeeSocialNetworkDetailRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -112,7 +128,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeSocialNetworkDetailContext.GetAll();
+                return this.EmployeeSocialNetworkDetailRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -143,7 +159,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeSocialNetworkDetailContext.Export();
+                return this.EmployeeSocialNetworkDetailRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -175,7 +191,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeSocialNetworkDetailContext.Get(employeeSocialNetworkDetailId);
+                return this.EmployeeSocialNetworkDetailRepository.Get(employeeSocialNetworkDetailId);
             }
             catch (UnauthorizedException)
             {
@@ -202,7 +218,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeSocialNetworkDetailContext.Get(employeeSocialNetworkDetailIds);
+                return this.EmployeeSocialNetworkDetailRepository.Get(employeeSocialNetworkDetailIds);
             }
             catch (UnauthorizedException)
             {
@@ -233,7 +249,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeSocialNetworkDetailContext.GetPaginatedResult();
+                return this.EmployeeSocialNetworkDetailRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -265,7 +281,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeSocialNetworkDetailContext.GetPaginatedResult(pageNumber);
+                return this.EmployeeSocialNetworkDetailRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -298,7 +314,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.EmployeeSocialNetworkDetailContext.CountWhere(f);
+                return this.EmployeeSocialNetworkDetailRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -332,7 +348,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.EmployeeSocialNetworkDetailContext.GetWhere(pageNumber, f);
+                return this.EmployeeSocialNetworkDetailRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -364,7 +380,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeSocialNetworkDetailContext.CountFiltered(filterName);
+                return this.EmployeeSocialNetworkDetailRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -397,7 +413,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeSocialNetworkDetailContext.GetFiltered(pageNumber, filterName);
+                return this.EmployeeSocialNetworkDetailRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -428,7 +444,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeSocialNetworkDetailContext.GetDisplayFields();
+                return this.EmployeeSocialNetworkDetailRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -459,7 +475,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeSocialNetworkDetailContext.GetCustomFields(null);
+                return this.EmployeeSocialNetworkDetailRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -490,7 +506,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeSocialNetworkDetailContext.GetCustomFields(resourceId);
+                return this.EmployeeSocialNetworkDetailRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -529,7 +545,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.EmployeeSocialNetworkDetailContext.AddOrEdit(employeeSocialNetworkDetail, customFields);
+                return this.EmployeeSocialNetworkDetailRepository.AddOrEdit(employeeSocialNetworkDetail, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -565,7 +581,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.EmployeeSocialNetworkDetailContext.Add(employeeSocialNetworkDetail);
+                this.EmployeeSocialNetworkDetailRepository.Add(employeeSocialNetworkDetail);
             }
             catch (UnauthorizedException)
             {
@@ -602,7 +618,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.EmployeeSocialNetworkDetailContext.Update(employeeSocialNetworkDetail, employeeSocialNetworkDetailId);
+                this.EmployeeSocialNetworkDetailRepository.Update(employeeSocialNetworkDetail, employeeSocialNetworkDetailId);
             }
             catch (UnauthorizedException)
             {
@@ -647,7 +663,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.EmployeeSocialNetworkDetailContext.BulkImport(employeeSocialNetworkDetailCollection);
+                return this.EmployeeSocialNetworkDetailRepository.BulkImport(employeeSocialNetworkDetailCollection);
             }
             catch (UnauthorizedException)
             {
@@ -678,7 +694,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                this.EmployeeSocialNetworkDetailContext.Delete(employeeSocialNetworkDetailId);
+                this.EmployeeSocialNetworkDetailRepository.Delete(employeeSocialNetworkDetailId);
             }
             catch (UnauthorizedException)
             {

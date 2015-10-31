@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class ItemGroupController : ApiController
     {
         /// <summary>
-        ///     The ItemGroup data context.
+        ///     The ItemGroup repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.ItemGroup ItemGroupContext;
+        private readonly IItemGroupRepository ItemGroupRepository;
 
         public ItemGroupController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ItemGroupContext = new MixERP.Net.Schemas.Core.Data.ItemGroup
+            this.ItemGroupRepository = new MixERP.Net.Schemas.Core.Data.ItemGroup
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ItemGroupController(IItemGroupRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ItemGroupRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/item-group/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "item_group_id",
@@ -91,7 +107,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemGroupContext.Count();
+                return this.ItemGroupRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -122,7 +138,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemGroupContext.GetAll();
+                return this.ItemGroupRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -153,7 +169,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemGroupContext.Export();
+                return this.ItemGroupRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -185,7 +201,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemGroupContext.Get(itemGroupId);
+                return this.ItemGroupRepository.Get(itemGroupId);
             }
             catch (UnauthorizedException)
             {
@@ -212,7 +228,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemGroupContext.Get(itemGroupIds);
+                return this.ItemGroupRepository.Get(itemGroupIds);
             }
             catch (UnauthorizedException)
             {
@@ -243,7 +259,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemGroupContext.GetPaginatedResult();
+                return this.ItemGroupRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -275,7 +291,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemGroupContext.GetPaginatedResult(pageNumber);
+                return this.ItemGroupRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -308,7 +324,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ItemGroupContext.CountWhere(f);
+                return this.ItemGroupRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -342,7 +358,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ItemGroupContext.GetWhere(pageNumber, f);
+                return this.ItemGroupRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -374,7 +390,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemGroupContext.CountFiltered(filterName);
+                return this.ItemGroupRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -407,7 +423,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemGroupContext.GetFiltered(pageNumber, filterName);
+                return this.ItemGroupRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -438,7 +454,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemGroupContext.GetDisplayFields();
+                return this.ItemGroupRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -469,7 +485,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemGroupContext.GetCustomFields(null);
+                return this.ItemGroupRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -500,7 +516,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemGroupContext.GetCustomFields(resourceId);
+                return this.ItemGroupRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -539,7 +555,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ItemGroupContext.AddOrEdit(itemGroup, customFields);
+                return this.ItemGroupRepository.AddOrEdit(itemGroup, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -575,7 +591,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ItemGroupContext.Add(itemGroup);
+                this.ItemGroupRepository.Add(itemGroup);
             }
             catch (UnauthorizedException)
             {
@@ -612,7 +628,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ItemGroupContext.Update(itemGroup, itemGroupId);
+                this.ItemGroupRepository.Update(itemGroup, itemGroupId);
             }
             catch (UnauthorizedException)
             {
@@ -657,7 +673,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ItemGroupContext.BulkImport(itemGroupCollection);
+                return this.ItemGroupRepository.BulkImport(itemGroupCollection);
             }
             catch (UnauthorizedException)
             {
@@ -688,7 +704,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.ItemGroupContext.Delete(itemGroupId);
+                this.ItemGroupRepository.Delete(itemGroupId);
             }
             catch (UnauthorizedException)
             {

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.settle_party_due(_party_id bigint, _office_id integer)" on the database.
     /// </summary>
-    public class SettlePartyDueProcedure : DbAccess
+    public class SettlePartyDueProcedure : DbAccess, ISettlePartyDueRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

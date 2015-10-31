@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.HRM
     public class ResignationScrudViewController : ApiController
     {
         /// <summary>
-        ///     The ResignationScrudView data context.
+        ///     The ResignationScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.ResignationScrudView ResignationScrudViewContext;
+        private readonly IResignationScrudViewRepository ResignationScrudViewRepository;
 
         public ResignationScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ResignationScrudViewContext = new MixERP.Net.Core.Modules.HRM.Data.ResignationScrudView
+            this.ResignationScrudViewRepository = new MixERP.Net.Core.Modules.HRM.Data.ResignationScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ResignationScrudViewController(IResignationScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ResignationScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ResignationScrudViewContext.Count();
+                return this.ResignationScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ResignationScrudViewContext.Get();
+                return this.ResignationScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ResignationScrudViewContext.GetPaginatedResult();
+                return this.ResignationScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ResignationScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.ResignationScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ResignationScrudViewContext.GetDisplayFields();
+                return this.ResignationScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ResignationScrudViewContext.CountWhere(f);
+                return this.ResignationScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ResignationScrudViewContext.GetWhere(pageNumber, f);
+                return this.ResignationScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ResignationScrudViewContext.CountFiltered(filterName);
+                return this.ResignationScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ResignationScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.ResignationScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

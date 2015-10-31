@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class AgeingSlabScrudViewController : ApiController
     {
         /// <summary>
-        ///     The AgeingSlabScrudView data context.
+        ///     The AgeingSlabScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.AgeingSlabScrudView AgeingSlabScrudViewContext;
+        private readonly IAgeingSlabScrudViewRepository AgeingSlabScrudViewRepository;
 
         public AgeingSlabScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.AgeingSlabScrudViewContext = new MixERP.Net.Schemas.Core.Data.AgeingSlabScrudView
+            this.AgeingSlabScrudViewRepository = new MixERP.Net.Schemas.Core.Data.AgeingSlabScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public AgeingSlabScrudViewController(IAgeingSlabScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.AgeingSlabScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AgeingSlabScrudViewContext.Count();
+                return this.AgeingSlabScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AgeingSlabScrudViewContext.Get();
+                return this.AgeingSlabScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AgeingSlabScrudViewContext.GetPaginatedResult();
+                return this.AgeingSlabScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AgeingSlabScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.AgeingSlabScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AgeingSlabScrudViewContext.GetDisplayFields();
+                return this.AgeingSlabScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AgeingSlabScrudViewContext.CountWhere(f);
+                return this.AgeingSlabScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AgeingSlabScrudViewContext.GetWhere(pageNumber, f);
+                return this.AgeingSlabScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AgeingSlabScrudViewContext.CountFiltered(filterName);
+                return this.AgeingSlabScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AgeingSlabScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.AgeingSlabScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

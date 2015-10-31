@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Office
         /// </summary>
         public string _Catalog { get; set; }
 
-        private CreateUserProcedure procedure;
+        /// <summary>
+        ///     The CreateUser repository.
+        /// </summary>
+        private readonly ICreateUserRepository repository;
+
         public class Annotation
         {
             public int RoleId { get; set; }
@@ -52,19 +56,32 @@ namespace MixERP.Net.Api.Office
             public bool Elevated { get; set; }
         }
 
+
         public CreateUserController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new CreateUserProcedure
+
+            this.repository = new CreateUserProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public CreateUserController(ICreateUserRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "create user" annotation.
         /// </summary>
@@ -74,6 +91,10 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/procedures/create-user/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -89,6 +110,7 @@ namespace MixERP.Net.Api.Office
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "create user" entity.
         /// </summary>
@@ -98,6 +120,10 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/procedures/create-user/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -106,6 +132,7 @@ namespace MixERP.Net.Api.Office
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/office/procedures/create-user/execute")]
@@ -113,16 +140,16 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                this.procedure.RoleId = annotation.RoleId;
-                this.procedure.DepartmentId = annotation.DepartmentId;
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.UserName = annotation.UserName;
-                this.procedure.Password = annotation.Password;
-                this.procedure.FullName = annotation.FullName;
-                this.procedure.Elevated = annotation.Elevated;
+                this.repository.RoleId = annotation.RoleId;
+                this.repository.DepartmentId = annotation.DepartmentId;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.UserName = annotation.UserName;
+                this.repository.Password = annotation.Password;
+                this.repository.FullName = annotation.FullName;
+                this.repository.Elevated = annotation.Elevated;
 
 
-                this.procedure.Execute();
+                this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

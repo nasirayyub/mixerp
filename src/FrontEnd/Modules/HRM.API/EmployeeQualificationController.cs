@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.HRM
     public class EmployeeQualificationController : ApiController
     {
         /// <summary>
-        ///     The EmployeeQualification data context.
+        ///     The EmployeeQualification repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.EmployeeQualification EmployeeQualificationContext;
+        private readonly IEmployeeQualificationRepository EmployeeQualificationRepository;
 
         public EmployeeQualificationController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.EmployeeQualificationContext = new MixERP.Net.Core.Modules.HRM.Data.EmployeeQualification
+            this.EmployeeQualificationRepository = new MixERP.Net.Core.Modules.HRM.Data.EmployeeQualification
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public EmployeeQualificationController(IEmployeeQualificationRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.EmployeeQualificationRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/employee-qualification/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "employee_qualification_id",
@@ -87,7 +103,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeQualificationContext.Count();
+                return this.EmployeeQualificationRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -118,7 +134,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeQualificationContext.GetAll();
+                return this.EmployeeQualificationRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -149,7 +165,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeQualificationContext.Export();
+                return this.EmployeeQualificationRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -181,7 +197,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeQualificationContext.Get(employeeQualificationId);
+                return this.EmployeeQualificationRepository.Get(employeeQualificationId);
             }
             catch (UnauthorizedException)
             {
@@ -208,7 +224,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeQualificationContext.Get(employeeQualificationIds);
+                return this.EmployeeQualificationRepository.Get(employeeQualificationIds);
             }
             catch (UnauthorizedException)
             {
@@ -239,7 +255,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeQualificationContext.GetPaginatedResult();
+                return this.EmployeeQualificationRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -271,7 +287,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeQualificationContext.GetPaginatedResult(pageNumber);
+                return this.EmployeeQualificationRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -304,7 +320,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.EmployeeQualificationContext.CountWhere(f);
+                return this.EmployeeQualificationRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -338,7 +354,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.EmployeeQualificationContext.GetWhere(pageNumber, f);
+                return this.EmployeeQualificationRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -370,7 +386,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeQualificationContext.CountFiltered(filterName);
+                return this.EmployeeQualificationRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -403,7 +419,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeQualificationContext.GetFiltered(pageNumber, filterName);
+                return this.EmployeeQualificationRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -434,7 +450,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeQualificationContext.GetDisplayFields();
+                return this.EmployeeQualificationRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -465,7 +481,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeQualificationContext.GetCustomFields(null);
+                return this.EmployeeQualificationRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -496,7 +512,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeQualificationContext.GetCustomFields(resourceId);
+                return this.EmployeeQualificationRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -535,7 +551,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.EmployeeQualificationContext.AddOrEdit(employeeQualification, customFields);
+                return this.EmployeeQualificationRepository.AddOrEdit(employeeQualification, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -571,7 +587,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.EmployeeQualificationContext.Add(employeeQualification);
+                this.EmployeeQualificationRepository.Add(employeeQualification);
             }
             catch (UnauthorizedException)
             {
@@ -608,7 +624,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.EmployeeQualificationContext.Update(employeeQualification, employeeQualificationId);
+                this.EmployeeQualificationRepository.Update(employeeQualification, employeeQualificationId);
             }
             catch (UnauthorizedException)
             {
@@ -653,7 +669,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.EmployeeQualificationContext.BulkImport(employeeQualificationCollection);
+                return this.EmployeeQualificationRepository.BulkImport(employeeQualificationCollection);
             }
             catch (UnauthorizedException)
             {
@@ -684,7 +700,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                this.EmployeeQualificationContext.Delete(employeeQualificationId);
+                this.EmployeeQualificationRepository.Delete(employeeQualificationId);
             }
             catch (UnauthorizedException)
             {

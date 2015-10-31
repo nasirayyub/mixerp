@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class ShippingPackageShapeController : ApiController
     {
         /// <summary>
-        ///     The ShippingPackageShape data context.
+        ///     The ShippingPackageShape repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.ShippingPackageShape ShippingPackageShapeContext;
+        private readonly IShippingPackageShapeRepository ShippingPackageShapeRepository;
 
         public ShippingPackageShapeController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ShippingPackageShapeContext = new MixERP.Net.Schemas.Core.Data.ShippingPackageShape
+            this.ShippingPackageShapeRepository = new MixERP.Net.Schemas.Core.Data.ShippingPackageShape
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ShippingPackageShapeController(IShippingPackageShapeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ShippingPackageShapeRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/shipping-package-shape/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "shipping_package_shape_id",
@@ -81,7 +97,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeContext.Count();
+                return this.ShippingPackageShapeRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -112,7 +128,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeContext.GetAll();
+                return this.ShippingPackageShapeRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -143,7 +159,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeContext.Export();
+                return this.ShippingPackageShapeRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -175,7 +191,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeContext.Get(shippingPackageShapeId);
+                return this.ShippingPackageShapeRepository.Get(shippingPackageShapeId);
             }
             catch (UnauthorizedException)
             {
@@ -202,7 +218,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeContext.Get(shippingPackageShapeIds);
+                return this.ShippingPackageShapeRepository.Get(shippingPackageShapeIds);
             }
             catch (UnauthorizedException)
             {
@@ -233,7 +249,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeContext.GetPaginatedResult();
+                return this.ShippingPackageShapeRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -265,7 +281,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeContext.GetPaginatedResult(pageNumber);
+                return this.ShippingPackageShapeRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -298,7 +314,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ShippingPackageShapeContext.CountWhere(f);
+                return this.ShippingPackageShapeRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -332,7 +348,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ShippingPackageShapeContext.GetWhere(pageNumber, f);
+                return this.ShippingPackageShapeRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -364,7 +380,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeContext.CountFiltered(filterName);
+                return this.ShippingPackageShapeRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -397,7 +413,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeContext.GetFiltered(pageNumber, filterName);
+                return this.ShippingPackageShapeRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -428,7 +444,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeContext.GetDisplayFields();
+                return this.ShippingPackageShapeRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -459,7 +475,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeContext.GetCustomFields(null);
+                return this.ShippingPackageShapeRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -490,7 +506,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingPackageShapeContext.GetCustomFields(resourceId);
+                return this.ShippingPackageShapeRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -529,7 +545,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ShippingPackageShapeContext.AddOrEdit(shippingPackageShape, customFields);
+                return this.ShippingPackageShapeRepository.AddOrEdit(shippingPackageShape, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -565,7 +581,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ShippingPackageShapeContext.Add(shippingPackageShape);
+                this.ShippingPackageShapeRepository.Add(shippingPackageShape);
             }
             catch (UnauthorizedException)
             {
@@ -602,7 +618,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ShippingPackageShapeContext.Update(shippingPackageShape, shippingPackageShapeId);
+                this.ShippingPackageShapeRepository.Update(shippingPackageShape, shippingPackageShapeId);
             }
             catch (UnauthorizedException)
             {
@@ -647,7 +663,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ShippingPackageShapeContext.BulkImport(shippingPackageShapeCollection);
+                return this.ShippingPackageShapeRepository.BulkImport(shippingPackageShapeCollection);
             }
             catch (UnauthorizedException)
             {
@@ -678,7 +694,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.ShippingPackageShapeContext.Delete(shippingPackageShapeId);
+                this.ShippingPackageShapeRepository.Delete(shippingPackageShapeId);
             }
             catch (UnauthorizedException)
             {

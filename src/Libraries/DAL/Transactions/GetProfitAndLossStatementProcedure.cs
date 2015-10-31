@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_profit_and_loss_statement(_date_from date, _date_to date, _user_id integer, _office_id integer, _factor integer, _compact boolean)" on the database.
     /// </summary>
-    public class GetProfitAndLossStatementProcedure : DbAccess
+    public class GetProfitAndLossStatementProcedure : DbAccess, IGetProfitAndLossStatementRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

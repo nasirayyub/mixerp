@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.HRM
     public class OfficeHourScrudViewController : ApiController
     {
         /// <summary>
-        ///     The OfficeHourScrudView data context.
+        ///     The OfficeHourScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.OfficeHourScrudView OfficeHourScrudViewContext;
+        private readonly IOfficeHourScrudViewRepository OfficeHourScrudViewRepository;
 
         public OfficeHourScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.OfficeHourScrudViewContext = new MixERP.Net.Core.Modules.HRM.Data.OfficeHourScrudView
+            this.OfficeHourScrudViewRepository = new MixERP.Net.Core.Modules.HRM.Data.OfficeHourScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public OfficeHourScrudViewController(IOfficeHourScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.OfficeHourScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourScrudViewContext.Count();
+                return this.OfficeHourScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourScrudViewContext.Get();
+                return this.OfficeHourScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourScrudViewContext.GetPaginatedResult();
+                return this.OfficeHourScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.OfficeHourScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourScrudViewContext.GetDisplayFields();
+                return this.OfficeHourScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.OfficeHourScrudViewContext.CountWhere(f);
+                return this.OfficeHourScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.OfficeHourScrudViewContext.GetWhere(pageNumber, f);
+                return this.OfficeHourScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourScrudViewContext.CountFiltered(filterName);
+                return this.OfficeHourScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.OfficeHourScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.OfficeHourScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

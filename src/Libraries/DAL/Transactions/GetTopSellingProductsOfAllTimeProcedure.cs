@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_top_selling_products_of_all_time(top integer)" on the database.
     /// </summary>
-    public class GetTopSellingProductsOfAllTimeProcedure : DbAccess
+    public class GetTopSellingProductsOfAllTimeProcedure : DbAccess, IGetTopSellingProductsOfAllTimeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

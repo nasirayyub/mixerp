@@ -40,12 +40,17 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetRootAccountIdProcedure procedure;
+        /// <summary>
+        ///     The GetRootAccountId repository.
+        /// </summary>
+        private readonly IGetRootAccountIdRepository repository;
+
         public class Annotation
         {
             public long AccountId { get; set; }
             public long Parent { get; set; }
         }
+
 
         public GetRootAccountIdController()
         {
@@ -53,13 +58,25 @@ namespace MixERP.Net.Api.Core
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetRootAccountIdProcedure
+
+            this.repository = new GetRootAccountIdProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetRootAccountIdController(IGetRootAccountIdRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get root account id" annotation.
         /// </summary>
@@ -69,6 +86,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/get-root-account-id/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -80,6 +101,8 @@ namespace MixERP.Net.Api.Core
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/get-root-account-id/execute")]
@@ -87,11 +110,11 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.AccountId = annotation.AccountId;
-                this.procedure.Parent = annotation.Parent;
+                this.repository.AccountId = annotation.AccountId;
+                this.repository.Parent = annotation.Parent;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

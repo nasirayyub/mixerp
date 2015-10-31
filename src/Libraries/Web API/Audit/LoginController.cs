@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Audit.Data;
 
 namespace MixERP.Net.Api.Audit
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Audit
     public class LoginController : ApiController
     {
         /// <summary>
-        ///     The Login data context.
+        ///     The Login repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Audit.Data.Login LoginContext;
+        private readonly ILoginRepository LoginRepository;
 
         public LoginController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Audit
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.LoginContext = new MixERP.Net.Schemas.Audit.Data.Login
+            this.LoginRepository = new MixERP.Net.Schemas.Audit.Data.Login
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public LoginController(ILoginRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.LoginRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Audit
         [Route("~/api/audit/login/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "login_id",
@@ -83,7 +99,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoginContext.Count();
+                return this.LoginRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -114,7 +130,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoginContext.GetAll();
+                return this.LoginRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -145,7 +161,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoginContext.Export();
+                return this.LoginRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -177,7 +193,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoginContext.Get(loginId);
+                return this.LoginRepository.Get(loginId);
             }
             catch (UnauthorizedException)
             {
@@ -204,7 +220,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoginContext.Get(loginIds);
+                return this.LoginRepository.Get(loginIds);
             }
             catch (UnauthorizedException)
             {
@@ -235,7 +251,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoginContext.GetPaginatedResult();
+                return this.LoginRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -267,7 +283,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoginContext.GetPaginatedResult(pageNumber);
+                return this.LoginRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -300,7 +316,7 @@ namespace MixERP.Net.Api.Audit
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LoginContext.CountWhere(f);
+                return this.LoginRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -334,7 +350,7 @@ namespace MixERP.Net.Api.Audit
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LoginContext.GetWhere(pageNumber, f);
+                return this.LoginRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -366,7 +382,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoginContext.CountFiltered(filterName);
+                return this.LoginRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -399,7 +415,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoginContext.GetFiltered(pageNumber, filterName);
+                return this.LoginRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -430,7 +446,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoginContext.GetDisplayFields();
+                return this.LoginRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -461,7 +477,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoginContext.GetCustomFields(null);
+                return this.LoginRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -492,7 +508,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoginContext.GetCustomFields(resourceId);
+                return this.LoginRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -531,7 +547,7 @@ namespace MixERP.Net.Api.Audit
 
             try
             {
-                return this.LoginContext.AddOrEdit(login, customFields);
+                return this.LoginRepository.AddOrEdit(login, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -567,7 +583,7 @@ namespace MixERP.Net.Api.Audit
 
             try
             {
-                this.LoginContext.Add(login);
+                this.LoginRepository.Add(login);
             }
             catch (UnauthorizedException)
             {
@@ -604,7 +620,7 @@ namespace MixERP.Net.Api.Audit
 
             try
             {
-                this.LoginContext.Update(login, loginId);
+                this.LoginRepository.Update(login, loginId);
             }
             catch (UnauthorizedException)
             {
@@ -649,7 +665,7 @@ namespace MixERP.Net.Api.Audit
 
             try
             {
-                return this.LoginContext.BulkImport(loginCollection);
+                return this.LoginRepository.BulkImport(loginCollection);
             }
             catch (UnauthorizedException)
             {
@@ -680,7 +696,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                this.LoginContext.Delete(loginId);
+                this.LoginRepository.Delete(loginId);
             }
             catch (UnauthorizedException)
             {

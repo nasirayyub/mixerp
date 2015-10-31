@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_salesperson_name_by_salesperson_id(pg_arg0 integer)" on the database.
     /// </summary>
-    public class GetSalespersonNameBySalespersonIdProcedure : DbAccess
+    public class GetSalespersonNameBySalespersonIdProcedure : DbAccess, IGetSalespersonNameBySalespersonIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

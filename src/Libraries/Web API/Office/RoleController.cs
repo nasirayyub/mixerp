@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Office.Data;
 
 namespace MixERP.Net.Api.Office
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Office
     public class RoleController : ApiController
     {
         /// <summary>
-        ///     The Role data context.
+        ///     The Role repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Office.Data.Role RoleContext;
+        private readonly IRoleRepository RoleRepository;
 
         public RoleController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Office
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.RoleContext = new MixERP.Net.Schemas.Office.Data.Role
+            this.RoleRepository = new MixERP.Net.Schemas.Office.Data.Role
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public RoleController(IRoleRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.RoleRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/role/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "role_id",
@@ -82,7 +98,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.RoleContext.Count();
+                return this.RoleRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -113,7 +129,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.RoleContext.GetAll();
+                return this.RoleRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -144,7 +160,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.RoleContext.Export();
+                return this.RoleRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -176,7 +192,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.RoleContext.Get(roleId);
+                return this.RoleRepository.Get(roleId);
             }
             catch (UnauthorizedException)
             {
@@ -203,7 +219,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.RoleContext.Get(roleIds);
+                return this.RoleRepository.Get(roleIds);
             }
             catch (UnauthorizedException)
             {
@@ -234,7 +250,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.RoleContext.GetPaginatedResult();
+                return this.RoleRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -266,7 +282,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.RoleContext.GetPaginatedResult(pageNumber);
+                return this.RoleRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -299,7 +315,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.RoleContext.CountWhere(f);
+                return this.RoleRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -333,7 +349,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.RoleContext.GetWhere(pageNumber, f);
+                return this.RoleRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -365,7 +381,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.RoleContext.CountFiltered(filterName);
+                return this.RoleRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -398,7 +414,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.RoleContext.GetFiltered(pageNumber, filterName);
+                return this.RoleRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -429,7 +445,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.RoleContext.GetDisplayFields();
+                return this.RoleRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -460,7 +476,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.RoleContext.GetCustomFields(null);
+                return this.RoleRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -491,7 +507,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.RoleContext.GetCustomFields(resourceId);
+                return this.RoleRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -530,7 +546,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                return this.RoleContext.AddOrEdit(role, customFields);
+                return this.RoleRepository.AddOrEdit(role, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -566,7 +582,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                this.RoleContext.Add(role);
+                this.RoleRepository.Add(role);
             }
             catch (UnauthorizedException)
             {
@@ -603,7 +619,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                this.RoleContext.Update(role, roleId);
+                this.RoleRepository.Update(role, roleId);
             }
             catch (UnauthorizedException)
             {
@@ -648,7 +664,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                return this.RoleContext.BulkImport(roleCollection);
+                return this.RoleRepository.BulkImport(roleCollection);
             }
             catch (UnauthorizedException)
             {
@@ -679,7 +695,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                this.RoleContext.Delete(roleId);
+                this.RoleRepository.Delete(roleId);
             }
             catch (UnauthorizedException)
             {

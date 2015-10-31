@@ -16,7 +16,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database table "core.state_sales_taxes".
     /// </summary>
-    public class StateSalesTax : DbAccess
+    public class StateSalesTax : DbAccess, IStateSalesTaxRepository
     {
         /// <summary>
         /// The schema of this table. Returns literal "core".
@@ -73,7 +73,7 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.state_sales_taxes" to return a all instances of the "StateSalesTax" class. 
+        /// Executes a select query on the table "core.state_sales_taxes" to return all instances of the "StateSalesTax" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "StateSalesTax" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -102,7 +102,7 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.state_sales_taxes" to return a all instances of the "StateSalesTax" class to export. 
+        /// Executes a select query on the table "core.state_sales_taxes" to return all instances of the "StateSalesTax" class to export. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "StateSalesTax" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -559,7 +559,7 @@ namespace MixERP.Net.Schemas.Core.Data
             return Factory.Get<MixERP.Net.Entities.Core.StateSalesTax>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='core.state_sales_taxes' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

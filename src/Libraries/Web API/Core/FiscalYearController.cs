@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class FiscalYearController : ApiController
     {
         /// <summary>
-        ///     The FiscalYear data context.
+        ///     The FiscalYear repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.FiscalYear FiscalYearContext;
+        private readonly IFiscalYearRepository FiscalYearRepository;
 
         public FiscalYearController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.FiscalYearContext = new MixERP.Net.Schemas.Core.Data.FiscalYear
+            this.FiscalYearRepository = new MixERP.Net.Schemas.Core.Data.FiscalYear
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public FiscalYearController(IFiscalYearRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.FiscalYearRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/fiscal-year/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "fiscal_year_code",
@@ -81,7 +97,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FiscalYearContext.Count();
+                return this.FiscalYearRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -112,7 +128,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FiscalYearContext.GetAll();
+                return this.FiscalYearRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -143,7 +159,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FiscalYearContext.Export();
+                return this.FiscalYearRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -175,7 +191,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FiscalYearContext.Get(fiscalYearCode);
+                return this.FiscalYearRepository.Get(fiscalYearCode);
             }
             catch (UnauthorizedException)
             {
@@ -202,7 +218,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FiscalYearContext.Get(fiscalYearCodes);
+                return this.FiscalYearRepository.Get(fiscalYearCodes);
             }
             catch (UnauthorizedException)
             {
@@ -233,7 +249,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FiscalYearContext.GetPaginatedResult();
+                return this.FiscalYearRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -265,7 +281,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FiscalYearContext.GetPaginatedResult(pageNumber);
+                return this.FiscalYearRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -298,7 +314,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.FiscalYearContext.CountWhere(f);
+                return this.FiscalYearRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -332,7 +348,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.FiscalYearContext.GetWhere(pageNumber, f);
+                return this.FiscalYearRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -364,7 +380,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FiscalYearContext.CountFiltered(filterName);
+                return this.FiscalYearRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -397,7 +413,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FiscalYearContext.GetFiltered(pageNumber, filterName);
+                return this.FiscalYearRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -428,7 +444,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FiscalYearContext.GetDisplayFields();
+                return this.FiscalYearRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -459,7 +475,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FiscalYearContext.GetCustomFields(null);
+                return this.FiscalYearRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -490,7 +506,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FiscalYearContext.GetCustomFields(resourceId);
+                return this.FiscalYearRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -529,7 +545,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.FiscalYearContext.AddOrEdit(fiscalYear, customFields);
+                return this.FiscalYearRepository.AddOrEdit(fiscalYear, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -565,7 +581,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.FiscalYearContext.Add(fiscalYear);
+                this.FiscalYearRepository.Add(fiscalYear);
             }
             catch (UnauthorizedException)
             {
@@ -602,7 +618,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.FiscalYearContext.Update(fiscalYear, fiscalYearCode);
+                this.FiscalYearRepository.Update(fiscalYear, fiscalYearCode);
             }
             catch (UnauthorizedException)
             {
@@ -647,7 +663,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.FiscalYearContext.BulkImport(fiscalYearCollection);
+                return this.FiscalYearRepository.BulkImport(fiscalYearCollection);
             }
             catch (UnauthorizedException)
             {
@@ -678,7 +694,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.FiscalYearContext.Delete(fiscalYearCode);
+                this.FiscalYearRepository.Delete(fiscalYearCode);
             }
             catch (UnauthorizedException)
             {

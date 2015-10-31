@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_state_id_by_shipping_address_code(pg_arg0 text, pg_arg1 bigint)" on the database.
     /// </summary>
-    public class GetStateIdByShippingAddressCodeProcedure : DbAccess
+    public class GetStateIdByShippingAddressCodeProcedure : DbAccess, IGetStateIdByShippingAddressCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

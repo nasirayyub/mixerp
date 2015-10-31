@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class ItemSellingPriceController : ApiController
     {
         /// <summary>
-        ///     The ItemSellingPrice data context.
+        ///     The ItemSellingPrice repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.ItemSellingPrice ItemSellingPriceContext;
+        private readonly IItemSellingPriceRepository ItemSellingPriceRepository;
 
         public ItemSellingPriceController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ItemSellingPriceContext = new MixERP.Net.Schemas.Core.Data.ItemSellingPrice
+            this.ItemSellingPriceRepository = new MixERP.Net.Schemas.Core.Data.ItemSellingPrice
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ItemSellingPriceController(IItemSellingPriceRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ItemSellingPriceRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/item-selling-price/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "item_selling_price_id",
@@ -84,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceContext.Count();
+                return this.ItemSellingPriceRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -115,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceContext.GetAll();
+                return this.ItemSellingPriceRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -146,7 +162,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceContext.Export();
+                return this.ItemSellingPriceRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -178,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceContext.Get(itemSellingPriceId);
+                return this.ItemSellingPriceRepository.Get(itemSellingPriceId);
             }
             catch (UnauthorizedException)
             {
@@ -205,7 +221,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceContext.Get(itemSellingPriceIds);
+                return this.ItemSellingPriceRepository.Get(itemSellingPriceIds);
             }
             catch (UnauthorizedException)
             {
@@ -236,7 +252,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceContext.GetPaginatedResult();
+                return this.ItemSellingPriceRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -268,7 +284,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceContext.GetPaginatedResult(pageNumber);
+                return this.ItemSellingPriceRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -301,7 +317,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ItemSellingPriceContext.CountWhere(f);
+                return this.ItemSellingPriceRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -335,7 +351,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ItemSellingPriceContext.GetWhere(pageNumber, f);
+                return this.ItemSellingPriceRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -367,7 +383,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceContext.CountFiltered(filterName);
+                return this.ItemSellingPriceRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -400,7 +416,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceContext.GetFiltered(pageNumber, filterName);
+                return this.ItemSellingPriceRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -431,7 +447,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceContext.GetDisplayFields();
+                return this.ItemSellingPriceRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -462,7 +478,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceContext.GetCustomFields(null);
+                return this.ItemSellingPriceRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -493,7 +509,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceContext.GetCustomFields(resourceId);
+                return this.ItemSellingPriceRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -532,7 +548,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ItemSellingPriceContext.AddOrEdit(itemSellingPrice, customFields);
+                return this.ItemSellingPriceRepository.AddOrEdit(itemSellingPrice, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -568,7 +584,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ItemSellingPriceContext.Add(itemSellingPrice);
+                this.ItemSellingPriceRepository.Add(itemSellingPrice);
             }
             catch (UnauthorizedException)
             {
@@ -605,7 +621,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ItemSellingPriceContext.Update(itemSellingPrice, itemSellingPriceId);
+                this.ItemSellingPriceRepository.Update(itemSellingPrice, itemSellingPriceId);
             }
             catch (UnauthorizedException)
             {
@@ -650,7 +666,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ItemSellingPriceContext.BulkImport(itemSellingPriceCollection);
+                return this.ItemSellingPriceRepository.BulkImport(itemSellingPriceCollection);
             }
             catch (UnauthorizedException)
             {
@@ -681,7 +697,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.ItemSellingPriceContext.Delete(itemSellingPriceId);
+                this.ItemSellingPriceRepository.Delete(itemSellingPriceId);
             }
             catch (UnauthorizedException)
             {

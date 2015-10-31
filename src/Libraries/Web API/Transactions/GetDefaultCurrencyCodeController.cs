@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetDefaultCurrencyCodeProcedure procedure;
+        /// <summary>
+        ///     The GetDefaultCurrencyCode repository.
+        /// </summary>
+        private readonly IGetDefaultCurrencyCodeRepository repository;
+
         public class Annotation
         {
             public int CashRepositoryId { get; set; }
         }
+
 
         public GetDefaultCurrencyCodeController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Transactions
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetDefaultCurrencyCodeProcedure
+
+            this.repository = new GetDefaultCurrencyCodeProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetDefaultCurrencyCodeController(IGetDefaultCurrencyCodeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get default currency code" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-default-currency-code/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -78,6 +99,8 @@ namespace MixERP.Net.Api.Transactions
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/get-default-currency-code/execute")]
@@ -85,10 +108,10 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.CashRepositoryId = annotation.CashRepositoryId;
+                this.repository.CashRepositoryId = annotation.CashRepositoryId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

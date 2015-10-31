@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private PostReceiptProcedure procedure;
+        /// <summary>
+        ///     The PostReceipt repository.
+        /// </summary>
+        private readonly IPostReceiptRepository repository;
+
         public class Annotation
         {
             public int UserId { get; set; }
@@ -63,19 +67,32 @@ namespace MixERP.Net.Api.Transactions
             public long CascadingTranId { get; set; }
         }
 
+
         public PostReceiptController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new PostReceiptProcedure
+
+            this.repository = new PostReceiptProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public PostReceiptController(IPostReceiptRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "post receipt" annotation.
         /// </summary>
@@ -85,6 +102,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/post-receipt/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -112,6 +133,8 @@ namespace MixERP.Net.Api.Transactions
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/post-receipt/execute")]
@@ -119,27 +142,27 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.LoginId = annotation.LoginId;
-                this.procedure.PartyCode = annotation.PartyCode;
-                this.procedure.CurrencyCode = annotation.CurrencyCode;
-                this.procedure.Amount = annotation.Amount;
-                this.procedure.ExchangeRateDebit = annotation.ExchangeRateDebit;
-                this.procedure.ExchangeRateCredit = annotation.ExchangeRateCredit;
-                this.procedure.ReferenceNumber = annotation.ReferenceNumber;
-                this.procedure.StatementReference = annotation.StatementReference;
-                this.procedure.CostCenterId = annotation.CostCenterId;
-                this.procedure.CashRepositoryId = annotation.CashRepositoryId;
-                this.procedure.PostedDate = annotation.PostedDate;
-                this.procedure.BankAccountId = annotation.BankAccountId;
-                this.procedure.PaymentCardId = annotation.PaymentCardId;
-                this.procedure.BankInstrumentCode = annotation.BankInstrumentCode;
-                this.procedure.BankTranCode = annotation.BankTranCode;
-                this.procedure.CascadingTranId = annotation.CascadingTranId;
+                this.repository.UserId = annotation.UserId;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.LoginId = annotation.LoginId;
+                this.repository.PartyCode = annotation.PartyCode;
+                this.repository.CurrencyCode = annotation.CurrencyCode;
+                this.repository.Amount = annotation.Amount;
+                this.repository.ExchangeRateDebit = annotation.ExchangeRateDebit;
+                this.repository.ExchangeRateCredit = annotation.ExchangeRateCredit;
+                this.repository.ReferenceNumber = annotation.ReferenceNumber;
+                this.repository.StatementReference = annotation.StatementReference;
+                this.repository.CostCenterId = annotation.CostCenterId;
+                this.repository.CashRepositoryId = annotation.CashRepositoryId;
+                this.repository.PostedDate = annotation.PostedDate;
+                this.repository.BankAccountId = annotation.BankAccountId;
+                this.repository.PaymentCardId = annotation.PaymentCardId;
+                this.repository.BankInstrumentCode = annotation.BankInstrumentCode;
+                this.repository.BankTranCode = annotation.BankTranCode;
+                this.repository.CascadingTranId = annotation.CascadingTranId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

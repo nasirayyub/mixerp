@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetTransactionCodeProcedure procedure;
+        /// <summary>
+        ///     The GetTransactionCode repository.
+        /// </summary>
+        private readonly IGetTransactionCodeRepository repository;
+
         public class Annotation
         {
             public DateTime ValueDate { get; set; }
@@ -49,19 +53,32 @@ namespace MixERP.Net.Api.Transactions
             public long LoginId { get; set; }
         }
 
+
         public GetTransactionCodeController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetTransactionCodeProcedure
+
+            this.repository = new GetTransactionCodeProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetTransactionCodeController(IGetTransactionCodeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get transaction code" annotation.
         /// </summary>
@@ -71,6 +88,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-transaction-code/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -84,6 +105,8 @@ namespace MixERP.Net.Api.Transactions
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/get-transaction-code/execute")]
@@ -91,13 +114,13 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.ValueDate = annotation.ValueDate;
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.LoginId = annotation.LoginId;
+                this.repository.ValueDate = annotation.ValueDate;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.UserId = annotation.UserId;
+                this.repository.LoginId = annotation.LoginId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

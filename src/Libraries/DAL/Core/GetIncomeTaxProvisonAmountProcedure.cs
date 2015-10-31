@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_income_tax_provison_amount(_office_id integer, _profit numeric, _balance numeric)" on the database.
     /// </summary>
-    public class GetIncomeTaxProvisonAmountProcedure : DbAccess
+    public class GetIncomeTaxProvisonAmountProcedure : DbAccess, IGetIncomeTaxProvisonAmountRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

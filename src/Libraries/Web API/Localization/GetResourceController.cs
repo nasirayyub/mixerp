@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Localization
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetResourceProcedure procedure;
+        /// <summary>
+        ///     The GetResource repository.
+        /// </summary>
+        private readonly IGetResourceRepository repository;
+
         public class Annotation
         {
             public string CultureCode { get; set; }
@@ -48,19 +52,32 @@ namespace MixERP.Net.Api.Localization
             public string Key { get; set; }
         }
 
+
         public GetResourceController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetResourceProcedure
+
+            this.repository = new GetResourceProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetResourceController(IGetResourceRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get resource" annotation.
         /// </summary>
@@ -70,6 +87,10 @@ namespace MixERP.Net.Api.Localization
         [Route("~/api/localization/procedures/get-resource/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -82,6 +103,8 @@ namespace MixERP.Net.Api.Localization
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/localization/procedures/get-resource/execute")]
@@ -89,12 +112,12 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                this.procedure.CultureCode = annotation.CultureCode;
-                this.procedure.ResourceClass = annotation.ResourceClass;
-                this.procedure.Key = annotation.Key;
+                this.repository.CultureCode = annotation.CultureCode;
+                this.repository.ResourceClass = annotation.ResourceClass;
+                this.repository.Key = annotation.Key;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

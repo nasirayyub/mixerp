@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Transactions.Data;
 
 namespace MixERP.Net.Api.Transactions
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Transactions
     public class CustomerReceiptController : ApiController
     {
         /// <summary>
-        ///     The CustomerReceipt data context.
+        ///     The CustomerReceipt repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Transactions.Data.CustomerReceipt CustomerReceiptContext;
+        private readonly ICustomerReceiptRepository CustomerReceiptRepository;
 
         public CustomerReceiptController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Transactions
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.CustomerReceiptContext = new MixERP.Net.Schemas.Transactions.Data.CustomerReceipt
+            this.CustomerReceiptRepository = new MixERP.Net.Schemas.Transactions.Data.CustomerReceipt
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public CustomerReceiptController(ICustomerReceiptRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.CustomerReceiptRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/customer-receipt/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "receipt_id",
@@ -87,7 +103,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.CustomerReceiptContext.Count();
+                return this.CustomerReceiptRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -118,7 +134,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.CustomerReceiptContext.GetAll();
+                return this.CustomerReceiptRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -149,7 +165,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.CustomerReceiptContext.Export();
+                return this.CustomerReceiptRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -181,7 +197,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.CustomerReceiptContext.Get(receiptId);
+                return this.CustomerReceiptRepository.Get(receiptId);
             }
             catch (UnauthorizedException)
             {
@@ -208,7 +224,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.CustomerReceiptContext.Get(receiptIds);
+                return this.CustomerReceiptRepository.Get(receiptIds);
             }
             catch (UnauthorizedException)
             {
@@ -239,7 +255,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.CustomerReceiptContext.GetPaginatedResult();
+                return this.CustomerReceiptRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -271,7 +287,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.CustomerReceiptContext.GetPaginatedResult(pageNumber);
+                return this.CustomerReceiptRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -304,7 +320,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CustomerReceiptContext.CountWhere(f);
+                return this.CustomerReceiptRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -338,7 +354,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CustomerReceiptContext.GetWhere(pageNumber, f);
+                return this.CustomerReceiptRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -370,7 +386,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.CustomerReceiptContext.CountFiltered(filterName);
+                return this.CustomerReceiptRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -403,7 +419,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.CustomerReceiptContext.GetFiltered(pageNumber, filterName);
+                return this.CustomerReceiptRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -434,7 +450,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.CustomerReceiptContext.GetDisplayFields();
+                return this.CustomerReceiptRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -465,7 +481,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.CustomerReceiptContext.GetCustomFields(null);
+                return this.CustomerReceiptRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -496,7 +512,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.CustomerReceiptContext.GetCustomFields(resourceId);
+                return this.CustomerReceiptRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -535,7 +551,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.CustomerReceiptContext.AddOrEdit(customerReceipt, customFields);
+                return this.CustomerReceiptRepository.AddOrEdit(customerReceipt, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -571,7 +587,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.CustomerReceiptContext.Add(customerReceipt);
+                this.CustomerReceiptRepository.Add(customerReceipt);
             }
             catch (UnauthorizedException)
             {
@@ -608,7 +624,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.CustomerReceiptContext.Update(customerReceipt, receiptId);
+                this.CustomerReceiptRepository.Update(customerReceipt, receiptId);
             }
             catch (UnauthorizedException)
             {
@@ -653,7 +669,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.CustomerReceiptContext.BulkImport(customerReceiptCollection);
+                return this.CustomerReceiptRepository.BulkImport(customerReceiptCollection);
             }
             catch (UnauthorizedException)
             {
@@ -684,7 +700,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.CustomerReceiptContext.Delete(receiptId);
+                this.CustomerReceiptRepository.Delete(receiptId);
             }
             catch (UnauthorizedException)
             {

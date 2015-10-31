@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_average_party_transaction(party_id bigint, office_id integer)" on the database.
     /// </summary>
-    public class GetAveragePartyTransactionProcedure : DbAccess
+    public class GetAveragePartyTransactionProcedure : DbAccess, IGetAveragePartyTransactionRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

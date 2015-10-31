@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_recurrence_type_id_by_recurrence_type_code(pg_arg0 text)" on the database.
     /// </summary>
-    public class GetRecurrenceTypeIdByRecurrenceTypeCodeProcedure : DbAccess
+    public class GetRecurrenceTypeIdByRecurrenceTypeCodeProcedure : DbAccess, IGetRecurrenceTypeIdByRecurrenceTypeCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

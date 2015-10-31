@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_mavcogs(_item_id integer, _store_id integer, _base_quantity numeric, _factor numeric)" on the database.
     /// </summary>
-    public class GetMavcogsProcedure : DbAccess
+    public class GetMavcogsProcedure : DbAccess, IGetMavcogsRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

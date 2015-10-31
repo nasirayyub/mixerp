@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class CashFlowSetupScrudViewController : ApiController
     {
         /// <summary>
-        ///     The CashFlowSetupScrudView data context.
+        ///     The CashFlowSetupScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.CashFlowSetupScrudView CashFlowSetupScrudViewContext;
+        private readonly ICashFlowSetupScrudViewRepository CashFlowSetupScrudViewRepository;
 
         public CashFlowSetupScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.CashFlowSetupScrudViewContext = new MixERP.Net.Schemas.Core.Data.CashFlowSetupScrudView
+            this.CashFlowSetupScrudViewRepository = new MixERP.Net.Schemas.Core.Data.CashFlowSetupScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public CashFlowSetupScrudViewController(ICashFlowSetupScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.CashFlowSetupScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupScrudViewContext.Count();
+                return this.CashFlowSetupScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupScrudViewContext.Get();
+                return this.CashFlowSetupScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupScrudViewContext.GetPaginatedResult();
+                return this.CashFlowSetupScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.CashFlowSetupScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupScrudViewContext.GetDisplayFields();
+                return this.CashFlowSetupScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CashFlowSetupScrudViewContext.CountWhere(f);
+                return this.CashFlowSetupScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CashFlowSetupScrudViewContext.GetWhere(pageNumber, f);
+                return this.CashFlowSetupScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupScrudViewContext.CountFiltered(filterName);
+                return this.CashFlowSetupScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.CashFlowSetupScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.CashFlowSetupScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

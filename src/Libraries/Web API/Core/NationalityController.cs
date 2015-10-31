@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class NationalityController : ApiController
     {
         /// <summary>
-        ///     The Nationality data context.
+        ///     The Nationality repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.Nationality NationalityContext;
+        private readonly INationalityRepository NationalityRepository;
 
         public NationalityController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.NationalityContext = new MixERP.Net.Schemas.Core.Data.Nationality
+            this.NationalityRepository = new MixERP.Net.Schemas.Core.Data.Nationality
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public NationalityController(INationalityRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.NationalityRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/nationality/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "nationality_code",
@@ -79,7 +95,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.NationalityContext.Count();
+                return this.NationalityRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -110,7 +126,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.NationalityContext.GetAll();
+                return this.NationalityRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -141,7 +157,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.NationalityContext.Export();
+                return this.NationalityRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -173,7 +189,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.NationalityContext.Get(nationalityCode);
+                return this.NationalityRepository.Get(nationalityCode);
             }
             catch (UnauthorizedException)
             {
@@ -200,7 +216,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.NationalityContext.Get(nationalityCodes);
+                return this.NationalityRepository.Get(nationalityCodes);
             }
             catch (UnauthorizedException)
             {
@@ -231,7 +247,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.NationalityContext.GetPaginatedResult();
+                return this.NationalityRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -263,7 +279,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.NationalityContext.GetPaginatedResult(pageNumber);
+                return this.NationalityRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -296,7 +312,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.NationalityContext.CountWhere(f);
+                return this.NationalityRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -330,7 +346,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.NationalityContext.GetWhere(pageNumber, f);
+                return this.NationalityRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -362,7 +378,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.NationalityContext.CountFiltered(filterName);
+                return this.NationalityRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -395,7 +411,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.NationalityContext.GetFiltered(pageNumber, filterName);
+                return this.NationalityRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -426,7 +442,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.NationalityContext.GetDisplayFields();
+                return this.NationalityRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -457,7 +473,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.NationalityContext.GetCustomFields(null);
+                return this.NationalityRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -488,7 +504,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.NationalityContext.GetCustomFields(resourceId);
+                return this.NationalityRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -527,7 +543,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.NationalityContext.AddOrEdit(nationality, customFields);
+                return this.NationalityRepository.AddOrEdit(nationality, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -563,7 +579,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.NationalityContext.Add(nationality);
+                this.NationalityRepository.Add(nationality);
             }
             catch (UnauthorizedException)
             {
@@ -600,7 +616,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.NationalityContext.Update(nationality, nationalityCode);
+                this.NationalityRepository.Update(nationality, nationalityCode);
             }
             catch (UnauthorizedException)
             {
@@ -645,7 +661,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.NationalityContext.BulkImport(nationalityCollection);
+                return this.NationalityRepository.BulkImport(nationalityCollection);
             }
             catch (UnauthorizedException)
             {
@@ -676,7 +692,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.NationalityContext.Delete(nationalityCode);
+                this.NationalityRepository.Delete(nationalityCode);
             }
             catch (UnauthorizedException)
             {

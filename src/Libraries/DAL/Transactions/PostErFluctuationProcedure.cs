@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.post_er_fluctuation(_user_id integer, _login_id bigint, _office_id integer, _value_date date)" on the database.
     /// </summary>
-    public class PostErFluctuationProcedure : DbAccess
+    public class PostErFluctuationProcedure : DbAccess, IPostErFluctuationRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

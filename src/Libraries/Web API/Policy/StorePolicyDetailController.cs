@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Policy.Data;
 
 namespace MixERP.Net.Api.Policy
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Policy
     public class StorePolicyDetailController : ApiController
     {
         /// <summary>
-        ///     The StorePolicyDetail data context.
+        ///     The StorePolicyDetail repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Policy.Data.StorePolicyDetail StorePolicyDetailContext;
+        private readonly IStorePolicyDetailRepository StorePolicyDetailRepository;
 
         public StorePolicyDetailController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Policy
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.StorePolicyDetailContext = new MixERP.Net.Schemas.Policy.Data.StorePolicyDetail
+            this.StorePolicyDetailRepository = new MixERP.Net.Schemas.Policy.Data.StorePolicyDetail
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public StorePolicyDetailController(IStorePolicyDetailRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.StorePolicyDetailRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/store-policy-detail/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "store_policy_detail_id",
@@ -81,7 +97,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.StorePolicyDetailContext.Count();
+                return this.StorePolicyDetailRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -112,7 +128,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.StorePolicyDetailContext.GetAll();
+                return this.StorePolicyDetailRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -143,7 +159,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.StorePolicyDetailContext.Export();
+                return this.StorePolicyDetailRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -175,7 +191,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.StorePolicyDetailContext.Get(storePolicyDetailId);
+                return this.StorePolicyDetailRepository.Get(storePolicyDetailId);
             }
             catch (UnauthorizedException)
             {
@@ -202,7 +218,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.StorePolicyDetailContext.Get(storePolicyDetailIds);
+                return this.StorePolicyDetailRepository.Get(storePolicyDetailIds);
             }
             catch (UnauthorizedException)
             {
@@ -233,7 +249,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.StorePolicyDetailContext.GetPaginatedResult();
+                return this.StorePolicyDetailRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -265,7 +281,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.StorePolicyDetailContext.GetPaginatedResult(pageNumber);
+                return this.StorePolicyDetailRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -298,7 +314,7 @@ namespace MixERP.Net.Api.Policy
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.StorePolicyDetailContext.CountWhere(f);
+                return this.StorePolicyDetailRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -332,7 +348,7 @@ namespace MixERP.Net.Api.Policy
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.StorePolicyDetailContext.GetWhere(pageNumber, f);
+                return this.StorePolicyDetailRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -364,7 +380,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.StorePolicyDetailContext.CountFiltered(filterName);
+                return this.StorePolicyDetailRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -397,7 +413,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.StorePolicyDetailContext.GetFiltered(pageNumber, filterName);
+                return this.StorePolicyDetailRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -428,7 +444,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.StorePolicyDetailContext.GetDisplayFields();
+                return this.StorePolicyDetailRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -459,7 +475,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.StorePolicyDetailContext.GetCustomFields(null);
+                return this.StorePolicyDetailRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -490,7 +506,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.StorePolicyDetailContext.GetCustomFields(resourceId);
+                return this.StorePolicyDetailRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -529,7 +545,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                return this.StorePolicyDetailContext.AddOrEdit(storePolicyDetail, customFields);
+                return this.StorePolicyDetailRepository.AddOrEdit(storePolicyDetail, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -565,7 +581,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                this.StorePolicyDetailContext.Add(storePolicyDetail);
+                this.StorePolicyDetailRepository.Add(storePolicyDetail);
             }
             catch (UnauthorizedException)
             {
@@ -602,7 +618,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                this.StorePolicyDetailContext.Update(storePolicyDetail, storePolicyDetailId);
+                this.StorePolicyDetailRepository.Update(storePolicyDetail, storePolicyDetailId);
             }
             catch (UnauthorizedException)
             {
@@ -647,7 +663,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                return this.StorePolicyDetailContext.BulkImport(storePolicyDetailCollection);
+                return this.StorePolicyDetailRepository.BulkImport(storePolicyDetailCollection);
             }
             catch (UnauthorizedException)
             {
@@ -678,7 +694,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                this.StorePolicyDetailContext.Delete(storePolicyDetailId);
+                this.StorePolicyDetailRepository.Delete(storePolicyDetailId);
             }
             catch (UnauthorizedException)
             {

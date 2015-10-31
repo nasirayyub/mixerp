@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.is_leap_year(pg_arg0 integer)" on the database.
     /// </summary>
-    public class IsLeapYearProcedure : DbAccess
+    public class IsLeapYearProcedure : DbAccess, IIsLeapYearRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

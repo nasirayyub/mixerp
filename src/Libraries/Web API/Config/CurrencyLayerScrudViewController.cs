@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Config.Data;
 
 namespace MixERP.Net.Api.Config
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Config
     public class CurrencyLayerScrudViewController : ApiController
     {
         /// <summary>
-        ///     The CurrencyLayerScrudView data context.
+        ///     The CurrencyLayerScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Config.Data.CurrencyLayerScrudView CurrencyLayerScrudViewContext;
+        private readonly ICurrencyLayerScrudViewRepository CurrencyLayerScrudViewRepository;
 
         public CurrencyLayerScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Config
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.CurrencyLayerScrudViewContext = new MixERP.Net.Schemas.Config.Data.CurrencyLayerScrudView
+            this.CurrencyLayerScrudViewRepository = new MixERP.Net.Schemas.Config.Data.CurrencyLayerScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public CurrencyLayerScrudViewController(ICurrencyLayerScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.CurrencyLayerScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.CurrencyLayerScrudViewContext.Count();
+                return this.CurrencyLayerScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.CurrencyLayerScrudViewContext.Get();
+                return this.CurrencyLayerScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.CurrencyLayerScrudViewContext.GetPaginatedResult();
+                return this.CurrencyLayerScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.CurrencyLayerScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.CurrencyLayerScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -186,7 +197,7 @@ namespace MixERP.Net.Api.Config
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CurrencyLayerScrudViewContext.CountWhere(f);
+                return this.CurrencyLayerScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -220,7 +231,7 @@ namespace MixERP.Net.Api.Config
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CurrencyLayerScrudViewContext.GetWhere(pageNumber, f);
+                return this.CurrencyLayerScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -252,7 +263,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.CurrencyLayerScrudViewContext.CountFiltered(filterName);
+                return this.CurrencyLayerScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -286,7 +297,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.CurrencyLayerScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.CurrencyLayerScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

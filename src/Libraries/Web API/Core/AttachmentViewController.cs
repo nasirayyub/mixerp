@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class AttachmentViewController : ApiController
     {
         /// <summary>
-        ///     The AttachmentView data context.
+        ///     The AttachmentView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.AttachmentView AttachmentViewContext;
+        private readonly IAttachmentViewRepository AttachmentViewRepository;
 
         public AttachmentViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.AttachmentViewContext = new MixERP.Net.Schemas.Core.Data.AttachmentView
+            this.AttachmentViewRepository = new MixERP.Net.Schemas.Core.Data.AttachmentView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public AttachmentViewController(IAttachmentViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.AttachmentViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentViewContext.Count();
+                return this.AttachmentViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentViewContext.Get();
+                return this.AttachmentViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentViewContext.GetPaginatedResult();
+                return this.AttachmentViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentViewContext.GetPaginatedResult(pageNumber);
+                return this.AttachmentViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentViewContext.GetDisplayFields();
+                return this.AttachmentViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AttachmentViewContext.CountWhere(f);
+                return this.AttachmentViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AttachmentViewContext.GetWhere(pageNumber, f);
+                return this.AttachmentViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentViewContext.CountFiltered(filterName);
+                return this.AttachmentViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.AttachmentViewContext.GetFiltered(pageNumber, filterName);
+                return this.AttachmentViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

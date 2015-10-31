@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Office
         /// </summary>
         public string _Catalog { get; set; }
 
-        private SignInProcedure procedure;
+        /// <summary>
+        ///     The SignIn repository.
+        /// </summary>
+        private readonly ISignInRepository repository;
+
         public class Annotation
         {
             public int OfficeId { get; set; }
@@ -53,19 +57,32 @@ namespace MixERP.Net.Api.Office
             public string Challenge { get; set; }
         }
 
+
         public SignInController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new SignInProcedure
+
+            this.repository = new SignInProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public SignInController(ISignInRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "sign in" annotation.
         /// </summary>
@@ -75,6 +92,10 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/procedures/sign-in/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -91,6 +112,7 @@ namespace MixERP.Net.Api.Office
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "sign in" entity.
         /// </summary>
@@ -100,6 +122,10 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/procedures/sign-in/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -110,6 +136,7 @@ namespace MixERP.Net.Api.Office
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/office/procedures/sign-in/execute")]
@@ -117,17 +144,17 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.UserName = annotation.UserName;
-                this.procedure.Password = annotation.Password;
-                this.procedure.Browser = annotation.Browser;
-                this.procedure.IpAddress = annotation.IpAddress;
-                this.procedure.RemoteUser = annotation.RemoteUser;
-                this.procedure.Culture = annotation.Culture;
-                this.procedure.Challenge = annotation.Challenge;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.UserName = annotation.UserName;
+                this.repository.Password = annotation.Password;
+                this.repository.Browser = annotation.Browser;
+                this.repository.IpAddress = annotation.IpAddress;
+                this.repository.RemoteUser = annotation.RemoteUser;
+                this.repository.Culture = annotation.Culture;
+                this.repository.Challenge = annotation.Challenge;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

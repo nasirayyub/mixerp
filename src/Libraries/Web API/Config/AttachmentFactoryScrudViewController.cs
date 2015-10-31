@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Config.Data;
 
 namespace MixERP.Net.Api.Config
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Config
     public class AttachmentFactoryScrudViewController : ApiController
     {
         /// <summary>
-        ///     The AttachmentFactoryScrudView data context.
+        ///     The AttachmentFactoryScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Config.Data.AttachmentFactoryScrudView AttachmentFactoryScrudViewContext;
+        private readonly IAttachmentFactoryScrudViewRepository AttachmentFactoryScrudViewRepository;
 
         public AttachmentFactoryScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Config
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.AttachmentFactoryScrudViewContext = new MixERP.Net.Schemas.Config.Data.AttachmentFactoryScrudView
+            this.AttachmentFactoryScrudViewRepository = new MixERP.Net.Schemas.Config.Data.AttachmentFactoryScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public AttachmentFactoryScrudViewController(IAttachmentFactoryScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.AttachmentFactoryScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.AttachmentFactoryScrudViewContext.Count();
+                return this.AttachmentFactoryScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.AttachmentFactoryScrudViewContext.Get();
+                return this.AttachmentFactoryScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.AttachmentFactoryScrudViewContext.GetPaginatedResult();
+                return this.AttachmentFactoryScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.AttachmentFactoryScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.AttachmentFactoryScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -186,7 +197,7 @@ namespace MixERP.Net.Api.Config
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AttachmentFactoryScrudViewContext.CountWhere(f);
+                return this.AttachmentFactoryScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -220,7 +231,7 @@ namespace MixERP.Net.Api.Config
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AttachmentFactoryScrudViewContext.GetWhere(pageNumber, f);
+                return this.AttachmentFactoryScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -252,7 +263,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.AttachmentFactoryScrudViewContext.CountFiltered(filterName);
+                return this.AttachmentFactoryScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -286,7 +297,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.AttachmentFactoryScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.AttachmentFactoryScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

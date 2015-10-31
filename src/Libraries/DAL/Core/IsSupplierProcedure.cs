@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.is_supplier(pg_arg0 bigint)" on the database.
     /// </summary>
-    public class IsSupplierProcedure : DbAccess
+    public class IsSupplierProcedure : DbAccess, IIsSupplierRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

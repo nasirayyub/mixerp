@@ -40,12 +40,17 @@ namespace MixERP.Net.Api.Policy
         /// </summary>
         public string _Catalog { get; set; }
 
-        private CreateAccessTypesProcedure procedure;
+        /// <summary>
+        ///     The CreateAccessTypes repository.
+        /// </summary>
+        private readonly ICreateAccessTypesRepository repository;
+
         public class Annotation
         {
             public int AccessTypeId { get; set; }
             public string AccessTypeName { get; set; }
         }
+
 
         public CreateAccessTypesController()
         {
@@ -53,13 +58,25 @@ namespace MixERP.Net.Api.Policy
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new CreateAccessTypesProcedure
+
+            this.repository = new CreateAccessTypesProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public CreateAccessTypesController(ICreateAccessTypesRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "create access types" annotation.
         /// </summary>
@@ -69,6 +86,10 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/procedures/create-access-types/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -79,6 +100,7 @@ namespace MixERP.Net.Api.Policy
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "create access types" entity.
         /// </summary>
@@ -88,6 +110,10 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/procedures/create-access-types/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -96,6 +122,7 @@ namespace MixERP.Net.Api.Policy
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/policy/procedures/create-access-types/execute")]
@@ -103,11 +130,11 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                this.procedure.AccessTypeId = annotation.AccessTypeId;
-                this.procedure.AccessTypeName = annotation.AccessTypeName;
+                this.repository.AccessTypeId = annotation.AccessTypeId;
+                this.repository.AccessTypeName = annotation.AccessTypeName;
 
 
-                this.procedure.Execute();
+                this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

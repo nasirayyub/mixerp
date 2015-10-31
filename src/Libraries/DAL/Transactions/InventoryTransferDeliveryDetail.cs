@@ -16,7 +16,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database table "transactions.inventory_transfer_delivery_details".
     /// </summary>
-    public class InventoryTransferDeliveryDetail : DbAccess
+    public class InventoryTransferDeliveryDetail : DbAccess, IInventoryTransferDeliveryDetailRepository
     {
         /// <summary>
         /// The schema of this table. Returns literal "transactions".
@@ -73,7 +73,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "transactions.inventory_transfer_delivery_details" to return a all instances of the "InventoryTransferDeliveryDetail" class. 
+        /// Executes a select query on the table "transactions.inventory_transfer_delivery_details" to return all instances of the "InventoryTransferDeliveryDetail" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "InventoryTransferDeliveryDetail" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -102,7 +102,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "transactions.inventory_transfer_delivery_details" to return a all instances of the "InventoryTransferDeliveryDetail" class to export. 
+        /// Executes a select query on the table "transactions.inventory_transfer_delivery_details" to return all instances of the "InventoryTransferDeliveryDetail" class to export. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "InventoryTransferDeliveryDetail" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -557,7 +557,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
             return Factory.Get<MixERP.Net.Entities.Transactions.InventoryTransferDeliveryDetail>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='transactions.inventory_transfer_delivery_details' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

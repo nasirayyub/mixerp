@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.is_purchase(_transaction_master_id bigint)" on the database.
     /// </summary>
-    public class IsPurchaseProcedure : DbAccess
+    public class IsPurchaseProcedure : DbAccess, IIsPurchaseRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_state_id_by_state_code(_state_code character varying)" on the database.
     /// </summary>
-    public class GetStateIdByStateCodeProcedure : DbAccess
+    public class GetStateIdByStateCodeProcedure : DbAccess, IGetStateIdByStateCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

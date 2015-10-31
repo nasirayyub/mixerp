@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.validate_items_for_return(_transaction_master_id bigint, _details transactions.stock_detail_type[])" on the database.
     /// </summary>
-    public class ValidateItemsForReturnProcedure : DbAccess
+    public class ValidateItemsForReturnProcedure : DbAccess, IValidateItemsForReturnRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class MerchantFeeSetupAccountSelectorViewController : ApiController
     {
         /// <summary>
-        ///     The MerchantFeeSetupAccountSelectorView data context.
+        ///     The MerchantFeeSetupAccountSelectorView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.MerchantFeeSetupAccountSelectorView MerchantFeeSetupAccountSelectorViewContext;
+        private readonly IMerchantFeeSetupAccountSelectorViewRepository MerchantFeeSetupAccountSelectorViewRepository;
 
         public MerchantFeeSetupAccountSelectorViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.MerchantFeeSetupAccountSelectorViewContext = new MixERP.Net.Schemas.Core.Data.MerchantFeeSetupAccountSelectorView
+            this.MerchantFeeSetupAccountSelectorViewRepository = new MixERP.Net.Schemas.Core.Data.MerchantFeeSetupAccountSelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public MerchantFeeSetupAccountSelectorViewController(IMerchantFeeSetupAccountSelectorViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.MerchantFeeSetupAccountSelectorViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupAccountSelectorViewContext.Count();
+                return this.MerchantFeeSetupAccountSelectorViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupAccountSelectorViewContext.Get();
+                return this.MerchantFeeSetupAccountSelectorViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupAccountSelectorViewContext.GetPaginatedResult();
+                return this.MerchantFeeSetupAccountSelectorViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupAccountSelectorViewContext.GetPaginatedResult(pageNumber);
+                return this.MerchantFeeSetupAccountSelectorViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupAccountSelectorViewContext.GetDisplayFields();
+                return this.MerchantFeeSetupAccountSelectorViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.MerchantFeeSetupAccountSelectorViewContext.CountWhere(f);
+                return this.MerchantFeeSetupAccountSelectorViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.MerchantFeeSetupAccountSelectorViewContext.GetWhere(pageNumber, f);
+                return this.MerchantFeeSetupAccountSelectorViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupAccountSelectorViewContext.CountFiltered(filterName);
+                return this.MerchantFeeSetupAccountSelectorViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.MerchantFeeSetupAccountSelectorViewContext.GetFiltered(pageNumber, filterName);
+                return this.MerchantFeeSetupAccountSelectorViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

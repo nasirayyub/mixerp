@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class WeekDayController : ApiController
     {
         /// <summary>
-        ///     The WeekDay data context.
+        ///     The WeekDay repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.WeekDay WeekDayContext;
+        private readonly IWeekDayRepository WeekDayRepository;
 
         public WeekDayController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.WeekDayContext = new MixERP.Net.Schemas.Core.Data.WeekDay
+            this.WeekDayRepository = new MixERP.Net.Schemas.Core.Data.WeekDay
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public WeekDayController(IWeekDayRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.WeekDayRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/week-day/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "week_day_id",
@@ -78,7 +94,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WeekDayContext.Count();
+                return this.WeekDayRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -109,7 +125,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WeekDayContext.GetAll();
+                return this.WeekDayRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -140,7 +156,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WeekDayContext.Export();
+                return this.WeekDayRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -172,7 +188,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WeekDayContext.Get(weekDayId);
+                return this.WeekDayRepository.Get(weekDayId);
             }
             catch (UnauthorizedException)
             {
@@ -199,7 +215,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WeekDayContext.Get(weekDayIds);
+                return this.WeekDayRepository.Get(weekDayIds);
             }
             catch (UnauthorizedException)
             {
@@ -230,7 +246,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WeekDayContext.GetPaginatedResult();
+                return this.WeekDayRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -262,7 +278,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WeekDayContext.GetPaginatedResult(pageNumber);
+                return this.WeekDayRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -295,7 +311,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.WeekDayContext.CountWhere(f);
+                return this.WeekDayRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -329,7 +345,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.WeekDayContext.GetWhere(pageNumber, f);
+                return this.WeekDayRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -361,7 +377,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WeekDayContext.CountFiltered(filterName);
+                return this.WeekDayRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -394,7 +410,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WeekDayContext.GetFiltered(pageNumber, filterName);
+                return this.WeekDayRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -425,7 +441,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WeekDayContext.GetDisplayFields();
+                return this.WeekDayRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -456,7 +472,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WeekDayContext.GetCustomFields(null);
+                return this.WeekDayRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -487,7 +503,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.WeekDayContext.GetCustomFields(resourceId);
+                return this.WeekDayRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -526,7 +542,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.WeekDayContext.AddOrEdit(weekDay, customFields);
+                return this.WeekDayRepository.AddOrEdit(weekDay, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -562,7 +578,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.WeekDayContext.Add(weekDay);
+                this.WeekDayRepository.Add(weekDay);
             }
             catch (UnauthorizedException)
             {
@@ -599,7 +615,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.WeekDayContext.Update(weekDay, weekDayId);
+                this.WeekDayRepository.Update(weekDay, weekDayId);
             }
             catch (UnauthorizedException)
             {
@@ -644,7 +660,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.WeekDayContext.BulkImport(weekDayCollection);
+                return this.WeekDayRepository.BulkImport(weekDayCollection);
             }
             catch (UnauthorizedException)
             {
@@ -675,7 +691,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.WeekDayContext.Delete(weekDayId);
+                this.WeekDayRepository.Delete(weekDayId);
             }
             catch (UnauthorizedException)
             {

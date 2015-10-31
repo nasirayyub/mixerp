@@ -16,7 +16,7 @@ namespace MixERP.Net.Schemas.Audit.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database table "audit.logged_actions".
     /// </summary>
-    public class LoggedAction : DbAccess
+    public class LoggedAction : DbAccess, ILoggedActionRepository
     {
         /// <summary>
         /// The schema of this table. Returns literal "audit".
@@ -73,7 +73,7 @@ namespace MixERP.Net.Schemas.Audit.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "audit.logged_actions" to return a all instances of the "LoggedAction" class. 
+        /// Executes a select query on the table "audit.logged_actions" to return all instances of the "LoggedAction" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "LoggedAction" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -102,7 +102,7 @@ namespace MixERP.Net.Schemas.Audit.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "audit.logged_actions" to return a all instances of the "LoggedAction" class to export. 
+        /// Executes a select query on the table "audit.logged_actions" to return all instances of the "LoggedAction" class to export. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "LoggedAction" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -557,7 +557,7 @@ namespace MixERP.Net.Schemas.Audit.Data
             return Factory.Get<MixERP.Net.Entities.Audit.LoggedAction>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='audit.logged_actions' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

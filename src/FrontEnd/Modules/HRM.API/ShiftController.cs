@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.HRM
     public class ShiftController : ApiController
     {
         /// <summary>
-        ///     The Shift data context.
+        ///     The Shift repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.Shift ShiftContext;
+        private readonly IShiftRepository ShiftRepository;
 
         public ShiftController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ShiftContext = new MixERP.Net.Core.Modules.HRM.Data.Shift
+            this.ShiftRepository = new MixERP.Net.Core.Modules.HRM.Data.Shift
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ShiftController(IShiftRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ShiftRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/shift/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "shift_id",
@@ -83,7 +99,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ShiftContext.Count();
+                return this.ShiftRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -114,7 +130,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ShiftContext.GetAll();
+                return this.ShiftRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -145,7 +161,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ShiftContext.Export();
+                return this.ShiftRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -177,7 +193,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ShiftContext.Get(shiftId);
+                return this.ShiftRepository.Get(shiftId);
             }
             catch (UnauthorizedException)
             {
@@ -204,7 +220,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ShiftContext.Get(shiftIds);
+                return this.ShiftRepository.Get(shiftIds);
             }
             catch (UnauthorizedException)
             {
@@ -235,7 +251,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ShiftContext.GetPaginatedResult();
+                return this.ShiftRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -267,7 +283,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ShiftContext.GetPaginatedResult(pageNumber);
+                return this.ShiftRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -300,7 +316,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ShiftContext.CountWhere(f);
+                return this.ShiftRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -334,7 +350,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ShiftContext.GetWhere(pageNumber, f);
+                return this.ShiftRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -366,7 +382,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ShiftContext.CountFiltered(filterName);
+                return this.ShiftRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -399,7 +415,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ShiftContext.GetFiltered(pageNumber, filterName);
+                return this.ShiftRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -430,7 +446,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ShiftContext.GetDisplayFields();
+                return this.ShiftRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -461,7 +477,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ShiftContext.GetCustomFields(null);
+                return this.ShiftRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -492,7 +508,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.ShiftContext.GetCustomFields(resourceId);
+                return this.ShiftRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -531,7 +547,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.ShiftContext.AddOrEdit(shift, customFields);
+                return this.ShiftRepository.AddOrEdit(shift, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -567,7 +583,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.ShiftContext.Add(shift);
+                this.ShiftRepository.Add(shift);
             }
             catch (UnauthorizedException)
             {
@@ -604,7 +620,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.ShiftContext.Update(shift, shiftId);
+                this.ShiftRepository.Update(shift, shiftId);
             }
             catch (UnauthorizedException)
             {
@@ -649,7 +665,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.ShiftContext.BulkImport(shiftCollection);
+                return this.ShiftRepository.BulkImport(shiftCollection);
             }
             catch (UnauthorizedException)
             {
@@ -680,7 +696,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                this.ShiftContext.Delete(shiftId);
+                this.ShiftRepository.Delete(shiftId);
             }
             catch (UnauthorizedException)
             {

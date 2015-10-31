@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_trial_balance(_date_from date, _date_to date, _user_id integer, _office_id integer, _compact boolean, _factor numeric, _change_side_when_negative boolean, _include_zero_balance_accounts boolean)" on the database.
     /// </summary>
-    public class GetTrialBalanceProcedure : DbAccess
+    public class GetTrialBalanceProcedure : DbAccess, IGetTrialBalanceRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

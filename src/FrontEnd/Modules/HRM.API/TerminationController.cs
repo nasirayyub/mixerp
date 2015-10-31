@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.HRM
     public class TerminationController : ApiController
     {
         /// <summary>
-        ///     The Termination data context.
+        ///     The Termination repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.Termination TerminationContext;
+        private readonly ITerminationRepository TerminationRepository;
 
         public TerminationController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.TerminationContext = new MixERP.Net.Core.Modules.HRM.Data.Termination
+            this.TerminationRepository = new MixERP.Net.Core.Modules.HRM.Data.Termination
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public TerminationController(ITerminationRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.TerminationRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/termination/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "termination_id",
@@ -89,7 +105,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationContext.Count();
+                return this.TerminationRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +136,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationContext.GetAll();
+                return this.TerminationRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -151,7 +167,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationContext.Export();
+                return this.TerminationRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +199,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationContext.Get(terminationId);
+                return this.TerminationRepository.Get(terminationId);
             }
             catch (UnauthorizedException)
             {
@@ -210,7 +226,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationContext.Get(terminationIds);
+                return this.TerminationRepository.Get(terminationIds);
             }
             catch (UnauthorizedException)
             {
@@ -241,7 +257,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationContext.GetPaginatedResult();
+                return this.TerminationRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -273,7 +289,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationContext.GetPaginatedResult(pageNumber);
+                return this.TerminationRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -306,7 +322,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.TerminationContext.CountWhere(f);
+                return this.TerminationRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -340,7 +356,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.TerminationContext.GetWhere(pageNumber, f);
+                return this.TerminationRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -372,7 +388,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationContext.CountFiltered(filterName);
+                return this.TerminationRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -405,7 +421,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationContext.GetFiltered(pageNumber, filterName);
+                return this.TerminationRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -436,7 +452,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationContext.GetDisplayFields();
+                return this.TerminationRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -467,7 +483,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationContext.GetCustomFields(null);
+                return this.TerminationRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -498,7 +514,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationContext.GetCustomFields(resourceId);
+                return this.TerminationRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -537,7 +553,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.TerminationContext.AddOrEdit(termination, customFields);
+                return this.TerminationRepository.AddOrEdit(termination, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -573,7 +589,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.TerminationContext.Add(termination);
+                this.TerminationRepository.Add(termination);
             }
             catch (UnauthorizedException)
             {
@@ -610,7 +626,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.TerminationContext.Update(termination, terminationId);
+                this.TerminationRepository.Update(termination, terminationId);
             }
             catch (UnauthorizedException)
             {
@@ -655,7 +671,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.TerminationContext.BulkImport(terminationCollection);
+                return this.TerminationRepository.BulkImport(terminationCollection);
             }
             catch (UnauthorizedException)
             {
@@ -686,7 +702,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                this.TerminationContext.Delete(terminationId);
+                this.TerminationRepository.Delete(terminationId);
             }
             catch (UnauthorizedException)
             {
@@ -719,7 +735,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                this.TerminationContext.Verify(terminationId, verificationStatusId, reason);
+                this.TerminationRepository.Verify(terminationId, verificationStatusId, reason);
             }
             catch (UnauthorizedException)
             {

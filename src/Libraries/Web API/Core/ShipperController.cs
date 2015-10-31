@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class ShipperController : ApiController
     {
         /// <summary>
-        ///     The Shipper data context.
+        ///     The Shipper repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.Shipper ShipperContext;
+        private readonly IShipperRepository ShipperRepository;
 
         public ShipperController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ShipperContext = new MixERP.Net.Schemas.Core.Data.Shipper
+            this.ShipperRepository = new MixERP.Net.Schemas.Core.Data.Shipper
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ShipperController(IShipperRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ShipperRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/shipper/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "shipper_id",
@@ -109,7 +125,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShipperContext.Count();
+                return this.ShipperRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -140,7 +156,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShipperContext.GetAll();
+                return this.ShipperRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -171,7 +187,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShipperContext.Export();
+                return this.ShipperRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -203,7 +219,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShipperContext.Get(shipperId);
+                return this.ShipperRepository.Get(shipperId);
             }
             catch (UnauthorizedException)
             {
@@ -230,7 +246,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShipperContext.Get(shipperIds);
+                return this.ShipperRepository.Get(shipperIds);
             }
             catch (UnauthorizedException)
             {
@@ -261,7 +277,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShipperContext.GetPaginatedResult();
+                return this.ShipperRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -293,7 +309,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShipperContext.GetPaginatedResult(pageNumber);
+                return this.ShipperRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -326,7 +342,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ShipperContext.CountWhere(f);
+                return this.ShipperRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -360,7 +376,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ShipperContext.GetWhere(pageNumber, f);
+                return this.ShipperRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -392,7 +408,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShipperContext.CountFiltered(filterName);
+                return this.ShipperRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -425,7 +441,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShipperContext.GetFiltered(pageNumber, filterName);
+                return this.ShipperRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -456,7 +472,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShipperContext.GetDisplayFields();
+                return this.ShipperRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -487,7 +503,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShipperContext.GetCustomFields(null);
+                return this.ShipperRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -518,7 +534,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShipperContext.GetCustomFields(resourceId);
+                return this.ShipperRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -557,7 +573,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ShipperContext.AddOrEdit(shipper, customFields);
+                return this.ShipperRepository.AddOrEdit(shipper, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -593,7 +609,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ShipperContext.Add(shipper);
+                this.ShipperRepository.Add(shipper);
             }
             catch (UnauthorizedException)
             {
@@ -630,7 +646,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ShipperContext.Update(shipper, shipperId);
+                this.ShipperRepository.Update(shipper, shipperId);
             }
             catch (UnauthorizedException)
             {
@@ -675,7 +691,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ShipperContext.BulkImport(shipperCollection);
+                return this.ShipperRepository.BulkImport(shipperCollection);
             }
             catch (UnauthorizedException)
             {
@@ -706,7 +722,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.ShipperContext.Delete(shipperId);
+                this.ShipperRepository.Delete(shipperId);
             }
             catch (UnauthorizedException)
             {

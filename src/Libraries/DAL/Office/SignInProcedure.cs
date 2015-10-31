@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.sign_in(office_id integer_strict, user_name text, password text, browser text, ip_address text, remote_user text, culture text, challenge text)" on the database.
     /// </summary>
-    public class SignInProcedure : DbAccess
+    public class SignInProcedure : DbAccess, ISignInRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class ConfigController : ApiController
     {
         /// <summary>
-        ///     The Config data context.
+        ///     The Config repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.Config ConfigContext;
+        private readonly IConfigRepository ConfigRepository;
 
         public ConfigController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ConfigContext = new MixERP.Net.Schemas.Core.Data.Config
+            this.ConfigRepository = new MixERP.Net.Schemas.Core.Data.Config
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ConfigController(IConfigRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ConfigRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/config/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "config_id",
@@ -77,7 +93,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ConfigContext.Count();
+                return this.ConfigRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -108,7 +124,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ConfigContext.GetAll();
+                return this.ConfigRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -139,7 +155,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ConfigContext.Export();
+                return this.ConfigRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -171,7 +187,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ConfigContext.Get(configId);
+                return this.ConfigRepository.Get(configId);
             }
             catch (UnauthorizedException)
             {
@@ -198,7 +214,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ConfigContext.Get(configIds);
+                return this.ConfigRepository.Get(configIds);
             }
             catch (UnauthorizedException)
             {
@@ -229,7 +245,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ConfigContext.GetPaginatedResult();
+                return this.ConfigRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -261,7 +277,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ConfigContext.GetPaginatedResult(pageNumber);
+                return this.ConfigRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -294,7 +310,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ConfigContext.CountWhere(f);
+                return this.ConfigRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -328,7 +344,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ConfigContext.GetWhere(pageNumber, f);
+                return this.ConfigRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -360,7 +376,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ConfigContext.CountFiltered(filterName);
+                return this.ConfigRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -393,7 +409,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ConfigContext.GetFiltered(pageNumber, filterName);
+                return this.ConfigRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -424,7 +440,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ConfigContext.GetDisplayFields();
+                return this.ConfigRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -455,7 +471,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ConfigContext.GetCustomFields(null);
+                return this.ConfigRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -486,7 +502,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ConfigContext.GetCustomFields(resourceId);
+                return this.ConfigRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -525,7 +541,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ConfigContext.AddOrEdit(config, customFields);
+                return this.ConfigRepository.AddOrEdit(config, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -561,7 +577,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ConfigContext.Add(config);
+                this.ConfigRepository.Add(config);
             }
             catch (UnauthorizedException)
             {
@@ -598,7 +614,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ConfigContext.Update(config, configId);
+                this.ConfigRepository.Update(config, configId);
             }
             catch (UnauthorizedException)
             {
@@ -643,7 +659,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ConfigContext.BulkImport(configCollection);
+                return this.ConfigRepository.BulkImport(configCollection);
             }
             catch (UnauthorizedException)
             {
@@ -674,7 +690,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.ConfigContext.Delete(configId);
+                this.ConfigRepository.Delete(configId);
             }
             catch (UnauthorizedException)
             {

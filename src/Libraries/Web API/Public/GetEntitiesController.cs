@@ -40,10 +40,15 @@ namespace MixERP.Net.Api.Public
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetEntitiesProcedure procedure;
+        /// <summary>
+        ///     The GetEntities repository.
+        /// </summary>
+        private readonly IGetEntitiesRepository repository;
+
         public class Annotation
         {
         }
+
 
         public GetEntitiesController()
         {
@@ -51,13 +56,26 @@ namespace MixERP.Net.Api.Public
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetEntitiesProcedure
+
+            this.repository = new GetEntitiesProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetEntitiesController(IGetEntitiesRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
+
 
         /// <summary>
         ///     Creates meta information of "get entities" entity.
@@ -68,6 +86,10 @@ namespace MixERP.Net.Api.Public
         [Route("~/api/public/procedures/get-entities/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -80,6 +102,7 @@ namespace MixERP.Net.Api.Public
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/public/procedures/get-entities/execute")]
@@ -89,7 +112,7 @@ namespace MixERP.Net.Api.Public
             {
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

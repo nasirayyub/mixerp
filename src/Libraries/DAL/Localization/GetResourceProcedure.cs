@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Localization.Data
     /// <summary>
     /// Prepares, validates, and executes the function "localization.get_resource(_culture_code text, _resource_class text, _key text)" on the database.
     /// </summary>
-    public class GetResourceProcedure : DbAccess
+    public class GetResourceProcedure : DbAccess, IGetResourceRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

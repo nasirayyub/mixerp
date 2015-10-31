@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Transactions.Data;
 
 namespace MixERP.Net.Api.Transactions
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Transactions
     public class InventoryTransferRequestController : ApiController
     {
         /// <summary>
-        ///     The InventoryTransferRequest data context.
+        ///     The InventoryTransferRequest repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Transactions.Data.InventoryTransferRequest InventoryTransferRequestContext;
+        private readonly IInventoryTransferRequestRepository InventoryTransferRequestRepository;
 
         public InventoryTransferRequestController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Transactions
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.InventoryTransferRequestContext = new MixERP.Net.Schemas.Transactions.Data.InventoryTransferRequest
+            this.InventoryTransferRequestRepository = new MixERP.Net.Schemas.Transactions.Data.InventoryTransferRequest
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public InventoryTransferRequestController(IInventoryTransferRequestRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.InventoryTransferRequestRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/inventory-transfer-request/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "inventory_transfer_request_id",
@@ -95,7 +111,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.InventoryTransferRequestContext.Count();
+                return this.InventoryTransferRequestRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -126,7 +142,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.InventoryTransferRequestContext.GetAll();
+                return this.InventoryTransferRequestRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -157,7 +173,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.InventoryTransferRequestContext.Export();
+                return this.InventoryTransferRequestRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -189,7 +205,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.InventoryTransferRequestContext.Get(inventoryTransferRequestId);
+                return this.InventoryTransferRequestRepository.Get(inventoryTransferRequestId);
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +232,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.InventoryTransferRequestContext.Get(inventoryTransferRequestIds);
+                return this.InventoryTransferRequestRepository.Get(inventoryTransferRequestIds);
             }
             catch (UnauthorizedException)
             {
@@ -247,7 +263,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.InventoryTransferRequestContext.GetPaginatedResult();
+                return this.InventoryTransferRequestRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -279,7 +295,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.InventoryTransferRequestContext.GetPaginatedResult(pageNumber);
+                return this.InventoryTransferRequestRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -312,7 +328,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.InventoryTransferRequestContext.CountWhere(f);
+                return this.InventoryTransferRequestRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -346,7 +362,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.InventoryTransferRequestContext.GetWhere(pageNumber, f);
+                return this.InventoryTransferRequestRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -378,7 +394,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.InventoryTransferRequestContext.CountFiltered(filterName);
+                return this.InventoryTransferRequestRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -411,7 +427,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.InventoryTransferRequestContext.GetFiltered(pageNumber, filterName);
+                return this.InventoryTransferRequestRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -442,7 +458,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.InventoryTransferRequestContext.GetDisplayFields();
+                return this.InventoryTransferRequestRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -473,7 +489,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.InventoryTransferRequestContext.GetCustomFields(null);
+                return this.InventoryTransferRequestRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -504,7 +520,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.InventoryTransferRequestContext.GetCustomFields(resourceId);
+                return this.InventoryTransferRequestRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -543,7 +559,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.InventoryTransferRequestContext.AddOrEdit(inventoryTransferRequest, customFields);
+                return this.InventoryTransferRequestRepository.AddOrEdit(inventoryTransferRequest, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -579,7 +595,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.InventoryTransferRequestContext.Add(inventoryTransferRequest);
+                this.InventoryTransferRequestRepository.Add(inventoryTransferRequest);
             }
             catch (UnauthorizedException)
             {
@@ -616,7 +632,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.InventoryTransferRequestContext.Update(inventoryTransferRequest, inventoryTransferRequestId);
+                this.InventoryTransferRequestRepository.Update(inventoryTransferRequest, inventoryTransferRequestId);
             }
             catch (UnauthorizedException)
             {
@@ -661,7 +677,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.InventoryTransferRequestContext.BulkImport(inventoryTransferRequestCollection);
+                return this.InventoryTransferRequestRepository.BulkImport(inventoryTransferRequestCollection);
             }
             catch (UnauthorizedException)
             {
@@ -692,7 +708,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.InventoryTransferRequestContext.Delete(inventoryTransferRequestId);
+                this.InventoryTransferRequestRepository.Delete(inventoryTransferRequestId);
             }
             catch (UnauthorizedException)
             {

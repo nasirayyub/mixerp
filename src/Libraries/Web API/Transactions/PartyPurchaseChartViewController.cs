@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Transactions.Data;
 
 namespace MixERP.Net.Api.Transactions
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Transactions
     public class PartyPurchaseChartViewController : ApiController
     {
         /// <summary>
-        ///     The PartyPurchaseChartView data context.
+        ///     The PartyPurchaseChartView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Transactions.Data.PartyPurchaseChartView PartyPurchaseChartViewContext;
+        private readonly IPartyPurchaseChartViewRepository PartyPurchaseChartViewRepository;
 
         public PartyPurchaseChartViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Transactions
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.PartyPurchaseChartViewContext = new MixERP.Net.Schemas.Transactions.Data.PartyPurchaseChartView
+            this.PartyPurchaseChartViewRepository = new MixERP.Net.Schemas.Transactions.Data.PartyPurchaseChartView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public PartyPurchaseChartViewController(IPartyPurchaseChartViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.PartyPurchaseChartViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.PartyPurchaseChartViewContext.Count();
+                return this.PartyPurchaseChartViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.PartyPurchaseChartViewContext.Get();
+                return this.PartyPurchaseChartViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.PartyPurchaseChartViewContext.GetPaginatedResult();
+                return this.PartyPurchaseChartViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.PartyPurchaseChartViewContext.GetPaginatedResult(pageNumber);
+                return this.PartyPurchaseChartViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.PartyPurchaseChartViewContext.GetDisplayFields();
+                return this.PartyPurchaseChartViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.PartyPurchaseChartViewContext.CountWhere(f);
+                return this.PartyPurchaseChartViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.PartyPurchaseChartViewContext.GetWhere(pageNumber, f);
+                return this.PartyPurchaseChartViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.PartyPurchaseChartViewContext.CountFiltered(filterName);
+                return this.PartyPurchaseChartViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.PartyPurchaseChartViewContext.GetFiltered(pageNumber, filterName);
+                return this.PartyPurchaseChartViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

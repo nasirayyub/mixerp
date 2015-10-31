@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.has_child_accounts(pg_arg0 bigint)" on the database.
     /// </summary>
-    public class HasChildAccountsProcedure : DbAccess
+    public class HasChildAccountsProcedure : DbAccess, IHasChildAccountsRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

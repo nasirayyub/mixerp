@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class ShippingMailTypeSelectorViewController : ApiController
     {
         /// <summary>
-        ///     The ShippingMailTypeSelectorView data context.
+        ///     The ShippingMailTypeSelectorView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.ShippingMailTypeSelectorView ShippingMailTypeSelectorViewContext;
+        private readonly IShippingMailTypeSelectorViewRepository ShippingMailTypeSelectorViewRepository;
 
         public ShippingMailTypeSelectorViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ShippingMailTypeSelectorViewContext = new MixERP.Net.Schemas.Core.Data.ShippingMailTypeSelectorView
+            this.ShippingMailTypeSelectorViewRepository = new MixERP.Net.Schemas.Core.Data.ShippingMailTypeSelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ShippingMailTypeSelectorViewController(IShippingMailTypeSelectorViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ShippingMailTypeSelectorViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeSelectorViewContext.Count();
+                return this.ShippingMailTypeSelectorViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeSelectorViewContext.Get();
+                return this.ShippingMailTypeSelectorViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeSelectorViewContext.GetPaginatedResult();
+                return this.ShippingMailTypeSelectorViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeSelectorViewContext.GetPaginatedResult(pageNumber);
+                return this.ShippingMailTypeSelectorViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeSelectorViewContext.GetDisplayFields();
+                return this.ShippingMailTypeSelectorViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ShippingMailTypeSelectorViewContext.CountWhere(f);
+                return this.ShippingMailTypeSelectorViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ShippingMailTypeSelectorViewContext.GetWhere(pageNumber, f);
+                return this.ShippingMailTypeSelectorViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeSelectorViewContext.CountFiltered(filterName);
+                return this.ShippingMailTypeSelectorViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeSelectorViewContext.GetFiltered(pageNumber, filterName);
+                return this.ShippingMailTypeSelectorViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

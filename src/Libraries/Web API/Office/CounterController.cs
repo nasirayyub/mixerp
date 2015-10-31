@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Office.Data;
 
 namespace MixERP.Net.Api.Office
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Office
     public class CounterController : ApiController
     {
         /// <summary>
-        ///     The Counter data context.
+        ///     The Counter repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Office.Data.Counter CounterContext;
+        private readonly ICounterRepository CounterRepository;
 
         public CounterController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Office
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.CounterContext = new MixERP.Net.Schemas.Office.Data.Counter
+            this.CounterRepository = new MixERP.Net.Schemas.Office.Data.Counter
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public CounterController(ICounterRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.CounterRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/counter/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "counter_id",
@@ -82,7 +98,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CounterContext.Count();
+                return this.CounterRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -113,7 +129,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CounterContext.GetAll();
+                return this.CounterRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -144,7 +160,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CounterContext.Export();
+                return this.CounterRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -176,7 +192,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CounterContext.Get(counterId);
+                return this.CounterRepository.Get(counterId);
             }
             catch (UnauthorizedException)
             {
@@ -203,7 +219,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CounterContext.Get(counterIds);
+                return this.CounterRepository.Get(counterIds);
             }
             catch (UnauthorizedException)
             {
@@ -234,7 +250,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CounterContext.GetPaginatedResult();
+                return this.CounterRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -266,7 +282,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CounterContext.GetPaginatedResult(pageNumber);
+                return this.CounterRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -299,7 +315,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CounterContext.CountWhere(f);
+                return this.CounterRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -333,7 +349,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CounterContext.GetWhere(pageNumber, f);
+                return this.CounterRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -365,7 +381,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CounterContext.CountFiltered(filterName);
+                return this.CounterRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -398,7 +414,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CounterContext.GetFiltered(pageNumber, filterName);
+                return this.CounterRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -429,7 +445,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CounterContext.GetDisplayFields();
+                return this.CounterRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -460,7 +476,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CounterContext.GetCustomFields(null);
+                return this.CounterRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -491,7 +507,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CounterContext.GetCustomFields(resourceId);
+                return this.CounterRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -530,7 +546,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                return this.CounterContext.AddOrEdit(counter, customFields);
+                return this.CounterRepository.AddOrEdit(counter, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -566,7 +582,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                this.CounterContext.Add(counter);
+                this.CounterRepository.Add(counter);
             }
             catch (UnauthorizedException)
             {
@@ -603,7 +619,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                this.CounterContext.Update(counter, counterId);
+                this.CounterRepository.Update(counter, counterId);
             }
             catch (UnauthorizedException)
             {
@@ -648,7 +664,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                return this.CounterContext.BulkImport(counterCollection);
+                return this.CounterRepository.BulkImport(counterCollection);
             }
             catch (UnauthorizedException)
             {
@@ -679,7 +695,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                this.CounterContext.Delete(counterId);
+                this.CounterRepository.Delete(counterId);
             }
             catch (UnauthorizedException)
             {

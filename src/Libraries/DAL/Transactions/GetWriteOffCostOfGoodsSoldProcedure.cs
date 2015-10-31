@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_write_off_cost_of_goods_sold(_stock_master_id bigint, _item_id integer, _unit_id integer, _quantity integer)" on the database.
     /// </summary>
-    public class GetWriteOffCostOfGoodsSoldProcedure : DbAccess
+    public class GetWriteOffCostOfGoodsSoldProcedure : DbAccess, IGetWriteOffCostOfGoodsSoldRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_sales_tax_name_by_sales_tax_id(_sales_tax_id integer)" on the database.
     /// </summary>
-    public class GetSalesTaxNameBySalesTaxIdProcedure : DbAccess
+    public class GetSalesTaxNameBySalesTaxIdProcedure : DbAccess, IGetSalesTaxNameBySalesTaxIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_flag_background_color(flag_type_id_ integer)" on the database.
     /// </summary>
-    public class GetFlagBackgroundColorProcedure : DbAccess
+    public class GetFlagBackgroundColorProcedure : DbAccess, IGetFlagBackgroundColorRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

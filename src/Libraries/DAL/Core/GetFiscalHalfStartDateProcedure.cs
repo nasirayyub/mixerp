@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_fiscal_half_start_date(_office_id integer)" on the database.
     /// </summary>
-    public class GetFiscalHalfStartDateProcedure : DbAccess
+    public class GetFiscalHalfStartDateProcedure : DbAccess, IGetFiscalHalfStartDateRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

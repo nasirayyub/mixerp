@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private CountSalesProcedure procedure;
+        /// <summary>
+        ///     The CountSales repository.
+        /// </summary>
+        private readonly ICountSalesRepository repository;
+
         public class Annotation
         {
             public int ItemId { get; set; }
@@ -48,19 +52,32 @@ namespace MixERP.Net.Api.Core
             public int StoreId { get; set; }
         }
 
+
         public CountSalesController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new CountSalesProcedure
+
+            this.repository = new CountSalesProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public CountSalesController(ICountSalesRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "count sales" annotation.
         /// </summary>
@@ -70,6 +87,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/count-sales/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -82,6 +103,8 @@ namespace MixERP.Net.Api.Core
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/count-sales/execute")]
@@ -89,12 +112,12 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.ItemId = annotation.ItemId;
-                this.procedure.UnitId = annotation.UnitId;
-                this.procedure.StoreId = annotation.StoreId;
+                this.repository.ItemId = annotation.ItemId;
+                this.repository.UnitId = annotation.UnitId;
+                this.repository.StoreId = annotation.StoreId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

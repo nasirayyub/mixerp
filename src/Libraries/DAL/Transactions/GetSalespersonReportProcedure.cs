@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_salesperson_report(_office_id integer, _factor integer)" on the database.
     /// </summary>
-    public class GetSalespersonReportProcedure : DbAccess
+    public class GetSalespersonReportProcedure : DbAccess, IGetSalespersonReportRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

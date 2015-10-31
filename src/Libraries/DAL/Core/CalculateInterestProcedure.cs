@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.calculate_interest(principal numeric, rate numeric, days integer, round_up integer, num_of_days_in_year integer)" on the database.
     /// </summary>
-    public class CalculateInterestProcedure : DbAccess
+    public class CalculateInterestProcedure : DbAccess, ICalculateInterestRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

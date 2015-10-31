@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.count_sales(_item_id integer, _unit_id integer, _store_id integer)" on the database.
     /// </summary>
-    public class CountSalesProcedure : DbAccess
+    public class CountSalesProcedure : DbAccess, ICountSalesRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

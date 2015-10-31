@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.post_inventory_transfer_delivery(_office_id integer, _user_id integer, _login_id bigint, _inventory_transfer_request_id bigint, _value_date date, _reference_number character varying, _statement_reference text, _shipper_id integer, _source_store_id integer, _details transactions.stock_adjustment_type[])" on the database.
     /// </summary>
-    public class PostInventoryTransferDeliveryProcedure : DbAccess
+    public class PostInventoryTransferDeliveryProcedure : DbAccess, IPostInventoryTransferDeliveryRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

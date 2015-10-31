@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Office.Data;
 
 namespace MixERP.Net.Api.Office
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Office
     public class CostCenterController : ApiController
     {
         /// <summary>
-        ///     The CostCenter data context.
+        ///     The CostCenter repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Office.Data.CostCenter CostCenterContext;
+        private readonly ICostCenterRepository CostCenterRepository;
 
         public CostCenterController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Office
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.CostCenterContext = new MixERP.Net.Schemas.Office.Data.CostCenter
+            this.CostCenterRepository = new MixERP.Net.Schemas.Office.Data.CostCenter
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public CostCenterController(ICostCenterRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.CostCenterRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/cost-center/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "cost_center_id",
@@ -80,7 +96,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterContext.Count();
+                return this.CostCenterRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -111,7 +127,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterContext.GetAll();
+                return this.CostCenterRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -142,7 +158,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterContext.Export();
+                return this.CostCenterRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -174,7 +190,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterContext.Get(costCenterId);
+                return this.CostCenterRepository.Get(costCenterId);
             }
             catch (UnauthorizedException)
             {
@@ -201,7 +217,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterContext.Get(costCenterIds);
+                return this.CostCenterRepository.Get(costCenterIds);
             }
             catch (UnauthorizedException)
             {
@@ -232,7 +248,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterContext.GetPaginatedResult();
+                return this.CostCenterRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -264,7 +280,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterContext.GetPaginatedResult(pageNumber);
+                return this.CostCenterRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -297,7 +313,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CostCenterContext.CountWhere(f);
+                return this.CostCenterRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -331,7 +347,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CostCenterContext.GetWhere(pageNumber, f);
+                return this.CostCenterRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -363,7 +379,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterContext.CountFiltered(filterName);
+                return this.CostCenterRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -396,7 +412,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterContext.GetFiltered(pageNumber, filterName);
+                return this.CostCenterRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -427,7 +443,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterContext.GetDisplayFields();
+                return this.CostCenterRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -458,7 +474,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterContext.GetCustomFields(null);
+                return this.CostCenterRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -489,7 +505,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CostCenterContext.GetCustomFields(resourceId);
+                return this.CostCenterRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -528,7 +544,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                return this.CostCenterContext.AddOrEdit(costCenter, customFields);
+                return this.CostCenterRepository.AddOrEdit(costCenter, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -564,7 +580,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                this.CostCenterContext.Add(costCenter);
+                this.CostCenterRepository.Add(costCenter);
             }
             catch (UnauthorizedException)
             {
@@ -601,7 +617,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                this.CostCenterContext.Update(costCenter, costCenterId);
+                this.CostCenterRepository.Update(costCenter, costCenterId);
             }
             catch (UnauthorizedException)
             {
@@ -646,7 +662,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                return this.CostCenterContext.BulkImport(costCenterCollection);
+                return this.CostCenterRepository.BulkImport(costCenterCollection);
             }
             catch (UnauthorizedException)
             {
@@ -677,7 +693,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                this.CostCenterContext.Delete(costCenterId);
+                this.CostCenterRepository.Delete(costCenterId);
             }
             catch (UnauthorizedException)
             {

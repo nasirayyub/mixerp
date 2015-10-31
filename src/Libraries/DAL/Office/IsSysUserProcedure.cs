@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.is_sys_user(_user_id integer)" on the database.
     /// </summary>
-    public class IsSysUserProcedure : DbAccess
+    public class IsSysUserProcedure : DbAccess, IIsSysUserRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

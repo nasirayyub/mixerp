@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class PartyTypeController : ApiController
     {
         /// <summary>
-        ///     The PartyType data context.
+        ///     The PartyType repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.PartyType PartyTypeContext;
+        private readonly IPartyTypeRepository PartyTypeRepository;
 
         public PartyTypeController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.PartyTypeContext = new MixERP.Net.Schemas.Core.Data.PartyType
+            this.PartyTypeRepository = new MixERP.Net.Schemas.Core.Data.PartyType
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public PartyTypeController(IPartyTypeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.PartyTypeRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/party-type/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "party_type_id",
@@ -82,7 +98,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeContext.Count();
+                return this.PartyTypeRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -113,7 +129,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeContext.GetAll();
+                return this.PartyTypeRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -144,7 +160,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeContext.Export();
+                return this.PartyTypeRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -176,7 +192,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeContext.Get(partyTypeId);
+                return this.PartyTypeRepository.Get(partyTypeId);
             }
             catch (UnauthorizedException)
             {
@@ -203,7 +219,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeContext.Get(partyTypeIds);
+                return this.PartyTypeRepository.Get(partyTypeIds);
             }
             catch (UnauthorizedException)
             {
@@ -234,7 +250,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeContext.GetPaginatedResult();
+                return this.PartyTypeRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -266,7 +282,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeContext.GetPaginatedResult(pageNumber);
+                return this.PartyTypeRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -299,7 +315,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.PartyTypeContext.CountWhere(f);
+                return this.PartyTypeRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -333,7 +349,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.PartyTypeContext.GetWhere(pageNumber, f);
+                return this.PartyTypeRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -365,7 +381,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeContext.CountFiltered(filterName);
+                return this.PartyTypeRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -398,7 +414,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeContext.GetFiltered(pageNumber, filterName);
+                return this.PartyTypeRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -429,7 +445,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeContext.GetDisplayFields();
+                return this.PartyTypeRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -460,7 +476,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeContext.GetCustomFields(null);
+                return this.PartyTypeRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -491,7 +507,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PartyTypeContext.GetCustomFields(resourceId);
+                return this.PartyTypeRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -530,7 +546,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.PartyTypeContext.AddOrEdit(partyType, customFields);
+                return this.PartyTypeRepository.AddOrEdit(partyType, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -566,7 +582,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.PartyTypeContext.Add(partyType);
+                this.PartyTypeRepository.Add(partyType);
             }
             catch (UnauthorizedException)
             {
@@ -603,7 +619,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.PartyTypeContext.Update(partyType, partyTypeId);
+                this.PartyTypeRepository.Update(partyType, partyTypeId);
             }
             catch (UnauthorizedException)
             {
@@ -648,7 +664,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.PartyTypeContext.BulkImport(partyTypeCollection);
+                return this.PartyTypeRepository.BulkImport(partyTypeCollection);
             }
             catch (UnauthorizedException)
             {
@@ -679,7 +695,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.PartyTypeContext.Delete(partyTypeId);
+                this.PartyTypeRepository.Delete(partyTypeId);
             }
             catch (UnauthorizedException)
             {

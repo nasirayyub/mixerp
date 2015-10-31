@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetTrialBalanceProcedure procedure;
+        /// <summary>
+        ///     The GetTrialBalance repository.
+        /// </summary>
+        private readonly IGetTrialBalanceRepository repository;
+
         public class Annotation
         {
             public DateTime DateFrom { get; set; }
@@ -53,19 +57,32 @@ namespace MixERP.Net.Api.Transactions
             public bool IncludeZeroBalanceAccounts { get; set; }
         }
 
+
         public GetTrialBalanceController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetTrialBalanceProcedure
+
+            this.repository = new GetTrialBalanceProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetTrialBalanceController(IGetTrialBalanceRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get trial balance" annotation.
         /// </summary>
@@ -75,6 +92,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-trial-balance/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -91,6 +112,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "get trial balance" entity.
         /// </summary>
@@ -100,6 +122,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-trial-balance/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -118,6 +144,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/get-trial-balance/execute")]
@@ -125,17 +152,17 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.DateFrom = annotation.DateFrom;
-                this.procedure.DateTo = annotation.DateTo;
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.Compact = annotation.Compact;
-                this.procedure.Factor = annotation.Factor;
-                this.procedure.ChangeSideWhenNegative = annotation.ChangeSideWhenNegative;
-                this.procedure.IncludeZeroBalanceAccounts = annotation.IncludeZeroBalanceAccounts;
+                this.repository.DateFrom = annotation.DateFrom;
+                this.repository.DateTo = annotation.DateTo;
+                this.repository.UserId = annotation.UserId;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.Compact = annotation.Compact;
+                this.repository.Factor = annotation.Factor;
+                this.repository.ChangeSideWhenNegative = annotation.ChangeSideWhenNegative;
+                this.repository.IncludeZeroBalanceAccounts = annotation.IncludeZeroBalanceAccounts;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

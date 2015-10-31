@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_frequency_end_date(_frequency_id integer, _value_date date)" on the database.
     /// </summary>
-    public class GetFrequencyEndDateProcedure : DbAccess
+    public class GetFrequencyEndDateProcedure : DbAccess, IGetFrequencyEndDateRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.post_stock_journal(_office_id integer, _user_id integer, _login_id bigint, _value_date date, _reference_number character varying, _statement_reference text, _details transactions.stock_adjustment_type[])" on the database.
     /// </summary>
-    public class PostStockJournalProcedure : DbAccess
+    public class PostStockJournalProcedure : DbAccess, IPostStockJournalRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

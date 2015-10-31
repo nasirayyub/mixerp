@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_county_id_by_county_code(_county_code character varying)" on the database.
     /// </summary>
-    public class GetCountyIdByCountyCodeProcedure : DbAccess
+    public class GetCountyIdByCountyCodeProcedure : DbAccess, IGetCountyIdByCountyCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

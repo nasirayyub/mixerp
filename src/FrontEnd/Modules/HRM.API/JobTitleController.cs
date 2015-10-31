@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.HRM
     public class JobTitleController : ApiController
     {
         /// <summary>
-        ///     The JobTitle data context.
+        ///     The JobTitle repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.JobTitle JobTitleContext;
+        private readonly IJobTitleRepository JobTitleRepository;
 
         public JobTitleController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.JobTitleContext = new MixERP.Net.Core.Modules.HRM.Data.JobTitle
+            this.JobTitleRepository = new MixERP.Net.Core.Modules.HRM.Data.JobTitle
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public JobTitleController(IJobTitleRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.JobTitleRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/job-title/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "job_title_id",
@@ -81,7 +97,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.JobTitleContext.Count();
+                return this.JobTitleRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -112,7 +128,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.JobTitleContext.GetAll();
+                return this.JobTitleRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -143,7 +159,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.JobTitleContext.Export();
+                return this.JobTitleRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -175,7 +191,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.JobTitleContext.Get(jobTitleId);
+                return this.JobTitleRepository.Get(jobTitleId);
             }
             catch (UnauthorizedException)
             {
@@ -202,7 +218,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.JobTitleContext.Get(jobTitleIds);
+                return this.JobTitleRepository.Get(jobTitleIds);
             }
             catch (UnauthorizedException)
             {
@@ -233,7 +249,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.JobTitleContext.GetPaginatedResult();
+                return this.JobTitleRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -265,7 +281,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.JobTitleContext.GetPaginatedResult(pageNumber);
+                return this.JobTitleRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -298,7 +314,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.JobTitleContext.CountWhere(f);
+                return this.JobTitleRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -332,7 +348,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.JobTitleContext.GetWhere(pageNumber, f);
+                return this.JobTitleRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -364,7 +380,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.JobTitleContext.CountFiltered(filterName);
+                return this.JobTitleRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -397,7 +413,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.JobTitleContext.GetFiltered(pageNumber, filterName);
+                return this.JobTitleRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -428,7 +444,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.JobTitleContext.GetDisplayFields();
+                return this.JobTitleRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -459,7 +475,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.JobTitleContext.GetCustomFields(null);
+                return this.JobTitleRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -490,7 +506,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.JobTitleContext.GetCustomFields(resourceId);
+                return this.JobTitleRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -529,7 +545,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.JobTitleContext.AddOrEdit(jobTitle, customFields);
+                return this.JobTitleRepository.AddOrEdit(jobTitle, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -565,7 +581,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.JobTitleContext.Add(jobTitle);
+                this.JobTitleRepository.Add(jobTitle);
             }
             catch (UnauthorizedException)
             {
@@ -602,7 +618,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.JobTitleContext.Update(jobTitle, jobTitleId);
+                this.JobTitleRepository.Update(jobTitle, jobTitleId);
             }
             catch (UnauthorizedException)
             {
@@ -647,7 +663,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.JobTitleContext.BulkImport(jobTitleCollection);
+                return this.JobTitleRepository.BulkImport(jobTitleCollection);
             }
             catch (UnauthorizedException)
             {
@@ -678,7 +694,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                this.JobTitleContext.Delete(jobTitleId);
+                this.JobTitleRepository.Delete(jobTitleId);
             }
             catch (UnauthorizedException)
             {

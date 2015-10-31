@@ -40,12 +40,17 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private SettlePartyDueProcedure procedure;
+        /// <summary>
+        ///     The SettlePartyDue repository.
+        /// </summary>
+        private readonly ISettlePartyDueRepository repository;
+
         public class Annotation
         {
             public long PartyId { get; set; }
             public int OfficeId { get; set; }
         }
+
 
         public SettlePartyDueController()
         {
@@ -53,13 +58,25 @@ namespace MixERP.Net.Api.Transactions
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new SettlePartyDueProcedure
+
+            this.repository = new SettlePartyDueProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public SettlePartyDueController(ISettlePartyDueRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "settle party due" annotation.
         /// </summary>
@@ -69,6 +86,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/settle-party-due/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -79,6 +100,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "settle party due" entity.
         /// </summary>
@@ -88,6 +110,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/settle-party-due/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -96,6 +122,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/settle-party-due/execute")]
@@ -103,11 +130,11 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.PartyId = annotation.PartyId;
-                this.procedure.OfficeId = annotation.OfficeId;
+                this.repository.PartyId = annotation.PartyId;
+                this.repository.OfficeId = annotation.OfficeId;
 
 
-                this.procedure.Execute();
+                this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

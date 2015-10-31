@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.is_stock_item(item_id integer)" on the database.
     /// </summary>
-    public class IsStockItemProcedure : DbAccess
+    public class IsStockItemProcedure : DbAccess, IIsStockItemRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

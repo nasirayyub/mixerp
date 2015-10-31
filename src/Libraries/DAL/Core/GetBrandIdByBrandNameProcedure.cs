@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_brand_id_by_brand_name(pg_arg0 text)" on the database.
     /// </summary>
-    public class GetBrandIdByBrandNameProcedure : DbAccess
+    public class GetBrandIdByBrandNameProcedure : DbAccess, IGetBrandIdByBrandNameRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

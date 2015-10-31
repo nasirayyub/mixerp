@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class FlagController : ApiController
     {
         /// <summary>
-        ///     The Flag data context.
+        ///     The Flag repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.Flag FlagContext;
+        private readonly IFlagRepository FlagRepository;
 
         public FlagController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.FlagContext = new MixERP.Net.Schemas.Core.Data.Flag
+            this.FlagRepository = new MixERP.Net.Schemas.Core.Data.Flag
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public FlagController(IFlagRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.FlagRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/flag/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "flag_id",
@@ -82,7 +98,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FlagContext.Count();
+                return this.FlagRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -113,7 +129,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FlagContext.GetAll();
+                return this.FlagRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -144,7 +160,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FlagContext.Export();
+                return this.FlagRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -176,7 +192,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FlagContext.Get(flagId);
+                return this.FlagRepository.Get(flagId);
             }
             catch (UnauthorizedException)
             {
@@ -203,7 +219,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FlagContext.Get(flagIds);
+                return this.FlagRepository.Get(flagIds);
             }
             catch (UnauthorizedException)
             {
@@ -234,7 +250,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FlagContext.GetPaginatedResult();
+                return this.FlagRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -266,7 +282,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FlagContext.GetPaginatedResult(pageNumber);
+                return this.FlagRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -299,7 +315,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.FlagContext.CountWhere(f);
+                return this.FlagRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -333,7 +349,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.FlagContext.GetWhere(pageNumber, f);
+                return this.FlagRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -365,7 +381,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FlagContext.CountFiltered(filterName);
+                return this.FlagRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -398,7 +414,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FlagContext.GetFiltered(pageNumber, filterName);
+                return this.FlagRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -429,7 +445,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FlagContext.GetDisplayFields();
+                return this.FlagRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -460,7 +476,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FlagContext.GetCustomFields(null);
+                return this.FlagRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -491,7 +507,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FlagContext.GetCustomFields(resourceId);
+                return this.FlagRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -536,7 +552,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.FlagContext.BulkImport(flagCollection);
+                return this.FlagRepository.BulkImport(flagCollection);
             }
             catch (UnauthorizedException)
             {
@@ -567,7 +583,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.FlagContext.Delete(flagId);
+                this.FlagRepository.Delete(flagId);
             }
             catch (UnauthorizedException)
             {
@@ -609,7 +625,7 @@ namespace MixERP.Net.Api.Core
                 flag.user_id = this._UserId;
                 flag.flagged_on = System.DateTime.UtcNow;
 
-                return this.FlagContext.AddOrEdit(flag, customFields);
+                return this.FlagRepository.AddOrEdit(flag, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -640,7 +656,7 @@ namespace MixERP.Net.Api.Core
                 flag.UserId = this._UserId;
                 flag.FlaggedOn = System.DateTime.UtcNow;
 
-                this.FlagContext.Add(flag);
+                this.FlagRepository.Add(flag);
             }
             catch (UnauthorizedException)
             {
@@ -672,7 +688,7 @@ namespace MixERP.Net.Api.Core
                 flag.UserId = this._UserId;
                 flag.FlaggedOn = System.DateTime.UtcNow;
 
-                this.FlagContext.Update(flag, flagId);
+                this.FlagRepository.Update(flag, flagId);
             }
             catch (UnauthorizedException)
             {

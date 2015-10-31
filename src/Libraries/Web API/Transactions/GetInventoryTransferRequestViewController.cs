@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetInventoryTransferRequestViewProcedure procedure;
+        /// <summary>
+        ///     The GetInventoryTransferRequestView repository.
+        /// </summary>
+        private readonly IGetInventoryTransferRequestViewRepository repository;
+
         public class Annotation
         {
             public int UserId { get; set; }
@@ -58,19 +62,32 @@ namespace MixERP.Net.Api.Transactions
             public string StatementReference { get; set; }
         }
 
+
         public GetInventoryTransferRequestViewController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetInventoryTransferRequestViewProcedure
+
+            this.repository = new GetInventoryTransferRequestViewProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetInventoryTransferRequestViewController(IGetInventoryTransferRequestViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get inventory transfer request view" annotation.
         /// </summary>
@@ -80,6 +97,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-inventory-transfer-request-view/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -101,6 +122,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "get inventory transfer request view" entity.
         /// </summary>
@@ -110,6 +132,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-inventory-transfer-request-view/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -130,6 +156,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/get-inventory-transfer-request-view/execute")]
@@ -137,22 +164,22 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.LoginId = annotation.LoginId;
-                this.procedure.OfficeId = annotation.OfficeId;
-                this.procedure.From = annotation.From;
-                this.procedure.To = annotation.To;
-                this.procedure.Office = annotation.Office;
-                this.procedure.Store = annotation.Store;
-                this.procedure.Authorized = annotation.Authorized;
-                this.procedure.Delivered = annotation.Delivered;
-                this.procedure.Received = annotation.Received;
-                this.procedure.User = annotation.User;
-                this.procedure.ReferenceNumber = annotation.ReferenceNumber;
-                this.procedure.StatementReference = annotation.StatementReference;
+                this.repository.UserId = annotation.UserId;
+                this.repository.LoginId = annotation.LoginId;
+                this.repository.OfficeId = annotation.OfficeId;
+                this.repository.From = annotation.From;
+                this.repository.To = annotation.To;
+                this.repository.Office = annotation.Office;
+                this.repository.Store = annotation.Store;
+                this.repository.Authorized = annotation.Authorized;
+                this.repository.Delivered = annotation.Delivered;
+                this.repository.Received = annotation.Received;
+                this.repository.User = annotation.User;
+                this.repository.ReferenceNumber = annotation.ReferenceNumber;
+                this.repository.StatementReference = annotation.StatementReference;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

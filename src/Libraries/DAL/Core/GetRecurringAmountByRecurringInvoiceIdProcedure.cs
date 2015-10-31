@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_recurring_amount_by_recurring_invoice_id(_recurring_invoice_id integer)" on the database.
     /// </summary>
-    public class GetRecurringAmountByRecurringInvoiceIdProcedure : DbAccess
+    public class GetRecurringAmountByRecurringInvoiceIdProcedure : DbAccess, IGetRecurringAmountByRecurringInvoiceIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

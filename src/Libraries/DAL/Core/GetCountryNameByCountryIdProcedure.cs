@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_country_name_by_country_id(pg_arg0 integer)" on the database.
     /// </summary>
-    public class GetCountryNameByCountryIdProcedure : DbAccess
+    public class GetCountryNameByCountryIdProcedure : DbAccess, IGetCountryNameByCountryIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

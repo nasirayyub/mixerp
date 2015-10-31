@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Transactions.Data;
 
 namespace MixERP.Net.Api.Transactions
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Transactions
     public class TransactionsRoutineController : ApiController
     {
         /// <summary>
-        ///     The Routine data context.
+        ///     The Routine repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Transactions.Data.Routine RoutineContext;
+        private readonly IRoutineRepository RoutineRepository;
 
         public TransactionsRoutineController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Transactions
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.RoutineContext = new MixERP.Net.Schemas.Transactions.Data.Routine
+            this.RoutineRepository = new MixERP.Net.Schemas.Transactions.Data.Routine
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public TransactionsRoutineController(IRoutineRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.RoutineRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/routine/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "routine_id",
@@ -80,7 +96,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.RoutineContext.Count();
+                return this.RoutineRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -111,7 +127,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.RoutineContext.GetAll();
+                return this.RoutineRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -142,7 +158,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.RoutineContext.Export();
+                return this.RoutineRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -174,7 +190,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.RoutineContext.Get(routineId);
+                return this.RoutineRepository.Get(routineId);
             }
             catch (UnauthorizedException)
             {
@@ -201,7 +217,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.RoutineContext.Get(routineIds);
+                return this.RoutineRepository.Get(routineIds);
             }
             catch (UnauthorizedException)
             {
@@ -232,7 +248,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.RoutineContext.GetPaginatedResult();
+                return this.RoutineRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -264,7 +280,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.RoutineContext.GetPaginatedResult(pageNumber);
+                return this.RoutineRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -297,7 +313,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.RoutineContext.CountWhere(f);
+                return this.RoutineRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -331,7 +347,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.RoutineContext.GetWhere(pageNumber, f);
+                return this.RoutineRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -363,7 +379,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.RoutineContext.CountFiltered(filterName);
+                return this.RoutineRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -396,7 +412,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.RoutineContext.GetFiltered(pageNumber, filterName);
+                return this.RoutineRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -427,7 +443,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.RoutineContext.GetDisplayFields();
+                return this.RoutineRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -458,7 +474,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.RoutineContext.GetCustomFields(null);
+                return this.RoutineRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -489,7 +505,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.RoutineContext.GetCustomFields(resourceId);
+                return this.RoutineRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -528,7 +544,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.RoutineContext.AddOrEdit(routine, customFields);
+                return this.RoutineRepository.AddOrEdit(routine, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -564,7 +580,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.RoutineContext.Add(routine);
+                this.RoutineRepository.Add(routine);
             }
             catch (UnauthorizedException)
             {
@@ -601,7 +617,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.RoutineContext.Update(routine, routineId);
+                this.RoutineRepository.Update(routine, routineId);
             }
             catch (UnauthorizedException)
             {
@@ -646,7 +662,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.RoutineContext.BulkImport(routineCollection);
+                return this.RoutineRepository.BulkImport(routineCollection);
             }
             catch (UnauthorizedException)
             {
@@ -677,7 +693,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.RoutineContext.Delete(routineId);
+                this.RoutineRepository.Delete(routineId);
             }
             catch (UnauthorizedException)
             {

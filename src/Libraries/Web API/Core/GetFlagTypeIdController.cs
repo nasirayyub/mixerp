@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetFlagTypeIdProcedure procedure;
+        /// <summary>
+        ///     The GetFlagTypeId repository.
+        /// </summary>
+        private readonly IGetFlagTypeIdRepository repository;
+
         public class Annotation
         {
             public int UserId { get; set; }
@@ -49,19 +53,32 @@ namespace MixERP.Net.Api.Core
             public string ResourceId { get; set; }
         }
 
+
         public GetFlagTypeIdController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetFlagTypeIdProcedure
+
+            this.repository = new GetFlagTypeIdProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetFlagTypeIdController(IGetFlagTypeIdRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get flag type id" annotation.
         /// </summary>
@@ -71,6 +88,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/get-flag-type-id/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -84,6 +105,8 @@ namespace MixERP.Net.Api.Core
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/get-flag-type-id/execute")]
@@ -91,13 +114,13 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.Resource = annotation.Resource;
-                this.procedure.ResourceKey = annotation.ResourceKey;
-                this.procedure.ResourceId = annotation.ResourceId;
+                this.repository.UserId = annotation.UserId;
+                this.repository.Resource = annotation.Resource;
+                this.repository.ResourceKey = annotation.ResourceKey;
+                this.repository.ResourceId = annotation.ResourceId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

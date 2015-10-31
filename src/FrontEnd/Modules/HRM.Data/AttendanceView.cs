@@ -14,7 +14,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database view "hrm.attendance_view".
     /// </summary>
-    public class AttendanceView : DbAccess
+    public class AttendanceView : DbAccess, IAttendanceViewRepository
     {
         /// <summary>
         /// The schema of this view. Returns literal "hrm".
@@ -71,7 +71,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the view "hrm.attendance_view" to return a all instances of the "AttendanceView" class. 
+        /// Executes a select query on the view "hrm.attendance_view" to return all instances of the "AttendanceView" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "AttendanceView" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -218,7 +218,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             return Factory.Get<MixERP.Net.Entities.HRM.AttendanceView>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='hrm.attendance_view' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Policy.Data
     /// <summary>
     /// Prepares, validates, and executes the function "policy.create_access_types(_access_type_id integer, _access_type_name character varying)" on the database.
     /// </summary>
-    public class CreateAccessTypesProcedure : DbAccess
+    public class CreateAccessTypesProcedure : DbAccess, ICreateAccessTypesRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

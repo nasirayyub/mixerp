@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.HRM
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetEmployeeNameByEmployeeIdProcedure procedure;
+        /// <summary>
+        ///     The GetEmployeeNameByEmployeeId repository.
+        /// </summary>
+        private readonly IGetEmployeeNameByEmployeeIdRepository repository;
+
         public class Annotation
         {
             public int EmployeeId { get; set; }
         }
+
 
         public GetEmployeeNameByEmployeeIdController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.HRM
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetEmployeeNameByEmployeeIdProcedure
+
+            this.repository = new GetEmployeeNameByEmployeeIdProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetEmployeeNameByEmployeeIdController(IGetEmployeeNameByEmployeeIdRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get employee name by employee id" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/procedures/get-employee-name-by-employee-id/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -78,6 +99,8 @@ namespace MixERP.Net.Api.HRM
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/hrm/procedures/get-employee-name-by-employee-id/execute")]
@@ -85,10 +108,10 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                this.procedure.EmployeeId = annotation.EmployeeId;
+                this.repository.EmployeeId = annotation.EmployeeId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

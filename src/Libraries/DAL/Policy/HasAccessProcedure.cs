@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Policy.Data
     /// <summary>
     /// Prepares, validates, and executes the function "policy.has_access(_user_id integer, _entity text, _access_type_id integer)" on the database.
     /// </summary>
-    public class HasAccessProcedure : DbAccess
+    public class HasAccessProcedure : DbAccess, IHasAccessRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

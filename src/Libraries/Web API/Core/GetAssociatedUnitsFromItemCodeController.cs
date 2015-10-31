@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetAssociatedUnitsFromItemCodeProcedure procedure;
+        /// <summary>
+        ///     The GetAssociatedUnitsFromItemCode repository.
+        /// </summary>
+        private readonly IGetAssociatedUnitsFromItemCodeRepository repository;
+
         public class Annotation
         {
             public string PgArg0 { get; set; }
         }
+
 
         public GetAssociatedUnitsFromItemCodeController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Core
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetAssociatedUnitsFromItemCodeProcedure
+
+            this.repository = new GetAssociatedUnitsFromItemCodeProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetAssociatedUnitsFromItemCodeController(IGetAssociatedUnitsFromItemCodeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get associated units from item code" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/get-associated-units-from-item-code/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -76,6 +97,7 @@ namespace MixERP.Net.Api.Core
                                 }
             };
         }
+
 
         /// <summary>
         ///     Creates meta information of "get associated units from item code" entity.
@@ -86,6 +108,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/get-associated-units-from-item-code/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -97,6 +123,7 @@ namespace MixERP.Net.Api.Core
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/get-associated-units-from-item-code/execute")]
@@ -104,10 +131,10 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.PgArg0 = annotation.PgArg0;
+                this.repository.PgArg0 = annotation.PgArg0;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

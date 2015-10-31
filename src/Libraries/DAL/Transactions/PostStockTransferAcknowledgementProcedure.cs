@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.post_stock_transfer_acknowledgement(_office_id integer, _user_id integer, _login_id bigint, _request_id bigint)" on the database.
     /// </summary>
-    public class PostStockTransferAcknowledgementProcedure : DbAccess
+    public class PostStockTransferAcknowledgementProcedure : DbAccess, IPostStockTransferAcknowledgementRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

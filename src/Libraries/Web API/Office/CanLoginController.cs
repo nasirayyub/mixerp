@@ -40,12 +40,17 @@ namespace MixERP.Net.Api.Office
         /// </summary>
         public string _Catalog { get; set; }
 
-        private CanLoginProcedure procedure;
+        /// <summary>
+        ///     The CanLogin repository.
+        /// </summary>
+        private readonly ICanLoginRepository repository;
+
         public class Annotation
         {
             public int UserId { get; set; }
             public int OfficeId { get; set; }
         }
+
 
         public CanLoginController()
         {
@@ -53,13 +58,25 @@ namespace MixERP.Net.Api.Office
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new CanLoginProcedure
+
+            this.repository = new CanLoginProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public CanLoginController(ICanLoginRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "can login" annotation.
         /// </summary>
@@ -69,6 +86,10 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/procedures/can-login/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -79,6 +100,7 @@ namespace MixERP.Net.Api.Office
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "can login" entity.
         /// </summary>
@@ -88,6 +110,10 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/procedures/can-login/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -98,6 +124,7 @@ namespace MixERP.Net.Api.Office
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/office/procedures/can-login/execute")]
@@ -105,11 +132,11 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                this.procedure.UserId = annotation.UserId;
-                this.procedure.OfficeId = annotation.OfficeId;
+                this.repository.UserId = annotation.UserId;
+                this.repository.OfficeId = annotation.OfficeId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Office.Data;
 
 namespace MixERP.Net.Api.Office
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Office
     public class CashRepositorySelectorViewController : ApiController
     {
         /// <summary>
-        ///     The CashRepositorySelectorView data context.
+        ///     The CashRepositorySelectorView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Office.Data.CashRepositorySelectorView CashRepositorySelectorViewContext;
+        private readonly ICashRepositorySelectorViewRepository CashRepositorySelectorViewRepository;
 
         public CashRepositorySelectorViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Office
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.CashRepositorySelectorViewContext = new MixERP.Net.Schemas.Office.Data.CashRepositorySelectorView
+            this.CashRepositorySelectorViewRepository = new MixERP.Net.Schemas.Office.Data.CashRepositorySelectorView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public CashRepositorySelectorViewController(ICashRepositorySelectorViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.CashRepositorySelectorViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositorySelectorViewContext.Count();
+                return this.CashRepositorySelectorViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositorySelectorViewContext.Get();
+                return this.CashRepositorySelectorViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositorySelectorViewContext.GetPaginatedResult();
+                return this.CashRepositorySelectorViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositorySelectorViewContext.GetPaginatedResult(pageNumber);
+                return this.CashRepositorySelectorViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositorySelectorViewContext.GetDisplayFields();
+                return this.CashRepositorySelectorViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CashRepositorySelectorViewContext.CountWhere(f);
+                return this.CashRepositorySelectorViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.CashRepositorySelectorViewContext.GetWhere(pageNumber, f);
+                return this.CashRepositorySelectorViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositorySelectorViewContext.CountFiltered(filterName);
+                return this.CashRepositorySelectorViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.CashRepositorySelectorViewContext.GetFiltered(pageNumber, filterName);
+                return this.CashRepositorySelectorViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

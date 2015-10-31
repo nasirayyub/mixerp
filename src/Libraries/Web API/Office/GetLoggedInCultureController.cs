@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Office
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetLoggedInCultureProcedure procedure;
+        /// <summary>
+        ///     The GetLoggedInCulture repository.
+        /// </summary>
+        private readonly IGetLoggedInCultureRepository repository;
+
         public class Annotation
         {
             public int UserId { get; set; }
         }
+
 
         public GetLoggedInCultureController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Office
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetLoggedInCultureProcedure
+
+            this.repository = new GetLoggedInCultureProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetLoggedInCultureController(IGetLoggedInCultureRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get logged in culture" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/procedures/get-logged-in-culture/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -78,6 +99,8 @@ namespace MixERP.Net.Api.Office
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/office/procedures/get-logged-in-culture/execute")]
@@ -85,10 +108,10 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                this.procedure.UserId = annotation.UserId;
+                this.repository.UserId = annotation.UserId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

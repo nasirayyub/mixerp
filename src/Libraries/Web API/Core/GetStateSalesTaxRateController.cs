@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetStateSalesTaxRateProcedure procedure;
+        /// <summary>
+        ///     The GetStateSalesTaxRate repository.
+        /// </summary>
+        private readonly IGetStateSalesTaxRateRepository repository;
+
         public class Annotation
         {
             public int StateSalesTaxId { get; set; }
         }
+
 
         public GetStateSalesTaxRateController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Core
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetStateSalesTaxRateProcedure
+
+            this.repository = new GetStateSalesTaxRateProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetStateSalesTaxRateController(IGetStateSalesTaxRateRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get state sales tax rate" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/get-state-sales-tax-rate/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -76,6 +97,7 @@ namespace MixERP.Net.Api.Core
                                 }
             };
         }
+
 
         /// <summary>
         ///     Creates meta information of "get state sales tax rate" entity.
@@ -86,6 +108,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/get-state-sales-tax-rate/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -94,6 +120,7 @@ namespace MixERP.Net.Api.Core
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/get-state-sales-tax-rate/execute")]
@@ -101,10 +128,10 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.StateSalesTaxId = annotation.StateSalesTaxId;
+                this.repository.StateSalesTaxId = annotation.StateSalesTaxId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

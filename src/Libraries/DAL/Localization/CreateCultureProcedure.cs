@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Localization.Data
     /// <summary>
     /// Prepares, validates, and executes the function "localization.create_culture(_culture_code text, _culture_name text)" on the database.
     /// </summary>
-    public class CreateCultureProcedure : DbAccess
+    public class CreateCultureProcedure : DbAccess, ICreateCultureRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetMavcogsProcedure procedure;
+        /// <summary>
+        ///     The GetMavcogs repository.
+        /// </summary>
+        private readonly IGetMavcogsRepository repository;
+
         public class Annotation
         {
             public int ItemId { get; set; }
@@ -49,19 +53,32 @@ namespace MixERP.Net.Api.Transactions
             public decimal Factor { get; set; }
         }
 
+
         public GetMavcogsController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetMavcogsProcedure
+
+            this.repository = new GetMavcogsProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetMavcogsController(IGetMavcogsRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get mavcogs" annotation.
         /// </summary>
@@ -71,6 +88,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-mavcogs/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -84,6 +105,8 @@ namespace MixERP.Net.Api.Transactions
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/get-mavcogs/execute")]
@@ -91,13 +114,13 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.ItemId = annotation.ItemId;
-                this.procedure.StoreId = annotation.StoreId;
-                this.procedure.BaseQuantity = annotation.BaseQuantity;
-                this.procedure.Factor = annotation.Factor;
+                this.repository.ItemId = annotation.ItemId;
+                this.repository.StoreId = annotation.StoreId;
+                this.repository.BaseQuantity = annotation.BaseQuantity;
+                this.repository.Factor = annotation.Factor;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

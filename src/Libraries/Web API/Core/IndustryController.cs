@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class IndustryController : ApiController
     {
         /// <summary>
-        ///     The Industry data context.
+        ///     The Industry repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.Industry IndustryContext;
+        private readonly IIndustryRepository IndustryRepository;
 
         public IndustryController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.IndustryContext = new MixERP.Net.Schemas.Core.Data.Industry
+            this.IndustryRepository = new MixERP.Net.Schemas.Core.Data.Industry
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public IndustryController(IIndustryRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.IndustryRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/industry/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "industry_id",
@@ -80,7 +96,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.IndustryContext.Count();
+                return this.IndustryRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -111,7 +127,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.IndustryContext.GetAll();
+                return this.IndustryRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -142,7 +158,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.IndustryContext.Export();
+                return this.IndustryRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -174,7 +190,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.IndustryContext.Get(industryId);
+                return this.IndustryRepository.Get(industryId);
             }
             catch (UnauthorizedException)
             {
@@ -201,7 +217,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.IndustryContext.Get(industryIds);
+                return this.IndustryRepository.Get(industryIds);
             }
             catch (UnauthorizedException)
             {
@@ -232,7 +248,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.IndustryContext.GetPaginatedResult();
+                return this.IndustryRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -264,7 +280,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.IndustryContext.GetPaginatedResult(pageNumber);
+                return this.IndustryRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -297,7 +313,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.IndustryContext.CountWhere(f);
+                return this.IndustryRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -331,7 +347,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.IndustryContext.GetWhere(pageNumber, f);
+                return this.IndustryRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -363,7 +379,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.IndustryContext.CountFiltered(filterName);
+                return this.IndustryRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -396,7 +412,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.IndustryContext.GetFiltered(pageNumber, filterName);
+                return this.IndustryRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -427,7 +443,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.IndustryContext.GetDisplayFields();
+                return this.IndustryRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -458,7 +474,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.IndustryContext.GetCustomFields(null);
+                return this.IndustryRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -489,7 +505,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.IndustryContext.GetCustomFields(resourceId);
+                return this.IndustryRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -528,7 +544,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.IndustryContext.AddOrEdit(industry, customFields);
+                return this.IndustryRepository.AddOrEdit(industry, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -564,7 +580,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.IndustryContext.Add(industry);
+                this.IndustryRepository.Add(industry);
             }
             catch (UnauthorizedException)
             {
@@ -601,7 +617,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.IndustryContext.Update(industry, industryId);
+                this.IndustryRepository.Update(industry, industryId);
             }
             catch (UnauthorizedException)
             {
@@ -646,7 +662,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.IndustryContext.BulkImport(industryCollection);
+                return this.IndustryRepository.BulkImport(industryCollection);
             }
             catch (UnauthorizedException)
             {
@@ -677,7 +693,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.IndustryContext.Delete(industryId);
+                this.IndustryRepository.Delete(industryId);
             }
             catch (UnauthorizedException)
             {

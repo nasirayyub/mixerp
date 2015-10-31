@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_associated_units(pg_arg0 integer)" on the database.
     /// </summary>
-    public class GetAssociatedUnitsProcedure : DbAccess
+    public class GetAssociatedUnitsProcedure : DbAccess, IGetAssociatedUnitsRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

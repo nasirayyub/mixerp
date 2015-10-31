@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Transactions.Data;
 
 namespace MixERP.Net.Api.Transactions
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Transactions
     public class VerifiedTransactionViewController : ApiController
     {
         /// <summary>
-        ///     The VerifiedTransactionView data context.
+        ///     The VerifiedTransactionView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Transactions.Data.VerifiedTransactionView VerifiedTransactionViewContext;
+        private readonly IVerifiedTransactionViewRepository VerifiedTransactionViewRepository;
 
         public VerifiedTransactionViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Transactions
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.VerifiedTransactionViewContext = new MixERP.Net.Schemas.Transactions.Data.VerifiedTransactionView
+            this.VerifiedTransactionViewRepository = new MixERP.Net.Schemas.Transactions.Data.VerifiedTransactionView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public VerifiedTransactionViewController(IVerifiedTransactionViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.VerifiedTransactionViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.VerifiedTransactionViewContext.Count();
+                return this.VerifiedTransactionViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.VerifiedTransactionViewContext.Get();
+                return this.VerifiedTransactionViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.VerifiedTransactionViewContext.GetPaginatedResult();
+                return this.VerifiedTransactionViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.VerifiedTransactionViewContext.GetPaginatedResult(pageNumber);
+                return this.VerifiedTransactionViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.VerifiedTransactionViewContext.GetDisplayFields();
+                return this.VerifiedTransactionViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.VerifiedTransactionViewContext.CountWhere(f);
+                return this.VerifiedTransactionViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.VerifiedTransactionViewContext.GetWhere(pageNumber, f);
+                return this.VerifiedTransactionViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.VerifiedTransactionViewContext.CountFiltered(filterName);
+                return this.VerifiedTransactionViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.VerifiedTransactionViewContext.GetFiltered(pageNumber, filterName);
+                return this.VerifiedTransactionViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

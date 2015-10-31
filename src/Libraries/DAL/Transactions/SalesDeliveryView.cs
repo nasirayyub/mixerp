@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database view "transactions.sales_delivery_view".
     /// </summary>
-    public class SalesDeliveryView : DbAccess
+    public class SalesDeliveryView : DbAccess, ISalesDeliveryViewRepository
     {
         /// <summary>
         /// The schema of this view. Returns literal "transactions".
@@ -71,7 +71,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the view "transactions.sales_delivery_view" to return a all instances of the "SalesDeliveryView" class. 
+        /// Executes a select query on the view "transactions.sales_delivery_view" to return all instances of the "SalesDeliveryView" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "SalesDeliveryView" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -218,7 +218,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
             return Factory.Get<MixERP.Net.Entities.Transactions.SalesDeliveryView>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='transactions.sales_delivery_view' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

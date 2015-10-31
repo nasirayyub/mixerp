@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_field(_hstore hstore, _column_name text)" on the database.
     /// </summary>
-    public class GetFieldProcedure : DbAccess
+    public class GetFieldProcedure : DbAccess, IGetFieldRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

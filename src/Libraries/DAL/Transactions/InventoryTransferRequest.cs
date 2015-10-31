@@ -16,7 +16,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database table "transactions.inventory_transfer_requests".
     /// </summary>
-    public class InventoryTransferRequest : DbAccess
+    public class InventoryTransferRequest : DbAccess, IInventoryTransferRequestRepository
     {
         /// <summary>
         /// The schema of this table. Returns literal "transactions".
@@ -73,7 +73,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "transactions.inventory_transfer_requests" to return a all instances of the "InventoryTransferRequest" class. 
+        /// Executes a select query on the table "transactions.inventory_transfer_requests" to return all instances of the "InventoryTransferRequest" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "InventoryTransferRequest" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -102,7 +102,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "transactions.inventory_transfer_requests" to return a all instances of the "InventoryTransferRequest" class to export. 
+        /// Executes a select query on the table "transactions.inventory_transfer_requests" to return all instances of the "InventoryTransferRequest" class to export. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "InventoryTransferRequest" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -557,7 +557,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
             return Factory.Get<MixERP.Net.Entities.Transactions.InventoryTransferRequest>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='transactions.inventory_transfer_requests' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

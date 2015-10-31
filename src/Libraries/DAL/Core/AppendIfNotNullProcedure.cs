@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.append_if_not_null(_source text, _to_append text)" on the database.
     /// </summary>
-    public class AppendIfNotNullProcedure : DbAccess
+    public class AppendIfNotNullProcedure : DbAccess, IAppendIfNotNullRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

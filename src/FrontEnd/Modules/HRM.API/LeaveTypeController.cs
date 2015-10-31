@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.HRM
     public class LeaveTypeController : ApiController
     {
         /// <summary>
-        ///     The LeaveType data context.
+        ///     The LeaveType repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.LeaveType LeaveTypeContext;
+        private readonly ILeaveTypeRepository LeaveTypeRepository;
 
         public LeaveTypeController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.LeaveTypeContext = new MixERP.Net.Core.Modules.HRM.Data.LeaveType
+            this.LeaveTypeRepository = new MixERP.Net.Core.Modules.HRM.Data.LeaveType
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public LeaveTypeController(ILeaveTypeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.LeaveTypeRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/leave-type/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "leave_type_id",
@@ -81,7 +97,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveTypeContext.Count();
+                return this.LeaveTypeRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -112,7 +128,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveTypeContext.GetAll();
+                return this.LeaveTypeRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -143,7 +159,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveTypeContext.Export();
+                return this.LeaveTypeRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -175,7 +191,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveTypeContext.Get(leaveTypeId);
+                return this.LeaveTypeRepository.Get(leaveTypeId);
             }
             catch (UnauthorizedException)
             {
@@ -202,7 +218,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveTypeContext.Get(leaveTypeIds);
+                return this.LeaveTypeRepository.Get(leaveTypeIds);
             }
             catch (UnauthorizedException)
             {
@@ -233,7 +249,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveTypeContext.GetPaginatedResult();
+                return this.LeaveTypeRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -265,7 +281,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveTypeContext.GetPaginatedResult(pageNumber);
+                return this.LeaveTypeRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -298,7 +314,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LeaveTypeContext.CountWhere(f);
+                return this.LeaveTypeRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -332,7 +348,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LeaveTypeContext.GetWhere(pageNumber, f);
+                return this.LeaveTypeRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -364,7 +380,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveTypeContext.CountFiltered(filterName);
+                return this.LeaveTypeRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -397,7 +413,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveTypeContext.GetFiltered(pageNumber, filterName);
+                return this.LeaveTypeRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -428,7 +444,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveTypeContext.GetDisplayFields();
+                return this.LeaveTypeRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -459,7 +475,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveTypeContext.GetCustomFields(null);
+                return this.LeaveTypeRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -490,7 +506,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveTypeContext.GetCustomFields(resourceId);
+                return this.LeaveTypeRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -529,7 +545,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.LeaveTypeContext.AddOrEdit(leaveType, customFields);
+                return this.LeaveTypeRepository.AddOrEdit(leaveType, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -565,7 +581,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.LeaveTypeContext.Add(leaveType);
+                this.LeaveTypeRepository.Add(leaveType);
             }
             catch (UnauthorizedException)
             {
@@ -602,7 +618,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.LeaveTypeContext.Update(leaveType, leaveTypeId);
+                this.LeaveTypeRepository.Update(leaveType, leaveTypeId);
             }
             catch (UnauthorizedException)
             {
@@ -647,7 +663,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.LeaveTypeContext.BulkImport(leaveTypeCollection);
+                return this.LeaveTypeRepository.BulkImport(leaveTypeCollection);
             }
             catch (UnauthorizedException)
             {
@@ -678,7 +694,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                this.LeaveTypeContext.Delete(leaveTypeId);
+                this.LeaveTypeRepository.Delete(leaveTypeId);
             }
             catch (UnauthorizedException)
             {

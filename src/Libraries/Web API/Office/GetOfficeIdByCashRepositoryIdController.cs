@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Office
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetOfficeIdByCashRepositoryIdProcedure procedure;
+        /// <summary>
+        ///     The GetOfficeIdByCashRepositoryId repository.
+        /// </summary>
+        private readonly IGetOfficeIdByCashRepositoryIdRepository repository;
+
         public class Annotation
         {
             public int CashRepositoryId { get; set; }
         }
+
 
         public GetOfficeIdByCashRepositoryIdController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Office
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetOfficeIdByCashRepositoryIdProcedure
+
+            this.repository = new GetOfficeIdByCashRepositoryIdProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetOfficeIdByCashRepositoryIdController(IGetOfficeIdByCashRepositoryIdRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get office id by cash repository id" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/procedures/get-office-id-by-cash-repository-id/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -78,6 +99,8 @@ namespace MixERP.Net.Api.Office
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/office/procedures/get-office-id-by-cash-repository-id/execute")]
@@ -85,10 +108,10 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                this.procedure.CashRepositoryId = annotation.CashRepositoryId;
+                this.repository.CashRepositoryId = annotation.CashRepositoryId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

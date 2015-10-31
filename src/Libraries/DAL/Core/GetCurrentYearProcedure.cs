@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_current_year()" on the database.
     /// </summary>
-    public class GetCurrentYearProcedure : DbAccess
+    public class GetCurrentYearProcedure : DbAccess, IGetCurrentYearRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

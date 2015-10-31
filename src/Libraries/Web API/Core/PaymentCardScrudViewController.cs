@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class PaymentCardScrudViewController : ApiController
     {
         /// <summary>
-        ///     The PaymentCardScrudView data context.
+        ///     The PaymentCardScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.PaymentCardScrudView PaymentCardScrudViewContext;
+        private readonly IPaymentCardScrudViewRepository PaymentCardScrudViewRepository;
 
         public PaymentCardScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.PaymentCardScrudViewContext = new MixERP.Net.Schemas.Core.Data.PaymentCardScrudView
+            this.PaymentCardScrudViewRepository = new MixERP.Net.Schemas.Core.Data.PaymentCardScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public PaymentCardScrudViewController(IPaymentCardScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.PaymentCardScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PaymentCardScrudViewContext.Count();
+                return this.PaymentCardScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PaymentCardScrudViewContext.Get();
+                return this.PaymentCardScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PaymentCardScrudViewContext.GetPaginatedResult();
+                return this.PaymentCardScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PaymentCardScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.PaymentCardScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PaymentCardScrudViewContext.GetDisplayFields();
+                return this.PaymentCardScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.PaymentCardScrudViewContext.CountWhere(f);
+                return this.PaymentCardScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.PaymentCardScrudViewContext.GetWhere(pageNumber, f);
+                return this.PaymentCardScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PaymentCardScrudViewContext.CountFiltered(filterName);
+                return this.PaymentCardScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.PaymentCardScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.PaymentCardScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

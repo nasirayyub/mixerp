@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_menu_id(menu_code text)" on the database.
     /// </summary>
-    public class GetMenuIdProcedure : DbAccess
+    public class GetMenuIdProcedure : DbAccess, IGetMenuIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

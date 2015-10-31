@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Policy
         /// </summary>
         public string _Catalog { get; set; }
 
-        private IsLockedOutTillProcedure procedure;
+        /// <summary>
+        ///     The IsLockedOutTill repository.
+        /// </summary>
+        private readonly IIsLockedOutTillRepository repository;
+
         public class Annotation
         {
             public int UserId { get; set; }
         }
+
 
         public IsLockedOutTillController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Policy
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new IsLockedOutTillProcedure
+
+            this.repository = new IsLockedOutTillProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public IsLockedOutTillController(IIsLockedOutTillRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "is locked out till" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/procedures/is-locked-out-till/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -78,6 +99,8 @@ namespace MixERP.Net.Api.Policy
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/policy/procedures/is-locked-out-till/execute")]
@@ -85,10 +108,10 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                this.procedure.UserId = annotation.UserId;
+                this.repository.UserId = annotation.UserId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

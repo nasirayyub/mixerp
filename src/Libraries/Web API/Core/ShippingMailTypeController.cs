@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class ShippingMailTypeController : ApiController
     {
         /// <summary>
-        ///     The ShippingMailType data context.
+        ///     The ShippingMailType repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.ShippingMailType ShippingMailTypeContext;
+        private readonly IShippingMailTypeRepository ShippingMailTypeRepository;
 
         public ShippingMailTypeController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ShippingMailTypeContext = new MixERP.Net.Schemas.Core.Data.ShippingMailType
+            this.ShippingMailTypeRepository = new MixERP.Net.Schemas.Core.Data.ShippingMailType
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ShippingMailTypeController(IShippingMailTypeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ShippingMailTypeRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/shipping-mail-type/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "shipping_mail_type_id",
@@ -80,7 +96,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeContext.Count();
+                return this.ShippingMailTypeRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -111,7 +127,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeContext.GetAll();
+                return this.ShippingMailTypeRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -142,7 +158,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeContext.Export();
+                return this.ShippingMailTypeRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -174,7 +190,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeContext.Get(shippingMailTypeId);
+                return this.ShippingMailTypeRepository.Get(shippingMailTypeId);
             }
             catch (UnauthorizedException)
             {
@@ -201,7 +217,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeContext.Get(shippingMailTypeIds);
+                return this.ShippingMailTypeRepository.Get(shippingMailTypeIds);
             }
             catch (UnauthorizedException)
             {
@@ -232,7 +248,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeContext.GetPaginatedResult();
+                return this.ShippingMailTypeRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -264,7 +280,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeContext.GetPaginatedResult(pageNumber);
+                return this.ShippingMailTypeRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -297,7 +313,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ShippingMailTypeContext.CountWhere(f);
+                return this.ShippingMailTypeRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -331,7 +347,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ShippingMailTypeContext.GetWhere(pageNumber, f);
+                return this.ShippingMailTypeRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -363,7 +379,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeContext.CountFiltered(filterName);
+                return this.ShippingMailTypeRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -396,7 +412,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeContext.GetFiltered(pageNumber, filterName);
+                return this.ShippingMailTypeRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -427,7 +443,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeContext.GetDisplayFields();
+                return this.ShippingMailTypeRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -458,7 +474,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeContext.GetCustomFields(null);
+                return this.ShippingMailTypeRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -489,7 +505,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ShippingMailTypeContext.GetCustomFields(resourceId);
+                return this.ShippingMailTypeRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -528,7 +544,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ShippingMailTypeContext.AddOrEdit(shippingMailType, customFields);
+                return this.ShippingMailTypeRepository.AddOrEdit(shippingMailType, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -564,7 +580,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ShippingMailTypeContext.Add(shippingMailType);
+                this.ShippingMailTypeRepository.Add(shippingMailType);
             }
             catch (UnauthorizedException)
             {
@@ -601,7 +617,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ShippingMailTypeContext.Update(shippingMailType, shippingMailTypeId);
+                this.ShippingMailTypeRepository.Update(shippingMailType, shippingMailTypeId);
             }
             catch (UnauthorizedException)
             {
@@ -646,7 +662,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ShippingMailTypeContext.BulkImport(shippingMailTypeCollection);
+                return this.ShippingMailTypeRepository.BulkImport(shippingMailTypeCollection);
             }
             catch (UnauthorizedException)
             {
@@ -677,7 +693,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.ShippingMailTypeContext.Delete(shippingMailTypeId);
+                this.ShippingMailTypeRepository.Delete(shippingMailTypeId);
             }
             catch (UnauthorizedException)
             {

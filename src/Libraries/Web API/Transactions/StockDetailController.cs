@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Transactions.Data;
 
 namespace MixERP.Net.Api.Transactions
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Transactions
     public class StockDetailController : ApiController
     {
         /// <summary>
-        ///     The StockDetail data context.
+        ///     The StockDetail repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Transactions.Data.StockDetail StockDetailContext;
+        private readonly IStockDetailRepository StockDetailRepository;
 
         public StockDetailController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Transactions
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.StockDetailContext = new MixERP.Net.Schemas.Transactions.Data.StockDetail
+            this.StockDetailRepository = new MixERP.Net.Schemas.Transactions.Data.StockDetail
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public StockDetailController(IStockDetailRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.StockDetailRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/stock-detail/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "stock_detail_id",
@@ -93,7 +109,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockDetailContext.Count();
+                return this.StockDetailRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -124,7 +140,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockDetailContext.GetAll();
+                return this.StockDetailRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -155,7 +171,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockDetailContext.Export();
+                return this.StockDetailRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -187,7 +203,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockDetailContext.Get(stockDetailId);
+                return this.StockDetailRepository.Get(stockDetailId);
             }
             catch (UnauthorizedException)
             {
@@ -214,7 +230,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockDetailContext.Get(stockDetailIds);
+                return this.StockDetailRepository.Get(stockDetailIds);
             }
             catch (UnauthorizedException)
             {
@@ -245,7 +261,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockDetailContext.GetPaginatedResult();
+                return this.StockDetailRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -277,7 +293,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockDetailContext.GetPaginatedResult(pageNumber);
+                return this.StockDetailRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -310,7 +326,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.StockDetailContext.CountWhere(f);
+                return this.StockDetailRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -344,7 +360,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.StockDetailContext.GetWhere(pageNumber, f);
+                return this.StockDetailRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -376,7 +392,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockDetailContext.CountFiltered(filterName);
+                return this.StockDetailRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -409,7 +425,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockDetailContext.GetFiltered(pageNumber, filterName);
+                return this.StockDetailRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -440,7 +456,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockDetailContext.GetDisplayFields();
+                return this.StockDetailRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -471,7 +487,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockDetailContext.GetCustomFields(null);
+                return this.StockDetailRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -502,7 +518,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockDetailContext.GetCustomFields(resourceId);
+                return this.StockDetailRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -541,7 +557,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.StockDetailContext.AddOrEdit(stockDetail, customFields);
+                return this.StockDetailRepository.AddOrEdit(stockDetail, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -577,7 +593,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.StockDetailContext.Add(stockDetail);
+                this.StockDetailRepository.Add(stockDetail);
             }
             catch (UnauthorizedException)
             {
@@ -614,7 +630,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.StockDetailContext.Update(stockDetail, stockDetailId);
+                this.StockDetailRepository.Update(stockDetail, stockDetailId);
             }
             catch (UnauthorizedException)
             {
@@ -659,7 +675,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.StockDetailContext.BulkImport(stockDetailCollection);
+                return this.StockDetailRepository.BulkImport(stockDetailCollection);
             }
             catch (UnauthorizedException)
             {
@@ -690,7 +706,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.StockDetailContext.Delete(stockDetailId);
+                this.StockDetailRepository.Delete(stockDetailId);
             }
             catch (UnauthorizedException)
             {

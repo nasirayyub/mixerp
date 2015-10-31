@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_account_id_by_shipper_id(_shipper_id integer)" on the database.
     /// </summary>
-    public class GetAccountIdByShipperIdProcedure : DbAccess
+    public class GetAccountIdByShipperIdProcedure : DbAccess, IGetAccountIdByShipperIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

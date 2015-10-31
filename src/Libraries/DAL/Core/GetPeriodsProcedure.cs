@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_periods(_date_from date, _date_to date)" on the database.
     /// </summary>
-    public class GetPeriodsProcedure : DbAccess
+    public class GetPeriodsProcedure : DbAccess, IGetPeriodsRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

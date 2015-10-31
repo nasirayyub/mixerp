@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_attachment_lookup_info(_book character varying)" on the database.
     /// </summary>
-    public class GetAttachmentLookupInfoProcedure : DbAccess
+    public class GetAttachmentLookupInfoProcedure : DbAccess, IGetAttachmentLookupInfoRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

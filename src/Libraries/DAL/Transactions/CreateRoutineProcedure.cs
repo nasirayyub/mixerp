@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.create_routine(_routine_code character varying, _routine regproc, _order integer)" on the database.
     /// </summary>
-    public class CreateRoutineProcedure : DbAccess
+    public class CreateRoutineProcedure : DbAccess, ICreateRoutineRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

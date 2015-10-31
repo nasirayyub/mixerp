@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_item_group_id_by_item_group_name(pg_arg0 text)" on the database.
     /// </summary>
-    public class GetItemGroupIdByItemGroupNameProcedure : DbAccess
+    public class GetItemGroupIdByItemGroupNameProcedure : DbAccess, IGetItemGroupIdByItemGroupNameRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

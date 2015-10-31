@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_shipping_address_code_by_shipping_address_id(pg_arg0 bigint)" on the database.
     /// </summary>
-    public class GetShippingAddressCodeByShippingAddressIdProcedure : DbAccess
+    public class GetShippingAddressCodeByShippingAddressIdProcedure : DbAccess, IGetShippingAddressCodeByShippingAddressIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

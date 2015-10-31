@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.HRM
     public class TerminationVerificationScrudViewController : ApiController
     {
         /// <summary>
-        ///     The TerminationVerificationScrudView data context.
+        ///     The TerminationVerificationScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.TerminationVerificationScrudView TerminationVerificationScrudViewContext;
+        private readonly ITerminationVerificationScrudViewRepository TerminationVerificationScrudViewRepository;
 
         public TerminationVerificationScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.TerminationVerificationScrudViewContext = new MixERP.Net.Core.Modules.HRM.Data.TerminationVerificationScrudView
+            this.TerminationVerificationScrudViewRepository = new MixERP.Net.Core.Modules.HRM.Data.TerminationVerificationScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public TerminationVerificationScrudViewController(ITerminationVerificationScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.TerminationVerificationScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationVerificationScrudViewContext.Count();
+                return this.TerminationVerificationScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationVerificationScrudViewContext.Get();
+                return this.TerminationVerificationScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationVerificationScrudViewContext.GetPaginatedResult();
+                return this.TerminationVerificationScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationVerificationScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.TerminationVerificationScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationVerificationScrudViewContext.GetDisplayFields();
+                return this.TerminationVerificationScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.TerminationVerificationScrudViewContext.CountWhere(f);
+                return this.TerminationVerificationScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.TerminationVerificationScrudViewContext.GetWhere(pageNumber, f);
+                return this.TerminationVerificationScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationVerificationScrudViewContext.CountFiltered(filterName);
+                return this.TerminationVerificationScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.TerminationVerificationScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.TerminationVerificationScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

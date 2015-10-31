@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_currency_code_by_party_code(_party_code character varying)" on the database.
     /// </summary>
-    public class GetCurrencyCodeByPartyCodeProcedure : DbAccess
+    public class GetCurrencyCodeByPartyCodeProcedure : DbAccess, IGetCurrencyCodeByPartyCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

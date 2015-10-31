@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Transactions.Data;
 
 namespace MixERP.Net.Api.Transactions
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Transactions
     public class SalesQuotationViewController : ApiController
     {
         /// <summary>
-        ///     The SalesQuotationView data context.
+        ///     The SalesQuotationView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Transactions.Data.SalesQuotationView SalesQuotationViewContext;
+        private readonly ISalesQuotationViewRepository SalesQuotationViewRepository;
 
         public SalesQuotationViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Transactions
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.SalesQuotationViewContext = new MixERP.Net.Schemas.Transactions.Data.SalesQuotationView
+            this.SalesQuotationViewRepository = new MixERP.Net.Schemas.Transactions.Data.SalesQuotationView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public SalesQuotationViewController(ISalesQuotationViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.SalesQuotationViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesQuotationViewContext.Count();
+                return this.SalesQuotationViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesQuotationViewContext.Get();
+                return this.SalesQuotationViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesQuotationViewContext.GetPaginatedResult();
+                return this.SalesQuotationViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesQuotationViewContext.GetPaginatedResult(pageNumber);
+                return this.SalesQuotationViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesQuotationViewContext.GetDisplayFields();
+                return this.SalesQuotationViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SalesQuotationViewContext.CountWhere(f);
+                return this.SalesQuotationViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SalesQuotationViewContext.GetWhere(pageNumber, f);
+                return this.SalesQuotationViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesQuotationViewContext.CountFiltered(filterName);
+                return this.SalesQuotationViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesQuotationViewContext.GetFiltered(pageNumber, filterName);
+                return this.SalesQuotationViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class FilterNameViewController : ApiController
     {
         /// <summary>
-        ///     The FilterNameView data context.
+        ///     The FilterNameView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.FilterNameView FilterNameViewContext;
+        private readonly IFilterNameViewRepository FilterNameViewRepository;
 
         public FilterNameViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.FilterNameViewContext = new MixERP.Net.Schemas.Core.Data.FilterNameView
+            this.FilterNameViewRepository = new MixERP.Net.Schemas.Core.Data.FilterNameView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public FilterNameViewController(IFilterNameViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.FilterNameViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FilterNameViewContext.Count();
+                return this.FilterNameViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FilterNameViewContext.Get();
+                return this.FilterNameViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FilterNameViewContext.GetPaginatedResult();
+                return this.FilterNameViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FilterNameViewContext.GetPaginatedResult(pageNumber);
+                return this.FilterNameViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -186,7 +197,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.FilterNameViewContext.CountWhere(f);
+                return this.FilterNameViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -220,7 +231,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.FilterNameViewContext.GetWhere(pageNumber, f);
+                return this.FilterNameViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -252,7 +263,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FilterNameViewContext.CountFiltered(filterName);
+                return this.FilterNameViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -286,7 +297,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.FilterNameViewContext.GetFiltered(pageNumber, filterName);
+                return this.FilterNameViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

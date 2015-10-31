@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_payment_term_id_by_payment_term_code(pg_arg0 text)" on the database.
     /// </summary>
-    public class GetPaymentTermIdByPaymentTermCodeProcedure : DbAccess
+    public class GetPaymentTermIdByPaymentTermCodeProcedure : DbAccess, IGetPaymentTermIdByPaymentTermCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

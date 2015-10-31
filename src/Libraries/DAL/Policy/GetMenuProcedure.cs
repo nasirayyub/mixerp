@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Policy.Data
     /// <summary>
     /// Prepares, validates, and executes the function "policy.get_menu(_user_id integer, _office_id integer, _culture_ text)" on the database.
     /// </summary>
-    public class GetMenuProcedure : DbAccess
+    public class GetMenuProcedure : DbAccess, IGetMenuRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

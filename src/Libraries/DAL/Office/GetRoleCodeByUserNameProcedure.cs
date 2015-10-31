@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.get_role_code_by_user_name(user_name text)" on the database.
     /// </summary>
-    public class GetRoleCodeByUserNameProcedure : DbAccess
+    public class GetRoleCodeByUserNameProcedure : DbAccess, IGetRoleCodeByUserNameRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -62,6 +62,8 @@
   <ItemGroup>
     <Compile Include="DbStat.cs" />
     <Compile Include="GetEntitiesProcedure.cs" />
+    <Compile Include="IDbStatRepository.cs" />
+    <Compile Include="IGetEntitiesRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

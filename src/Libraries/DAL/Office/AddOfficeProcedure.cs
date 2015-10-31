@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.add_office(_office_code character varying, _office_name character varying, _nick_name character varying, _registration_date date, _currency_code character varying, _currency_symbol character varying, _currency_name character varying, _hundredth_name character varying, _fiscal_year_code character varying, _fiscal_year_name character varying, _starts_from date, _ends_on date, _sales_tax_is_vat boolean, _has_state_sales_tax boolean, _has_county_sales_tax boolean, _quotation_valid_days integer, _income_tax_rate numeric, _week_start_day integer, _transaction_start_date date, _is_perpetual boolean, _inv_valuation_method character varying, _logo_file text, _admin_name character varying, _user_name character varying, _password character varying)" on the database.
     /// </summary>
-    public class AddOfficeProcedure : DbAccess
+    public class AddOfficeProcedure : DbAccess, IAddOfficeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Transactions.Data;
 
 namespace MixERP.Net.Api.Transactions
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Transactions
     public class NonGlStockDetailController : ApiController
     {
         /// <summary>
-        ///     The NonGlStockDetail data context.
+        ///     The NonGlStockDetail repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Transactions.Data.NonGlStockDetail NonGlStockDetailContext;
+        private readonly INonGlStockDetailRepository NonGlStockDetailRepository;
 
         public NonGlStockDetailController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Transactions
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.NonGlStockDetailContext = new MixERP.Net.Schemas.Transactions.Data.NonGlStockDetail
+            this.NonGlStockDetailRepository = new MixERP.Net.Schemas.Transactions.Data.NonGlStockDetail
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public NonGlStockDetailController(INonGlStockDetailRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.NonGlStockDetailRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/non-gl-stock-detail/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "non_gl_stock_detail_id",
@@ -90,7 +106,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.NonGlStockDetailContext.Count();
+                return this.NonGlStockDetailRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -121,7 +137,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.NonGlStockDetailContext.GetAll();
+                return this.NonGlStockDetailRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +168,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.NonGlStockDetailContext.Export();
+                return this.NonGlStockDetailRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -184,7 +200,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.NonGlStockDetailContext.Get(nonGlStockDetailId);
+                return this.NonGlStockDetailRepository.Get(nonGlStockDetailId);
             }
             catch (UnauthorizedException)
             {
@@ -211,7 +227,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.NonGlStockDetailContext.Get(nonGlStockDetailIds);
+                return this.NonGlStockDetailRepository.Get(nonGlStockDetailIds);
             }
             catch (UnauthorizedException)
             {
@@ -242,7 +258,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.NonGlStockDetailContext.GetPaginatedResult();
+                return this.NonGlStockDetailRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -274,7 +290,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.NonGlStockDetailContext.GetPaginatedResult(pageNumber);
+                return this.NonGlStockDetailRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -307,7 +323,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.NonGlStockDetailContext.CountWhere(f);
+                return this.NonGlStockDetailRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -341,7 +357,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.NonGlStockDetailContext.GetWhere(pageNumber, f);
+                return this.NonGlStockDetailRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -373,7 +389,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.NonGlStockDetailContext.CountFiltered(filterName);
+                return this.NonGlStockDetailRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -406,7 +422,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.NonGlStockDetailContext.GetFiltered(pageNumber, filterName);
+                return this.NonGlStockDetailRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -437,7 +453,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.NonGlStockDetailContext.GetDisplayFields();
+                return this.NonGlStockDetailRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -468,7 +484,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.NonGlStockDetailContext.GetCustomFields(null);
+                return this.NonGlStockDetailRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -499,7 +515,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.NonGlStockDetailContext.GetCustomFields(resourceId);
+                return this.NonGlStockDetailRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -538,7 +554,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.NonGlStockDetailContext.AddOrEdit(nonGlStockDetail, customFields);
+                return this.NonGlStockDetailRepository.AddOrEdit(nonGlStockDetail, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -574,7 +590,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.NonGlStockDetailContext.Add(nonGlStockDetail);
+                this.NonGlStockDetailRepository.Add(nonGlStockDetail);
             }
             catch (UnauthorizedException)
             {
@@ -611,7 +627,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.NonGlStockDetailContext.Update(nonGlStockDetail, nonGlStockDetailId);
+                this.NonGlStockDetailRepository.Update(nonGlStockDetail, nonGlStockDetailId);
             }
             catch (UnauthorizedException)
             {
@@ -656,7 +672,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.NonGlStockDetailContext.BulkImport(nonGlStockDetailCollection);
+                return this.NonGlStockDetailRepository.BulkImport(nonGlStockDetailCollection);
             }
             catch (UnauthorizedException)
             {
@@ -687,7 +703,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.NonGlStockDetailContext.Delete(nonGlStockDetailId);
+                this.NonGlStockDetailRepository.Delete(nonGlStockDetailId);
             }
             catch (UnauthorizedException)
             {

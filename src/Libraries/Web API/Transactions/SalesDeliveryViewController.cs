@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Transactions.Data;
 
 namespace MixERP.Net.Api.Transactions
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Transactions
     public class SalesDeliveryViewController : ApiController
     {
         /// <summary>
-        ///     The SalesDeliveryView data context.
+        ///     The SalesDeliveryView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Transactions.Data.SalesDeliveryView SalesDeliveryViewContext;
+        private readonly ISalesDeliveryViewRepository SalesDeliveryViewRepository;
 
         public SalesDeliveryViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Transactions
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.SalesDeliveryViewContext = new MixERP.Net.Schemas.Transactions.Data.SalesDeliveryView
+            this.SalesDeliveryViewRepository = new MixERP.Net.Schemas.Transactions.Data.SalesDeliveryView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public SalesDeliveryViewController(ISalesDeliveryViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.SalesDeliveryViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesDeliveryViewContext.Count();
+                return this.SalesDeliveryViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesDeliveryViewContext.Get();
+                return this.SalesDeliveryViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesDeliveryViewContext.GetPaginatedResult();
+                return this.SalesDeliveryViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesDeliveryViewContext.GetPaginatedResult(pageNumber);
+                return this.SalesDeliveryViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesDeliveryViewContext.GetDisplayFields();
+                return this.SalesDeliveryViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SalesDeliveryViewContext.CountWhere(f);
+                return this.SalesDeliveryViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.SalesDeliveryViewContext.GetWhere(pageNumber, f);
+                return this.SalesDeliveryViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesDeliveryViewContext.CountFiltered(filterName);
+                return this.SalesDeliveryViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.SalesDeliveryViewContext.GetFiltered(pageNumber, filterName);
+                return this.SalesDeliveryViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

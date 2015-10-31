@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.has_nexus(_state_id integer)" on the database.
     /// </summary>
-    public class HasNexusProcedure : DbAccess
+    public class HasNexusProcedure : DbAccess, IHasNexusRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

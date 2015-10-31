@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.convert_unit(from_unit integer, to_unit integer)" on the database.
     /// </summary>
-    public class ConvertUnitProcedure : DbAccess
+    public class ConvertUnitProcedure : DbAccess, IConvertUnitRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

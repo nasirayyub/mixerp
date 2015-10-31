@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.is_parent_account(parent bigint, child bigint)" on the database.
     /// </summary>
-    public class IsParentAccountProcedure : DbAccess
+    public class IsParentAccountProcedure : DbAccess, IIsParentAccountRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

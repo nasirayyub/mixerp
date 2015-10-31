@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_party_transaction_summary(office_id integer, party_id bigint)" on the database.
     /// </summary>
-    public class GetPartyTransactionSummaryProcedure : DbAccess
+    public class GetPartyTransactionSummaryProcedure : DbAccess, IGetPartyTransactionSummaryRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

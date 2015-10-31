@@ -16,7 +16,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
     /// <summary>
     /// Provides simplified data access features to perform SCRUD operation on the database table "hrm.leave_applications".
     /// </summary>
-    public class LeaveApplication : DbAccess
+    public class LeaveApplication : DbAccess, ILeaveApplicationRepository
     {
         /// <summary>
         /// The schema of this table. Returns literal "hrm".
@@ -73,7 +73,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.leave_applications" to return a all instances of the "LeaveApplication" class. 
+        /// Executes a select query on the table "hrm.leave_applications" to return all instances of the "LeaveApplication" class. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "LeaveApplication" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -102,7 +102,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "hrm.leave_applications" to return a all instances of the "LeaveApplication" class to export. 
+        /// Executes a select query on the table "hrm.leave_applications" to return all instances of the "LeaveApplication" class to export. 
         /// </summary>
         /// <returns>Returns a non-live, non-mapped instances of "LeaveApplication" class.</returns>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
@@ -561,7 +561,7 @@ namespace MixERP.Net.Core.Modules.HRM.Data
             return Factory.Get<MixERP.Net.Entities.HRM.LeaveApplication>(this._Catalog, sql, offset);
         }
 
-        private List<EntityParser.Filter> GetFilters(string catalog, string filterName)
+        public List<EntityParser.Filter> GetFilters(string catalog, string filterName)
         {
             const string sql = "SELECT * FROM core.filters WHERE object_name='hrm.leave_applications' AND lower(filter_name)=lower(@0);";
             return Factory.Get<EntityParser.Filter>(catalog, sql, filterName).ToList();

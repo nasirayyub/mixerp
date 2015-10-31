@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetWriteOffCostOfGoodsSoldProcedure procedure;
+        /// <summary>
+        ///     The GetWriteOffCostOfGoodsSold repository.
+        /// </summary>
+        private readonly IGetWriteOffCostOfGoodsSoldRepository repository;
+
         public class Annotation
         {
             public long StockMasterId { get; set; }
@@ -49,19 +53,32 @@ namespace MixERP.Net.Api.Transactions
             public int Quantity { get; set; }
         }
 
+
         public GetWriteOffCostOfGoodsSoldController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetWriteOffCostOfGoodsSoldProcedure
+
+            this.repository = new GetWriteOffCostOfGoodsSoldProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetWriteOffCostOfGoodsSoldController(IGetWriteOffCostOfGoodsSoldRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get write off cost of goods sold" annotation.
         /// </summary>
@@ -71,6 +88,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-write-off-cost-of-goods-sold/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -83,6 +104,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "get write off cost of goods sold" entity.
         /// </summary>
@@ -92,6 +114,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-write-off-cost-of-goods-sold/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -100,6 +126,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/get-write-off-cost-of-goods-sold/execute")]
@@ -107,13 +134,13 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.StockMasterId = annotation.StockMasterId;
-                this.procedure.ItemId = annotation.ItemId;
-                this.procedure.UnitId = annotation.UnitId;
-                this.procedure.Quantity = annotation.Quantity;
+                this.repository.StockMasterId = annotation.StockMasterId;
+                this.repository.ItemId = annotation.ItemId;
+                this.repository.UnitId = annotation.UnitId;
+                this.repository.Quantity = annotation.Quantity;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

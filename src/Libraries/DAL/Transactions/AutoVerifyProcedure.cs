@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.auto_verify(_tran_id bigint, _office_id integer)" on the database.
     /// </summary>
-    public class AutoVerifyProcedure : DbAccess
+    public class AutoVerifyProcedure : DbAccess, IAutoVerifyRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.create_recurring_invoices(pg_arg0 bigint)" on the database.
     /// </summary>
-    public class CreateRecurringInvoicesProcedure : DbAccess
+    public class CreateRecurringInvoicesProcedure : DbAccess, ICreateRecurringInvoicesRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_cash_account_id()" on the database.
     /// </summary>
-    public class GetCashAccountIdProcedure : DbAccess
+    public class GetCashAccountIdProcedure : DbAccess, IGetCashAccountIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

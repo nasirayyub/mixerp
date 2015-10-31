@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Transactions.Data;
 
 namespace MixERP.Net.Api.Transactions
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Transactions
     public class StockTransactionViewController : ApiController
     {
         /// <summary>
-        ///     The StockTransactionView data context.
+        ///     The StockTransactionView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Transactions.Data.StockTransactionView StockTransactionViewContext;
+        private readonly IStockTransactionViewRepository StockTransactionViewRepository;
 
         public StockTransactionViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Transactions
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.StockTransactionViewContext = new MixERP.Net.Schemas.Transactions.Data.StockTransactionView
+            this.StockTransactionViewRepository = new MixERP.Net.Schemas.Transactions.Data.StockTransactionView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public StockTransactionViewController(IStockTransactionViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.StockTransactionViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockTransactionViewContext.Count();
+                return this.StockTransactionViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockTransactionViewContext.Get();
+                return this.StockTransactionViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockTransactionViewContext.GetPaginatedResult();
+                return this.StockTransactionViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockTransactionViewContext.GetPaginatedResult(pageNumber);
+                return this.StockTransactionViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockTransactionViewContext.GetDisplayFields();
+                return this.StockTransactionViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.StockTransactionViewContext.CountWhere(f);
+                return this.StockTransactionViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.StockTransactionViewContext.GetWhere(pageNumber, f);
+                return this.StockTransactionViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockTransactionViewContext.CountFiltered(filterName);
+                return this.StockTransactionViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.StockTransactionViewContext.GetFiltered(pageNumber, filterName);
+                return this.StockTransactionViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

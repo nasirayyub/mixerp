@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Audit
         /// </summary>
         public string _Catalog { get; set; }
 
-        private IsValidLoginIdProcedure procedure;
+        /// <summary>
+        ///     The IsValidLoginId repository.
+        /// </summary>
+        private readonly IIsValidLoginIdRepository repository;
+
         public class Annotation
         {
             public long PgArg0 { get; set; }
         }
+
 
         public IsValidLoginIdController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Audit
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new IsValidLoginIdProcedure
+
+            this.repository = new IsValidLoginIdProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public IsValidLoginIdController(IIsValidLoginIdRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "is valid login id" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Audit
         [Route("~/api/audit/procedures/is-valid-login-id/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -78,6 +99,8 @@ namespace MixERP.Net.Api.Audit
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/audit/procedures/is-valid-login-id/execute")]
@@ -85,10 +108,10 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                this.procedure.PgArg0 = annotation.PgArg0;
+                this.repository.PgArg0 = annotation.PgArg0;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

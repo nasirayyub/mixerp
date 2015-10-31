@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Office.Data;
 
 namespace MixERP.Net.Api.Office
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Office
     public class ConfigurationController : ApiController
     {
         /// <summary>
-        ///     The Configuration data context.
+        ///     The Configuration repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Office.Data.Configuration ConfigurationContext;
+        private readonly IConfigurationRepository ConfigurationRepository;
 
         public ConfigurationController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Office
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ConfigurationContext = new MixERP.Net.Schemas.Office.Data.Configuration
+            this.ConfigurationRepository = new MixERP.Net.Schemas.Office.Data.Configuration
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ConfigurationController(IConfigurationRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ConfigurationRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/configuration/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "configuration_id",
@@ -82,7 +98,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.ConfigurationContext.Count();
+                return this.ConfigurationRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -113,7 +129,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.ConfigurationContext.GetAll();
+                return this.ConfigurationRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -144,7 +160,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.ConfigurationContext.Export();
+                return this.ConfigurationRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -176,7 +192,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.ConfigurationContext.Get(configurationId);
+                return this.ConfigurationRepository.Get(configurationId);
             }
             catch (UnauthorizedException)
             {
@@ -203,7 +219,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.ConfigurationContext.Get(configurationIds);
+                return this.ConfigurationRepository.Get(configurationIds);
             }
             catch (UnauthorizedException)
             {
@@ -234,7 +250,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.ConfigurationContext.GetPaginatedResult();
+                return this.ConfigurationRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -266,7 +282,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.ConfigurationContext.GetPaginatedResult(pageNumber);
+                return this.ConfigurationRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -299,7 +315,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ConfigurationContext.CountWhere(f);
+                return this.ConfigurationRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -333,7 +349,7 @@ namespace MixERP.Net.Api.Office
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ConfigurationContext.GetWhere(pageNumber, f);
+                return this.ConfigurationRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -365,7 +381,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.ConfigurationContext.CountFiltered(filterName);
+                return this.ConfigurationRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -398,7 +414,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.ConfigurationContext.GetFiltered(pageNumber, filterName);
+                return this.ConfigurationRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -429,7 +445,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.ConfigurationContext.GetDisplayFields();
+                return this.ConfigurationRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -460,7 +476,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.ConfigurationContext.GetCustomFields(null);
+                return this.ConfigurationRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -491,7 +507,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                return this.ConfigurationContext.GetCustomFields(resourceId);
+                return this.ConfigurationRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -530,7 +546,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                return this.ConfigurationContext.AddOrEdit(configuration, customFields);
+                return this.ConfigurationRepository.AddOrEdit(configuration, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -566,7 +582,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                this.ConfigurationContext.Add(configuration);
+                this.ConfigurationRepository.Add(configuration);
             }
             catch (UnauthorizedException)
             {
@@ -603,7 +619,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                this.ConfigurationContext.Update(configuration, configurationId);
+                this.ConfigurationRepository.Update(configuration, configurationId);
             }
             catch (UnauthorizedException)
             {
@@ -648,7 +664,7 @@ namespace MixERP.Net.Api.Office
 
             try
             {
-                return this.ConfigurationContext.BulkImport(configurationCollection);
+                return this.ConfigurationRepository.BulkImport(configurationCollection);
             }
             catch (UnauthorizedException)
             {
@@ -679,7 +695,7 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                this.ConfigurationContext.Delete(configurationId);
+                this.ConfigurationRepository.Delete(configurationId);
             }
             catch (UnauthorizedException)
             {

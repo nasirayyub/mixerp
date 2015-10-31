@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_current_fiscal_year_code(_office_id integer)" on the database.
     /// </summary>
-    public class GetCurrentFiscalYearCodeProcedure : DbAccess
+    public class GetCurrentFiscalYearCodeProcedure : DbAccess, IGetCurrentFiscalYearCodeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

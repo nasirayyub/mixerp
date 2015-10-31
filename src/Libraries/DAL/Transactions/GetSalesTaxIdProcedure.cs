@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_sales_tax_id(_tran_book character varying, _store_id integer, _party_code character varying, _shipping_address_code character varying, _price_type_id integer, _item_code character varying, _unit_id integer, _price money_strict)" on the database.
     /// </summary>
-    public class GetSalesTaxIdProcedure : DbAccess
+    public class GetSalesTaxIdProcedure : DbAccess, IGetSalesTaxIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

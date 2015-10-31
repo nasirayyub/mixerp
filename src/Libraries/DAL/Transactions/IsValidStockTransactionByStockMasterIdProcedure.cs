@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.is_valid_stock_transaction_by_stock_master_id(_stock_master_id bigint)" on the database.
     /// </summary>
-    public class IsValidStockTransactionByStockMasterIdProcedure : DbAccess
+    public class IsValidStockTransactionByStockMasterIdProcedure : DbAccess, IIsValidStockTransactionByStockMasterIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

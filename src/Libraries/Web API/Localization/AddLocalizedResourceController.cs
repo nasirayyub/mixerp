@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Localization
         /// </summary>
         public string _Catalog { get; set; }
 
-        private AddLocalizedResourceProcedure procedure;
+        /// <summary>
+        ///     The AddLocalizedResource repository.
+        /// </summary>
+        private readonly IAddLocalizedResourceRepository repository;
+
         public class Annotation
         {
             public string ResourceClass { get; set; }
@@ -49,19 +53,32 @@ namespace MixERP.Net.Api.Localization
             public string Value { get; set; }
         }
 
+
         public AddLocalizedResourceController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new AddLocalizedResourceProcedure
+
+            this.repository = new AddLocalizedResourceProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public AddLocalizedResourceController(IAddLocalizedResourceRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "add localized resource" annotation.
         /// </summary>
@@ -71,6 +88,10 @@ namespace MixERP.Net.Api.Localization
         [Route("~/api/localization/procedures/add-localized-resource/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -83,6 +104,7 @@ namespace MixERP.Net.Api.Localization
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "add localized resource" entity.
         /// </summary>
@@ -92,6 +114,10 @@ namespace MixERP.Net.Api.Localization
         [Route("~/api/localization/procedures/add-localized-resource/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -100,6 +126,7 @@ namespace MixERP.Net.Api.Localization
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/localization/procedures/add-localized-resource/execute")]
@@ -107,13 +134,13 @@ namespace MixERP.Net.Api.Localization
         {
             try
             {
-                this.procedure.ResourceClass = annotation.ResourceClass;
-                this.procedure.CultureCode = annotation.CultureCode;
-                this.procedure.Key = annotation.Key;
-                this.procedure.Value = annotation.Value;
+                this.repository.ResourceClass = annotation.ResourceClass;
+                this.repository.CultureCode = annotation.CultureCode;
+                this.repository.Key = annotation.Key;
+                this.repository.Value = annotation.Value;
 
 
-                this.procedure.Execute();
+                this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

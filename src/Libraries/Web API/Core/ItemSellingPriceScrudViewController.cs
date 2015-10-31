@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class ItemSellingPriceScrudViewController : ApiController
     {
         /// <summary>
-        ///     The ItemSellingPriceScrudView data context.
+        ///     The ItemSellingPriceScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.ItemSellingPriceScrudView ItemSellingPriceScrudViewContext;
+        private readonly IItemSellingPriceScrudViewRepository ItemSellingPriceScrudViewRepository;
 
         public ItemSellingPriceScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ItemSellingPriceScrudViewContext = new MixERP.Net.Schemas.Core.Data.ItemSellingPriceScrudView
+            this.ItemSellingPriceScrudViewRepository = new MixERP.Net.Schemas.Core.Data.ItemSellingPriceScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ItemSellingPriceScrudViewController(IItemSellingPriceScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ItemSellingPriceScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceScrudViewContext.Count();
+                return this.ItemSellingPriceScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceScrudViewContext.Get();
+                return this.ItemSellingPriceScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceScrudViewContext.GetPaginatedResult();
+                return this.ItemSellingPriceScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.ItemSellingPriceScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceScrudViewContext.GetDisplayFields();
+                return this.ItemSellingPriceScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ItemSellingPriceScrudViewContext.CountWhere(f);
+                return this.ItemSellingPriceScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ItemSellingPriceScrudViewContext.GetWhere(pageNumber, f);
+                return this.ItemSellingPriceScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceScrudViewContext.CountFiltered(filterName);
+                return this.ItemSellingPriceScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemSellingPriceScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.ItemSellingPriceScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

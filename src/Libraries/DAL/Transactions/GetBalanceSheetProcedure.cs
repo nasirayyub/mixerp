@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_balance_sheet(_previous_period date, _current_period date, _user_id integer, _office_id integer, _factor integer)" on the database.
     /// </summary>
-    public class GetBalanceSheetProcedure : DbAccess
+    public class GetBalanceSheetProcedure : DbAccess, IGetBalanceSheetRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Config.Data;
 
 namespace MixERP.Net.Api.Config
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Config
     public class OpenExchangeRateScrudViewController : ApiController
     {
         /// <summary>
-        ///     The OpenExchangeRateScrudView data context.
+        ///     The OpenExchangeRateScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Config.Data.OpenExchangeRateScrudView OpenExchangeRateScrudViewContext;
+        private readonly IOpenExchangeRateScrudViewRepository OpenExchangeRateScrudViewRepository;
 
         public OpenExchangeRateScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Config
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.OpenExchangeRateScrudViewContext = new MixERP.Net.Schemas.Config.Data.OpenExchangeRateScrudView
+            this.OpenExchangeRateScrudViewRepository = new MixERP.Net.Schemas.Config.Data.OpenExchangeRateScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public OpenExchangeRateScrudViewController(IOpenExchangeRateScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.OpenExchangeRateScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.OpenExchangeRateScrudViewContext.Count();
+                return this.OpenExchangeRateScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.OpenExchangeRateScrudViewContext.Get();
+                return this.OpenExchangeRateScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.OpenExchangeRateScrudViewContext.GetPaginatedResult();
+                return this.OpenExchangeRateScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.OpenExchangeRateScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.OpenExchangeRateScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -186,7 +197,7 @@ namespace MixERP.Net.Api.Config
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.OpenExchangeRateScrudViewContext.CountWhere(f);
+                return this.OpenExchangeRateScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -220,7 +231,7 @@ namespace MixERP.Net.Api.Config
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.OpenExchangeRateScrudViewContext.GetWhere(pageNumber, f);
+                return this.OpenExchangeRateScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -252,7 +263,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.OpenExchangeRateScrudViewContext.CountFiltered(filterName);
+                return this.OpenExchangeRateScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -286,7 +297,7 @@ namespace MixERP.Net.Api.Config
         {
             try
             {
-                return this.OpenExchangeRateScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.OpenExchangeRateScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

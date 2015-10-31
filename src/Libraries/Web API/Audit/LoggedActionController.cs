@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Audit.Data;
 
 namespace MixERP.Net.Api.Audit
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Audit
     public class LoggedActionController : ApiController
     {
         /// <summary>
-        ///     The LoggedAction data context.
+        ///     The LoggedAction repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Audit.Data.LoggedAction LoggedActionContext;
+        private readonly ILoggedActionRepository LoggedActionRepository;
 
         public LoggedActionController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Audit
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.LoggedActionContext = new MixERP.Net.Schemas.Audit.Data.LoggedAction
+            this.LoggedActionRepository = new MixERP.Net.Schemas.Audit.Data.LoggedAction
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public LoggedActionController(ILoggedActionRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.LoggedActionRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Audit
         [Route("~/api/audit/logged-action/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "event_id",
@@ -93,7 +109,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoggedActionContext.Count();
+                return this.LoggedActionRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -124,7 +140,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoggedActionContext.GetAll();
+                return this.LoggedActionRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -155,7 +171,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoggedActionContext.Export();
+                return this.LoggedActionRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -187,7 +203,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoggedActionContext.Get(eventId);
+                return this.LoggedActionRepository.Get(eventId);
             }
             catch (UnauthorizedException)
             {
@@ -214,7 +230,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoggedActionContext.Get(eventIds);
+                return this.LoggedActionRepository.Get(eventIds);
             }
             catch (UnauthorizedException)
             {
@@ -245,7 +261,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoggedActionContext.GetPaginatedResult();
+                return this.LoggedActionRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -277,7 +293,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoggedActionContext.GetPaginatedResult(pageNumber);
+                return this.LoggedActionRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -310,7 +326,7 @@ namespace MixERP.Net.Api.Audit
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LoggedActionContext.CountWhere(f);
+                return this.LoggedActionRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -344,7 +360,7 @@ namespace MixERP.Net.Api.Audit
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LoggedActionContext.GetWhere(pageNumber, f);
+                return this.LoggedActionRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -376,7 +392,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoggedActionContext.CountFiltered(filterName);
+                return this.LoggedActionRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -409,7 +425,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoggedActionContext.GetFiltered(pageNumber, filterName);
+                return this.LoggedActionRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -440,7 +456,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoggedActionContext.GetDisplayFields();
+                return this.LoggedActionRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -471,7 +487,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoggedActionContext.GetCustomFields(null);
+                return this.LoggedActionRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -502,7 +518,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                return this.LoggedActionContext.GetCustomFields(resourceId);
+                return this.LoggedActionRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -541,7 +557,7 @@ namespace MixERP.Net.Api.Audit
 
             try
             {
-                return this.LoggedActionContext.AddOrEdit(loggedAction, customFields);
+                return this.LoggedActionRepository.AddOrEdit(loggedAction, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -577,7 +593,7 @@ namespace MixERP.Net.Api.Audit
 
             try
             {
-                this.LoggedActionContext.Add(loggedAction);
+                this.LoggedActionRepository.Add(loggedAction);
             }
             catch (UnauthorizedException)
             {
@@ -614,7 +630,7 @@ namespace MixERP.Net.Api.Audit
 
             try
             {
-                this.LoggedActionContext.Update(loggedAction, eventId);
+                this.LoggedActionRepository.Update(loggedAction, eventId);
             }
             catch (UnauthorizedException)
             {
@@ -659,7 +675,7 @@ namespace MixERP.Net.Api.Audit
 
             try
             {
-                return this.LoggedActionContext.BulkImport(loggedActionCollection);
+                return this.LoggedActionRepository.BulkImport(loggedActionCollection);
             }
             catch (UnauthorizedException)
             {
@@ -690,7 +706,7 @@ namespace MixERP.Net.Api.Audit
         {
             try
             {
-                this.LoggedActionContext.Delete(eventId);
+                this.LoggedActionRepository.Delete(eventId);
             }
             catch (UnauthorizedException)
             {

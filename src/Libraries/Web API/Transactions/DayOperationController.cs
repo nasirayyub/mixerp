@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Transactions.Data;
 
 namespace MixERP.Net.Api.Transactions
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Transactions
     public class DayOperationController : ApiController
     {
         /// <summary>
-        ///     The DayOperation data context.
+        ///     The DayOperation repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Transactions.Data.DayOperation DayOperationContext;
+        private readonly IDayOperationRepository DayOperationRepository;
 
         public DayOperationController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Transactions
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.DayOperationContext = new MixERP.Net.Schemas.Transactions.Data.DayOperation
+            this.DayOperationRepository = new MixERP.Net.Schemas.Transactions.Data.DayOperation
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public DayOperationController(IDayOperationRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.DayOperationRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/day-operation/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "day_id",
@@ -83,7 +99,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationContext.Count();
+                return this.DayOperationRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -114,7 +130,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationContext.GetAll();
+                return this.DayOperationRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -145,7 +161,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationContext.Export();
+                return this.DayOperationRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -177,7 +193,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationContext.Get(dayId);
+                return this.DayOperationRepository.Get(dayId);
             }
             catch (UnauthorizedException)
             {
@@ -204,7 +220,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationContext.Get(dayIds);
+                return this.DayOperationRepository.Get(dayIds);
             }
             catch (UnauthorizedException)
             {
@@ -235,7 +251,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationContext.GetPaginatedResult();
+                return this.DayOperationRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -267,7 +283,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationContext.GetPaginatedResult(pageNumber);
+                return this.DayOperationRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -300,7 +316,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.DayOperationContext.CountWhere(f);
+                return this.DayOperationRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -334,7 +350,7 @@ namespace MixERP.Net.Api.Transactions
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.DayOperationContext.GetWhere(pageNumber, f);
+                return this.DayOperationRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -366,7 +382,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationContext.CountFiltered(filterName);
+                return this.DayOperationRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -399,7 +415,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationContext.GetFiltered(pageNumber, filterName);
+                return this.DayOperationRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -430,7 +446,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationContext.GetDisplayFields();
+                return this.DayOperationRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -461,7 +477,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationContext.GetCustomFields(null);
+                return this.DayOperationRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -492,7 +508,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                return this.DayOperationContext.GetCustomFields(resourceId);
+                return this.DayOperationRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -531,7 +547,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.DayOperationContext.AddOrEdit(dayOperation, customFields);
+                return this.DayOperationRepository.AddOrEdit(dayOperation, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -567,7 +583,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.DayOperationContext.Add(dayOperation);
+                this.DayOperationRepository.Add(dayOperation);
             }
             catch (UnauthorizedException)
             {
@@ -604,7 +620,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                this.DayOperationContext.Update(dayOperation, dayId);
+                this.DayOperationRepository.Update(dayOperation, dayId);
             }
             catch (UnauthorizedException)
             {
@@ -649,7 +665,7 @@ namespace MixERP.Net.Api.Transactions
 
             try
             {
-                return this.DayOperationContext.BulkImport(dayOperationCollection);
+                return this.DayOperationRepository.BulkImport(dayOperationCollection);
             }
             catch (UnauthorizedException)
             {
@@ -680,7 +696,7 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.DayOperationContext.Delete(dayId);
+                this.DayOperationRepository.Delete(dayId);
             }
             catch (UnauthorizedException)
             {

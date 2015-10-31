@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Core
     public class ItemCostPriceController : ApiController
     {
         /// <summary>
-        ///     The ItemCostPrice data context.
+        ///     The ItemCostPrice repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.ItemCostPrice ItemCostPriceContext;
+        private readonly IItemCostPriceRepository ItemCostPriceRepository;
 
         public ItemCostPriceController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.ItemCostPriceContext = new MixERP.Net.Schemas.Core.Data.ItemCostPrice
+            this.ItemCostPriceRepository = new MixERP.Net.Schemas.Core.Data.ItemCostPrice
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public ItemCostPriceController(IItemCostPriceRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.ItemCostPriceRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/item-cost-price/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "item_cost_price_id",
@@ -84,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemCostPriceContext.Count();
+                return this.ItemCostPriceRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -115,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemCostPriceContext.GetAll();
+                return this.ItemCostPriceRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -146,7 +162,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemCostPriceContext.Export();
+                return this.ItemCostPriceRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -178,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemCostPriceContext.Get(itemCostPriceId);
+                return this.ItemCostPriceRepository.Get(itemCostPriceId);
             }
             catch (UnauthorizedException)
             {
@@ -205,7 +221,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemCostPriceContext.Get(itemCostPriceIds);
+                return this.ItemCostPriceRepository.Get(itemCostPriceIds);
             }
             catch (UnauthorizedException)
             {
@@ -236,7 +252,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemCostPriceContext.GetPaginatedResult();
+                return this.ItemCostPriceRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -268,7 +284,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemCostPriceContext.GetPaginatedResult(pageNumber);
+                return this.ItemCostPriceRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -301,7 +317,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ItemCostPriceContext.CountWhere(f);
+                return this.ItemCostPriceRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -335,7 +351,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.ItemCostPriceContext.GetWhere(pageNumber, f);
+                return this.ItemCostPriceRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -367,7 +383,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemCostPriceContext.CountFiltered(filterName);
+                return this.ItemCostPriceRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -400,7 +416,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemCostPriceContext.GetFiltered(pageNumber, filterName);
+                return this.ItemCostPriceRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -431,7 +447,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemCostPriceContext.GetDisplayFields();
+                return this.ItemCostPriceRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -462,7 +478,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemCostPriceContext.GetCustomFields(null);
+                return this.ItemCostPriceRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -493,7 +509,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.ItemCostPriceContext.GetCustomFields(resourceId);
+                return this.ItemCostPriceRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -532,7 +548,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ItemCostPriceContext.AddOrEdit(itemCostPrice, customFields);
+                return this.ItemCostPriceRepository.AddOrEdit(itemCostPrice, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -568,7 +584,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ItemCostPriceContext.Add(itemCostPrice);
+                this.ItemCostPriceRepository.Add(itemCostPrice);
             }
             catch (UnauthorizedException)
             {
@@ -605,7 +621,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                this.ItemCostPriceContext.Update(itemCostPrice, itemCostPriceId);
+                this.ItemCostPriceRepository.Update(itemCostPrice, itemCostPriceId);
             }
             catch (UnauthorizedException)
             {
@@ -650,7 +666,7 @@ namespace MixERP.Net.Api.Core
 
             try
             {
-                return this.ItemCostPriceContext.BulkImport(itemCostPriceCollection);
+                return this.ItemCostPriceRepository.BulkImport(itemCostPriceCollection);
             }
             catch (UnauthorizedException)
             {
@@ -681,7 +697,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.ItemCostPriceContext.Delete(itemCostPriceId);
+                this.ItemCostPriceRepository.Delete(itemCostPriceId);
             }
             catch (UnauthorizedException)
             {

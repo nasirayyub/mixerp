@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.get_login_id(_user_id integer)" on the database.
     /// </summary>
-    public class GetLoginIdProcedure : DbAccess
+    public class GetLoginIdProcedure : DbAccess, IGetLoginIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

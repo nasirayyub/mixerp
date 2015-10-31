@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Policy.Data
     /// <summary>
     /// Prepares, validates, and executes the function "policy.is_restricted_mode()" on the database.
     /// </summary>
-    public class IsRestrictedModeProcedure : DbAccess
+    public class IsRestrictedModeProcedure : DbAccess, IIsRestrictedModeRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

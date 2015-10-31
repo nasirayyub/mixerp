@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Core
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetCompoundItemDetailsProcedure procedure;
+        /// <summary>
+        ///     The GetCompoundItemDetails repository.
+        /// </summary>
+        private readonly IGetCompoundItemDetailsRepository repository;
+
         public class Annotation
         {
             public string CompoundItemCode { get; set; }
@@ -51,19 +55,32 @@ namespace MixERP.Net.Api.Core
             public int PriceTypeId { get; set; }
         }
 
+
         public GetCompoundItemDetailsController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetCompoundItemDetailsProcedure
+
+            this.repository = new GetCompoundItemDetailsProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetCompoundItemDetailsController(IGetCompoundItemDetailsRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get compound item details" annotation.
         /// </summary>
@@ -73,6 +90,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/get-compound-item-details/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -87,6 +108,7 @@ namespace MixERP.Net.Api.Core
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "get compound item details" entity.
         /// </summary>
@@ -96,6 +118,10 @@ namespace MixERP.Net.Api.Core
         [Route("~/api/core/procedures/get-compound-item-details/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -116,6 +142,7 @@ namespace MixERP.Net.Api.Core
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/core/procedures/get-compound-item-details/execute")]
@@ -123,15 +150,15 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                this.procedure.CompoundItemCode = annotation.CompoundItemCode;
-                this.procedure.SalesTaxCode = annotation.SalesTaxCode;
-                this.procedure.TranBook = annotation.TranBook;
-                this.procedure.StoreId = annotation.StoreId;
-                this.procedure.PartyCode = annotation.PartyCode;
-                this.procedure.PriceTypeId = annotation.PriceTypeId;
+                this.repository.CompoundItemCode = annotation.CompoundItemCode;
+                this.repository.SalesTaxCode = annotation.SalesTaxCode;
+                this.repository.TranBook = annotation.TranBook;
+                this.repository.StoreId = annotation.StoreId;
+                this.repository.PartyCode = annotation.PartyCode;
+                this.repository.PriceTypeId = annotation.PriceTypeId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

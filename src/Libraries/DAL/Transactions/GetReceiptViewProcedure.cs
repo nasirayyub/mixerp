@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_receipt_view(_user_id integer, _office_id integer, _date_from date, _date_to date, _office character varying, _party text, _user character varying, _reference_number character varying, _statement_reference text)" on the database.
     /// </summary>
-    public class GetReceiptViewProcedure : DbAccess
+    public class GetReceiptViewProcedure : DbAccess, IGetReceiptViewRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

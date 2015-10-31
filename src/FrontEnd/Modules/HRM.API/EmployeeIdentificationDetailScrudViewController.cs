@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.HRM
     public class EmployeeIdentificationDetailScrudViewController : ApiController
     {
         /// <summary>
-        ///     The EmployeeIdentificationDetailScrudView data context.
+        ///     The EmployeeIdentificationDetailScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.EmployeeIdentificationDetailScrudView EmployeeIdentificationDetailScrudViewContext;
+        private readonly IEmployeeIdentificationDetailScrudViewRepository EmployeeIdentificationDetailScrudViewRepository;
 
         public EmployeeIdentificationDetailScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.EmployeeIdentificationDetailScrudViewContext = new MixERP.Net.Core.Modules.HRM.Data.EmployeeIdentificationDetailScrudView
+            this.EmployeeIdentificationDetailScrudViewRepository = new MixERP.Net.Core.Modules.HRM.Data.EmployeeIdentificationDetailScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public EmployeeIdentificationDetailScrudViewController(IEmployeeIdentificationDetailScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.EmployeeIdentificationDetailScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeIdentificationDetailScrudViewContext.Count();
+                return this.EmployeeIdentificationDetailScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeIdentificationDetailScrudViewContext.Get();
+                return this.EmployeeIdentificationDetailScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeIdentificationDetailScrudViewContext.GetPaginatedResult();
+                return this.EmployeeIdentificationDetailScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeIdentificationDetailScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.EmployeeIdentificationDetailScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeIdentificationDetailScrudViewContext.GetDisplayFields();
+                return this.EmployeeIdentificationDetailScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.EmployeeIdentificationDetailScrudViewContext.CountWhere(f);
+                return this.EmployeeIdentificationDetailScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.EmployeeIdentificationDetailScrudViewContext.GetWhere(pageNumber, f);
+                return this.EmployeeIdentificationDetailScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeIdentificationDetailScrudViewContext.CountFiltered(filterName);
+                return this.EmployeeIdentificationDetailScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeIdentificationDetailScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.EmployeeIdentificationDetailScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

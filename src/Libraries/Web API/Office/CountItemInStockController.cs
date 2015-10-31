@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Office
         /// </summary>
         public string _Catalog { get; set; }
 
-        private CountItemInStockProcedure procedure;
+        /// <summary>
+        ///     The CountItemInStock repository.
+        /// </summary>
+        private readonly ICountItemInStockRepository repository;
+
         public class Annotation
         {
             public int ItemId { get; set; }
@@ -48,19 +52,32 @@ namespace MixERP.Net.Api.Office
             public int OfficeId { get; set; }
         }
 
+
         public CountItemInStockController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new CountItemInStockProcedure
+
+            this.repository = new CountItemInStockProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public CountItemInStockController(ICountItemInStockRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "count item in stock" annotation.
         /// </summary>
@@ -70,6 +87,10 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/procedures/count-item-in-stock/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -82,6 +103,8 @@ namespace MixERP.Net.Api.Office
         }
 
 
+
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/office/procedures/count-item-in-stock/execute")]
@@ -89,12 +112,12 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                this.procedure.ItemId = annotation.ItemId;
-                this.procedure.UnitId = annotation.UnitId;
-                this.procedure.OfficeId = annotation.OfficeId;
+                this.repository.ItemId = annotation.ItemId;
+                this.repository.UnitId = annotation.UnitId;
+                this.repository.OfficeId = annotation.OfficeId;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

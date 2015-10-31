@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.HRM
     public class LeaveBenefitController : ApiController
     {
         /// <summary>
-        ///     The LeaveBenefit data context.
+        ///     The LeaveBenefit repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.LeaveBenefit LeaveBenefitContext;
+        private readonly ILeaveBenefitRepository LeaveBenefitRepository;
 
         public LeaveBenefitController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.LeaveBenefitContext = new MixERP.Net.Core.Modules.HRM.Data.LeaveBenefit
+            this.LeaveBenefitRepository = new MixERP.Net.Core.Modules.HRM.Data.LeaveBenefit
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public LeaveBenefitController(ILeaveBenefitRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.LeaveBenefitRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/leave-benefit/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "leave_benefit_id",
@@ -81,7 +97,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveBenefitContext.Count();
+                return this.LeaveBenefitRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -112,7 +128,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveBenefitContext.GetAll();
+                return this.LeaveBenefitRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -143,7 +159,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveBenefitContext.Export();
+                return this.LeaveBenefitRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -175,7 +191,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveBenefitContext.Get(leaveBenefitId);
+                return this.LeaveBenefitRepository.Get(leaveBenefitId);
             }
             catch (UnauthorizedException)
             {
@@ -202,7 +218,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveBenefitContext.Get(leaveBenefitIds);
+                return this.LeaveBenefitRepository.Get(leaveBenefitIds);
             }
             catch (UnauthorizedException)
             {
@@ -233,7 +249,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveBenefitContext.GetPaginatedResult();
+                return this.LeaveBenefitRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -265,7 +281,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveBenefitContext.GetPaginatedResult(pageNumber);
+                return this.LeaveBenefitRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -298,7 +314,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LeaveBenefitContext.CountWhere(f);
+                return this.LeaveBenefitRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -332,7 +348,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.LeaveBenefitContext.GetWhere(pageNumber, f);
+                return this.LeaveBenefitRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -364,7 +380,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveBenefitContext.CountFiltered(filterName);
+                return this.LeaveBenefitRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -397,7 +413,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveBenefitContext.GetFiltered(pageNumber, filterName);
+                return this.LeaveBenefitRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -428,7 +444,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveBenefitContext.GetDisplayFields();
+                return this.LeaveBenefitRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -459,7 +475,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveBenefitContext.GetCustomFields(null);
+                return this.LeaveBenefitRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -490,7 +506,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.LeaveBenefitContext.GetCustomFields(resourceId);
+                return this.LeaveBenefitRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -529,7 +545,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.LeaveBenefitContext.AddOrEdit(leaveBenefit, customFields);
+                return this.LeaveBenefitRepository.AddOrEdit(leaveBenefit, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -565,7 +581,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.LeaveBenefitContext.Add(leaveBenefit);
+                this.LeaveBenefitRepository.Add(leaveBenefit);
             }
             catch (UnauthorizedException)
             {
@@ -602,7 +618,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.LeaveBenefitContext.Update(leaveBenefit, leaveBenefitId);
+                this.LeaveBenefitRepository.Update(leaveBenefit, leaveBenefitId);
             }
             catch (UnauthorizedException)
             {
@@ -647,7 +663,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.LeaveBenefitContext.BulkImport(leaveBenefitCollection);
+                return this.LeaveBenefitRepository.BulkImport(leaveBenefitCollection);
             }
             catch (UnauthorizedException)
             {
@@ -678,7 +694,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                this.LeaveBenefitContext.Delete(leaveBenefitId);
+                this.LeaveBenefitRepository.Delete(leaveBenefitId);
             }
             catch (UnauthorizedException)
             {

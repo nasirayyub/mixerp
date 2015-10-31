@@ -40,7 +40,11 @@ namespace MixERP.Net.Api.Office
         /// </summary>
         public string _Catalog { get; set; }
 
-        private AddOfficeProcedure procedure;
+        /// <summary>
+        ///     The AddOffice repository.
+        /// </summary>
+        private readonly IAddOfficeRepository repository;
+
         public class Annotation
         {
             public string OfficeCode { get; set; }
@@ -70,19 +74,32 @@ namespace MixERP.Net.Api.Office
             public string Password { get; set; }
         }
 
+
         public AddOfficeController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new AddOfficeProcedure
+
+            this.repository = new AddOfficeProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public AddOfficeController(IAddOfficeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "add office" annotation.
         /// </summary>
@@ -92,6 +109,10 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/procedures/add-office/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -125,6 +146,7 @@ namespace MixERP.Net.Api.Office
             };
         }
 
+
         /// <summary>
         ///     Creates meta information of "add office" entity.
         /// </summary>
@@ -134,6 +156,10 @@ namespace MixERP.Net.Api.Office
         [Route("~/api/office/procedures/add-office/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -142,6 +168,7 @@ namespace MixERP.Net.Api.Office
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/office/procedures/add-office/execute")]
@@ -149,34 +176,34 @@ namespace MixERP.Net.Api.Office
         {
             try
             {
-                this.procedure.OfficeCode = annotation.OfficeCode;
-                this.procedure.OfficeName = annotation.OfficeName;
-                this.procedure.NickName = annotation.NickName;
-                this.procedure.RegistrationDate = annotation.RegistrationDate;
-                this.procedure.CurrencyCode = annotation.CurrencyCode;
-                this.procedure.CurrencySymbol = annotation.CurrencySymbol;
-                this.procedure.CurrencyName = annotation.CurrencyName;
-                this.procedure.HundredthName = annotation.HundredthName;
-                this.procedure.FiscalYearCode = annotation.FiscalYearCode;
-                this.procedure.FiscalYearName = annotation.FiscalYearName;
-                this.procedure.StartsFrom = annotation.StartsFrom;
-                this.procedure.EndsOn = annotation.EndsOn;
-                this.procedure.SalesTaxIsVat = annotation.SalesTaxIsVat;
-                this.procedure.HasStateSalesTax = annotation.HasStateSalesTax;
-                this.procedure.HasCountySalesTax = annotation.HasCountySalesTax;
-                this.procedure.QuotationValidDays = annotation.QuotationValidDays;
-                this.procedure.IncomeTaxRate = annotation.IncomeTaxRate;
-                this.procedure.WeekStartDay = annotation.WeekStartDay;
-                this.procedure.TransactionStartDate = annotation.TransactionStartDate;
-                this.procedure.IsPerpetual = annotation.IsPerpetual;
-                this.procedure.InvValuationMethod = annotation.InvValuationMethod;
-                this.procedure.LogoFile = annotation.LogoFile;
-                this.procedure.AdminName = annotation.AdminName;
-                this.procedure.UserName = annotation.UserName;
-                this.procedure.Password = annotation.Password;
+                this.repository.OfficeCode = annotation.OfficeCode;
+                this.repository.OfficeName = annotation.OfficeName;
+                this.repository.NickName = annotation.NickName;
+                this.repository.RegistrationDate = annotation.RegistrationDate;
+                this.repository.CurrencyCode = annotation.CurrencyCode;
+                this.repository.CurrencySymbol = annotation.CurrencySymbol;
+                this.repository.CurrencyName = annotation.CurrencyName;
+                this.repository.HundredthName = annotation.HundredthName;
+                this.repository.FiscalYearCode = annotation.FiscalYearCode;
+                this.repository.FiscalYearName = annotation.FiscalYearName;
+                this.repository.StartsFrom = annotation.StartsFrom;
+                this.repository.EndsOn = annotation.EndsOn;
+                this.repository.SalesTaxIsVat = annotation.SalesTaxIsVat;
+                this.repository.HasStateSalesTax = annotation.HasStateSalesTax;
+                this.repository.HasCountySalesTax = annotation.HasCountySalesTax;
+                this.repository.QuotationValidDays = annotation.QuotationValidDays;
+                this.repository.IncomeTaxRate = annotation.IncomeTaxRate;
+                this.repository.WeekStartDay = annotation.WeekStartDay;
+                this.repository.TransactionStartDate = annotation.TransactionStartDate;
+                this.repository.IsPerpetual = annotation.IsPerpetual;
+                this.repository.InvValuationMethod = annotation.InvValuationMethod;
+                this.repository.LogoFile = annotation.LogoFile;
+                this.repository.AdminName = annotation.AdminName;
+                this.repository.UserName = annotation.UserName;
+                this.repository.Password = annotation.Password;
 
 
-                this.procedure.Execute();
+                this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

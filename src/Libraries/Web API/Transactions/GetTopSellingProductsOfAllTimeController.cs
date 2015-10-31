@@ -40,11 +40,16 @@ namespace MixERP.Net.Api.Transactions
         /// </summary>
         public string _Catalog { get; set; }
 
-        private GetTopSellingProductsOfAllTimeProcedure procedure;
+        /// <summary>
+        ///     The GetTopSellingProductsOfAllTime repository.
+        /// </summary>
+        private readonly IGetTopSellingProductsOfAllTimeRepository repository;
+
         public class Annotation
         {
             public int Top { get; set; }
         }
+
 
         public GetTopSellingProductsOfAllTimeController()
         {
@@ -52,13 +57,25 @@ namespace MixERP.Net.Api.Transactions
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
-            this.procedure = new GetTopSellingProductsOfAllTimeProcedure
+
+            this.repository = new GetTopSellingProductsOfAllTimeProcedure
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
         }
+
+        public GetTopSellingProductsOfAllTimeController(IGetTopSellingProductsOfAllTimeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.repository = repository;
+        }
+
         /// <summary>
         ///     Creates meta information of "get top selling products of all time" annotation.
         /// </summary>
@@ -68,6 +85,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-top-selling-products-of-all-time/annotation")]
         public EntityView GetAnnotation()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -76,6 +97,7 @@ namespace MixERP.Net.Api.Transactions
                                 }
             };
         }
+
 
         /// <summary>
         ///     Creates meta information of "get top selling products of all time" entity.
@@ -86,6 +108,10 @@ namespace MixERP.Net.Api.Transactions
         [Route("~/api/transactions/procedures/get-top-selling-products-of-all-time/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
             return new EntityView
             {
                 Columns = new List<EntityColumn>()
@@ -99,6 +125,7 @@ namespace MixERP.Net.Api.Transactions
             };
         }
 
+
         [AcceptVerbs("POST")]
         [Route("execute")]
         [Route("~/api/transactions/procedures/get-top-selling-products-of-all-time/execute")]
@@ -106,10 +133,10 @@ namespace MixERP.Net.Api.Transactions
         {
             try
             {
-                this.procedure.Top = annotation.Top;
+                this.repository.Top = annotation.Top;
 
 
-                return this.procedure.Execute();
+                return this.repository.Execute();
             }
             catch (UnauthorizedException)
             {

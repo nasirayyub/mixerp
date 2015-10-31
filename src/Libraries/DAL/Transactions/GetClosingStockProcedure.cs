@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_closing_stock(_on_date date, _office_id integer)" on the database.
     /// </summary>
-    public class GetClosingStockProcedure : DbAccess
+    public class GetClosingStockProcedure : DbAccess, IGetClosingStockRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

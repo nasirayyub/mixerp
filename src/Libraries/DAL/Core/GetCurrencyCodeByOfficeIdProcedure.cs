@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Core.Data
     /// <summary>
     /// Prepares, validates, and executes the function "core.get_currency_code_by_office_id(office_id integer)" on the database.
     /// </summary>
-    public class GetCurrencyCodeByOfficeIdProcedure : DbAccess
+    public class GetCurrencyCodeByOfficeIdProcedure : DbAccess, IGetCurrencyCodeByOfficeIdRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

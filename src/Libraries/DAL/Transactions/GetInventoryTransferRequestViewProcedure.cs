@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_inventory_transfer_request_view(_user_id integer, _login_id bigint, _office_id integer, _from date, _to date, _office text, _store text, _authorized text, _delivered text, _received text, _user text, _reference_number text, _statement_reference text)" on the database.
     /// </summary>
-    public class GetInventoryTransferRequestViewProcedure : DbAccess
+    public class GetInventoryTransferRequestViewProcedure : DbAccess, IGetInventoryTransferRequestViewRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

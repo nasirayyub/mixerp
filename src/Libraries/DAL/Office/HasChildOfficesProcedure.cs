@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Office.Data
     /// <summary>
     /// Prepares, validates, and executes the function "office.has_child_offices(_office_id integer)" on the database.
     /// </summary>
-    public class HasChildOfficesProcedure : DbAccess
+    public class HasChildOfficesProcedure : DbAccess, IHasChildOfficesRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.is_eod_initialized(_office_id integer, _value_date date)" on the database.
     /// </summary>
-    public class IsEodInitializedProcedure : DbAccess
+    public class IsEodInitializedProcedure : DbAccess, IIsEodInitializedRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

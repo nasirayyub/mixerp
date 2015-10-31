@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.HRM
     public class AttendanceViewController : ApiController
     {
         /// <summary>
-        ///     The AttendanceView data context.
+        ///     The AttendanceView repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.AttendanceView AttendanceViewContext;
+        private readonly IAttendanceViewRepository AttendanceViewRepository;
 
         public AttendanceViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.AttendanceViewContext = new MixERP.Net.Core.Modules.HRM.Data.AttendanceView
+            this.AttendanceViewRepository = new MixERP.Net.Core.Modules.HRM.Data.AttendanceView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public AttendanceViewController(IAttendanceViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.AttendanceViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.AttendanceViewContext.Count();
+                return this.AttendanceViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.AttendanceViewContext.Get();
+                return this.AttendanceViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.AttendanceViewContext.GetPaginatedResult();
+                return this.AttendanceViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.AttendanceViewContext.GetPaginatedResult(pageNumber);
+                return this.AttendanceViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.AttendanceViewContext.GetDisplayFields();
+                return this.AttendanceViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AttendanceViewContext.CountWhere(f);
+                return this.AttendanceViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AttendanceViewContext.GetWhere(pageNumber, f);
+                return this.AttendanceViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.AttendanceViewContext.CountFiltered(filterName);
+                return this.AttendanceViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.AttendanceViewContext.GetFiltered(pageNumber, filterName);
+                return this.AttendanceViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

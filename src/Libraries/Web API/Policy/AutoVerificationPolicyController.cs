@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Policy.Data;
 
 namespace MixERP.Net.Api.Policy
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.Policy
     public class AutoVerificationPolicyController : ApiController
     {
         /// <summary>
-        ///     The AutoVerificationPolicy data context.
+        ///     The AutoVerificationPolicy repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Policy.Data.AutoVerificationPolicy AutoVerificationPolicyContext;
+        private readonly IAutoVerificationPolicyRepository AutoVerificationPolicyRepository;
 
         public AutoVerificationPolicyController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.Policy
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.AutoVerificationPolicyContext = new MixERP.Net.Schemas.Policy.Data.AutoVerificationPolicy
+            this.AutoVerificationPolicyRepository = new MixERP.Net.Schemas.Policy.Data.AutoVerificationPolicy
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public AutoVerificationPolicyController(IAutoVerificationPolicyRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.AutoVerificationPolicyRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.Policy
         [Route("~/api/policy/auto-verification-policy/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "policy_id",
@@ -89,7 +105,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyContext.Count();
+                return this.AutoVerificationPolicyRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +136,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyContext.GetAll();
+                return this.AutoVerificationPolicyRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -151,7 +167,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyContext.Export();
+                return this.AutoVerificationPolicyRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +199,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyContext.Get(policyId);
+                return this.AutoVerificationPolicyRepository.Get(policyId);
             }
             catch (UnauthorizedException)
             {
@@ -210,7 +226,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyContext.Get(policyIds);
+                return this.AutoVerificationPolicyRepository.Get(policyIds);
             }
             catch (UnauthorizedException)
             {
@@ -241,7 +257,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyContext.GetPaginatedResult();
+                return this.AutoVerificationPolicyRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -273,7 +289,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyContext.GetPaginatedResult(pageNumber);
+                return this.AutoVerificationPolicyRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -306,7 +322,7 @@ namespace MixERP.Net.Api.Policy
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AutoVerificationPolicyContext.CountWhere(f);
+                return this.AutoVerificationPolicyRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -340,7 +356,7 @@ namespace MixERP.Net.Api.Policy
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AutoVerificationPolicyContext.GetWhere(pageNumber, f);
+                return this.AutoVerificationPolicyRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -372,7 +388,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyContext.CountFiltered(filterName);
+                return this.AutoVerificationPolicyRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -405,7 +421,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyContext.GetFiltered(pageNumber, filterName);
+                return this.AutoVerificationPolicyRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -436,7 +452,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyContext.GetDisplayFields();
+                return this.AutoVerificationPolicyRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -467,7 +483,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyContext.GetCustomFields(null);
+                return this.AutoVerificationPolicyRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -498,7 +514,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyContext.GetCustomFields(resourceId);
+                return this.AutoVerificationPolicyRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -537,7 +553,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                return this.AutoVerificationPolicyContext.AddOrEdit(autoVerificationPolicy, customFields);
+                return this.AutoVerificationPolicyRepository.AddOrEdit(autoVerificationPolicy, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -573,7 +589,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                this.AutoVerificationPolicyContext.Add(autoVerificationPolicy);
+                this.AutoVerificationPolicyRepository.Add(autoVerificationPolicy);
             }
             catch (UnauthorizedException)
             {
@@ -610,7 +626,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                this.AutoVerificationPolicyContext.Update(autoVerificationPolicy, policyId);
+                this.AutoVerificationPolicyRepository.Update(autoVerificationPolicy, policyId);
             }
             catch (UnauthorizedException)
             {
@@ -655,7 +671,7 @@ namespace MixERP.Net.Api.Policy
 
             try
             {
-                return this.AutoVerificationPolicyContext.BulkImport(autoVerificationPolicyCollection);
+                return this.AutoVerificationPolicyRepository.BulkImport(autoVerificationPolicyCollection);
             }
             catch (UnauthorizedException)
             {
@@ -686,7 +702,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                this.AutoVerificationPolicyContext.Delete(policyId);
+                this.AutoVerificationPolicyRepository.Delete(policyId);
             }
             catch (UnauthorizedException)
             {

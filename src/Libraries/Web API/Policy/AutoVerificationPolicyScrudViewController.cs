@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Policy.Data;
 
 namespace MixERP.Net.Api.Policy
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Policy
     public class AutoVerificationPolicyScrudViewController : ApiController
     {
         /// <summary>
-        ///     The AutoVerificationPolicyScrudView data context.
+        ///     The AutoVerificationPolicyScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Policy.Data.AutoVerificationPolicyScrudView AutoVerificationPolicyScrudViewContext;
+        private readonly IAutoVerificationPolicyScrudViewRepository AutoVerificationPolicyScrudViewRepository;
 
         public AutoVerificationPolicyScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Policy
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.AutoVerificationPolicyScrudViewContext = new MixERP.Net.Schemas.Policy.Data.AutoVerificationPolicyScrudView
+            this.AutoVerificationPolicyScrudViewRepository = new MixERP.Net.Schemas.Policy.Data.AutoVerificationPolicyScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public AutoVerificationPolicyScrudViewController(IAutoVerificationPolicyScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.AutoVerificationPolicyScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyScrudViewContext.Count();
+                return this.AutoVerificationPolicyScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyScrudViewContext.Get();
+                return this.AutoVerificationPolicyScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyScrudViewContext.GetPaginatedResult();
+                return this.AutoVerificationPolicyScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.AutoVerificationPolicyScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyScrudViewContext.GetDisplayFields();
+                return this.AutoVerificationPolicyScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Policy
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AutoVerificationPolicyScrudViewContext.CountWhere(f);
+                return this.AutoVerificationPolicyScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Policy
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.AutoVerificationPolicyScrudViewContext.GetWhere(pageNumber, f);
+                return this.AutoVerificationPolicyScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyScrudViewContext.CountFiltered(filterName);
+                return this.AutoVerificationPolicyScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Policy
         {
             try
             {
-                return this.AutoVerificationPolicyScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.AutoVerificationPolicyScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

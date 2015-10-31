@@ -11,6 +11,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Schemas.Core.Data;
 
 namespace MixERP.Net.Api.Core
 {
@@ -21,9 +22,9 @@ namespace MixERP.Net.Api.Core
     public class TaxMasterScrudViewController : ApiController
     {
         /// <summary>
-        ///     The TaxMasterScrudView data context.
+        ///     The TaxMasterScrudView repository.
         /// </summary>
-        private readonly MixERP.Net.Schemas.Core.Data.TaxMasterScrudView TaxMasterScrudViewContext;
+        private readonly ITaxMasterScrudViewRepository TaxMasterScrudViewRepository;
 
         public TaxMasterScrudViewController()
         {
@@ -32,12 +33,22 @@ namespace MixERP.Net.Api.Core
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.TaxMasterScrudViewContext = new MixERP.Net.Schemas.Core.Data.TaxMasterScrudView
+            this.TaxMasterScrudViewRepository = new MixERP.Net.Schemas.Core.Data.TaxMasterScrudView
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public TaxMasterScrudViewController(ITaxMasterScrudViewRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.TaxMasterScrudViewRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -56,7 +67,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxMasterScrudViewContext.Count();
+                return this.TaxMasterScrudViewRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -89,7 +100,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxMasterScrudViewContext.Get();
+                return this.TaxMasterScrudViewRepository.Get();
             }
             catch (UnauthorizedException)
             {
@@ -120,7 +131,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxMasterScrudViewContext.GetPaginatedResult();
+                return this.TaxMasterScrudViewRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -152,7 +163,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxMasterScrudViewContext.GetPaginatedResult(pageNumber);
+                return this.TaxMasterScrudViewRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -183,7 +194,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxMasterScrudViewContext.GetDisplayFields();
+                return this.TaxMasterScrudViewRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -216,7 +227,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.TaxMasterScrudViewContext.CountWhere(f);
+                return this.TaxMasterScrudViewRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -250,7 +261,7 @@ namespace MixERP.Net.Api.Core
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.TaxMasterScrudViewContext.GetWhere(pageNumber, f);
+                return this.TaxMasterScrudViewRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -282,7 +293,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxMasterScrudViewContext.CountFiltered(filterName);
+                return this.TaxMasterScrudViewRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -316,7 +327,7 @@ namespace MixERP.Net.Api.Core
         {
             try
             {
-                return this.TaxMasterScrudViewContext.GetFiltered(pageNumber, filterName);
+                return this.TaxMasterScrudViewRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {

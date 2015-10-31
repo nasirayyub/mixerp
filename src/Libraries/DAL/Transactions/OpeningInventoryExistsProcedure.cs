@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.opening_inventory_exists(_office_id integer)" on the database.
     /// </summary>
-    public class OpeningInventoryExistsProcedure : DbAccess
+    public class OpeningInventoryExistsProcedure : DbAccess, IOpeningInventoryExistsRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.

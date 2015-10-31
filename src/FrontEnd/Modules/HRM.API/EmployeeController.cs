@@ -12,6 +12,7 @@ using MixERP.Net.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PetaPoco;
+using MixERP.Net.Core.Modules.HRM.Data;
 
 namespace MixERP.Net.Api.HRM
 {
@@ -22,9 +23,9 @@ namespace MixERP.Net.Api.HRM
     public class EmployeeController : ApiController
     {
         /// <summary>
-        ///     The Employee data context.
+        ///     The Employee repository.
         /// </summary>
-        private readonly MixERP.Net.Core.Modules.HRM.Data.Employee EmployeeContext;
+        private readonly IEmployeeRepository EmployeeRepository;
 
         public EmployeeController()
         {
@@ -33,12 +34,22 @@ namespace MixERP.Net.Api.HRM
             this._OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
             this._Catalog = AppUsers.GetCurrentUserDB();
 
-            this.EmployeeContext = new MixERP.Net.Core.Modules.HRM.Data.Employee
+            this.EmployeeRepository = new MixERP.Net.Core.Modules.HRM.Data.Employee
             {
                 _Catalog = this._Catalog,
                 _LoginId = this._LoginId,
                 _UserId = this._UserId
             };
+        }
+
+        public EmployeeController(IEmployeeRepository repository, string catalog, LoginView view)
+        {
+            this._LoginId = view.LoginId.ToLong();
+            this._UserId = view.UserId.ToInt();
+            this._OfficeId = view.OfficeId.ToInt();
+            this._Catalog = catalog;
+
+            this.EmployeeRepository = repository;
         }
 
         public long _LoginId { get; }
@@ -55,6 +66,11 @@ namespace MixERP.Net.Api.HRM
         [Route("~/api/hrm/employee/meta")]
         public EntityView GetEntityView()
         {
+            if (this._LoginId == 0)
+            {
+                return new EntityView();
+            }
+
             return new EntityView
             {
                 PrimaryKey = "employee_id",
@@ -128,7 +144,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeContext.Count();
+                return this.EmployeeRepository.Count();
             }
             catch (UnauthorizedException)
             {
@@ -159,7 +175,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeContext.GetAll();
+                return this.EmployeeRepository.GetAll();
             }
             catch (UnauthorizedException)
             {
@@ -190,7 +206,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeContext.Export();
+                return this.EmployeeRepository.Export();
             }
             catch (UnauthorizedException)
             {
@@ -222,7 +238,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeContext.Get(employeeId);
+                return this.EmployeeRepository.Get(employeeId);
             }
             catch (UnauthorizedException)
             {
@@ -249,7 +265,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeContext.Get(employeeIds);
+                return this.EmployeeRepository.Get(employeeIds);
             }
             catch (UnauthorizedException)
             {
@@ -280,7 +296,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeContext.GetPaginatedResult();
+                return this.EmployeeRepository.GetPaginatedResult();
             }
             catch (UnauthorizedException)
             {
@@ -312,7 +328,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeContext.GetPaginatedResult(pageNumber);
+                return this.EmployeeRepository.GetPaginatedResult(pageNumber);
             }
             catch (UnauthorizedException)
             {
@@ -345,7 +361,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.EmployeeContext.CountWhere(f);
+                return this.EmployeeRepository.CountWhere(f);
             }
             catch (UnauthorizedException)
             {
@@ -379,7 +395,7 @@ namespace MixERP.Net.Api.HRM
             try
             {
                 List<EntityParser.Filter> f = filters.ToObject<List<EntityParser.Filter>>(JsonHelper.GetJsonSerializer());
-                return this.EmployeeContext.GetWhere(pageNumber, f);
+                return this.EmployeeRepository.GetWhere(pageNumber, f);
             }
             catch (UnauthorizedException)
             {
@@ -411,7 +427,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeContext.CountFiltered(filterName);
+                return this.EmployeeRepository.CountFiltered(filterName);
             }
             catch (UnauthorizedException)
             {
@@ -444,7 +460,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeContext.GetFiltered(pageNumber, filterName);
+                return this.EmployeeRepository.GetFiltered(pageNumber, filterName);
             }
             catch (UnauthorizedException)
             {
@@ -475,7 +491,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeContext.GetDisplayFields();
+                return this.EmployeeRepository.GetDisplayFields();
             }
             catch (UnauthorizedException)
             {
@@ -506,7 +522,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeContext.GetCustomFields(null);
+                return this.EmployeeRepository.GetCustomFields(null);
             }
             catch (UnauthorizedException)
             {
@@ -537,7 +553,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                return this.EmployeeContext.GetCustomFields(resourceId);
+                return this.EmployeeRepository.GetCustomFields(resourceId);
             }
             catch (UnauthorizedException)
             {
@@ -576,7 +592,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.EmployeeContext.AddOrEdit(employee, customFields);
+                return this.EmployeeRepository.AddOrEdit(employee, customFields);
             }
             catch (UnauthorizedException)
             {
@@ -612,7 +628,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.EmployeeContext.Add(employee);
+                this.EmployeeRepository.Add(employee);
             }
             catch (UnauthorizedException)
             {
@@ -649,7 +665,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                this.EmployeeContext.Update(employee, employeeId);
+                this.EmployeeRepository.Update(employee, employeeId);
             }
             catch (UnauthorizedException)
             {
@@ -694,7 +710,7 @@ namespace MixERP.Net.Api.HRM
 
             try
             {
-                return this.EmployeeContext.BulkImport(employeeCollection);
+                return this.EmployeeRepository.BulkImport(employeeCollection);
             }
             catch (UnauthorizedException)
             {
@@ -725,7 +741,7 @@ namespace MixERP.Net.Api.HRM
         {
             try
             {
-                this.EmployeeContext.Delete(employeeId);
+                this.EmployeeRepository.Delete(employeeId);
             }
             catch (UnauthorizedException)
             {

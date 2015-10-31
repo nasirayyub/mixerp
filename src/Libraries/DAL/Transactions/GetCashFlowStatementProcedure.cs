@@ -14,7 +14,7 @@ namespace MixERP.Net.Schemas.Transactions.Data
     /// <summary>
     /// Prepares, validates, and executes the function "transactions.get_cash_flow_statement(_date_from date, _date_to date, _user_id integer, _office_id integer, _factor integer)" on the database.
     /// </summary>
-    public class GetCashFlowStatementProcedure : DbAccess
+    public class GetCashFlowStatementProcedure : DbAccess, IGetCashFlowStatementRepository
     {
         /// <summary>
         /// The schema of this PostgreSQL function.
