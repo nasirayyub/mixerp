@@ -42,11 +42,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
-      <HintPath>packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="MixERP.Net.ApplicationState, Version=1.5.0.0, Culture=neutral, PublicKeyToken=a724a47a0879d02f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\MixERP.Net.ApplicationState.dll</HintPath>
@@ -64,10 +59,6 @@
     <Reference Include="MixERP.Net.i18n, Version=1.5.0.0, Culture=neutral, PublicKeyToken=a724a47a0879d02f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\MixERP.Net.i18n.dll</HintPath>
-    </Reference>
-    <Reference Include="MixERP.Net.WebControls.ReportEngine, Version=1.5.0.0, Culture=neutral, PublicKeyToken=a724a47a0879d02f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\MixERP.Net.WebControls.ReportEngine.dll</HintPath>
     </Reference>
     <Reference Include="PetaPoco, Version=1.5.0.0, Culture=neutral, PublicKeyToken=a724a47a0879d02f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -348,10 +339,6 @@
     <ProjectReference Include="..\HRM.Data\MixERP.Net.Core.Modules.HRM.Data.csproj">
       <Project>{baed8523-9388-42c4-881d-34720fe8e4ae}</Project>
       <Name>MixERP.Net.Core.Modules.HRM.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HRM.Entities\MixERP.Net.Entities.HRM.csproj">
-      <Project>{c21d8d23-ae76-4427-b5a6-36016f01e40f}</Project>
-      <Name>MixERP.Net.Entities.HRM</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
