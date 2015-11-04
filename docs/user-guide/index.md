@@ -52,6 +52,7 @@ and produce reports of all child offices it contains.
 
 ##Modules
 - [Human Resource Management](human-resource-management/index.md)
+- [Payroll Management](payroll/index.md)
 - [Sales](sales/index.md)
 - [Purchase](purchase/index.md)
 - [Inventory](inventory/index.md)

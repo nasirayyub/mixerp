@@ -181,7 +181,7 @@ to the bank account.
         <th>Account Id    
         </th>
         <td>Select the account on which salary and/or wage will be posted to. If you leave
-this empty, the salary will be posted to [payroll account id](#) instead.
+this empty, the salary will be posted to <a href="../payroll/salary-setup.md">payroll account id</a> instead.
         </td>
     </tr>
 </table>

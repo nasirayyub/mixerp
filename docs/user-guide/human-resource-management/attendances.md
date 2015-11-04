@@ -16,7 +16,7 @@ To update attendance, please follow these steps:
             Is Present Slider
         </th>
         <td>
-            Slide this to on if this employee is present today.            
+            Slide this on if this employee is present today.            
         </td>
     </tr>
     <tr>
