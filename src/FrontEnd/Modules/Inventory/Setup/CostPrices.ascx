@@ -65,8 +65,10 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
     ];
 
     scrudFactory.layout = [
-        ["ItemCostPriceId", "","",""],
-        ["ItemId", "UnitId","",""]
+        ["ItemCostPriceId", ""],
+        ["ItemId", "UnitId", "", ""],
+        ["PartyId", "LeadTimeInDays", "", ""],
+        ["Price", "", "", ""]
     ];
 </script>
 

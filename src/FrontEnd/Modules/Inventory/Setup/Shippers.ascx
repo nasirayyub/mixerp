@@ -38,13 +38,17 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
     scrudFactory.keys = [
         {
             property: "AccountId",
-            url: '/api/core/shipper-account-selector-view/display-fields',
+            url: '/api/core/account-selector-view/display-fields',
             data: null,
             isArray: false,
             valueField: "Key",
             textField: "Value"
-        }
-     
+        }     
+    ];
+
+    scrudFactory.layout = [
+        ["ShipperId", ""],
+        ["CompanyName", "PoBox", "", ""]
     ];
 </script>
 
