@@ -15,7 +15,7 @@ entry it produces:
 
 Whenever a recurring invoice is posted, the following GL entry will be created:
 
-<table border="1" style="border-collapse:collapse;border:1px solid black;width:100%;">
+<table class="ui compact striped small table">
     <thead>
         <tr>
             <td>
@@ -122,15 +122,15 @@ A recurring invoice is only effective for a period (in days), which can be set i
 There are two kinds of recurrences types :
 
 
-<table border="1" style="border-collapse:collapse;border:1px solid black;width:100%;">
+<table class="ui compact striped small table">
     <thead>
         <tr>
-            <td>
+            <th>
                 Recurrence Type
-            </td>
-            <td>
+            </th>
+            <th>
                 Description
-            </td>
+            </th>
         </tr>
     </thead>
     <tbody>
