@@ -42,7 +42,7 @@
             Exclude from Sales
         </th>
         <td>
-            Set thsi on if you do not want the items under this group to
+            Set this on if you do not want the items under this group to
             appear in sales transactions. This is useful for raw materials
             that you only stock, but not sell.
         </td>
@@ -94,7 +94,7 @@
         <td>
             Select an account from the list which will be picked up
             as <strong>Purchase A/C</strong> for the items under this
-            group during <a href="../purchase/grn.md">Goods Recipt Note</a>
+            group during <a href="../purchase/grn.md">Goods Receipt Note</a>
             and <a href="../purchase/direct-purchase.md">Direct Purchase</a> entry.
         </td>
     </tr>
@@ -105,7 +105,7 @@
         <td>
             Select an account from the list which will be picked up
             as <strong>Purchase Discount A/C</strong> for the items under this
-            group during <a href="../purchase/grn.md">Goods Recipt Note</a>
+            group during <a href="../purchase/grn.md">Goods Receipt Note</a>
             and <a href="../purchase/direct-purchase.md">Direct Purchase</a> entry.
         </td>
     </tr>

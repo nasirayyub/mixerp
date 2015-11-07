@@ -1,4 +1,4 @@
-# Inventory Managment
+# Inventory Management
 
 An inventory management system enables you 
 to record and keep track of goods, properties, services, components, 
@@ -13,8 +13,8 @@ planning in such a way that items are available when they are needed.
 
 # MixERP for Inventory and Warehouse Management
 
-The inventory and warehouse managment module of MixERP provides you
-features to efficienty manage your inventory items.
+The inventory and warehouse management module of MixERP provides
+features to efficiently manage your inventory items.
 
 ## Inventory Movements
 
