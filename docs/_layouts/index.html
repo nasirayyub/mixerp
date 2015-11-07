@@ -17,30 +17,74 @@
     <div class="ui page grid" id="brand">
         <div class="sixteen wide column">
             <a href="/index.html" class="">
-                <img src="/docs/assets/images/mixerp-logo.png">
+                <img title="MixERP" alt="MixERP" class="logo" src="/docs/assets/images/mixerp-logo.png">
             </a>
 
         </div>
     </div>
 
     <div class="ui page stackable grid" id="story">
-        <div class="column">
+        <div class="sixteen wide column">
             {document}
+        </div>
+        <div class="social sharing vpad8">
+            <div class="ui grey huge header">
+                Share this page
+            </div>
+            <div class="icons vpad8">
+                <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={url}" title="Share this on Facebook">
+                    <i class="circular inverted blue large facebook icon"></i>
+                </a>
+                <a target="_blank" href="http://twitter.com/share?text={tweet}&url={url}&hashtags=#mixerp" title="Tweet this link">
+                    <i class="circular blue large twitter icon"></i>
+                </a>
+                <a target="_blank" href="http://www.linkedin.com/shareArticle?mini=true&url={url}&title={title}" title="Share this on LinkedIn">
+                    <i class="circular inverted blue large linkedin icon"></i>
+                </a>
+
+                <a target="_blank" href="https://plus.google.com/share?url={url}" title="Share this on Google+">
+                    <i class="circular inverted red large google plus icon"></i>
+                </a>
+
+                <a target="_blank" href="http://www.reddit.com/submit?url={url}" title="Share this on Reddit">
+                    <i class="circular large reddit icon"></i>
+                </a>
+
+                <a target="_blank" href="http://pinterest.com/pin/create/button/?url={url}&description={title}" title="Share this on Pinterest">
+                    <i class="circular inverted red large pinterest icon"></i>
+                </a>
+
+                <a target="_blank" href="http://www.stumbleupon.com/badge/?url={url}" title="Share this on StumbleUpon">
+                    <i class="circular inverted red large stumbleupon icon"></i>
+                </a>
+
+
+                <a target="_blank" href="mailto:?subject={title}&body={message}" title="Send this on email">
+                    <i class="circular inverted olive large mail icon"></i>
+                </a>
+            </div>
         </div>
     </div>
 
-    <footer class="ui stackable center aligned inverted divided equal height stackable page grid">
-        <div class="four wide column">
-            <i class="huge cloud download icon"></i>
+    <footer class="ui stackable center aligned inverted divided equal height stackable page three column grid">
+        <div class="footer-pad column">
+            <div class="ui inverted dividing header">
+                <i class="code icon"></i>
+                About MixERP
+            </div>
             <p>
                 MixERP is an open source and free ERP software that provides a suite of useful modules to
-                help you manage your day to day business activities, including but not limited to, sales,
-                purchases, inventory management, finance, customer relationship management, and back-office.
+                help you manage your day to day business activities, including but not limited to,
+                human resource management, payroll, sales, purchases, inventory management,
+                finance, customer relationship management, manufacturing, and back-office.
                 Developed with love by your friends at MixERP Inc.
             </p>
         </div>
-        <div class="four wide pad column">
-            <i class="huge idea icon"></i>
+        <div class="footer-pad column">
+            <div class="ui inverted dividing header">
+                <i class="checkmark icon"></i>
+                Documentation & License
+            </div>
             <p>
                 Some sections in this documentation site are missing. This site is a
                 <a href="index.html#community.md">
@@ -53,13 +97,22 @@
                 This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/" rel="license"> Creative Commons Attribution-ShareAlike 4.0 International License </a> .
             </p>
         </div>
-        <div class="four wide column">
-            <i class="huge anchor icon"></i>
-            <ul class="footer-links"><li><a href="http://mixerp.org/forum" target="_blank"> MixERP Forums </a></li><li><a href="https://github.com/mixerp/mixerp/issues" target="_blank"> Submit an Issue </a></li><li><a href="https://github.com/mixerp/mixerp/releases" target="_blank"> Download Latest Release </a></li><li><a href="http://demo.mixerp.org/SignIn.aspx" target="_blank"> MixERP Demo Website </a></li></ul>
-        </div>
-        <div class="four wide column">
-            <i class="huge chat icon"></i>
-            <ul class="footer-links"><li><a href="http://mixerp.org/" target="_blank"> Project Website </a></li><li><a href="https://www.facebook.com/mixerp.official/" target="_blank">MixERP on Facebook </a></li><li><a href="http://www.facebook.com/groups/183076085203506/" target="_blank"> Facebook Group </a></li><li><a href="http://twitter.com/mixoferp/" target="_blank"> Follow MixERP on Twitter </a></li><li style="list-style: none; display: inline"><ul></ul></li></ul>
+        <div class="left aligned footer-pad column">
+            <div class="ui inverted dividing header">
+                <i class="external icon"></i>
+                Links
+            </div>
+            <ul class="footer-links">
+                <li><a href="http://mixerp.org/forum" target="_blank"> MixERP Forums </a></li>
+                <li><a href="https://github.com/mixerp/mixerp/issues" target="_blank"> Submit an Issue </a></li>
+                <li><a href="https://github.com/mixerp/mixerp/releases" target="_blank"> Download Latest Release </a></li>
+                <li><a href="http://demo.mixerp.org/SignIn.aspx" target="_blank"> MixERP Demo Website </a></li>
+                <li><a href="http://mixerp.org/" target="_blank"> Project Website </a></li>
+                <li><a href="https://www.facebook.com/mixerp.official/" target="_blank">MixERP on Facebook </a></li>
+                <li><a href="http://www.facebook.com/groups/183076085203506/" target="_blank"> Facebook Group </a></li>
+                <li><a href="http://twitter.com/mixoferp/" target="_blank"> Follow MixERP on Twitter </a></li>
+                <li style="list-style: none; display: inline"><ul></ul></li>
+            </ul>
         </div>
     </footer>
     <script src="/docs/assets/script.js"></script>

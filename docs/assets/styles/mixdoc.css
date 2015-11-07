@@ -17,12 +17,25 @@ h1, h2, h3, h4, h5, h6, .header {
   font-weight: 300 !important; }
 
 html, p, li, div {
-  font-size: 16px;
-  line-height: 28px; }
+  font-size: 14px;
+  line-height: 24px; }
+
+.social.sharing a {
+  -webkit-transition: all 200ms ease;
+  -moz-transition: all 200ms ease;
+  -ms-transition: all 200ms ease;
+  -o-transition: all 200ms ease;
+  transition: all 200ms ease; }
+
+.social.sharing .icons {
+  height: 80px; }
+
+.social.sharing a:hover {
+  font-size: 20px; }
 
 #brand {
   background-color: #773F98;
-  height: 72px;
+  height: 64px;
   margin-bottom: 12px; }
 
 @media only screen and (min-width: 768px) {
@@ -60,3 +73,10 @@ code {
   padding-left: 24px !important;
   border: 1px solid #b0c9cd;
   background-color: #fcfcfc !important; }
+
+.footer-pad {
+  padding: 36px !important; }
+
+.vpad8 {
+  padding: 8px 0 !important; }
+
