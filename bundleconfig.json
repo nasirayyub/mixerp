@@ -18,7 +18,8 @@
       "docs/assets/scripts/marked/marked.min.js",
       "docs/assets/scripts/semantic-ui/semantic.js",
       "docs/assets/scripts/urijs/src/URI.min.js",
-      "docs/assets/scripts/urijs/src/jquery.URI.js"
+      "docs/assets/scripts/urijs/src/jquery.URI.js",
+      "docs/assets/scripts/mixdoc.js"
     ],
     "minify": {
       "enabled": true
