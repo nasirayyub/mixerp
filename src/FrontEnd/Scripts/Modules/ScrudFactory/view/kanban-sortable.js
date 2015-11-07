@@ -18,8 +18,9 @@
             return getAjaxRequest(url, "POST", data);
         };
 
-        $("#kanban .segment .kanban.holder").sortable({
-            connectWith: "#kanban .segment .kanban.holder",
+        $(".kanban.holder").sortable({
+            connectWith: ".kanban.holder",
+            placeholder: "kanban-placeholder ui-corner-all",
             receive: function (event, ui) {
                 var card = $(ui.item[0]);
 

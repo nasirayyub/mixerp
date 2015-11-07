@@ -25,6 +25,7 @@
     }
 
     .kanban.holder {
+        min-height: 100vh;
         height: 100%;
     }
 
@@ -36,17 +37,24 @@
         border: none !important;
         box-shadow: none !important;
     }
+
+    .kanban-placeholder {
+        border: 1px dotted #B5B45B;
+        background-color: #FAF9D9;
+        margin: 0 1em 1em 0;
+        height: 400px;
+    }
 </style>
 
 
 <div class="view factory" style="display: none;">
-<div class="ui inverted active view dimmer">
-    <div class="content">
-        <div class="ui text loader">
-            <span data-localize="Titles.Loading"></span>
+    <div class="ui inverted active view dimmer">
+        <div class="content">
+            <div class="ui text loader">
+                <span data-localize="Titles.Loading"></span>
+            </div>
         </div>
     </div>
-</div>
 
 
 
