@@ -192,7 +192,7 @@
             Url
         </th>
         <td>
-            Enter the website url address of this party or leave this field empty.
+            Enter the website URL address of this party or leave this field empty.
         </td>
     </tr>
     <tr>

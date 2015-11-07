@@ -79,7 +79,7 @@
     </tr>
     <tr>
         <th>
-            Weigth in Grams
+            Weight in Grams
         </th>
         <td>
             Enter the weight of this item in grams.
@@ -114,7 +114,7 @@
             Machinable
         </th>
         <td>
-            State whether or not this item is a machinable parcle
+            State whether or not this item is a machinable parcel
             for shipping.
         </td>
     </tr>
