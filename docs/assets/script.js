@@ -30667,7 +30667,7 @@ function processSocialSharing() {
     var url = encodeURIComponent(window.location.href);
     var title = encodeURIComponent($("h1:first").html());
     var tweet = encodeURIComponent("#mixerp documentation " + title + "\r\n" + url);
-    var message = encodeURIComponent("MixERP Documentation : " + title + "\r\n" + url);
+    var message = 'Hi,' + escape("\n\n") + 'The following link is related to the topic %22' + title + '%22 from MixERP documentation.' + escape("\n\n") + url + escape("\n\n");
 
     $(".social.sharing a").each(function () {
         var el = $(this);
