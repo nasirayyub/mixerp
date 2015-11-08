@@ -5,7 +5,7 @@ Edit one of the following files using Visual Studio or any text editor of your c
 **WebForms**
 
 
-``src/FrontEnd/MixERP.Net.FrontEnd/Resource/Configs/DbServer.xml``
+``src/FrontEnd/Resource/Configs/DbServer.xml``
 
 
 **MVC**
