@@ -170,6 +170,7 @@ namespace MixERP.Net.FrontEnd.Base
 
                     if (menuUrl.ToUpperInvariant().Equals(this.currentPage.ToUpperInvariant()))
                     {
+                        this.Page.Title = menu.MenuText;
                         policyExists = true;
                         break;
                     }
