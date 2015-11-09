@@ -1,9 +1,9 @@
-#Sample Data
+# Sample Data
 
 In MixERP, we do not create a large SQL and maintain it. This process is buggy, error-prone, and difficult to manage.
 You might not have heard about SQL bundling before, but we do just that.
 
-#What is SQL bundling?
+# What is SQL bundling?
 SQL bundling is nothing more than a process where you will:
 
 * Create many individual sql files
@@ -11,7 +11,7 @@ SQL bundling is nothing more than a process where you will:
 * Work on one thing at a time, focus on everything later
 * Bundle them all together to create a giant SQL file
 
-#How Does This Even Work?
+# How Does This Even Work?
 Believe me, this works extremely well! I borrowed this concept from bundling and minifying stylesheets and javascripts, where you create a single
 file to serve to the browser. But only the concept of creating one big file is borrowed, nothing else. So, in the bundling process,
 we have:
@@ -43,7 +43,7 @@ for us.
 
 # SQL (*.sql) Files
 Each of the .sql will be bundled to create a large sql-bundle file, which is nothing more than a plain sql file.
-The .sql files have the primary priority to get included on a budled file.
+The .sql files have the primary priority to get included on a bundled file.
 
 # Sample (*.sql.sample) Files
 These files will only be included when the flag **[include-sample]** is set to **true**. We use this flag for development purpose
@@ -52,9 +52,9 @@ on the bundled file. This file is recommended for evaluation purpose only.
 
 # Optional (*.optional) Files
 These files will only be included when the flag **[include-optional]** is set to **true**. An optional file would have a lower
-priority. Please serch for existing *.optional file(s) to see how exactly we use this.
+priority. Please search for existing *.optional file(s) to see how exactly we use this.
 
-#Further Information
+# Further Information
 
 The following files would be useful for database developers to review:
 
@@ -66,5 +66,5 @@ The following files would be useful for database developers to review:
 * /src/FrontEnd/db/1.x/1.1/rebundle-and-rerun-without-sample-with-vacuum-analyze.bat
 
 
-##Related Topics
+## Related Topics
 * [Developer Documentation](../developer/index.md).

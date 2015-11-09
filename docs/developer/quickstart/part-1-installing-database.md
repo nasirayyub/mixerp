@@ -84,7 +84,7 @@ When you create your database, navigate to the tab "Definition". Make sure that 
         software has misunderstanding on how PostgreSQL actually works.
         This tool supports many DBMSes, including but not limited to
         SQL Server, Oracle, DB2, PostgreSQL, MySQL, etc
-        and is regarded as a pretty good software for doing <em>the SQL things</em>. Many developers
+        and is regarded as pretty good software for doing <em>the SQL things</em>. Many developers
         use many different DBMSes and this tool seems perfect because it supports most of them.
     </p>
     <p>

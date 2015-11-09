@@ -6,7 +6,7 @@
     <div class="ui divider"></div>
     <p>
         Please note that <strong>setting up git</strong> is as necessary as Visual Studio.
-        If you are planning to contribute to MixERP as a developer, having a <strong>
+        If you are planning to contribute to MixERP as a developer, having <strong>
             <a target="_blank" href="https://www.youtube.com/results?search_query=git+tutorial">basic git knowledge</a>
         </strong> is absolutely required before you do anything.
     </p>
@@ -55,7 +55,7 @@ Using your favorite git client, clone MixERP from one of the following git repos
     </tbody>
 </table>
 
-MixERP source code is updated on GitHub and Codeplex, both. If you are new to git, [follow this tuturial](http://git-scm.com/docs/gittutorial).
+MixERP source code is updated on GitHub. If you are new to git, [follow this tutorial](http://git-scm.com/docs/gittutorial).
 
 ##Related Topics
 * [Developer Documentation](index.md).

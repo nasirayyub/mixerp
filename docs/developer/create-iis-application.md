@@ -45,7 +45,7 @@ Provide the following users **modify** permission on the location where you clon
   ![Directory Permission](images/directory-permission.png)
 * Click OK.
 
-## Complie MixERP
+## Compile MixERP
 
 Open the solution in Visual Studio and perform a rebuild.
 
