@@ -8,6 +8,10 @@ src/FrontEnd/Modules/Payroll
 src/FrontEnd/Modules/Payroll.API
 src/FrontEnd/Modules/Payroll.Data
 src/FrontEnd/Modules/Payroll.Entities
+src/FrontEnd/Modules/Production
+src/FrontEnd/Modules/Production.API
+src/FrontEnd/Modules/Production.Data
+src/FrontEnd/Modules/Production.Entities
 src/FrontEnd/update.zip
 src/FrontEnd/Resource/Documents
 src/FrontEnd/Resource/Static/Attachments
