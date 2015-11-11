@@ -120,5 +120,13 @@ namespace MixERP.Net.Entities.Core
         [Column("photo")]
         [ColumnDbType("image", 0, true, "")]
         public string Photo { get; set; }
+
+        [Column("is_variant")]
+        [ColumnDbType("bool", 0, false, "false")]
+        public bool IsVariant { get; set; }
+
+        [Column("is_variant_of")]
+        [ColumnDbType("int4", 0, true, "")]
+        public int? IsVariantOf { get; set; }
     }
 }

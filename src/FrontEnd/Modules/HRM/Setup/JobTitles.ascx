@@ -16,9 +16,14 @@
     scrudFactory.allowEdit = true;
 
     scrudFactory.layout = [
-    	["JobTitleId", ""],
-    	["JobTitleCode", "JobTitleName", "", ""],
-    	["Description", ""]
+        {
+            tab: "",
+            fields: [
+                ["JobTitleId", ""],
+                ["JobTitleCode", "JobTitleName", "", ""],
+                ["Description", ""]
+            ]
+        }
     ];
 
     scrudFactory.live = "JobTitleName";

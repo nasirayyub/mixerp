@@ -63,6 +63,7 @@
     <Compile Include="AttachmentLookup.cs" />
     <Compile Include="AttachmentType.cs" />
     <Compile Include="AttachmentView.cs" />
+    <Compile Include="Attribute.cs" />
     <Compile Include="BankAccount.cs" />
     <Compile Include="BankAccountScrudView.cs" />
     <Compile Include="BankAccountSelectorView.cs" />
@@ -153,6 +154,8 @@
     <Compile Include="ItemSellingPriceScrudView.cs" />
     <Compile Include="ItemType.cs" />
     <Compile Include="ItemTypeScrudView.cs" />
+    <Compile Include="ItemVariant.cs" />
+    <Compile Include="ItemVariantScrudView.cs" />
     <Compile Include="ItemView.cs" />
     <Compile Include="Kanban.cs" />
     <Compile Include="KanbanDetail.cs" />
@@ -250,6 +253,8 @@
     <Compile Include="UnitScrudView.cs" />
     <Compile Include="UnitSelectorView.cs" />
     <Compile Include="UnitView.cs" />
+    <Compile Include="Variant.cs" />
+    <Compile Include="VariantScrudView.cs" />
     <Compile Include="VerificationStatus.cs" />
     <Compile Include="WeekDay.cs" />
     <Compile Include="Widget.cs" />

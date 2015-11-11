@@ -79,6 +79,7 @@
     <Compile Include="Attachment.cs" />
     <Compile Include="AttachmentLookup.cs" />
     <Compile Include="AttachmentView.cs" />
+    <Compile Include="Attribute.cs" />
     <Compile Include="BankAccount.cs" />
     <Compile Include="BankAccountScrudView.cs" />
     <Compile Include="BankAccountSelectorView.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="GetAccountMasterIdByAccountMasterCodeProcedure.cs" />
     <Compile Include="GetAccountNameByAccountIdProcedure.cs" />
     <Compile Include="GetAccountNameProcedure.cs" />
+    <Compile Include="GetAccountNumberByAccountIdProcedure.cs" />
     <Compile Include="GetAccountViewByAccountMasterIdProcedure.cs" />
     <Compile Include="GetAssociatedUnitsFromItemCodeProcedure.cs" />
     <Compile Include="GetAssociatedUnitsFromItemIdProcedure.cs" />
@@ -304,6 +306,7 @@
     <Compile Include="IAttachmentLookupRepository.cs" />
     <Compile Include="IAttachmentRepository.cs" />
     <Compile Include="IAttachmentViewRepository.cs" />
+    <Compile Include="IAttributeRepository.cs" />
     <Compile Include="IBankAccountRepository.cs" />
     <Compile Include="IBankAccountScrudViewRepository.cs" />
     <Compile Include="IBankAccountSelectorViewRepository.cs" />
@@ -395,6 +398,7 @@
     <Compile Include="IGetAccountMasterIdByAccountMasterCodeRepository.cs" />
     <Compile Include="IGetAccountNameByAccountIdRepository.cs" />
     <Compile Include="IGetAccountNameRepository.cs" />
+    <Compile Include="IGetAccountNumberByAccountIdRepository.cs" />
     <Compile Include="IGetAccountViewByAccountMasterIdRepository.cs" />
     <Compile Include="IGetAssociatedUnitsFromItemCodeRepository.cs" />
     <Compile Include="IGetAssociatedUnitsFromItemIdRepository.cs" />
@@ -545,6 +549,10 @@
     <Compile Include="IItemSellingPriceScrudViewRepository.cs" />
     <Compile Include="IItemTypeRepository.cs" />
     <Compile Include="IItemTypeScrudViewRepository.cs" />
+    <Compile Include="IItemVariantDetailRepository.cs" />
+    <Compile Include="IItemVariantDetailScrudViewRepository.cs" />
+    <Compile Include="IItemVariantRepository.cs" />
+    <Compile Include="IItemVariantScrudViewRepository.cs" />
     <Compile Include="IItemViewRepository.cs" />
     <Compile Include="IKanbanDetailRepository.cs" />
     <Compile Include="IKanbanRepository.cs" />
@@ -663,12 +671,18 @@
     <Compile Include="ItemSellingPriceScrudView.cs" />
     <Compile Include="ItemType.cs" />
     <Compile Include="ItemTypeScrudView.cs" />
+    <Compile Include="ItemVariant.cs" />
+    <Compile Include="ItemVariantDetail.cs" />
+    <Compile Include="ItemVariantDetailScrudView.cs" />
+    <Compile Include="ItemVariantScrudView.cs" />
     <Compile Include="ItemView.cs" />
     <Compile Include="ITransactionTypeRepository.cs" />
     <Compile Include="IUnitRepository.cs" />
     <Compile Include="IUnitScrudViewRepository.cs" />
     <Compile Include="IUnitSelectorViewRepository.cs" />
     <Compile Include="IUnitViewRepository.cs" />
+    <Compile Include="IVariantRepository.cs" />
+    <Compile Include="IVariantScrudViewRepository.cs" />
     <Compile Include="IVerificationStatusRepository.cs" />
     <Compile Include="IWeekDayRepository.cs" />
     <Compile Include="IWidgetGroupRepository.cs" />
@@ -773,6 +787,8 @@
     <Compile Include="UnitScrudView.cs" />
     <Compile Include="UnitSelectorView.cs" />
     <Compile Include="UnitView.cs" />
+    <Compile Include="Variant.cs" />
+    <Compile Include="VariantScrudView.cs" />
     <Compile Include="VerificationStatus.cs" />
     <Compile Include="WeekDay.cs" />
     <Compile Include="Widget.cs" />

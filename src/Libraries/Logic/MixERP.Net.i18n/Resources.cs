@@ -3191,6 +3191,68 @@ namespace MixERP.Net.i18n.Resources
 			}
 		}
 	}
+	public class ScrudFactory
+	{
+		public static string Get(string key)
+		{
+			return ResourceManager.GetString("ScrudFactory", key);
+		}
+		
+		/// <summary>
+		///   Localized string for Attribute Value
+		/// </summary>
+		public static string attribute_value 
+		{
+			get
+			{
+				return Get("attribute_value");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Item Variant Detail Id
+		/// </summary>
+		public static string item_variant_detail_id 
+		{
+			get
+			{
+				return Get("item_variant_detail_id");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Variant Code
+		/// </summary>
+		public static string variant_code 
+		{
+			get
+			{
+				return Get("variant_code");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Variant Id
+		/// </summary>
+		public static string variant_id 
+		{
+			get
+			{
+				return Get("variant_id");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Variant Name
+		/// </summary>
+		public static string variant_name 
+		{
+			get
+			{
+				return Get("variant_name");
+			}
+		}
+	}
 	public class ScrudResource
 	{
 		public static string Get(string key)
@@ -3514,6 +3576,39 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("as_of");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Attribute Code
+		/// </summary>
+		public static string attribute_code 
+		{
+			get
+			{
+				return Get("attribute_code");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Attribute Id
+		/// </summary>
+		public static string attribute_id 
+		{
+			get
+			{
+				return Get("attribute_id");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Attribute Name
+		/// </summary>
+		public static string attribute_name 
+		{
+			get
+			{
+				return Get("attribute_name");
 			}
 		}
 		
@@ -7236,6 +7331,39 @@ namespace MixERP.Net.i18n.Resources
 		}
 		
 		/// <summary>
+		///   Localized string for Item Variant Code
+		/// </summary>
+		public static string item_variant_code 
+		{
+			get
+			{
+				return Get("item_variant_code");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Item Variant Id
+		/// </summary>
+		public static string item_variant_id 
+		{
+			get
+			{
+				return Get("item_variant_id");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Item Variant Name
+		/// </summary>
+		public static string item_variant_name 
+		{
+			get
+			{
+				return Get("item_variant_name");
+			}
+		}
+		
+		/// <summary>
 		///   Localized string for Duplicate item code.
 		/// </summary>
 		public static string items_item_code_uix 
@@ -8552,6 +8680,17 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("payment_term_name");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Payroll Account Id
+		/// </summary>
+		public static string payroll_account_id 
+		{
+			get
+			{
+				return Get("payroll_account_id");
 			}
 		}
 		
@@ -11459,6 +11598,46 @@ namespace MixERP.Net.i18n.Resources
 			}
 		}
 	}
+	public class Title
+	{
+		public static string Get(string key)
+		{
+			return ResourceManager.GetString("Title", key);
+		}
+		
+		/// <summary>
+		///   Localized string for Item Variant Details
+		/// </summary>
+		public static string ItemVariantDetails 
+		{
+			get
+			{
+				return Get("ItemVariantDetails");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Variant
+		/// </summary>
+		public static string Variant 
+		{
+			get
+			{
+				return Get("Variant");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Variants
+		/// </summary>
+		public static string Variants 
+		{
+			get
+			{
+				return Get("Variants");
+			}
+		}
+	}
 	public class Titles
 	{
 		public static string Get(string key)
@@ -11958,6 +12137,28 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("Attendances");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Attribute
+		/// </summary>
+		public static string Attribute 
+		{
+			get
+			{
+				return Get("Attribute");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Attributes
+		/// </summary>
+		public static string Attributes 
+		{
+			get
+			{
+				return Get("Attributes");
 			}
 		}
 		
@@ -15423,6 +15624,28 @@ namespace MixERP.Net.i18n.Resources
 			get
 			{
 				return Get("ItemTypes");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Item Variant
+		/// </summary>
+		public static string ItemVariant 
+		{
+			get
+			{
+				return Get("ItemVariant");
+			}
+		}
+		
+		/// <summary>
+		///   Localized string for Item Variants
+		/// </summary>
+		public static string ItemVariants 
+		{
+			get
+			{
+				return Get("ItemVariants");
 			}
 		}
 		

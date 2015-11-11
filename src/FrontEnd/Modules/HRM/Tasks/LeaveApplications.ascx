@@ -36,9 +36,14 @@
     scrudFactory.live = "EmployeeId";
 
     scrudFactory.layout = [
-        ["LeaveApplicationId", "LeaveTypeId", "", ""],
-        ["StartDate", "EndDate", "", ""],
-        ["Reason", ""]
+        {
+            tab: "",
+            fields: [
+                ["LeaveTypeId", "", "", ""],
+                ["StartDate", "EndDate", "", ""],
+                ["Reason", ""]
+            ]
+        }
     ];
 
     scrudFactory.keys = [

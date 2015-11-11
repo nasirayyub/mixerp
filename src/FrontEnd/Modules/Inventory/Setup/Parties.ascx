@@ -23,11 +23,48 @@
     scrudFactory.live = "PartyName";
 
     scrudFactory.layout = [
-        ["Photo", ""],
-        ["PartyId", "PartyCode", "", ""],
-        ["PartyName", ""],
-        ["EmployeeId", "EmployeeName", "", ""],
-        ["FirstName", "MiddleName", "LastName", "PartyTypeId", "", "", "", ""]
+        {
+            tab: "party",
+            fields: 
+            [
+                ["Photo", ""],
+                ["PartyCode", "PartyName", "", ""],
+                ["EmployeeId", "EmployeeName", "", ""],
+                ["FirstName", "MiddleName", "LastName", "PartyTypeId", "", "", "", ""],
+                ["DateOfBirth", "CompanyName", "", ""],
+                ["EntityId", "IndustryId", "", ""],
+                ["PanNumber", "SstNumber", "CstNumber", "", "", "", "", ""],
+                ["CurrencyCode", "AllowCredit", "", ""],
+                ["MaximumCreditPeriod", "MaximumCreditAmount", "", ""]
+            ]
+        },
+        {
+            tab: "address",
+            fields: [
+                ["ZipCode", "", "", "", "", "", "",],
+                ["AddressLine1", ""],
+                ["AddressLine2", ""],
+                ["Street", "City", "", ""],
+                ["CountryId", "StateId", "", ""],
+                ["Phone", "Fax", "", ""],
+                ["Cell", "Email", "", ""],
+                ["Url", "", "", ""]
+            ]
+        }
+    ];
+
+    scrudFactory.tabs = [
+        {
+            sort: 0,
+            id: "party",
+            name: window.Resources.Titles.PartyInformation(),
+            active: true
+        },
+        {
+            sort: 1,
+            id: "address",
+            name: window.Resources.Titles.AddressAndContactInformation()
+        }
     ];
 
     scrudFactory.returnUrl = "../Employees.mix";
@@ -84,10 +121,32 @@
 <script>
     $(document).on("formready", function() {
         initialize();
+
+        $("#country_id").change(function(){
+            displayStates($("#country_id").val());
+        });
     });
 
-    function initialize() {
+    function displayStates(countryId){
+        function ajax(){
+            var url = "/api/core/state/get-where/1";
 
+            var filters = [];
+            filters.push(window.getAjaxColumnFilter("WHERE", "country_id", window.FilterConditions.IsEqualTo, countryId));
+            
+            var data = JSON.stringify(filters);
+            return getAjaxRequest(url, "POST", data);
+        };
+
+        var request = ajax();
+
+        request.success(function(response){
+            $("#state_id").bindAjaxData(response, false, null, "StateId", "StateName", false);
+        });
+
+    };
+
+    function initialize() {
         var firstName = $("#first_name");
         var middleName = $("#middle_name");
         var lastName = $("#last_name");

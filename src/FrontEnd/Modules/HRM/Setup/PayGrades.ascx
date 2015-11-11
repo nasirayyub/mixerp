@@ -16,10 +16,15 @@
     scrudFactory.allowEdit = true;
 
     scrudFactory.layout = [
-    	["PayGradeId", ""],
-    	["PayGradeCode", "PayGradeName", "", ""],
-    	["MinimumSalary", "MaximumSalary", "", ""],
-    	["Description", ""]
+        {
+            tab: "",
+            fields: [
+                ["PayGradeId", ""],
+                ["PayGradeCode", "PayGradeName", "", ""],
+                ["MinimumSalary", "MaximumSalary", "", ""],
+                ["Description", ""]
+            ]
+        }
     ];
 
     scrudFactory.live = "PayGradeName";

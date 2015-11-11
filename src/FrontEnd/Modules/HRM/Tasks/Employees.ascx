@@ -20,10 +20,101 @@
 
     scrudFactory.live = "EmployeeName";
     scrudFactory.layout = [
-        ["Photo", ""],
-        ["EmployeeId", ""],
-        ["EmployeeName", "EmployeeCode", "", ""],
-        ["FirstName", "MiddleName", "LastName", "GenderCode", "", "", "", ""]
+        {
+            tab: "personal",
+            fields: [
+                ["Photo", ""],
+                ["EmployeeId", ""],
+                ["EmployeeName", "EmployeeCode", "", ""],
+                ["FirstName", "MiddleName", "LastName", "GenderCode", "", "", "", ""],
+                ["MaritalStatusId", "NationalityCode", "", ""],
+                ["DateOfBirth", "AccountId", "", ""]
+            ]
+        },
+        {
+            tab: "employment",
+            fields: [
+                ["UserId", "OfficeId", "", ""],
+                ["JoinedOn", "EmployeeTypeId", "", ""],
+                ["CurrentDepartmentId", "CurrentRoleId", "", ""],
+                ["CurrentEmploymentStatusId", "CurrentJobTitleId", "", ""],
+                ["CurrentPayGradeId", "CurrentShiftId", "", ""]
+            ]
+        },
+        {
+            tab: "bank",
+            fields:[
+                ["BankAccountNumber", "BankName", "", ""],
+                ["BankBranchName", "BankReferenceNumber", "", ""]
+            ]
+        },
+        {
+            tab: "address",
+            fields: [
+                ["ZipCode", "", "", "", "", "", "",],
+                ["AddressLine1", ""],
+                ["AddressLine2", ""],
+                ["Street", "City", "", ""],
+                ["CountryId", "State", "", ""],
+                ["Phone", "Fax", "", ""],
+                ["Cell", "Email", "", ""],
+                ["Url", "", "", ""]
+            ]
+        },
+        {
+            tab: "contact",
+            fields:[
+                ["PhoneHome", "PhoneCell", "", ""],
+                ["PhoneOfficeExtension", "", "", ""],
+                ["PhoneEmergency", "PhoneEmergency2", "", ""],
+                ["EmailAddress", "Website", "", ""],
+                ["Blog", "", "", ""]
+            ]
+        },
+        {
+            tab: "other",
+            fields: [
+                ["IsSmoker", "IsAlcoholic", "", ""],
+                ["WithDisabilities", "LowVision", "", ""],
+                ["UsesWheelchair", "HardOfHearing", "", ""],
+                ["IsAphonic", "IsCognitivelyDisabled", "", ""],
+                ["IsAutistic", "", "", ""]
+            ]
+        }
+    ];
+
+    scrudFactory.tabs = [
+        {
+            sort: 0,
+            id: "personal",
+            name: window.Resources.Titles.PersonalInformation(),
+            active: true
+        },
+        {
+            sort: 1,
+            id: "employment",
+            name: window.Resources.Titles.EmploymentInformation()
+        },
+        {
+            sort: 2,
+            id: "bank",
+            name: window.Resources.Titles.BankDetails()
+        },
+        {
+            sort: 3,
+            id: "address",
+            name: window.Resources.Titles.AddressInformation()
+        },
+        {
+            sort: 4,
+            id: "contact",
+            name: window.Resources.Titles.ContactInformation()
+        },
+        {
+            sort: 5,
+            id: "other",
+            name: window.Resources.Titles.OtherDetails()
+        }
     ];
 
     scrudFactory.returnUrl = "../Employees.mix";
@@ -126,7 +217,14 @@
             data: null,
             valueField: "Key",
             textField: "Value"
-        }
+        },
+        {
+            property: "AccountId",
+            url: '/api/core/account/display-fields',
+            data: null,
+            valueField: "Key",
+            textField: "Value"
+        }        
     ];
 </script>
 

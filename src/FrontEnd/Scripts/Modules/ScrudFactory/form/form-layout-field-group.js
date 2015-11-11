@@ -66,6 +66,9 @@
     if (column.IsPrimaryKey) {
         element.attr("data-primaryKey", "");
         element.removeClass();
+        if (scrudFactory.hidePrimaryKey) {
+            field.addClass("hidden column");
+        };
     };
 
     if (column.MaxLength > 0) {

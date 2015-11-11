@@ -16,10 +16,15 @@
     scrudFactory.allowEdit = true;
 
     scrudFactory.layout = [
-        ["ShiftId", ""],
-        ["ShiftCode", "ShiftName", "", ""],
-        ["BeginsFrom", "EndsOn", "", ""],
-        ["Description", ""]
+        {
+            tab: "",
+            fields: [
+                ["ShiftId", ""],
+                ["ShiftCode", "ShiftName", "", ""],
+                ["BeginsFrom", "EndsOn", "", ""],
+                ["Description", ""]
+            ]
+        }
     ];
 
     scrudFactory.live = "ShiftName";

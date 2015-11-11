@@ -21,9 +21,9 @@ namespace MixERP.Net.Api.Core.Tests
 {
     public class KanbanTests
     {
-        public static KanbanController Fixture()
+        public static CoreKanbanController Fixture()
         {
-            KanbanController controller = new KanbanController(new KanbanRepository(), "", new LoginView());
+            CoreKanbanController controller = new CoreKanbanController(new KanbanRepository(), "", new LoginView());
             return controller;
         }
 

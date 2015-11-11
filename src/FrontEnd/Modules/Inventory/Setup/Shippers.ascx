@@ -47,8 +47,12 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
     ];
 
     scrudFactory.layout = [
-        ["ShipperId", ""],
-        ["CompanyName", "PoBox", "", ""]
+        {
+            tab: "",
+            fields: [
+                ["CompanyName", "PoBox", "", ""]
+            ]
+        }
     ];
 </script>
 

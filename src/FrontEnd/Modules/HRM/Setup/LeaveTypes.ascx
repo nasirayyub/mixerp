@@ -16,9 +16,14 @@
     scrudFactory.allowEdit = true;
 
     scrudFactory.layout = [
-    	["LeaveTypeId", ""],
-    	["LeaveTypeCode", "LeaveTypeName", "", ""],
-    	["Description", ""]
+        {
+            tab: "",
+            fields: [
+                ["LeaveTypeId", ""],
+                ["LeaveTypeCode", "LeaveTypeName", "", ""],
+                ["Description", ""]
+            ]
+        }
     ];
 
 

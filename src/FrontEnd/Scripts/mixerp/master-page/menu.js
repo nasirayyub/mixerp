@@ -260,22 +260,22 @@ function loadSidebarState() {
 };
 
 function toggleSidebar(el) {
-    $("body").hide();
     var state = "visible";
 
     if ($(".sidebar").is(":visible")) {
-        $("#Content").removeClass("twelve wide column").addClass("sixteen wide column");
+        $("#Content").removeClass("thirteen wide column").addClass("sixteen wide column");
         state = "hidden";
     } else {
-        $("#Content").removeClass("sixteen wide column").addClass("twelve wide column");
+        $("#Content").removeClass("sixteen wide column").addClass("thirteen wide column");
     };
 
     if (window.supportsBrowserStorage()) {
         localStorage["sidebar"] = state;
     };
 
+    $("body").hide();
     $(".sidebar").toggle();
-    $("body").fadeIn(500);
+    $("body").fadeIn();
 };
 
 var menuPolicy;

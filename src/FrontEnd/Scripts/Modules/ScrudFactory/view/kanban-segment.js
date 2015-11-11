@@ -63,7 +63,8 @@ function refreshKanbans() {
 
         if (!window.kanbans.length) {
             if (!isKanban()) {
-                showView("grid");
+                var defaultView = window.getQueryStringByName("View") || "grid";
+                showView(defaultView);
             };
         };
 

@@ -135,9 +135,12 @@
     <Content Include="Services\Entry\TransferRequest.asmx" />
     <Content Include="Services\TransferAcknowledgement.asmx" />
     <Content Include="Services\TransferAuthorization.asmx" />
+    <Content Include="Setup\Attributes.ascx" />
     <Content Include="Setup\CompoundItemDetails.ascx" />
     <Content Include="Setup\CompoundItems.ascx" />
     <Content Include="Setup\ItemTypes.ascx" />
+    <Content Include="Setup\ItemVariantDetails.ascx" />
+    <Content Include="Setup\ItemVariants.ascx" />
     <Content Include="Setup\Parties\Entry.ascx" />
     <Content Include="Setup\Parties\index.html" />
     <Content Include="Setup\PartyInfo.ascx" />
@@ -174,6 +177,7 @@
     <Content Include="Setup\Shippers.ascx" />
     <Content Include="Setup\ShippingAddresses.ascx" />
     <Content Include="Setup\UOM.ascx" />
+    <Content Include="Setup\Variants.ascx" />
     <Content Include="Transfer.ascx" />
     <Content Include="TransferAcknowledgement.ascx" />
     <Content Include="TransferAuthorization.ascx" />
@@ -337,6 +341,13 @@
       <DependentUpon>TransferAuthorization.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Setup\Attributes.ascx.cs">
+      <DependentUpon>Attributes.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\Attributes.ascx.designer.cs">
+      <DependentUpon>Attributes.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Setup\Brands.ascx.cs">
       <DependentUpon>Brands.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -392,6 +403,20 @@
     </Compile>
     <Compile Include="Setup\ItemTypes.ascx.designer.cs">
       <DependentUpon>ItemTypes.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\ItemVariantDetails.ascx.cs">
+      <DependentUpon>ItemVariantDetails.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\ItemVariantDetails.ascx.designer.cs">
+      <DependentUpon>ItemVariantDetails.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\ItemVariants.ascx.cs">
+      <DependentUpon>ItemVariants.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\ItemVariants.ascx.designer.cs">
+      <DependentUpon>ItemVariants.ascx</DependentUpon>
     </Compile>
     <Compile Include="Setup\PartiesPopup.ascx.cs">
       <DependentUpon>PartiesPopup.ascx</DependentUpon>
@@ -462,6 +487,13 @@
     </Compile>
     <Compile Include="Setup\UOM.ascx.designer.cs">
       <DependentUpon>UOM.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\Variants.ascx.cs">
+      <DependentUpon>Variants.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\Variants.ascx.designer.cs">
+      <DependentUpon>Variants.ascx</DependentUpon>
     </Compile>
     <Compile Include="Transfer.ascx.cs">
       <DependentUpon>Transfer.ascx</DependentUpon>

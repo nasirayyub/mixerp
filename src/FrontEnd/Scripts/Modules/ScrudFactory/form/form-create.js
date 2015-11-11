@@ -23,7 +23,7 @@
 
     ajax.success(function (response) {
         window.metaInfo = response;
-        createLayout(response.Columns);
+        createLayout(response.Columns, scrud);
 
         if (getSchema()) {
             var cfAjax = customFieldRequest();

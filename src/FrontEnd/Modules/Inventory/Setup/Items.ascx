@@ -38,12 +38,82 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
     scrudFactory.allowEdit = true;
 
     scrudFactory.queryStringKey = "ItemId";
+    
     scrudFactory.layout = [
-        ["ItemId", ""],
-        ["Photo", ""],
-        ["ItemCode", "ItemName", "", ""]
-        //The rest will be figured out by scrud
+        {
+            tab: "item",
+            fields: [
+                ["Photo", ""],
+                ["ItemCode", "ItemName", "", ""],
+                ["ItemGroupId", "ItemTypeId", "", ""],
+                ["BrandId", "PreferredSupplierId", "", ""],
+                ["UnitId", "", "", ""]
+            ]
+        },
+        {
+            tab: "shipping",
+            fields:[
+                ["Machinable", "", "", ""],
+                ["PreferredShippingMailTypeId", "ShippingPackageShapeId", "", ""]
+            ]
+        },
+        {
+            tab: "stock",
+            fields:[
+                ["ReorderLevel", "", "", ""],
+                ["ReorderUnitId", "ReorderQuantity", "", ""],
+                ["MaintainStock", "", "", ""]
+            ]
+        },
+        {
+            tab: "price",
+            fields: [
+                ["CostPrice", "", "", ""],
+                ["SellingPrice", "SellingPriceIncludesTax", "", ""],
+                ["SalesTaxId", "", "", ""]
+            ]
+        },
+        {
+            tab: "other",
+            fields:[
+                ["HotItem", "", "", ""],
+                ["LeadTimeInDays", "", "", ""],
+                ["WeightInGrams", "", "", ""],
+                ["WidthInCentimeters", "HeightInCentimeters", "", ""],
+                ["LengthInCentimeters", "", "", ""]
+            ]
+        }
     ];
+
+    scrudFactory.tabs = [
+        {
+            sort: 0,
+            id: "item",
+            name: window.Resources.Titles.ItemInformation(),
+            active: true
+        },
+        {
+            sort: 1,
+            id: "shipping",
+            name: window.Resources.Titles.ShippingInformation()
+        },
+        {
+            sort: 2,
+            id: "price",
+            name: window.Resources.Titles.PriceDetails()
+        },
+        {
+            sort: 3,
+            id: "stock",
+            name: window.Resources.Titles.StockDetails()
+        },
+        {
+            sort: 4,
+            id: "other",
+            name: window.Resources.Titles.OtherInformation()
+        }        
+    ];
+
 
     scrudFactory.keys = [
         {

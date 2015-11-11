@@ -24,12 +24,6 @@
         description:"CardType"
     };
 
-    scrudFactory.layout = [
-        ["PaymentCardId", ""],
-        ["PaymentCardCode", "PaymentCardName", "", ""],
-        ["CardTypeId", ""]
-    ];
-
     scrudFactory.keys = [
         {
             property: "CardTypeId",

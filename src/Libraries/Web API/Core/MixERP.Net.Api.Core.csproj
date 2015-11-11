@@ -127,6 +127,8 @@
     <Compile Include="CompoundUnitScrudViewController.cs" />
     <Compile Include="ConfigController.cs" />
     <Compile Include="ConvertUnitController.cs" />
+    <Compile Include="CoreAttributeController.cs" />
+    <Compile Include="CoreKanbanController.cs" />
     <Compile Include="CoreLateFeeController.cs" />
     <Compile Include="CostOfSalesAccountSelectorViewController.cs" />
     <Compile Include="CountItemInStockController.cs" />
@@ -175,6 +177,7 @@
     <Compile Include="Fakes\AttachmentLookupRepository.cs" />
     <Compile Include="Fakes\AttachmentRepository.cs" />
     <Compile Include="Fakes\AttachmentViewRepository.cs" />
+    <Compile Include="Fakes\AttributeRepository.cs" />
     <Compile Include="Fakes\BankAccountRepository.cs" />
     <Compile Include="Fakes\BankAccountScrudViewRepository.cs" />
     <Compile Include="Fakes\BankAccountSelectorViewRepository.cs" />
@@ -415,6 +418,10 @@
     <Compile Include="Fakes\ItemSellingPriceScrudViewRepository.cs" />
     <Compile Include="Fakes\ItemTypeRepository.cs" />
     <Compile Include="Fakes\ItemTypeScrudViewRepository.cs" />
+    <Compile Include="Fakes\ItemVariantDetailRepository.cs" />
+    <Compile Include="Fakes\ItemVariantDetailScrudViewRepository.cs" />
+    <Compile Include="Fakes\ItemVariantRepository.cs" />
+    <Compile Include="Fakes\ItemVariantScrudViewRepository.cs" />
     <Compile Include="Fakes\ItemViewRepository.cs" />
     <Compile Include="Fakes\KanbanDetailRepository.cs" />
     <Compile Include="Fakes\KanbanRepository.cs" />
@@ -511,6 +518,8 @@
     <Compile Include="Fakes\UnitScrudViewRepository.cs" />
     <Compile Include="Fakes\UnitSelectorViewRepository.cs" />
     <Compile Include="Fakes\UnitViewRepository.cs" />
+    <Compile Include="Fakes\VariantRepository.cs" />
+    <Compile Include="Fakes\VariantScrudViewRepository.cs" />
     <Compile Include="Fakes\VerificationStatusRepository.cs" />
     <Compile Include="Fakes\WeekDayRepository.cs" />
     <Compile Include="Fakes\WidgetGroupRepository.cs" />
@@ -544,6 +553,7 @@
     <Compile Include="GetAccountMasterIdByAccountMasterCodeController.cs" />
     <Compile Include="GetAccountNameByAccountIdController.cs" />
     <Compile Include="GetAccountNameController.cs" />
+    <Compile Include="GetAccountNumberByAccountIdController.cs" />
     <Compile Include="GetAccountViewByAccountMasterIdController.cs" />
     <Compile Include="GetAssociatedUnitsController.cs" />
     <Compile Include="GetAssociatedUnitsFromItemCodeController.cs" />
@@ -694,8 +704,11 @@
     <Compile Include="ItemSellingPriceScrudViewController.cs" />
     <Compile Include="ItemTypeController.cs" />
     <Compile Include="ItemTypeScrudViewController.cs" />
+    <Compile Include="ItemVariantController.cs" />
+    <Compile Include="ItemVariantDetailController.cs" />
+    <Compile Include="ItemVariantDetailScrudViewController.cs" />
+    <Compile Include="ItemVariantScrudViewController.cs" />
     <Compile Include="ItemViewController.cs" />
-    <Compile Include="KanbanController.cs" />
     <Compile Include="KanbanDetailController.cs" />
     <Compile Include="LateFeeAccountSelectorViewController.cs" />
     <Compile Include="LateFeeScrudViewController.cs" />
@@ -811,6 +824,8 @@
     <Compile Include="Tests\AttachmentTests.cs" />
     <Compile Include="Tests\AttachmentViewRouteTests.cs" />
     <Compile Include="Tests\AttachmentViewTests.cs" />
+    <Compile Include="Tests\AttributeRouteTests.cs" />
+    <Compile Include="Tests\AttributeTests.cs" />
     <Compile Include="Tests\BankAccountRouteTests.cs" />
     <Compile Include="Tests\BankAccountScrudViewRouteTests.cs" />
     <Compile Include="Tests\BankAccountScrudViewTests.cs" />
@@ -1291,6 +1306,14 @@
     <Compile Include="Tests\ItemTypeScrudViewRouteTests.cs" />
     <Compile Include="Tests\ItemTypeScrudViewTests.cs" />
     <Compile Include="Tests\ItemTypeTests.cs" />
+    <Compile Include="Tests\ItemVariantDetailRouteTests.cs" />
+    <Compile Include="Tests\ItemVariantDetailScrudViewRouteTests.cs" />
+    <Compile Include="Tests\ItemVariantDetailScrudViewTests.cs" />
+    <Compile Include="Tests\ItemVariantDetailTests.cs" />
+    <Compile Include="Tests\ItemVariantRouteTests.cs" />
+    <Compile Include="Tests\ItemVariantScrudViewRouteTests.cs" />
+    <Compile Include="Tests\ItemVariantScrudViewTests.cs" />
+    <Compile Include="Tests\ItemVariantTests.cs" />
     <Compile Include="Tests\ItemViewRouteTests.cs" />
     <Compile Include="Tests\ItemViewTests.cs" />
     <Compile Include="Tests\KanbanDetailRouteTests.cs" />
@@ -1483,6 +1506,10 @@
     <Compile Include="Tests\UnitTests.cs" />
     <Compile Include="Tests\UnitViewRouteTests.cs" />
     <Compile Include="Tests\UnitViewTests.cs" />
+    <Compile Include="Tests\VariantRouteTests.cs" />
+    <Compile Include="Tests\VariantScrudViewRouteTests.cs" />
+    <Compile Include="Tests\VariantScrudViewTests.cs" />
+    <Compile Include="Tests\VariantTests.cs" />
     <Compile Include="Tests\VerificationStatusRouteTests.cs" />
     <Compile Include="Tests\VerificationStatusTests.cs" />
     <Compile Include="Tests\WeekDayRouteTests.cs" />
@@ -1504,6 +1531,8 @@
     <Compile Include="UnitScrudViewController.cs" />
     <Compile Include="UnitSelectorViewController.cs" />
     <Compile Include="UnitViewController.cs" />
+    <Compile Include="VariantController.cs" />
+    <Compile Include="VariantScrudViewController.cs" />
     <Compile Include="VerificationStatusController.cs" />
     <Compile Include="WeekDayController.cs" />
     <Compile Include="WidgetController.cs" />

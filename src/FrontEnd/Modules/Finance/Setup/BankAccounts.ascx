@@ -16,11 +16,16 @@
     scrudFactory.allowEdit = true;
 
     scrudFactory.layout = [
-        ["AccountId", ""],
-        ["BankName", "BankBranch", "", ""],
-        ["OfficeId", "MaintainedByUserId", "", ""],
-        ["BankAccountNumber", "BankContactNumber", "", ""],
-        ["BankAddress", ""]
+        {
+            tab: "",
+            fields: [
+                ["AccountId", ""],
+                ["BankName", "BankBranch", "", ""],
+                ["OfficeId", "MaintainedByUserId", "", ""],
+                ["BankAccountNumber", "BankContactNumber", "", ""],
+                ["BankAddress", ""]
+            ]
+        }
     ];
 
     scrudFactory.keys = [

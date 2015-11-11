@@ -22,12 +22,17 @@
     };
 
     scrudFactory.layout = [
-        ["EmployeeQualificationId", "EmployeeId", "", ""],
-        ["EducationLevelId", "Institution", "", ""],
-        ["Majors", "TotalYears", "", ""],
-        ["Score", "", "", ""],
-        ["StartedOn", "CompletedOn", "", ""],
-        ["Details", ""]
+        {
+            tab: "",
+            fields: [
+                ["EmployeeId", "", "", ""],
+                ["EducationLevelId", "Institution", "", ""],
+                ["Majors", "TotalYears", "", ""],
+                ["Score", "", "", ""],
+                ["StartedOn", "CompletedOn", "", ""],
+                ["Details", ""]
+            ]
+        }
     ];
 
     scrudFactory.live = "Majors";

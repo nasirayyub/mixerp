@@ -63,13 +63,6 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
             textField: "Value"
         }
     ];
-
-    scrudFactory.layout = [
-        ["ItemCostPriceId", ""],
-        ["ItemId", "UnitId", "", ""],
-        ["PartyId", "LeadTimeInDays", "", ""],
-        ["Price", "", "", ""]
-    ];
 </script>
 
 <div data-ng-include="'/Modules/ScrudFactory/View.html'"></div>

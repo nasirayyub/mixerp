@@ -42,10 +42,12 @@ function createCustomFields(customFields) {
     };
 
     if (customFields.length) {
-        var header = $("<div class='ui purple large header'/>");
-        header.text(window.Resources.Titles.CustomFields());
-        scrud.append(header);
-        scrud.append("<div class='ui divider'></div>");
+        var active = scrudFactory.tabs.length === 0;
+        createTabEls("custom", window.Resources.Titles.CustomFields(), active);
+    } else {
+        if (!$("#scrud-tab-menus .item").length) {
+            $("#scrud-tabs").remove();
+        };
     };
 
     for (var i = 0; i < customFields.length; i += 2) {
@@ -61,7 +63,7 @@ function createCustomFields(customFields) {
         };
 
         if (fields.children().length > 0) {
-            scrud.append(fields);
+            $("#tab-custom").append(fields);
         };
     };
 };

@@ -15,12 +15,6 @@
 
     scrudFactory.allowDelete = true;
     scrudFactory.allowEdit = true;
-
-    scrudFactory.layout = [
-        ["Key", ""],
-        ["Value", ""],
-        ["Description", ""]
-    ];
 </script>
 <div data-ng-include="'/Modules/ScrudFactory/View.html'"></div>
 <div data-ng-include="'/Modules/ScrudFactory/Form.html'"></div>
