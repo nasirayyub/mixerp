@@ -99,7 +99,7 @@ namespace MixERP.Net.FrontEnd.Application
                 "~/Scripts/Modules/ScrudFactory/form/ajax-request-initialize.js",
                 "~/Scripts/Modules/ScrudFactory/form/event-on-doc-keydown.js",
                 "~/Scripts/Modules/ScrudFactory/form/event-on-doc-ready.js",
-                "~/Scripts/Modules/ScrudFactory/form/event-on-formready.js",
+                "~/Scripts/Modules/ScrudFactory/form/trigger-events.js",
                 "~/Scripts/Modules/ScrudFactory/form/event-on-ajax-stop.js"
             };
         }

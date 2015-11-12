@@ -19,5 +19,14 @@ $(document).ready(function () {
     $('.activating.element').popup();
 
     $('.ui.checkbox').checkbox();
-    $('.ui.dropdown').dropdown( {placeholder: false });
+
+    initalizeDropdowns();
 });
+
+function initalizeDropdowns() {
+    $('.ui.dropdown').each(function () {
+        var el = $(this);
+        var placeholder = (el.attr("data-placeholder") || false);
+        el.dropdown({ placeholder: placeholder });
+    });
+};

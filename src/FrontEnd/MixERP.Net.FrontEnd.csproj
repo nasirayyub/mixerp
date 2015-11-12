@@ -733,7 +733,7 @@
     <Content Include="Scripts\Modules\ScrudFactory\form\form-layout-field-group.js" />
     <Content Include="Scripts\Modules\ScrudFactory\form\form-load-default-values.js" />
     <Content Include="Scripts\Modules\ScrudFactory\form\form-load-dropdowns.js" />
-    <Content Include="Scripts\Modules\ScrudFactory\form\event-on-formready.js" />
+    <Content Include="Scripts\Modules\ScrudFactory\form\trigger-events.js" />
     <Content Include="Scripts\Modules\ScrudFactory\form\ajax-request-initialize.js" />
     <Content Include="Scripts\Modules\ScrudFactory\form\form-edit.js" />
     <Content Include="Scripts\Modules\ScrudFactory\form\form-create.js" />

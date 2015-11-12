@@ -29,9 +29,7 @@ function initializeValidators() {
         $(this).parent().find("select").trigger("blur");
     });
 
-    $(".form.factory [required]:not(:disabled):not([readonly])").blur(function () {
-        var el = $(this);
-
+    function validateField(el) {
         var val = el.val();
         var errorMessage = el.closest(".field").find(".error-message");
 
@@ -49,5 +47,10 @@ function initializeValidators() {
             removeDirty(el);
             el.closest(".field").find(".error-message").html("");
         };
+    }
+
+    $(".form.factory [required]:not(:disabled):not([readonly])").blur(function () {
+        var el = $(this);
+        validateField(el);
     });
 };

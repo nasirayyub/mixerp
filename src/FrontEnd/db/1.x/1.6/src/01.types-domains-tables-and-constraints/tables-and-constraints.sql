@@ -76,25 +76,6 @@ END
 $$
 LANGUAGE plpgsql;
 
-
-DO
-$$
-BEGIN
-    IF NOT EXISTS
-    (
-        SELECT 1
-        FROM   pg_attribute 
-        WHERE  attrelid = 'core.items'::regclass
-        AND    attname = 'is_variant'
-        AND    NOT attisdropped
-    ) THEN
-        ALTER TABLE core.items
-        ADD COLUMN is_variant boolean NOT NULL DEFAULT(false);
-    END IF;
-END
-$$
-LANGUAGE plpgsql;
-
 DO
 $$
 BEGIN

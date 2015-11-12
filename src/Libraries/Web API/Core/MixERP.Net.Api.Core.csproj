@@ -142,6 +142,7 @@
     <Compile Include="CountyScrudViewController.cs" />
     <Compile Include="CreateCardTypeController.cs" />
     <Compile Include="CreateFlagController.cs" />
+    <Compile Include="CreateItemVariantController.cs" />
     <Compile Include="CreateKanbanController.cs" />
     <Compile Include="CreateMenuController.cs" />
     <Compile Include="CreateMenuLocaleController.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="CustomFieldSetupController.cs" />
     <Compile Include="CustomFieldViewController.cs" />
     <Compile Include="DefaultWidgetSetupViewController.cs" />
+    <Compile Include="DeleteVariantItemController.cs" />
     <Compile Include="DiscountReceivedAccountSelectorViewController.cs" />
     <Compile Include="EmailQueueController.cs" />
     <Compile Include="EntityController.cs" />
@@ -221,6 +223,7 @@
     <Compile Include="Fakes\CountyScrudViewRepository.cs" />
     <Compile Include="Fakes\CreateCardTypeRepository.cs" />
     <Compile Include="Fakes\CreateFlagRepository.cs" />
+    <Compile Include="Fakes\CreateItemVariantRepository.cs" />
     <Compile Include="Fakes\CreateKanbanRepository.cs" />
     <Compile Include="Fakes\CreateMenuLocaleRepository.cs" />
     <Compile Include="Fakes\CreateMenuRepository.cs" />
@@ -236,6 +239,7 @@
     <Compile Include="Fakes\CustomFieldSetupRepository.cs" />
     <Compile Include="Fakes\CustomFieldViewRepository.cs" />
     <Compile Include="Fakes\DefaultWidgetSetupViewRepository.cs" />
+    <Compile Include="Fakes\DeleteVariantItemRepository.cs" />
     <Compile Include="Fakes\DiscountReceivedAccountSelectorViewRepository.cs" />
     <Compile Include="Fakes\EmailQueueRepository.cs" />
     <Compile Include="Fakes\EntityRepository.cs" />
@@ -268,6 +272,7 @@
     <Compile Include="Fakes\GetAccountMasterIdByAccountMasterCodeRepository.cs" />
     <Compile Include="Fakes\GetAccountNameByAccountIdRepository.cs" />
     <Compile Include="Fakes\GetAccountNameRepository.cs" />
+    <Compile Include="Fakes\GetAccountNumberByAccountIdRepository.cs" />
     <Compile Include="Fakes\GetAccountViewByAccountMasterIdRepository.cs" />
     <Compile Include="Fakes\GetAssociatedUnitsFromItemCodeRepository.cs" />
     <Compile Include="Fakes\GetAssociatedUnitsFromItemIdRepository.cs" />
@@ -418,8 +423,6 @@
     <Compile Include="Fakes\ItemSellingPriceScrudViewRepository.cs" />
     <Compile Include="Fakes\ItemTypeRepository.cs" />
     <Compile Include="Fakes\ItemTypeScrudViewRepository.cs" />
-    <Compile Include="Fakes\ItemVariantDetailRepository.cs" />
-    <Compile Include="Fakes\ItemVariantDetailScrudViewRepository.cs" />
     <Compile Include="Fakes\ItemVariantRepository.cs" />
     <Compile Include="Fakes\ItemVariantScrudViewRepository.cs" />
     <Compile Include="Fakes\ItemViewRepository.cs" />
@@ -705,8 +708,6 @@
     <Compile Include="ItemTypeController.cs" />
     <Compile Include="ItemTypeScrudViewController.cs" />
     <Compile Include="ItemVariantController.cs" />
-    <Compile Include="ItemVariantDetailController.cs" />
-    <Compile Include="ItemVariantDetailScrudViewController.cs" />
     <Compile Include="ItemVariantScrudViewController.cs" />
     <Compile Include="ItemViewController.cs" />
     <Compile Include="KanbanDetailController.cs" />
@@ -912,6 +913,8 @@
     <Compile Include="Tests\CreateCardTypeTests.cs" />
     <Compile Include="Tests\CreateFlagRouteTests.cs" />
     <Compile Include="Tests\CreateFlagTests.cs" />
+    <Compile Include="Tests\CreateItemVariantRouteTests.cs" />
+    <Compile Include="Tests\CreateItemVariantTests.cs" />
     <Compile Include="Tests\CreateKanbanRouteTests.cs" />
     <Compile Include="Tests\CreateKanbanTests.cs" />
     <Compile Include="Tests\CreateMenuLocaleRouteTests.cs" />
@@ -942,6 +945,8 @@
     <Compile Include="Tests\CustomFieldViewTests.cs" />
     <Compile Include="Tests\DefaultWidgetSetupViewRouteTests.cs" />
     <Compile Include="Tests\DefaultWidgetSetupViewTests.cs" />
+    <Compile Include="Tests\DeleteVariantItemRouteTests.cs" />
+    <Compile Include="Tests\DeleteVariantItemTests.cs" />
     <Compile Include="Tests\DiscountReceivedAccountSelectorViewRouteTests.cs" />
     <Compile Include="Tests\DiscountReceivedAccountSelectorViewTests.cs" />
     <Compile Include="Tests\EmailQueueRouteTests.cs" />
@@ -1006,6 +1011,8 @@
     <Compile Include="Tests\GetAccountNameByAccountIdTests.cs" />
     <Compile Include="Tests\GetAccountNameRouteTests.cs" />
     <Compile Include="Tests\GetAccountNameTests.cs" />
+    <Compile Include="Tests\GetAccountNumberByAccountIdRouteTests.cs" />
+    <Compile Include="Tests\GetAccountNumberByAccountIdTests.cs" />
     <Compile Include="Tests\GetAccountViewByAccountMasterIdRouteTests.cs" />
     <Compile Include="Tests\GetAccountViewByAccountMasterIdTests.cs" />
     <Compile Include="Tests\GetAssociatedUnitsFromItemCodeRouteTests.cs" />
@@ -1306,10 +1313,6 @@
     <Compile Include="Tests\ItemTypeScrudViewRouteTests.cs" />
     <Compile Include="Tests\ItemTypeScrudViewTests.cs" />
     <Compile Include="Tests\ItemTypeTests.cs" />
-    <Compile Include="Tests\ItemVariantDetailRouteTests.cs" />
-    <Compile Include="Tests\ItemVariantDetailScrudViewRouteTests.cs" />
-    <Compile Include="Tests\ItemVariantDetailScrudViewTests.cs" />
-    <Compile Include="Tests\ItemVariantDetailTests.cs" />
     <Compile Include="Tests\ItemVariantRouteTests.cs" />
     <Compile Include="Tests\ItemVariantScrudViewRouteTests.cs" />
     <Compile Include="Tests\ItemVariantScrudViewTests.cs" />

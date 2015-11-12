@@ -1,4 +1,6 @@
 ﻿saveButton.click(function () {
+    triggerOnSavingEvent();
+
     function request(entity, customFields) {
         var url = scrudFactory.formAPI + "/add-or-edit";
         var form = [];

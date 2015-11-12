@@ -13,21 +13,13 @@ namespace MixERP.Net.Entities.Core
         [ColumnDbType("int4", 0, false, "nextval('core.item_variants_item_variant_id_seq'::regclass)")]
         public int ItemVariantId { get; set; }
 
-        [Column("photo")]
-        [ColumnDbType("image", 0, true, "")]
-        public string Photo { get; set; }
-
-        [Column("item_variant_code")]
-        [ColumnDbType("varchar", 12, false, "")]
-        public string ItemVariantCode { get; set; }
-
-        [Column("item_variant_name")]
-        [ColumnDbType("varchar", 200, false, "")]
-        public string ItemVariantName { get; set; }
-
         [Column("item_id")]
         [ColumnDbType("int4", 0, false, "")]
         public int ItemId { get; set; }
+
+        [Column("variant_id")]
+        [ColumnDbType("int4", 0, false, "")]
+        public int VariantId { get; set; }
 
         [Column("audit_user_id")]
         [ColumnDbType("int4", 0, true, "")]

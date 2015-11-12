@@ -123,6 +123,7 @@
     <Compile Include="CountyScrudView.cs" />
     <Compile Include="CreateCardTypeProcedure.cs" />
     <Compile Include="CreateFlagProcedure.cs" />
+    <Compile Include="CreateItemVariantProcedure.cs" />
     <Compile Include="CreateKanbanProcedure.cs" />
     <Compile Include="CreateMenuLocaleProcedure.cs" />
     <Compile Include="CreateMenuProcedure.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="CustomFieldSetup.cs" />
     <Compile Include="CustomFieldView.cs" />
     <Compile Include="DefaultWidgetSetupView.cs" />
+    <Compile Include="DeleteVariantItemProcedure.cs" />
     <Compile Include="DiscountReceivedAccountSelectorView.cs" />
     <Compile Include="EmailQueue.cs" />
     <Compile Include="Entity.cs" />
@@ -350,6 +352,7 @@
     <Compile Include="ICountyScrudViewRepository.cs" />
     <Compile Include="ICreateCardTypeRepository.cs" />
     <Compile Include="ICreateFlagRepository.cs" />
+    <Compile Include="ICreateItemVariantRepository.cs" />
     <Compile Include="ICreateKanbanRepository.cs" />
     <Compile Include="ICreateMenuLocaleRepository.cs" />
     <Compile Include="ICreateMenuRepository.cs" />
@@ -365,6 +368,7 @@
     <Compile Include="ICustomFieldSetupRepository.cs" />
     <Compile Include="ICustomFieldViewRepository.cs" />
     <Compile Include="IDefaultWidgetSetupViewRepository.cs" />
+    <Compile Include="IDeleteVariantItemRepository.cs" />
     <Compile Include="IdentificationType.cs" />
     <Compile Include="IDiscountReceivedAccountSelectorViewRepository.cs" />
     <Compile Include="IEmailQueueRepository.cs" />
@@ -549,8 +553,6 @@
     <Compile Include="IItemSellingPriceScrudViewRepository.cs" />
     <Compile Include="IItemTypeRepository.cs" />
     <Compile Include="IItemTypeScrudViewRepository.cs" />
-    <Compile Include="IItemVariantDetailRepository.cs" />
-    <Compile Include="IItemVariantDetailScrudViewRepository.cs" />
     <Compile Include="IItemVariantRepository.cs" />
     <Compile Include="IItemVariantScrudViewRepository.cs" />
     <Compile Include="IItemViewRepository.cs" />
@@ -672,8 +674,6 @@
     <Compile Include="ItemType.cs" />
     <Compile Include="ItemTypeScrudView.cs" />
     <Compile Include="ItemVariant.cs" />
-    <Compile Include="ItemVariantDetail.cs" />
-    <Compile Include="ItemVariantDetailScrudView.cs" />
     <Compile Include="ItemVariantScrudView.cs" />
     <Compile Include="ItemView.cs" />
     <Compile Include="ITransactionTypeRepository.cs" />

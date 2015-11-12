@@ -31,9 +31,10 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
     scrudFactory.live = "ItemName";
 
 
-    scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
+    scrudFactory.excludedColumns = ["AuditUserId", "AuditTs", "Photo"];
     scrudFactory.disableOnEdit = ["ItemCode", "MaintainStock", "ItemGroupId"];
-       
+    scrudFactory.hiddenColumns = ["IsVariantOf"];
+           
     scrudFactory.allowDelete = true;
     scrudFactory.allowEdit = true;
 
@@ -54,7 +55,10 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
             tab: "shipping",
             fields:[
                 ["Machinable", "", "", ""],
-                ["PreferredShippingMailTypeId", "ShippingPackageShapeId", "", ""]
+                ["PreferredShippingMailTypeId", "ShippingPackageShapeId", "", ""],
+                ["WeightInGrams", "", "", ""],
+                ["WidthInCentimeters", "HeightInCentimeters", "", ""],
+                ["LengthInCentimeters", "", "", ""],
             ]
         },
         {
@@ -77,10 +81,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
             tab: "other",
             fields:[
                 ["HotItem", "", "", ""],
-                ["LeadTimeInDays", "", "", ""],
-                ["WeightInGrams", "", "", ""],
-                ["WidthInCentimeters", "HeightInCentimeters", "", ""],
-                ["LengthInCentimeters", "", "", ""]
+                ["LeadTimeInDays", "", "", ""]
             ]
         }
     ];
@@ -194,6 +195,14 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
 <div data-ng-include="'/Modules/ScrudFactory/View.html'"></div>
 <div data-ng-include="'/Modules/ScrudFactory/Form.html'"></div>
 
-
+<script type="text/javascript">
+    $(document).on("onsaving", function(){
+        if($("#is_variant_of").val()){
+            $("#is_variant").dropdown("set selected", "yes");
+        }else{
+            $("#is_variant").dropdown("set selected", "no");            
+        };
+    });
+</script>
 
 

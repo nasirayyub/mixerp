@@ -95,23 +95,28 @@ function createLayout(collection, container) {
 
     initializeAjaxRequest();
     initializeUploader();
-    initializeValidators();
 
     var initialValue = $(".initial.value").html();
 
-    $("input.live").keyup(function () {
-        var val = $(this).val();
-
+    function displayLive(val) {
         if (!val.length) {
             $(".initial.value").html(initialValue);
             $(".huge.header .sub.header").html("");
-            $(".live:not(input)").html("");
+            $("span.live").html("");
         } else {
             $(".initial.value").html("");
             $(".huge.header .sub.header").html(initialValue);
 
-            $(".live:not(input)").html(val);
+            $("span.live").html(val);
         };
+    }
+
+    $("input.live").keyup(function () {
+        displayLive($(this).val());
+    });
+
+    $("select.live").change(function () {
+        displayLive($(this).getSelectedText());
     });
 
     $("input.live").trigger("keyup");

@@ -126,7 +126,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            const string sql = "SELECT item_variant_id AS key, item_variant_code || ' (' || item_variant_name || ')' as value FROM core.item_variant_scrud_view;";
+            const string sql = "SELECT item_variant_id AS key,  as value FROM core.item_variant_scrud_view;";
             using (NpgsqlCommand command = new NpgsqlCommand(sql))
             {
                 using (DataTable table = DbOperation.GetDataTable(this._Catalog, command))

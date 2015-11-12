@@ -6,5 +6,6 @@
     loadDropdowns();
     setRegionalFormat();
     loadDatepicker();
+    initializeValidators();
     triggerFormReadyEvent();
 });

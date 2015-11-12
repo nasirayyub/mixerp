@@ -283,11 +283,12 @@ SELECT localization.add_localized_resource('Questions', '', 'ConfirmVacuum', 'Th
 SELECT localization.add_localized_resource('Questions', '', 'ConfirmVacuumFull', 'This will lock client database access during execution. Are you sure you want to execute this action right now?');
 SELECT localization.add_localized_resource('Questions', '', 'WhatIsYourHomeCurrency', 'What Is Your Home Currency?');
 SELECT localization.add_localized_resource('Questions', '', 'WithdrawalReason', 'Why do you want to withdraw this transaction?');
-SELECT localization.add_localized_resource('ScrudFactory', '', 'attribute_value', 'Attribute Value');
-SELECT localization.add_localized_resource('ScrudFactory', '', 'item_variant_detail_id', 'Item Variant Detail Id');
-SELECT localization.add_localized_resource('ScrudFactory', '', 'variant_code', 'Variant Code');
-SELECT localization.add_localized_resource('ScrudFactory', '', 'variant_id', 'Variant Id');
-SELECT localization.add_localized_resource('ScrudFactory', '', 'variant_name', 'Variant Name');
+SELECT localization.add_localized_resource('ScrudResource', '', 'attribute_value', 'Attribute Value');
+SELECT localization.add_localized_resource('ScrudResource', '', 'is_variant', 'Is Variant');
+SELECT localization.add_localized_resource('ScrudResource', '', 'is_variant_of', 'Is Variant Of');
+SELECT localization.add_localized_resource('ScrudResource', '', 'variant_code', 'Variant Code');
+SELECT localization.add_localized_resource('ScrudResource', '', 'variant_id', 'Variant Id');
+SELECT localization.add_localized_resource('ScrudResource', '', 'variant_name', 'Variant Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'Select', 'Select');
 SELECT localization.add_localized_resource('ScrudResource', '', 'access_type_id', 'Access Type Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'access_type_name', 'Access Type Name');
@@ -1893,6 +1894,7 @@ SELECT localization.add_localized_resource('Warnings', '', 'BackupDirectoryNotFo
 SELECT localization.add_localized_resource('Warnings', '', 'CannotCreateABackup', 'Sorry, cannot create a database backup at this time.');
 SELECT localization.add_localized_resource('Warnings', '', 'CannotCreateFlagTransactionTableNull', 'Cannot create or update flag. Transaction table was not provided.');
 SELECT localization.add_localized_resource('Warnings', '', 'CannotCreateFlagTransactionTablePrimaryKeyNull', 'Cannot create or update flag. Transaction table primary key was not provided.');
+SELECT localization.add_localized_resource('Warnings', '', 'CannotCreateVariantHavingMultipleAttributes', 'Cannot create this item because you must specify a single variant of "{0}" attribute.');
 SELECT localization.add_localized_resource('Warnings', '', 'CannotMergeAlreadyMerged', 'The selected transactions contain items which have already been merged. Please try again.');
 SELECT localization.add_localized_resource('Warnings', '', 'CannotMergeDifferentPartyTransaction', 'Cannot merge transactions of different parties into a single batch. Please try again.');
 SELECT localization.add_localized_resource('Warnings', '', 'CannotMergeIncompatibleTax', 'Cannot merge transactions having incompatible tax types. Please try again.');
