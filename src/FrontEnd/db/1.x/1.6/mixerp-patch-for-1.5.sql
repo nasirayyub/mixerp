@@ -65,7 +65,7 @@ BEGIN
     ) THEN
         CREATE TABLE core.item_variants
         (
-            item_variant_detail_id                  SERIAL NOT NULL PRIMARY KEY,
+            item_variant_id                         SERIAL NOT NULL PRIMARY KEY,
             item_id                                 integer NOT NULL REFERENCES core.items(item_id),
             variant_id                              integer NOT NULL REFERENCES core.variants(variant_id),
             audit_user_id                           integer NULL REFERENCES office.users(user_id),    
@@ -73,25 +73,6 @@ BEGIN
                                                     DEFAULT(NOW())    
         );
     END IF;    
-END
-$$
-LANGUAGE plpgsql;
-
-
-DO
-$$
-BEGIN
-    IF NOT EXISTS
-    (
-        SELECT 1
-        FROM   pg_attribute 
-        WHERE  attrelid = 'core.items'::regclass
-        AND    attname = 'is_variant'
-        AND    NOT attisdropped
-    ) THEN
-        ALTER TABLE core.items
-        ADD COLUMN is_variant boolean NOT NULL DEFAULT(false);
-    END IF;
 END
 $$
 LANGUAGE plpgsql;
@@ -111,6 +92,145 @@ BEGIN
         ADD COLUMN is_variant_of integer
         REFERENCES core.items(item_id);
     END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/02.functions-and-logic/functions/logic/core/core.create_item_variant.sql --<--<--
+DROP FUNCTION IF EXISTS core.create_item_variant
+(
+    _variant_of             integer,
+    _item_id                integer,
+    _item_code              national character varying(12),
+    _item_name              national character varying(100),
+    _variant_ids            integer[],
+    _user_id                integer
+);
+
+CREATE FUNCTION core.create_item_variant
+(
+    _variant_of             integer,
+    _item_id                integer,
+    _item_code              national character varying(12),
+    _item_name              national character varying(100),
+    _variant_ids            integer[],
+    _user_id                integer
+)
+RETURNS integer
+AS
+$$
+BEGIN
+    IF(COALESCE(_item_id, 0) = 0) THEN
+        INSERT INTO core.items
+        (
+            item_code, 
+            item_name, 
+            item_group_id, 
+            item_type_id, 
+            brand_id, 
+            preferred_supplier_id, 
+            lead_time_in_days, 
+            weight_in_grams, 
+            width_in_centimeters, 
+            height_in_centimeters, 
+            length_in_centimeters,
+            machinable,
+            preferred_shipping_mail_type_id,
+            shipping_package_shape_id,
+            unit_id,
+            hot_item,
+            cost_price,
+            selling_price,
+            selling_price_includes_tax,
+            sales_tax_id,
+            reorder_unit_id,
+            reorder_level,
+            reorder_quantity,
+            maintain_stock,
+            audit_user_id,
+            photo,
+            is_variant_of
+        )
+        SELECT
+                _item_code, 
+                _item_name, 
+                item_group_id, 
+                item_type_id, 
+                brand_id, 
+                preferred_supplier_id, 
+                lead_time_in_days, 
+                weight_in_grams, 
+                width_in_centimeters, 
+                height_in_centimeters, 
+                length_in_centimeters,
+                machinable,
+                preferred_shipping_mail_type_id,
+                shipping_package_shape_id,
+                unit_id,
+                hot_item,
+                cost_price,
+                selling_price,
+                selling_price_includes_tax,
+                sales_tax_id,
+                reorder_unit_id,
+                reorder_level,
+                reorder_quantity,
+                maintain_stock,
+                _user_id,
+                photo,
+                _is_variant_of
+        FROM core.items
+        WHERE item_id = _variant_of
+        RETURNING item_id
+        INTO _item_id;
+    END IF;
+
+    DELETE FROM core.item_variants
+    WHERE item_id = _item_id
+    AND variant_id NOT IN
+    (
+        SELECT explode_array(_variant_ids)
+    );
+
+    WITH variants
+    AS
+    (
+        SELECT explode_array(_variant_ids) AS variant_id
+    ),
+    new
+    AS
+    (
+        SELECT variant_id FROM variants WHERE
+        variant_id NOT IN
+        (
+            SELECT core.item_variants.variant_id
+            FROM core.item_variants
+            WHERE item_id = _item_id
+        )
+    )
+    
+    INSERT INTO core.item_variants(item_id, variant_id, audit_user_id)
+    SELECT _item_id, variant_id, _user_id
+    FROM new;
+    
+
+    RETURN _item_id;
+END
+$$
+LANGUAGE plpgsql;
+
+
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/02.functions-and-logic/functions/logic/core/core.delete_variant_item.sql --<--<--
+DROP FUNCTION IF EXISTS core.delete_variant_item(_item_id integer);
+
+CREATE FUNCTION core.delete_variant_item(_item_id integer)
+RETURNS boolean
+AS
+$$
+BEGIN
+    DELETE FROM core.item_variants WHERE item_id = _item_id;
+    DELETE FROM core.items WHERE item_id = _item_id;
+    RETURN true;
 END
 $$
 LANGUAGE plpgsql;
@@ -2019,6 +2139,7 @@ SELECT localization.add_localized_resource('Warnings', '', 'BackupDirectoryNotFo
 SELECT localization.add_localized_resource('Warnings', '', 'CannotCreateABackup', 'Sorry, cannot create a database backup at this time.');
 SELECT localization.add_localized_resource('Warnings', '', 'CannotCreateFlagTransactionTableNull', 'Cannot create or update flag. Transaction table was not provided.');
 SELECT localization.add_localized_resource('Warnings', '', 'CannotCreateFlagTransactionTablePrimaryKeyNull', 'Cannot create or update flag. Transaction table primary key was not provided.');
+SELECT localization.add_localized_resource('Warnings', '', 'CannotCreateVariantHavingMultipleAttributes', 'Cannot create this item because you must specify a single variant of "{0}" attribute.');
 SELECT localization.add_localized_resource('Warnings', '', 'CannotMergeAlreadyMerged', 'The selected transactions contain items which have already been merged. Please try again.');
 SELECT localization.add_localized_resource('Warnings', '', 'CannotMergeDifferentPartyTransaction', 'Cannot merge transactions of different parties into a single batch. Please try again.');
 SELECT localization.add_localized_resource('Warnings', '', 'CannotMergeIncompatibleTax', 'Cannot merge transactions having incompatible tax types. Please try again.');

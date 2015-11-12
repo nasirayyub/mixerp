@@ -64,7 +64,7 @@ BEGIN
     ) THEN
         CREATE TABLE core.item_variants
         (
-            item_variant_detail_id                  SERIAL NOT NULL PRIMARY KEY,
+            item_variant_id                         SERIAL NOT NULL PRIMARY KEY,
             item_id                                 integer NOT NULL REFERENCES core.items(item_id),
             variant_id                              integer NOT NULL REFERENCES core.variants(variant_id),
             audit_user_id                           integer NULL REFERENCES office.users(user_id),    
