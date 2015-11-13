@@ -38,12 +38,21 @@
     	}
     ];
 
-	scrudFactory.customActions = [
+    scrudFactory.customButtons = [
+        {
+            id: "Import",
+            text: Resources.Titles.Import(),
+            href: "ImportTransaction.mix",
+            onclick: ""
+        }
+    ];
+
+    scrudFactory.customActions = [
 		{
 
-			title: Resources.Labels.GoToChecklistWindow(),
-			href: "/Modules/Finance/Confirmation/JournalVoucher.mix?TranId={id}",
-			icon : "list icon"
+		    title: Resources.Labels.GoToChecklistWindow(),
+		    href: "/Modules/Finance/Confirmation/JournalVoucher.mix?TranId={id}",
+		    icon: "list icon"
 		},
 		{
 			title: Resources.Titles.Print(),

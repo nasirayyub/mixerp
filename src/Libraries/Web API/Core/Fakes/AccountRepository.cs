@@ -19,6 +19,16 @@ namespace MixERP.Net.Api.Core.Fakes
             return 1;
         }
 
+        public IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNumbers(string[] accountNumbers)
+        {
+            return Enumerable.Repeat(new MixERP.Net.Entities.Core.Account(), 1);
+        }
+
+        public IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNames(string[] accountNames)
+        {
+            return Enumerable.Repeat(new MixERP.Net.Entities.Core.Account(), 1);
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.Account> GetAll()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Account(), 1);

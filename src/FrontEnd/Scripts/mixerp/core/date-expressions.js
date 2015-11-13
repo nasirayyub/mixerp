@@ -23,6 +23,10 @@ function removeTimezone(dateTime) {
 };
 
 function getTime(dateTime) {
+    if (!dateTime) {
+        return "";
+    };
+
     function padMinutes(minutes) {
         if (parseInt(minutes || 0) < 10) {
             return "0" + minutes;

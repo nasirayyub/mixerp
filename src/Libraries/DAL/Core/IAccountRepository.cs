@@ -10,6 +10,20 @@ namespace MixERP.Net.Schemas.Core.Data
     public interface IAccountRepository
     {
         /// <summary>
+        /// Gets multiple instances of the Account against accountNumbers. 
+        /// </summary>
+        /// <param name="accountNumbers">Array of column "account_number" parameter used on where filter.</param>
+        /// <returns>Returns a non-live, non-mapped collection of Account.</returns>
+        IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNumbers(string[] accountNumbers);
+
+        /// <summary>
+        /// Gets multiple instances of the Account against accountNames. 
+        /// </summary>
+        /// <param name="accountNames">Array of column "account_names" parameter used on where filter.</param>
+        /// <returns>Returns a non-live, non-mapped collection of "Account" class mapped to the database row.</returns>
+        IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNames(string[] accountNames);
+        
+        /// <summary>
         /// Counts the number of Account in IAccountRepository.
         /// </summary>
         /// <returns>Returns the count of IAccountRepository.</returns>

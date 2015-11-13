@@ -14,6 +14,7 @@
     scrudFactory.removeImport = true;
 
     scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
+    scrudFactory.hidePrimaryKey = false;
 
     scrudFactory.allowDelete = true;
     scrudFactory.allowEdit = true;

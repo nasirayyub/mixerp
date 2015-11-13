@@ -1,7 +1,6 @@
 var tableToJSON = function (grid) {
     var colData = [];
     var rowData = [];
-
     var rows = grid.find("tr:not(:last-child)");
 
     rows.each(function () {

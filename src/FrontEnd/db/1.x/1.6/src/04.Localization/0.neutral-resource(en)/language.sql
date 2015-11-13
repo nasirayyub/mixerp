@@ -803,6 +803,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'photo', 'Photo'
 SELECT localization.add_localized_resource('ScrudResource', '', 'po_box', 'Po Box');
 SELECT localization.add_localized_resource('ScrudResource', '', 'poco_type_name', 'Poco Type Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'policy_id', 'Policy id');
+SELECT localization.add_localized_resource('ScrudResource', '', 'posted_by', 'Posted By');
 SELECT localization.add_localized_resource('ScrudResource', '', 'posting_account', 'Posting Account');
 SELECT localization.add_localized_resource('ScrudResource', '', 'posting_account_id', 'Posting Account Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'preferred_shipping_mail_type', 'Preferred Shipping Mail Type');
@@ -963,6 +964,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'state_sales_tax
 SELECT localization.add_localized_resource('ScrudResource', '', 'state_sales_tax_id', 'State Sales Tax Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'state_sales_tax_name', 'State Sales Tax Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'statement_reference', 'Statement Reference');
+SELECT localization.add_localized_resource('ScrudResource', '', 'status', 'Status');
 SELECT localization.add_localized_resource('ScrudResource', '', 'status_code', 'Status Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'status_code_name', 'Status Code Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'stock_details_unit_chk', 'Invalid unit provided.');
@@ -1014,6 +1016,8 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'total_sales', '
 SELECT localization.add_localized_resource('ScrudResource', '', 'total_years', 'Total Years');
 SELECT localization.add_localized_resource('ScrudResource', '', 'tran_code', 'Tran Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'tran_type', 'Tran Type');
+SELECT localization.add_localized_resource('ScrudResource', '', 'transaction_code', 'Transaction Code');
+SELECT localization.add_localized_resource('ScrudResource', '', 'transaction_master_id', 'Transaction Master Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'transaction_start_date', 'Transaction Start Date');
 SELECT localization.add_localized_resource('ScrudResource', '', 'transaction_ts', 'Transaction Timestamp');
 SELECT localization.add_localized_resource('ScrudResource', '', 'unit', 'Unit');
@@ -1038,6 +1042,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'variant_name', 
 SELECT localization.add_localized_resource('ScrudResource', '', 'verification_status_id', 'Verification Status Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'verified_by_user_id', 'Verified By User Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'verified_on', 'Verified On');
+SELECT localization.add_localized_resource('ScrudResource', '', 'verified_by', 'Verified By');
 SELECT localization.add_localized_resource('ScrudResource', '', 'verify_gl_transactions', 'Verify Gl Transactions');
 SELECT localization.add_localized_resource('ScrudResource', '', 'verify_purchase_transactions', 'Verify Purchase Transactions');
 SELECT localization.add_localized_resource('ScrudResource', '', 'verify_sales_transactions', 'Verify Sales Transactions');

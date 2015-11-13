@@ -255,7 +255,7 @@ addInputButton.click(function() {
             };
 
             if (!isCash) {
-                addRow(statementReference, accountNumber, account, "", debit, credit, er, lcDebit, lcCredit, false);
+                addRow(statementReference, accountNumber, account, "", currencyCode, debit, credit, er, lcDebit, lcCredit, false);
                 return;
             };
 
@@ -275,7 +275,7 @@ addInputButton.click(function() {
                 };
 
                 if (debit > 0) {
-                    addRow(statementReference, accountNumber, account, cashRepositoryCode, debit, credit, er, lcDebit, lcCredit, true);
+                    addRow(statementReference, accountNumber, account, cashRepositoryCode, currencyCode, debit, credit, er, lcDebit, lcCredit, true);
                     return;
                 };
 
@@ -294,7 +294,7 @@ addInputButton.click(function() {
                             return;
                         };
 
-                        addRow(statementReference, accountNumber, account, cashRepositoryCode, debit, credit, er, lcDebit, lcCredit, true);
+                        addRow(statementReference, accountNumber, account, cashRepositoryCode, currencyCode, debit, credit, er, lcDebit, lcCredit, true);
                     });
                 };
             });
@@ -302,7 +302,7 @@ addInputButton.click(function() {
     });
 });
 
-var addRow = function(statementReference, accountNumber, account, cashRepository, debit, credit, er, lcDebit, lcCredit, isCash) {
+var addRow = function (statementReference, accountNumber, account, cashRepository, currencyCode, debit, credit, er, lcDebit, lcCredit, isCash) {
     var grid = transactionGridView;
     var rows = grid.find("tbody tr:not(:last-child)");
     var duplicateEntry = false;
@@ -611,3 +611,24 @@ var addShortcuts = function() {
         $('#AddInputButton').click();
     });
 };
+
+$(document).ajaxStop(function () {
+    var importModel = window.localStorage.getItem('ImportModel');
+    localStorage.removeItem('ImportModel');
+
+    if (!importModel) {
+        return;
+    };
+
+    importModel = JSON.parse(importModel);
+
+
+    valueDateTextBox.val(importModel.valueDate);
+    bookDateTextBox.val(importModel.bookDate);
+    referenceNumberInputText.val(importModel.referenceNumber);
+    costCenterDropDownList.val(importModel.costCenter.toString());
+
+    $.each(importModel.table, function (i, v) {
+        addRow(v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], v[8], v[9]);
+    });
+});

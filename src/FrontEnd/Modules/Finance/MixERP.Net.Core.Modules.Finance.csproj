@@ -104,6 +104,7 @@
     <Content Include="DayOperation\EOD.ascx" />
     <Content Include="DayOperation\EOY.ascx" />
     <Content Include="EODOperation.ascx" />
+    <Content Include="ImportTransaction.ascx" />
     <Content Include="Mix Open Foundation.snk" />
     <Content Include="Reports\AccountStatementPopup.ascx" />
     <Content Include="Reports\BalanceSheetReport.ascx" />
@@ -219,6 +220,13 @@
       <DependentUpon>EODOperation.ascx</DependentUpon>
     </Compile>
     <Compile Include="Hubs\DayOperationHub.cs" />
+    <Compile Include="ImportTransaction.ascx.cs">
+      <DependentUpon>ImportTransaction.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ImportTransaction.ascx.designer.cs">
+      <DependentUpon>ImportTransaction.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Index.ascx.cs">
       <DependentUpon>Index.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

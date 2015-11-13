@@ -79,7 +79,7 @@ BEGIN
                 maintain_stock,
                 _user_id,
                 photo,
-                _is_variant_of
+                _variant_of
         FROM core.items
         WHERE item_id = _variant_of
         RETURNING item_id
