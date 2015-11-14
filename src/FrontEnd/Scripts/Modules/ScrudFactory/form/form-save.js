@@ -25,7 +25,7 @@
 
     bigError.removeClass("vpad16").html("");
 
-    function getFormValue(columnName, dataType, isSerial) {
+    function getFormValue(columnName, dataType, isSerial, dbDataType) {
         var el = $("#" + columnName);
         var val = null;
         if (el.length) {
@@ -37,7 +37,9 @@
                     val = val === "yes" ? true : false;
                     break;
                 case "DateTime":
-                    val = window.parseLocalizedDate(val) || null;
+                    if (dbDataType !== "time") {
+                        val = window.parseLocalizedDate(val) || null;
+                    };
                     break;
                 case "short":
                 case "int":
@@ -71,7 +73,7 @@
     };
 
     $.each(metaInfo.Columns, function (i, v) {
-        var value = getFormValue(v.ColumnName, v.DataType, v.IsSerial);
+        var value = getFormValue(v.ColumnName, v.DataType, v.IsSerial, v.DbDataType);
 
         if (window.editData) {
             if (scrudFactory.disabledOnEdit) {
@@ -97,7 +99,6 @@
         });
     };
 
-    
     var ajax = request(entity, customFields);
 
     ajax.success(function () {

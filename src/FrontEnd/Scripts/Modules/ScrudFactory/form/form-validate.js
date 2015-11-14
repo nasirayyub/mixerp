@@ -1,12 +1,30 @@
-﻿function validate() {
+﻿function appendError(message) {
+    var item = $("<li/>");
+    item.html(message);
+    console.log(message);
+    
+    if(scrudFactory.tabs.length > 1){
+        $("#ScrudFormErrorModal .error-list").append(item);
+    };
+};
+
+function resetError() {
+    $("#ScrudFormErrorModal .error-list").html("");
+};
+
+
+function validate() {
+    resetError();
     var required = $(".form.factory .image.form-field, .form.factory [required]:not(:disabled):not([readonly]):not(.hidden.column)");
     required.trigger("blur");
-
+    $(".ui-timepicker-input").timepicker("hide");
+    
     var errorFields = window.scrudForm.find(".error:not(.big.error)");
 
     $.each(errorFields, function (i, v) {
-        var label = $(v).find("label");
-        console.log(label.html() + " is required");
+        var label = $(v).closest(".field").find("label");
+        var message = label.html() + " : " + window.Resources.Labels.ThisFieldIsRequired();
+        appendError(message);
     });
 
     var errorCount = errorFields.length;
@@ -19,6 +37,10 @@
         };
 
         return true;
+    };
+
+    if(scrudFactory.tabs.length > 1){
+        $("#ScrudFormErrorModal").modal({ blurring: true }).modal("show");
     };
 
     return false;

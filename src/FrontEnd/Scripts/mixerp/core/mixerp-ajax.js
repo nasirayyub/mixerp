@@ -214,6 +214,10 @@ var ajaxDataBind = function (url, targetControl, data, selectedValue, associated
             result = msg;
         };
 
+        if (!result) {
+            return;
+        };
+
         if (targetControl.length === 1) {
             targetControl.bindAjaxData(result, false, selectedValue, dataValueField, dataTextField, isArray);
         };

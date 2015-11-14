@@ -6,10 +6,6 @@
     tfoot tr {
         background-color: #F0F1F1;
     }
-
-    .negative.modal .orange.header {
-        color: #F2711C;
-    }
 </style>
 
 <div id="ImportSegment" class="ui basic segment">

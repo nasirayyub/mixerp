@@ -1,5 +1,5 @@
 ﻿function resetForm() {
-    var fields = $(".form-field:not(:hidden), .custom-field:not(:hidden)");
+    var fields = $(".form-field:not(:hidden), .custom-field:not(:hidden), .form-field[data-primarykey]");
 
     $(".uploader.field .ui.image.preview").attr("src", "/Static/images/mixerp-logo-light.png");
 

@@ -122,7 +122,7 @@ function loadDatepicker() {
         };
     });
 
-    $('[data-type="time"], .time').timepicker({ timeFormat: "h:i" });
+    $('[data-type="time"], .time').timepicker({ timeFormat: "H:i" });
     $('[data-type="time"], .time').attr("placeholder", "hh:mm");
     candidates.trigger("blur");
 };
