@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.CardType();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.CardType> Get([FromUri] int[] cardTypeIds)
+        public IEnumerable<MixERP.Net.Entities.Core.CardType> Get(int[] cardTypeIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.CardType(), 1);
         }

@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.TaxExemptType();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.TaxExemptType> Get([FromUri] int[] taxExemptTypeIds)
+        public IEnumerable<MixERP.Net.Entities.Core.TaxExemptType> Get(int[] taxExemptTypeIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.TaxExemptType(), 1);
         }

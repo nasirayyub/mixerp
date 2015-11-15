@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.ItemSellingPrice();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.ItemSellingPrice> Get([FromUri] long[] itemSellingPriceIds)
+        public IEnumerable<MixERP.Net.Entities.Core.ItemSellingPrice> Get(long[] itemSellingPriceIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.ItemSellingPrice(), 1);
         }

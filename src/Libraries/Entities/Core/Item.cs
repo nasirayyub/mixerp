@@ -124,5 +124,13 @@ namespace MixERP.Net.Entities.Core
         [Column("is_variant_of")]
         [ColumnDbType("int4", 0, true, "")]
         public int? IsVariantOf { get; set; }
+
+        [Column("allow_sales")]
+        [ColumnDbType("bool", 0, false, "true")]
+        public bool AllowSales { get; set; }
+
+        [Column("allow_purchase")]
+        [ColumnDbType("bool", 0, false, "true")]
+        public bool AllowPurchase { get; set; }
     }
 }

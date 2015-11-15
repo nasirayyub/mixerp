@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.SocialNetwork();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.SocialNetwork> Get([FromUri] string[] socialNetworkNames)
+        public IEnumerable<MixERP.Net.Entities.Core.SocialNetwork> Get(string[] socialNetworkNames)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.SocialNetwork(), 1);
         }

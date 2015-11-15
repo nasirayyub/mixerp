@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.TaxMaster();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.TaxMaster> Get([FromUri] int[] taxMasterIds)
+        public IEnumerable<MixERP.Net.Entities.Core.TaxMaster> Get(int[] taxMasterIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.TaxMaster(), 1);
         }

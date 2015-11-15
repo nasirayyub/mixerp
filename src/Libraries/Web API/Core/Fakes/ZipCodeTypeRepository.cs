@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.ZipCodeType();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.ZipCodeType> Get([FromUri] int[] zipCodeTypeIds)
+        public IEnumerable<MixERP.Net.Entities.Core.ZipCodeType> Get(int[] zipCodeTypeIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.ZipCodeType(), 1);
         }

@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.Gender();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.Gender> Get([FromUri] string[] genderCodes)
+        public IEnumerable<MixERP.Net.Entities.Core.Gender> Get(string[] genderCodes)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Gender(), 1);
         }

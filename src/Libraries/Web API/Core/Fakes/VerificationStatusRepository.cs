@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.VerificationStatus();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.VerificationStatus> Get([FromUri] short[] verificationStatusIds)
+        public IEnumerable<MixERP.Net.Entities.Core.VerificationStatus> Get(short[] verificationStatusIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.VerificationStatus(), 1);
         }

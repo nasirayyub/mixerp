@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.Variant();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.Variant> Get([FromUri] int[] variantIds)
+        public IEnumerable<MixERP.Net.Entities.Core.Variant> Get(int[] variantIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Variant(), 1);
         }

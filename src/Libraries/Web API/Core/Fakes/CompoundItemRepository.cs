@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.CompoundItem();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.CompoundItem> Get([FromUri] int[] compoundItemIds)
+        public IEnumerable<MixERP.Net.Entities.Core.CompoundItem> Get(int[] compoundItemIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.CompoundItem(), 1);
         }

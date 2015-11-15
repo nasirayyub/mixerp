@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.FiscalYear();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.FiscalYear> Get([FromUri] string[] fiscalYearCodes)
+        public IEnumerable<MixERP.Net.Entities.Core.FiscalYear> Get(string[] fiscalYearCodes)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.FiscalYear(), 1);
         }

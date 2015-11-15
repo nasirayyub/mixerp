@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.Config();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.Config> Get([FromUri] int[] configIds)
+        public IEnumerable<MixERP.Net.Entities.Core.Config> Get(int[] configIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Config(), 1);
         }

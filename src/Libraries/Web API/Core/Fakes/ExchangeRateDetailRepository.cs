@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.ExchangeRateDetail();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.ExchangeRateDetail> Get([FromUri] long[] exchangeRateDetailIds)
+        public IEnumerable<MixERP.Net.Entities.Core.ExchangeRateDetail> Get(long[] exchangeRateDetailIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.ExchangeRateDetail(), 1);
         }

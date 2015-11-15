@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.Party();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.Party> Get([FromUri] long[] partyIds)
+        public IEnumerable<MixERP.Net.Entities.Core.Party> Get(long[] partyIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Party(), 1);
         }

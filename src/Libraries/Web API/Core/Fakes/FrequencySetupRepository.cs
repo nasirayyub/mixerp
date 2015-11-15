@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.FrequencySetup();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.FrequencySetup> Get([FromUri] int[] frequencySetupIds)
+        public IEnumerable<MixERP.Net.Entities.Core.FrequencySetup> Get(int[] frequencySetupIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.FrequencySetup(), 1);
         }

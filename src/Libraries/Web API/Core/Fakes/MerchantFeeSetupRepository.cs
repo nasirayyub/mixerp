@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.MerchantFeeSetup();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.MerchantFeeSetup> Get([FromUri] int[] merchantFeeSetupIds)
+        public IEnumerable<MixERP.Net.Entities.Core.MerchantFeeSetup> Get(int[] merchantFeeSetupIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.MerchantFeeSetup(), 1);
         }

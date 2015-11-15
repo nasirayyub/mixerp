@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.Widget();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.Widget> Get([FromUri] string[] widgetNames)
+        public IEnumerable<MixERP.Net.Entities.Core.Widget> Get(string[] widgetNames)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Widget(), 1);
         }

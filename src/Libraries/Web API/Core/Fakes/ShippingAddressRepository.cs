@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.ShippingAddress();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.ShippingAddress> Get([FromUri] long[] shippingAddressIds)
+        public IEnumerable<MixERP.Net.Entities.Core.ShippingAddress> Get(long[] shippingAddressIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.ShippingAddress(), 1);
         }

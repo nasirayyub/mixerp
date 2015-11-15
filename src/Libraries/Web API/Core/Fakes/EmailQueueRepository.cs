@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.EmailQueue();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.EmailQueue> Get([FromUri] long[] queueIds)
+        public IEnumerable<MixERP.Net.Entities.Core.EmailQueue> Get(long[] queueIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.EmailQueue(), 1);
         }

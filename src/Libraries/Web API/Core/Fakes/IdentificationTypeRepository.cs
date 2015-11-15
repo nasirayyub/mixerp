@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.IdentificationType();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.IdentificationType> Get([FromUri] string[] identificationTypeCodes)
+        public IEnumerable<MixERP.Net.Entities.Core.IdentificationType> Get(string[] identificationTypeCodes)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.IdentificationType(), 1);
         }

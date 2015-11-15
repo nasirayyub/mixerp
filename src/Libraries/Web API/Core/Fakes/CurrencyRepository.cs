@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.Currency();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.Currency> Get([FromUri] string[] currencyCodes)
+        public IEnumerable<MixERP.Net.Entities.Core.Currency> Get(string[] currencyCodes)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Currency(), 1);
         }

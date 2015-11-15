@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.MenuLocale();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.MenuLocale> Get([FromUri] int[] menuLocaleIds)
+        public IEnumerable<MixERP.Net.Entities.Core.MenuLocale> Get(int[] menuLocaleIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.MenuLocale(), 1);
         }

@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.Industry();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.Industry> Get([FromUri] int[] industryIds)
+        public IEnumerable<MixERP.Net.Entities.Core.Industry> Get(int[] industryIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Industry(), 1);
         }

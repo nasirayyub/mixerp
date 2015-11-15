@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.Flag();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.Flag> Get([FromUri] long[] flagIds)
+        public IEnumerable<MixERP.Net.Entities.Core.Flag> Get(long[] flagIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Flag(), 1);
         }

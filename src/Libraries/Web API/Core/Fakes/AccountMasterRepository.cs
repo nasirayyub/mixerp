@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.AccountMaster();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.AccountMaster> Get([FromUri] short[] accountMasterIds)
+        public IEnumerable<MixERP.Net.Entities.Core.AccountMaster> Get(short[] accountMasterIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.AccountMaster(), 1);
         }

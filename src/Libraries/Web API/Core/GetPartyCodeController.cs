@@ -95,6 +95,8 @@ namespace MixERP.Net.Api.Core
             {
                 Columns = new List<EntityColumn>()
                                 {
+                                        new EntityColumn { ColumnName = "text",  PropertyName = "Text",  DataType = "",  DbDataType = "",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
+                                        new EntityColumn { ColumnName = "text",  PropertyName = "Text",  DataType = "",  DbDataType = "",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "text",  PropertyName = "Text",  DataType = "",  DbDataType = "",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 }
                                 }
             };

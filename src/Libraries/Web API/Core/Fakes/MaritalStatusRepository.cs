@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.MaritalStatus();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.MaritalStatus> Get([FromUri] int[] maritalStatusIds)
+        public IEnumerable<MixERP.Net.Entities.Core.MaritalStatus> Get(int[] maritalStatusIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.MaritalStatus(), 1);
         }

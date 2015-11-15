@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.RecurrenceType();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.RecurrenceType> Get([FromUri] int[] recurrenceTypeIds)
+        public IEnumerable<MixERP.Net.Entities.Core.RecurrenceType> Get(int[] recurrenceTypeIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.RecurrenceType(), 1);
         }

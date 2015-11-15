@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.AttachmentLookup();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.AttachmentLookup> Get([FromUri] int[] attachmentLookupIds)
+        public IEnumerable<MixERP.Net.Entities.Core.AttachmentLookup> Get(int[] attachmentLookupIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.AttachmentLookup(), 1);
         }

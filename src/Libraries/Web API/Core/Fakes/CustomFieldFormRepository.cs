@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.CustomFieldForm();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldForm> Get([FromUri] string[] formNames)
+        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldForm> Get(string[] formNames)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.CustomFieldForm(), 1);
         }

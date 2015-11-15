@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.PaymentCard();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.PaymentCard> Get([FromUri] int[] paymentCardIds)
+        public IEnumerable<MixERP.Net.Entities.Core.PaymentCard> Get(int[] paymentCardIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.PaymentCard(), 1);
         }

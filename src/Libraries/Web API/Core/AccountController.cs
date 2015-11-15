@@ -245,60 +245,6 @@ namespace MixERP.Net.Api.Core
             }
         }
 
-        [AcceptVerbs("GET", "HEAD")]
-        [Route("get-multiple-by-account-numbers")]
-        [Route("~/api/core/account/get-multiple-by-account-numbers")]
-        public IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNumbers([FromUri] string[] accountNumbers)
-        {
-            try
-            {
-                return this.AccountRepository.GetMultipleByAccountNumbers(accountNumbers);
-            }
-            catch (UnauthorizedException)
-            {
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
-            }
-            catch (MixERPException ex)
-            {
-                throw new HttpResponseException(new HttpResponseMessage
-                {
-                    Content = new StringContent(ex.Message),
-                    StatusCode = HttpStatusCode.InternalServerError
-                });
-            }
-            catch
-            {
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
-            }
-        }
-
-        [AcceptVerbs("GET", "HEAD")]
-        [Route("get-multiple-by-account-names")]
-        [Route("~/api/core/account/get-multiple-by-account-names")]
-        public IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNames([FromUri] string[] accountNames)
-        {
-            try
-            {
-                return this.AccountRepository.GetMultipleByAccountNames(accountNames);
-            }
-            catch (UnauthorizedException)
-            {
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
-            }
-            catch (MixERPException ex)
-            {
-                throw new HttpResponseException(new HttpResponseMessage
-                {
-                    Content = new StringContent(ex.Message),
-                    StatusCode = HttpStatusCode.InternalServerError
-                });
-            }
-            catch
-            {
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
-            }
-        }
-
         /// <summary>
         ///     Creates a paginated collection containing 10 accounts on each page, sorted by the property AccountId.
         /// </summary>
@@ -775,6 +721,59 @@ namespace MixERP.Net.Api.Core
             }
         }
 
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("get-multiple-by-account-numbers")]
+        [Route("~/api/core/account/get-multiple-by-account-numbers")]
+        public IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNumbers([FromUri] string[] accountNumbers)
+        {
+            try
+            {
+                return this.AccountRepository.GetMultipleByAccountNumbers(accountNumbers);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("get-multiple-by-account-names")]
+        [Route("~/api/core/account/get-multiple-by-account-names")]
+        public IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNames([FromUri] string[] accountNames)
+        {
+            try
+            {
+                return this.AccountRepository.GetMultipleByAccountNames(accountNames);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
 
     }
 }

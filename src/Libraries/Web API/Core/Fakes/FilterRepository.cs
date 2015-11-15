@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.Filter();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.Filter> Get([FromUri] long[] filterIds)
+        public IEnumerable<MixERP.Net.Entities.Core.Filter> Get(long[] filterIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Filter(), 1);
         }

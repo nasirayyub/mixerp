@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.BankAccount();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.BankAccount> Get([FromUri] long[] accountIds)
+        public IEnumerable<MixERP.Net.Entities.Core.BankAccount> Get(long[] accountIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.BankAccount(), 1);
         }

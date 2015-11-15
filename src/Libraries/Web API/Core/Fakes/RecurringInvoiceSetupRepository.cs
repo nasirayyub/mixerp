@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.RecurringInvoiceSetup();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.RecurringInvoiceSetup> Get([FromUri] int[] recurringInvoiceSetupIds)
+        public IEnumerable<MixERP.Net.Entities.Core.RecurringInvoiceSetup> Get(int[] recurringInvoiceSetupIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.RecurringInvoiceSetup(), 1);
         }

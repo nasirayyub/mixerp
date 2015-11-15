@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.CashFlowSetup();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.CashFlowSetup> Get([FromUri] int[] cashFlowSetupIds)
+        public IEnumerable<MixERP.Net.Entities.Core.CashFlowSetup> Get(int[] cashFlowSetupIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.CashFlowSetup(), 1);
         }

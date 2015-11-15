@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.AgeingSlab();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.AgeingSlab> Get([FromUri] int[] ageingSlabIds)
+        public IEnumerable<MixERP.Net.Entities.Core.AgeingSlab> Get(int[] ageingSlabIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.AgeingSlab(), 1);
         }

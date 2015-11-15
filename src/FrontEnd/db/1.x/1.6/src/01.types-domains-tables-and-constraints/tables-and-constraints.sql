@@ -94,3 +94,66 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+
+DO
+$$
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM   pg_attribute 
+        WHERE  attrelid = 'core.items'::regclass
+        AND    attname = 'allow_sales'
+        AND    NOT attisdropped
+    ) THEN
+        ALTER TABLE core.items
+        ADD COLUMN allow_sales boolean NOT NULL DEFAULT(true);
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+
+DO
+$$
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM   pg_attribute 
+        WHERE  attrelid = 'core.items'::regclass
+        AND    attname = 'allow_purchase'
+        AND    NOT attisdropped
+    ) THEN
+        ALTER TABLE core.items
+        ADD COLUMN allow_purchase boolean NOT NULL DEFAULT(true);
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+DROP VIEW IF EXISTS core.item_scrud_view;
+DROP VIEW IF EXISTS core.item_selector_view;
+DROP VIEW IF EXISTS core.item_view;
+
+ALTER TABLE core.items
+ALTER COLUMN selling_price TYPE public.money_strict2;
+
+DO
+$$
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM   pg_attribute 
+        WHERE  attrelid = 'core.item_types'::regclass
+        AND    attname = 'is_component'
+        AND    NOT attisdropped
+    ) THEN
+        ALTER TABLE core.item_types
+        ADD COLUMN is_component boolean NOT NULL DEFAULT(false);
+    END IF;
+END
+$$
+LANGUAGE plpgsql;

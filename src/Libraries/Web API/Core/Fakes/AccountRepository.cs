@@ -19,16 +19,6 @@ namespace MixERP.Net.Api.Core.Fakes
             return 1;
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNumbers(string[] accountNumbers)
-        {
-            return Enumerable.Repeat(new MixERP.Net.Entities.Core.Account(), 1);
-        }
-
-        public IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNames(string[] accountNames)
-        {
-            return Enumerable.Repeat(new MixERP.Net.Entities.Core.Account(), 1);
-        }
-
         public IEnumerable<MixERP.Net.Entities.Core.Account> GetAll()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Account(), 1);
@@ -44,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.Account();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.Account> Get([FromUri] long[] accountIds)
+        public IEnumerable<MixERP.Net.Entities.Core.Account> Get(long[] accountIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Account(), 1);
         }
@@ -134,6 +124,15 @@ namespace MixERP.Net.Api.Core.Fakes
             throw new ArgumentException("accountId is null.");
         }
 
+        public IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNumbers(string[] accountNumbers)
+        {
+            return Enumerable.Repeat(new MixERP.Net.Entities.Core.Account(), 1);
+        }
+
+        public IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNames(string[] accountNames)
+        {
+            return Enumerable.Repeat(new MixERP.Net.Entities.Core.Account(), 1);
+        }
 
     }
 }

@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.TaxBaseAmountType();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.TaxBaseAmountType> Get([FromUri] string[] taxBaseAmountTypeCodes)
+        public IEnumerable<MixERP.Net.Entities.Core.TaxBaseAmountType> Get(string[] taxBaseAmountTypeCodes)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.TaxBaseAmountType(), 1);
         }

@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.Nationality();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.Nationality> Get([FromUri] string[] nationalityCodes)
+        public IEnumerable<MixERP.Net.Entities.Core.Nationality> Get(string[] nationalityCodes)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Nationality(), 1);
         }

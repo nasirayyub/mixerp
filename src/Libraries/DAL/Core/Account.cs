@@ -192,66 +192,6 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
-        /// Executes a select query on the table "core.accounts" with a where filter on the column "account_number" to return a multiple instances of the "Account" class. 
-        /// </summary>
-        /// <param name="accountNumbers">Array of column "account_number" parameter used on where filter.</param>
-        /// <returns>Returns a non-live, non-mapped collection of "Account" class mapped to the database row.</returns>
-        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNumbers(string[] accountNumbers)
-        {
-            if (string.IsNullOrWhiteSpace(this._Catalog))
-            {
-                return null;
-            }
-
-            if (!this.SkipValidation)
-            {
-                if (!this.Validated)
-                {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
-                }
-                if (!this.HasAccess)
-                {
-                    Log.Information("Access to entity \"Account\" was denied to the user with Login ID {LoginId}. accountNumbers: {accountNumbers}.", this._LoginId, accountNumbers);
-                    throw new UnauthorizedException("Access is denied.");
-                }
-            }
-
-            const string sql = "SELECT * FROM core.accounts WHERE account_number IN (@accountNumbers);";
-            return Factory.Get<MixERP.Net.Entities.Core.Account>(this._Catalog, sql, new { accountNumbers});
-        }
-
-        /// <summary>
-        /// Executes a select query on the table "core.accounts" with a where filter on the column "account_names" to return a multiple instances of the "Account" class. 
-        /// </summary>
-        /// <param name="accountNames">Array of column "account_names" parameter used on where filter.</param>
-        /// <returns>Returns a non-live, non-mapped collection of "Account" class mapped to the database row.</returns>
-        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNames(string[] accountNames)
-        {
-            if (string.IsNullOrWhiteSpace(this._Catalog))
-            {
-                return null;
-            }
-
-            if (!this.SkipValidation)
-            {
-                if (!this.Validated)
-                {
-                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
-                }
-                if (!this.HasAccess)
-                {
-                    Log.Information("Access to entity \"Account\" was denied to the user with Login ID {LoginId}. accountNumbers: {accountNumbers}.", this._LoginId, accountNames);
-                    throw new UnauthorizedException("Access is denied.");
-                }
-            }
-
-            const string sql = "SELECT * FROM core.accounts WHERE account_name IN (@accountNames);";
-            return Factory.Get<MixERP.Net.Entities.Core.Account>(this._Catalog, sql, new { accountNames });
-        }
-
-        /// <summary>
         /// Custom fields are user defined form elements for core.accounts.
         /// </summary>
         /// <returns>Returns an enumerable custom field collection for the table core.accounts</returns>
@@ -778,6 +718,65 @@ namespace MixERP.Net.Schemas.Core.Data
             return Factory.Get<MixERP.Net.Entities.Core.Account>(this._Catalog, sql);
         }
 
+        /// <summary>
+        /// Executes a select query on the table "core.accounts" with a where filter on the column "account_number" to return a multiple instances of the "Account" class. 
+        /// </summary>
+        /// <param name="accountNumbers">Array of column "account_number" parameter used on where filter.</param>
+        /// <returns>Returns a non-live, non-mapped collection of "Account" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNumbers(string[] accountNumbers)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to entity \"Account\" was denied to the user with Login ID {LoginId}. accountNumbers: {accountNumbers}.", this._LoginId, accountNumbers);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.accounts WHERE account_number IN (@accountNumbers);";
+            return Factory.Get<MixERP.Net.Entities.Core.Account>(this._Catalog, sql, new { accountNumbers });
+        }
+
+        /// <summary>
+        /// Executes a select query on the table "core.accounts" with a where filter on the column "account_names" to return a multiple instances of the "Account" class. 
+        /// </summary>
+        /// <param name="accountNames">Array of column "account_names" parameter used on where filter.</param>
+        /// <returns>Returns a non-live, non-mapped collection of "Account" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public IEnumerable<MixERP.Net.Entities.Core.Account> GetMultipleByAccountNames(string[] accountNames)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to entity \"Account\" was denied to the user with Login ID {LoginId}. accountNumbers: {accountNumbers}.", this._LoginId, accountNames);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.accounts WHERE account_name IN (@accountNames);";
+            return Factory.Get<MixERP.Net.Entities.Core.Account>(this._Catalog, sql, new { accountNames });
+        }
 
     }
 }

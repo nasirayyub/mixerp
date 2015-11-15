@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.RoundingMethod();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.RoundingMethod> Get([FromUri] string[] roundingMethodCodes)
+        public IEnumerable<MixERP.Net.Entities.Core.RoundingMethod> Get(string[] roundingMethodCodes)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.RoundingMethod(), 1);
         }

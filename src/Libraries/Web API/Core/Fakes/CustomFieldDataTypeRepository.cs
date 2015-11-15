@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.CustomFieldDataType();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldDataType> Get([FromUri] string[] dataTypes)
+        public IEnumerable<MixERP.Net.Entities.Core.CustomFieldDataType> Get(string[] dataTypes)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.CustomFieldDataType(), 1);
         }

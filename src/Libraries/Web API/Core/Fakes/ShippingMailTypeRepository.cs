@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.ShippingMailType();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.ShippingMailType> Get([FromUri] int[] shippingMailTypeIds)
+        public IEnumerable<MixERP.Net.Entities.Core.ShippingMailType> Get(int[] shippingMailTypeIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.ShippingMailType(), 1);
         }

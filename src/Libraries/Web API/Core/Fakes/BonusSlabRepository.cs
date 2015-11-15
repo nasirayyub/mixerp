@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.BonusSlab();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.BonusSlab> Get([FromUri] int[] bonusSlabIds)
+        public IEnumerable<MixERP.Net.Entities.Core.BonusSlab> Get(int[] bonusSlabIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.BonusSlab(), 1);
         }

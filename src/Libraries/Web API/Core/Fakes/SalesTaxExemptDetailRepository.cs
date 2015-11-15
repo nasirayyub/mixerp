@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.SalesTaxExemptDetail();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.SalesTaxExemptDetail> Get([FromUri] int[] salesTaxExemptDetailIds)
+        public IEnumerable<MixERP.Net.Entities.Core.SalesTaxExemptDetail> Get(int[] salesTaxExemptDetailIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.SalesTaxExemptDetail(), 1);
         }

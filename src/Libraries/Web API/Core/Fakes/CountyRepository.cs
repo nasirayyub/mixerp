@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.County();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.County> Get([FromUri] int[] countyIds)
+        public IEnumerable<MixERP.Net.Entities.Core.County> Get(int[] countyIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.County(), 1);
         }

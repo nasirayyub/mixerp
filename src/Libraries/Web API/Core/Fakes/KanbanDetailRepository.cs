@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.KanbanDetail();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.KanbanDetail> Get([FromUri] long[] kanbanDetailIds)
+        public IEnumerable<MixERP.Net.Entities.Core.KanbanDetail> Get(long[] kanbanDetailIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.KanbanDetail(), 1);
         }

@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.WeekDay();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.WeekDay> Get([FromUri] int[] weekDayIds)
+        public IEnumerable<MixERP.Net.Entities.Core.WeekDay> Get(int[] weekDayIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.WeekDay(), 1);
         }

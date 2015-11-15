@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.Attachment();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.Attachment> Get([FromUri] long[] attachmentIds)
+        public IEnumerable<MixERP.Net.Entities.Core.Attachment> Get(long[] attachmentIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Attachment(), 1);
         }

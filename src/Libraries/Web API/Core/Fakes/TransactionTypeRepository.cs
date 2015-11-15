@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.TransactionType();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.TransactionType> Get([FromUri] short[] transactionTypeIds)
+        public IEnumerable<MixERP.Net.Entities.Core.TransactionType> Get(short[] transactionTypeIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.TransactionType(), 1);
         }

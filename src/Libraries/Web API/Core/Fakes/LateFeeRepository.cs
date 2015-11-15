@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.LateFee();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.LateFee> Get([FromUri] int[] lateFeeIds)
+        public IEnumerable<MixERP.Net.Entities.Core.LateFee> Get(int[] lateFeeIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.LateFee(), 1);
         }

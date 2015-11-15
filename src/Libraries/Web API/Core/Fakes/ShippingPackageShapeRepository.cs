@@ -34,7 +34,7 @@ namespace MixERP.Net.Api.Core.Fakes
             return new MixERP.Net.Entities.Core.ShippingPackageShape();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShape> Get([FromUri] int[] shippingPackageShapeIds)
+        public IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShape> Get(int[] shippingPackageShapeIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.ShippingPackageShape(), 1);
         }
