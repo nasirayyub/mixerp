@@ -58,10 +58,15 @@ namespace MixERP.Net.Core.Modules.Inventory.Services
 
             if (tranBook.ToUpperInvariant().Equals("SALES"))
             {
-                return GetItems();
+                return GetSalesItems();
             }
 
-            return GetStockItems();
+            if (tranBook.ToUpperInvariant().Equals("PURCHASE"))
+            {
+                return GetPurchaseItems();
+            }
+
+            return GetItems();
         }
 
         [WebMethod]
@@ -225,11 +230,29 @@ namespace MixERP.Net.Core.Modules.Inventory.Services
             return values;
         }
 
-        private static Collection<SalesItem> GetStockItems()
+        private static Collection<SalesItem> GetSalesItems()
         {
             Collection<SalesItem> values = new Collection<SalesItem>();
 
-            foreach (Item item in Items.GetStockItems(AppUsers.GetCurrentUserDB()))
+            foreach (Item item in Items.GetSalesItems(AppUsers.GetCurrentUserDB()))
+            {
+                values.Add(new SalesItem
+                {
+                    ItemId = item.ItemId,
+                    ItemCode = item.ItemCode,
+                    ItemName = item.ItemName,
+                    IsCompoundItem = false
+                });
+            }
+
+            return values;
+        }
+
+        private static Collection<SalesItem> GetPurchaseItems()
+        {
+            Collection<SalesItem> values = new Collection<SalesItem>();
+
+            foreach (Item item in Items.GetSalesItems(AppUsers.GetCurrentUserDB()))
             {
                 values.Add(new SalesItem
                 {

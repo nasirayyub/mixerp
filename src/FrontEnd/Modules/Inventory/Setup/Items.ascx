@@ -48,7 +48,8 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
                 ["ItemCode", "ItemName", "", ""],
                 ["ItemGroupId", "ItemTypeId", "", ""],
                 ["BrandId", "PreferredSupplierId", "", ""],
-                ["UnitId", "", "", ""]
+                ["UnitId", "", "", ""],
+                ["AllowSales", "AllowPurchase", "", ""],
             ]
         },
         {

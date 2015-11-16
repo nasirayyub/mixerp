@@ -70,6 +70,18 @@ namespace MixERP.Net.Core.Modules.Inventory.Data.Helpers
             return Factory.Scalar<decimal>(catalog, sql, itemCode, partyCode, priceTypeId, unitId);
         }
 
+        public static IEnumerable<Item> GetSalesItems(string catalog)
+        {
+            const string sql = "SELECT * FROM core.items WHERE allow_sales ORDER BY item_id;";
+            return Factory.Get<Item>(catalog, sql);
+        }
+
+        public static IEnumerable<Item> GetPurchaseItems(string catalog)
+        {
+            const string sql = "SELECT * FROM core.items WHERE allow_purchase ORDER BY item_id;";
+            return Factory.Get<Item>(catalog, sql);
+        }
+
         public static IEnumerable<Item> GetStockItems(string catalog)
         {
             const string sql = "SELECT * FROM core.items WHERE maintain_stock ORDER BY item_id;";
