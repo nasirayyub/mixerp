@@ -21,9 +21,9 @@ namespace MixERP.Net.Api.Office.Tests
 {
     public class WorkCenterTests
     {
-        public static WorkCenterController Fixture()
+        public static OfficeWorkCenterController Fixture()
         {
-            WorkCenterController controller = new WorkCenterController(new WorkCenterRepository(), "", new LoginView());
+            OfficeWorkCenterController controller = new OfficeWorkCenterController(new WorkCenterRepository(), "", new LoginView());
             return controller;
         }
 
@@ -64,6 +64,38 @@ namespace MixERP.Net.Api.Office.Tests
         public void Get()
         {
             MixERP.Net.Entities.Office.WorkCenter workCenter = Fixture().Get(0);
+            Assert.NotNull(workCenter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Office.WorkCenter workCenter = Fixture().GetFirst();
+            Assert.NotNull(workCenter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Office.WorkCenter workCenter = Fixture().GetPrevious(0);
+            Assert.NotNull(workCenter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Office.WorkCenter workCenter = Fixture().GetNext(0);
+            Assert.NotNull(workCenter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Office.WorkCenter workCenter = Fixture().GetLast();
             Assert.NotNull(workCenter);
         }
 

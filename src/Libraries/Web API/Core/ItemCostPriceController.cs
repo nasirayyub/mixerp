@@ -242,6 +242,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of item cost price.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/item-cost-price/first")]
+        public MixERP.Net.Entities.Core.ItemCostPrice GetFirst()
+        {
+            try
+            {
+                return this.ItemCostPriceRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of item cost price.
+        /// </summary>
+        /// <param name="itemCostPriceId">Enter ItemCostPriceId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{itemCostPriceId}")]
+        [Route("~/api/core/item-cost-price/previous/{itemCostPriceId}")]
+        public MixERP.Net.Entities.Core.ItemCostPrice GetPrevious(long itemCostPriceId)
+        {
+            try
+            {
+                return this.ItemCostPriceRepository.GetPrevious(itemCostPriceId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of item cost price.
+        /// </summary>
+        /// <param name="itemCostPriceId">Enter ItemCostPriceId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{itemCostPriceId}")]
+        [Route("~/api/core/item-cost-price/next/{itemCostPriceId}")]
+        public MixERP.Net.Entities.Core.ItemCostPrice GetNext(long itemCostPriceId)
+        {
+            try
+            {
+                return this.ItemCostPriceRepository.GetNext(itemCostPriceId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of item cost price.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/item-cost-price/last")]
+        public MixERP.Net.Entities.Core.ItemCostPrice GetLast()
+        {
+            try
+            {
+                return this.ItemCostPriceRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 item cost prices on each page, sorted by the property ItemCostPriceId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

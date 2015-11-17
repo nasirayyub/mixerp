@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.ShippingAddress shippingAddress = Fixture().GetFirst();
+            Assert.NotNull(shippingAddress);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.ShippingAddress shippingAddress = Fixture().GetPrevious(0);
+            Assert.NotNull(shippingAddress);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.ShippingAddress shippingAddress = Fixture().GetNext(0);
+            Assert.NotNull(shippingAddress);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.ShippingAddress shippingAddress = Fixture().GetLast();
+            Assert.NotNull(shippingAddress);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.ShippingAddress> shippingAddresses = Fixture().Get(new long[] { });

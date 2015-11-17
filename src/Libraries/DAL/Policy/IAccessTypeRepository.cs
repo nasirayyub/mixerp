@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Policy.Data
         MixERP.Net.Entities.Policy.AccessType Get(int accessTypeId);
 
         /// <summary>
+        /// Gets the first record of AccessType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of AccessType.</returns>
+        MixERP.Net.Entities.Policy.AccessType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of AccessType sorted by accessTypeId. 
+        /// </summary>
+        /// <param name="accessTypeId">The column "access_type_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of AccessType.</returns>
+        MixERP.Net.Entities.Policy.AccessType GetPrevious(int accessTypeId);
+
+        /// <summary>
+        /// Gets the next record of AccessType sorted by accessTypeId. 
+        /// </summary>
+        /// <param name="accessTypeId">The column "access_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of AccessType.</returns>
+        MixERP.Net.Entities.Policy.AccessType GetNext(int accessTypeId);
+
+        /// <summary>
+        /// Gets the last record of AccessType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of AccessType.</returns>
+        MixERP.Net.Entities.Policy.AccessType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the AccessType against accessTypeIds. 
         /// </summary>
         /// <param name="accessTypeIds">Array of column "access_type_id" parameter used on where filter.</param>

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Office.Data
         MixERP.Net.Entities.Office.StoreType Get(int storeTypeId);
 
         /// <summary>
+        /// Gets the first record of StoreType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of StoreType.</returns>
+        MixERP.Net.Entities.Office.StoreType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of StoreType sorted by storeTypeId. 
+        /// </summary>
+        /// <param name="storeTypeId">The column "store_type_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of StoreType.</returns>
+        MixERP.Net.Entities.Office.StoreType GetPrevious(int storeTypeId);
+
+        /// <summary>
+        /// Gets the next record of StoreType sorted by storeTypeId. 
+        /// </summary>
+        /// <param name="storeTypeId">The column "store_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of StoreType.</returns>
+        MixERP.Net.Entities.Office.StoreType GetNext(int storeTypeId);
+
+        /// <summary>
+        /// Gets the last record of StoreType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of StoreType.</returns>
+        MixERP.Net.Entities.Office.StoreType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the StoreType against storeTypeIds. 
         /// </summary>
         /// <param name="storeTypeIds">Array of column "store_type_id" parameter used on where filter.</param>

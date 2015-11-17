@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.TaxExemptType Get(int taxExemptTypeId);
 
         /// <summary>
+        /// Gets the first record of TaxExemptType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of TaxExemptType.</returns>
+        MixERP.Net.Entities.Core.TaxExemptType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of TaxExemptType sorted by taxExemptTypeId. 
+        /// </summary>
+        /// <param name="taxExemptTypeId">The column "tax_exempt_type_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of TaxExemptType.</returns>
+        MixERP.Net.Entities.Core.TaxExemptType GetPrevious(int taxExemptTypeId);
+
+        /// <summary>
+        /// Gets the next record of TaxExemptType sorted by taxExemptTypeId. 
+        /// </summary>
+        /// <param name="taxExemptTypeId">The column "tax_exempt_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of TaxExemptType.</returns>
+        MixERP.Net.Entities.Core.TaxExemptType GetNext(int taxExemptTypeId);
+
+        /// <summary>
+        /// Gets the last record of TaxExemptType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of TaxExemptType.</returns>
+        MixERP.Net.Entities.Core.TaxExemptType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the TaxExemptType against taxExemptTypeIds. 
         /// </summary>
         /// <param name="taxExemptTypeIds">Array of column "tax_exempt_type_id" parameter used on where filter.</param>

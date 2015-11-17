@@ -239,6 +239,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of flag type.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/flag-type/first")]
+        public MixERP.Net.Entities.Core.FlagType GetFirst()
+        {
+            try
+            {
+                return this.FlagTypeRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of flag type.
+        /// </summary>
+        /// <param name="flagTypeId">Enter FlagTypeId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{flagTypeId}")]
+        [Route("~/api/core/flag-type/previous/{flagTypeId}")]
+        public MixERP.Net.Entities.Core.FlagType GetPrevious(int flagTypeId)
+        {
+            try
+            {
+                return this.FlagTypeRepository.GetPrevious(flagTypeId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of flag type.
+        /// </summary>
+        /// <param name="flagTypeId">Enter FlagTypeId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{flagTypeId}")]
+        [Route("~/api/core/flag-type/next/{flagTypeId}")]
+        public MixERP.Net.Entities.Core.FlagType GetNext(int flagTypeId)
+        {
+            try
+            {
+                return this.FlagTypeRepository.GetNext(flagTypeId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of flag type.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/flag-type/last")]
+        public MixERP.Net.Entities.Core.FlagType GetLast()
+        {
+            try
+            {
+                return this.FlagTypeRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 flag types on each page, sorted by the property FlagTypeId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/salesperson/count-filtered/{filterName}", "GET", typeof(SalespersonController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/salesperson/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SalespersonController), "GetFiltered")]
         [InlineData("/api/core/salesperson/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SalespersonController), "GetFiltered")]
+        [InlineData("/api/core/salesperson/first", "GET", typeof(SalespersonController), "GetFirst")]
+        [InlineData("/api/core/salesperson/previous/1", "GET", typeof(SalespersonController), "GetPrevious")]
+        [InlineData("/api/core/salesperson/next/1", "GET", typeof(SalespersonController), "GetNext")]
+        [InlineData("/api/core/salesperson/last", "GET", typeof(SalespersonController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/salesperson/custom-fields", "GET", typeof(SalespersonController), "GetCustomFields")]
         [InlineData("/api/core/salesperson/custom-fields", "GET", typeof(SalespersonController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/salesperson/count-filtered/{filterName}", "HEAD", typeof(SalespersonController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/salesperson/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SalespersonController), "GetFiltered")]
         [InlineData("/api/core/salesperson/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SalespersonController), "GetFiltered")]
+        [InlineData("/api/core/salesperson/first", "HEAD", typeof(SalespersonController), "GetFirst")]
+        [InlineData("/api/core/salesperson/previous/1", "HEAD", typeof(SalespersonController), "GetPrevious")]
+        [InlineData("/api/core/salesperson/next/1", "HEAD", typeof(SalespersonController), "GetNext")]
+        [InlineData("/api/core/salesperson/last", "HEAD", typeof(SalespersonController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/salesperson/custom-fields", "HEAD", typeof(SalespersonController), "GetCustomFields")]
         [InlineData("/api/core/salesperson/custom-fields", "HEAD", typeof(SalespersonController), "GetCustomFields")]

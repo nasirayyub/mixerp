@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.CashFlowSetup Get(int cashFlowSetupId);
 
         /// <summary>
+        /// Gets the first record of CashFlowSetup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CashFlowSetup.</returns>
+        MixERP.Net.Entities.Core.CashFlowSetup GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of CashFlowSetup sorted by cashFlowSetupId. 
+        /// </summary>
+        /// <param name="cashFlowSetupId">The column "cash_flow_setup_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CashFlowSetup.</returns>
+        MixERP.Net.Entities.Core.CashFlowSetup GetPrevious(int cashFlowSetupId);
+
+        /// <summary>
+        /// Gets the next record of CashFlowSetup sorted by cashFlowSetupId. 
+        /// </summary>
+        /// <param name="cashFlowSetupId">The column "cash_flow_setup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CashFlowSetup.</returns>
+        MixERP.Net.Entities.Core.CashFlowSetup GetNext(int cashFlowSetupId);
+
+        /// <summary>
+        /// Gets the last record of CashFlowSetup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CashFlowSetup.</returns>
+        MixERP.Net.Entities.Core.CashFlowSetup GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the CashFlowSetup against cashFlowSetupIds. 
         /// </summary>
         /// <param name="cashFlowSetupIds">Array of column "cash_flow_setup_id" parameter used on where filter.</param>

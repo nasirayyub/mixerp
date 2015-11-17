@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/flag-type/count-filtered/{filterName}", "GET", typeof(FlagTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/flag-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(FlagTypeController), "GetFiltered")]
         [InlineData("/api/core/flag-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(FlagTypeController), "GetFiltered")]
+        [InlineData("/api/core/flag-type/first", "GET", typeof(FlagTypeController), "GetFirst")]
+        [InlineData("/api/core/flag-type/previous/1", "GET", typeof(FlagTypeController), "GetPrevious")]
+        [InlineData("/api/core/flag-type/next/1", "GET", typeof(FlagTypeController), "GetNext")]
+        [InlineData("/api/core/flag-type/last", "GET", typeof(FlagTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/flag-type/custom-fields", "GET", typeof(FlagTypeController), "GetCustomFields")]
         [InlineData("/api/core/flag-type/custom-fields", "GET", typeof(FlagTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/flag-type/count-filtered/{filterName}", "HEAD", typeof(FlagTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/flag-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(FlagTypeController), "GetFiltered")]
         [InlineData("/api/core/flag-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(FlagTypeController), "GetFiltered")]
+        [InlineData("/api/core/flag-type/first", "HEAD", typeof(FlagTypeController), "GetFirst")]
+        [InlineData("/api/core/flag-type/previous/1", "HEAD", typeof(FlagTypeController), "GetPrevious")]
+        [InlineData("/api/core/flag-type/next/1", "HEAD", typeof(FlagTypeController), "GetNext")]
+        [InlineData("/api/core/flag-type/last", "HEAD", typeof(FlagTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/flag-type/custom-fields", "HEAD", typeof(FlagTypeController), "GetCustomFields")]
         [InlineData("/api/core/flag-type/custom-fields", "HEAD", typeof(FlagTypeController), "GetCustomFields")]

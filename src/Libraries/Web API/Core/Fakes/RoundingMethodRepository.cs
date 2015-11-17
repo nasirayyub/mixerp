@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.RoundingMethod(), 1);
         }
 
+        public MixERP.Net.Entities.Core.RoundingMethod GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.RoundingMethod();
+        }
+
+        public MixERP.Net.Entities.Core.RoundingMethod GetPrevious(string roundingMethodCode)
+        {
+            return new MixERP.Net.Entities.Core.RoundingMethod();
+        }
+
+        public MixERP.Net.Entities.Core.RoundingMethod GetNext(string roundingMethodCode)
+        {
+            return new MixERP.Net.Entities.Core.RoundingMethod();
+        }
+
+        public MixERP.Net.Entities.Core.RoundingMethod GetLast()
+        {
+            return new MixERP.Net.Entities.Core.RoundingMethod();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.RoundingMethod> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.RoundingMethod(), 1);

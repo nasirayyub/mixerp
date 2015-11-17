@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.County county = Fixture().GetFirst();
+            Assert.NotNull(county);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.County county = Fixture().GetPrevious(0);
+            Assert.NotNull(county);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.County county = Fixture().GetNext(0);
+            Assert.NotNull(county);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.County county = Fixture().GetLast();
+            Assert.NotNull(county);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.County> counties = Fixture().Get(new int[] { });

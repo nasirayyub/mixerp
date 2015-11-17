@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.LeaveApplication Get(long leaveApplicationId);
 
         /// <summary>
+        /// Gets the first record of LeaveApplication.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of LeaveApplication.</returns>
+        MixERP.Net.Entities.HRM.LeaveApplication GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of LeaveApplication sorted by leaveApplicationId. 
+        /// </summary>
+        /// <param name="leaveApplicationId">The column "leave_application_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of LeaveApplication.</returns>
+        MixERP.Net.Entities.HRM.LeaveApplication GetPrevious(long leaveApplicationId);
+
+        /// <summary>
+        /// Gets the next record of LeaveApplication sorted by leaveApplicationId. 
+        /// </summary>
+        /// <param name="leaveApplicationId">The column "leave_application_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of LeaveApplication.</returns>
+        MixERP.Net.Entities.HRM.LeaveApplication GetNext(long leaveApplicationId);
+
+        /// <summary>
+        /// Gets the last record of LeaveApplication.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of LeaveApplication.</returns>
+        MixERP.Net.Entities.HRM.LeaveApplication GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the LeaveApplication against leaveApplicationIds. 
         /// </summary>
         /// <param name="leaveApplicationIds">Array of column "leave_application_id" parameter used on where filter.</param>

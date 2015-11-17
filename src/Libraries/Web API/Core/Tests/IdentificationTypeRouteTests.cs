@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/identification-type/count-filtered/{filterName}", "GET", typeof(IdentificationTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/identification-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(IdentificationTypeController), "GetFiltered")]
         [InlineData("/api/core/identification-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(IdentificationTypeController), "GetFiltered")]
+        [InlineData("/api/core/identification-type/first", "GET", typeof(IdentificationTypeController), "GetFirst")]
+        [InlineData("/api/core/identification-type/previous/1", "GET", typeof(IdentificationTypeController), "GetPrevious")]
+        [InlineData("/api/core/identification-type/next/1", "GET", typeof(IdentificationTypeController), "GetNext")]
+        [InlineData("/api/core/identification-type/last", "GET", typeof(IdentificationTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/identification-type/custom-fields", "GET", typeof(IdentificationTypeController), "GetCustomFields")]
         [InlineData("/api/core/identification-type/custom-fields", "GET", typeof(IdentificationTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/identification-type/count-filtered/{filterName}", "HEAD", typeof(IdentificationTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/identification-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(IdentificationTypeController), "GetFiltered")]
         [InlineData("/api/core/identification-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(IdentificationTypeController), "GetFiltered")]
+        [InlineData("/api/core/identification-type/first", "HEAD", typeof(IdentificationTypeController), "GetFirst")]
+        [InlineData("/api/core/identification-type/previous/1", "HEAD", typeof(IdentificationTypeController), "GetPrevious")]
+        [InlineData("/api/core/identification-type/next/1", "HEAD", typeof(IdentificationTypeController), "GetNext")]
+        [InlineData("/api/core/identification-type/last", "HEAD", typeof(IdentificationTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/identification-type/custom-fields", "HEAD", typeof(IdentificationTypeController), "GetCustomFields")]
         [InlineData("/api/core/identification-type/custom-fields", "HEAD", typeof(IdentificationTypeController), "GetCustomFields")]

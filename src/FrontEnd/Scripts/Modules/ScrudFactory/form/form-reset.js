@@ -1,6 +1,10 @@
 ﻿function resetForm() {
     var fields = $(".form-field:not(:hidden), .custom-field:not(:hidden), .form-field[data-primarykey]");
 
+    $(".huge.header .sub.header").html("");
+    $("span.live").html("");
+    $(".initial.value").html(scrudFactory.title);
+
     $(".uploader.field .ui.image.preview").attr("src", "/Static/images/mixerp-logo-light.png");
 
     if (scrudFactory.disabledOnEdit) {

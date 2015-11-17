@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/lock-out/count-filtered/{filterName}", "GET", typeof(LockOutController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/lock-out/get-filtered/{pageNumber}/{filterName}", "GET", typeof(LockOutController), "GetFiltered")]
         [InlineData("/api/policy/lock-out/get-filtered/{pageNumber}/{filterName}", "GET", typeof(LockOutController), "GetFiltered")]
+        [InlineData("/api/policy/lock-out/first", "GET", typeof(LockOutController), "GetFirst")]
+        [InlineData("/api/policy/lock-out/previous/1", "GET", typeof(LockOutController), "GetPrevious")]
+        [InlineData("/api/policy/lock-out/next/1", "GET", typeof(LockOutController), "GetNext")]
+        [InlineData("/api/policy/lock-out/last", "GET", typeof(LockOutController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/lock-out/custom-fields", "GET", typeof(LockOutController), "GetCustomFields")]
         [InlineData("/api/policy/lock-out/custom-fields", "GET", typeof(LockOutController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/lock-out/count-filtered/{filterName}", "HEAD", typeof(LockOutController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/lock-out/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(LockOutController), "GetFiltered")]
         [InlineData("/api/policy/lock-out/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(LockOutController), "GetFiltered")]
+        [InlineData("/api/policy/lock-out/first", "HEAD", typeof(LockOutController), "GetFirst")]
+        [InlineData("/api/policy/lock-out/previous/1", "HEAD", typeof(LockOutController), "GetPrevious")]
+        [InlineData("/api/policy/lock-out/next/1", "HEAD", typeof(LockOutController), "GetNext")]
+        [InlineData("/api/policy/lock-out/last", "HEAD", typeof(LockOutController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/lock-out/custom-fields", "HEAD", typeof(LockOutController), "GetCustomFields")]
         [InlineData("/api/policy/lock-out/custom-fields", "HEAD", typeof(LockOutController), "GetCustomFields")]

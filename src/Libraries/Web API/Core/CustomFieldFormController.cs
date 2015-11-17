@@ -236,6 +236,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of custom field form.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/custom-field-form/first")]
+        public MixERP.Net.Entities.Core.CustomFieldForm GetFirst()
+        {
+            try
+            {
+                return this.CustomFieldFormRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of custom field form.
+        /// </summary>
+        /// <param name="formName">Enter FormName to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{formName}")]
+        [Route("~/api/core/custom-field-form/previous/{formName}")]
+        public MixERP.Net.Entities.Core.CustomFieldForm GetPrevious(string formName)
+        {
+            try
+            {
+                return this.CustomFieldFormRepository.GetPrevious(formName);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of custom field form.
+        /// </summary>
+        /// <param name="formName">Enter FormName to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{formName}")]
+        [Route("~/api/core/custom-field-form/next/{formName}")]
+        public MixERP.Net.Entities.Core.CustomFieldForm GetNext(string formName)
+        {
+            try
+            {
+                return this.CustomFieldFormRepository.GetNext(formName);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of custom field form.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/custom-field-form/last")]
+        public MixERP.Net.Entities.Core.CustomFieldForm GetLast()
+        {
+            try
+            {
+                return this.CustomFieldFormRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 custom field forms on each page, sorted by the property FormName.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

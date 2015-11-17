@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.BankAccount(), 1);
         }
 
+        public MixERP.Net.Entities.Core.BankAccount GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.BankAccount();
+        }
+
+        public MixERP.Net.Entities.Core.BankAccount GetPrevious(long accountId)
+        {
+            return new MixERP.Net.Entities.Core.BankAccount();
+        }
+
+        public MixERP.Net.Entities.Core.BankAccount GetNext(long accountId)
+        {
+            return new MixERP.Net.Entities.Core.BankAccount();
+        }
+
+        public MixERP.Net.Entities.Core.BankAccount GetLast()
+        {
+            return new MixERP.Net.Entities.Core.BankAccount();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.BankAccount> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.BankAccount(), 1);

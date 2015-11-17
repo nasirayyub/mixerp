@@ -237,6 +237,132 @@ namespace MixERP.Net.Api.Policy
         }
 
         /// <summary>
+        ///     Returns the first instance of lock out.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/policy/lock-out/first")]
+        public MixERP.Net.Entities.Policy.LockOut GetFirst()
+        {
+            try
+            {
+                return this.LockOutRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of lock out.
+        /// </summary>
+        /// <param name="lockOutId">Enter LockOutId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{lockOutId}")]
+        [Route("~/api/policy/lock-out/previous/{lockOutId}")]
+        public MixERP.Net.Entities.Policy.LockOut GetPrevious(long lockOutId)
+        {
+            try
+            {
+                return this.LockOutRepository.GetPrevious(lockOutId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of lock out.
+        /// </summary>
+        /// <param name="lockOutId">Enter LockOutId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{lockOutId}")]
+        [Route("~/api/policy/lock-out/next/{lockOutId}")]
+        public MixERP.Net.Entities.Policy.LockOut GetNext(long lockOutId)
+        {
+            try
+            {
+                return this.LockOutRepository.GetNext(lockOutId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of lock out.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/policy/lock-out/last")]
+        public MixERP.Net.Entities.Policy.LockOut GetLast()
+        {
+            try
+            {
+                return this.LockOutRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 lock outs on each page, sorted by the property LockOutId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

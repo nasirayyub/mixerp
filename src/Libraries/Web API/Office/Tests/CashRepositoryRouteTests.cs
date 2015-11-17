@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/cash-repository/count-filtered/{filterName}", "GET", typeof(CashRepositoryController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/cash-repository/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CashRepositoryController), "GetFiltered")]
         [InlineData("/api/office/cash-repository/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CashRepositoryController), "GetFiltered")]
+        [InlineData("/api/office/cash-repository/first", "GET", typeof(CashRepositoryController), "GetFirst")]
+        [InlineData("/api/office/cash-repository/previous/1", "GET", typeof(CashRepositoryController), "GetPrevious")]
+        [InlineData("/api/office/cash-repository/next/1", "GET", typeof(CashRepositoryController), "GetNext")]
+        [InlineData("/api/office/cash-repository/last", "GET", typeof(CashRepositoryController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/cash-repository/custom-fields", "GET", typeof(CashRepositoryController), "GetCustomFields")]
         [InlineData("/api/office/cash-repository/custom-fields", "GET", typeof(CashRepositoryController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/cash-repository/count-filtered/{filterName}", "HEAD", typeof(CashRepositoryController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/cash-repository/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CashRepositoryController), "GetFiltered")]
         [InlineData("/api/office/cash-repository/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CashRepositoryController), "GetFiltered")]
+        [InlineData("/api/office/cash-repository/first", "HEAD", typeof(CashRepositoryController), "GetFirst")]
+        [InlineData("/api/office/cash-repository/previous/1", "HEAD", typeof(CashRepositoryController), "GetPrevious")]
+        [InlineData("/api/office/cash-repository/next/1", "HEAD", typeof(CashRepositoryController), "GetNext")]
+        [InlineData("/api/office/cash-repository/last", "HEAD", typeof(CashRepositoryController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/cash-repository/custom-fields", "HEAD", typeof(CashRepositoryController), "GetCustomFields")]
         [InlineData("/api/office/cash-repository/custom-fields", "HEAD", typeof(CashRepositoryController), "GetCustomFields")]

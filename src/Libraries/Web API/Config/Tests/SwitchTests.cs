@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Config.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Config.Switch switchParameter = Fixture().GetFirst();
+            Assert.NotNull(switchParameter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Config.Switch switchParameter = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(switchParameter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Config.Switch switchParameter = Fixture().GetNext(string.Empty);
+            Assert.NotNull(switchParameter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Config.Switch switchParameter = Fixture().GetLast();
+            Assert.NotNull(switchParameter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Config.Switch> switches = Fixture().Get(new string[] { });

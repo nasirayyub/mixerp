@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.TaxRateType Get(string taxRateTypeCode);
 
         /// <summary>
+        /// Gets the first record of TaxRateType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of TaxRateType.</returns>
+        MixERP.Net.Entities.Core.TaxRateType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of TaxRateType sorted by taxRateTypeCode. 
+        /// </summary>
+        /// <param name="taxRateTypeCode">The column "tax_rate_type_code" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of TaxRateType.</returns>
+        MixERP.Net.Entities.Core.TaxRateType GetPrevious(string taxRateTypeCode);
+
+        /// <summary>
+        /// Gets the next record of TaxRateType sorted by taxRateTypeCode. 
+        /// </summary>
+        /// <param name="taxRateTypeCode">The column "tax_rate_type_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of TaxRateType.</returns>
+        MixERP.Net.Entities.Core.TaxRateType GetNext(string taxRateTypeCode);
+
+        /// <summary>
+        /// Gets the last record of TaxRateType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of TaxRateType.</returns>
+        MixERP.Net.Entities.Core.TaxRateType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the TaxRateType against taxRateTypeCodes. 
         /// </summary>
         /// <param name="taxRateTypeCodes">Array of column "tax_rate_type_code" parameter used on where filter.</param>

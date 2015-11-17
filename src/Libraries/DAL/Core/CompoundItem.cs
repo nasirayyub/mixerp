@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.compound_items". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "CompoundItem" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.CompoundItem GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"CompoundItem\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.compound_items ORDER BY compound_item_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.CompoundItem>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.compound_items" sorted by compoundItemId.
+        /// </summary>
+        /// <param name="compoundItemId">The column "compound_item_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "CompoundItem" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.CompoundItem GetPrevious(int compoundItemId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"CompoundItem\" by \"CompoundItemId\" with value {CompoundItemId} was denied to the user with Login ID {_LoginId}", compoundItemId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.compound_items WHERE compound_item_id < @0 ORDER BY compound_item_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.CompoundItem>(this._Catalog, sql, compoundItemId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.compound_items" sorted by compoundItemId.
+        /// </summary>
+        /// <param name="compoundItemId">The column "compound_item_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "CompoundItem" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.CompoundItem GetNext(int compoundItemId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"CompoundItem\" by \"CompoundItemId\" with value {CompoundItemId} was denied to the user with Login ID {_LoginId}", compoundItemId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.compound_items WHERE compound_item_id > @0 ORDER BY compound_item_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.CompoundItem>(this._Catalog, sql, compoundItemId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.compound_items". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "CompoundItem" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.CompoundItem GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"CompoundItem\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.compound_items ORDER BY compound_item_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.CompoundItem>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.compound_items" with a where filter on the column "compound_item_id" to return a multiple instances of the "CompoundItem" class. 
         /// </summary>
         /// <param name="compoundItemIds">Array of column "compound_item_id" parameter used on where filter.</param>

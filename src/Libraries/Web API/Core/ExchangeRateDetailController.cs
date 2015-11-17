@@ -239,6 +239,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of exchange rate detail.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/exchange-rate-detail/first")]
+        public MixERP.Net.Entities.Core.ExchangeRateDetail GetFirst()
+        {
+            try
+            {
+                return this.ExchangeRateDetailRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of exchange rate detail.
+        /// </summary>
+        /// <param name="exchangeRateDetailId">Enter ExchangeRateDetailId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{exchangeRateDetailId}")]
+        [Route("~/api/core/exchange-rate-detail/previous/{exchangeRateDetailId}")]
+        public MixERP.Net.Entities.Core.ExchangeRateDetail GetPrevious(long exchangeRateDetailId)
+        {
+            try
+            {
+                return this.ExchangeRateDetailRepository.GetPrevious(exchangeRateDetailId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of exchange rate detail.
+        /// </summary>
+        /// <param name="exchangeRateDetailId">Enter ExchangeRateDetailId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{exchangeRateDetailId}")]
+        [Route("~/api/core/exchange-rate-detail/next/{exchangeRateDetailId}")]
+        public MixERP.Net.Entities.Core.ExchangeRateDetail GetNext(long exchangeRateDetailId)
+        {
+            try
+            {
+                return this.ExchangeRateDetailRepository.GetNext(exchangeRateDetailId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of exchange rate detail.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/exchange-rate-detail/last")]
+        public MixERP.Net.Entities.Core.ExchangeRateDetail GetLast()
+        {
+            try
+            {
+                return this.ExchangeRateDetailRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 exchange rate details on each page, sorted by the property ExchangeRateDetailId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

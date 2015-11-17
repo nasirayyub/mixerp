@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/country/count-filtered/{filterName}", "GET", typeof(CountryController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/country/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CountryController), "GetFiltered")]
         [InlineData("/api/core/country/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CountryController), "GetFiltered")]
+        [InlineData("/api/core/country/first", "GET", typeof(CountryController), "GetFirst")]
+        [InlineData("/api/core/country/previous/1", "GET", typeof(CountryController), "GetPrevious")]
+        [InlineData("/api/core/country/next/1", "GET", typeof(CountryController), "GetNext")]
+        [InlineData("/api/core/country/last", "GET", typeof(CountryController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/country/custom-fields", "GET", typeof(CountryController), "GetCustomFields")]
         [InlineData("/api/core/country/custom-fields", "GET", typeof(CountryController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/country/count-filtered/{filterName}", "HEAD", typeof(CountryController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/country/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CountryController), "GetFiltered")]
         [InlineData("/api/core/country/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CountryController), "GetFiltered")]
+        [InlineData("/api/core/country/first", "HEAD", typeof(CountryController), "GetFirst")]
+        [InlineData("/api/core/country/previous/1", "HEAD", typeof(CountryController), "GetPrevious")]
+        [InlineData("/api/core/country/next/1", "HEAD", typeof(CountryController), "GetNext")]
+        [InlineData("/api/core/country/last", "HEAD", typeof(CountryController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/country/custom-fields", "HEAD", typeof(CountryController), "GetCustomFields")]
         [InlineData("/api/core/country/custom-fields", "HEAD", typeof(CountryController), "GetCustomFields")]

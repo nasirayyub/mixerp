@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Localization.Data
         MixERP.Net.Entities.Localization.Resource Get(int resourceId);
 
         /// <summary>
+        /// Gets the first record of Resource.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Resource.</returns>
+        MixERP.Net.Entities.Localization.Resource GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Resource sorted by resourceId. 
+        /// </summary>
+        /// <param name="resourceId">The column "resource_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Resource.</returns>
+        MixERP.Net.Entities.Localization.Resource GetPrevious(int resourceId);
+
+        /// <summary>
+        /// Gets the next record of Resource sorted by resourceId. 
+        /// </summary>
+        /// <param name="resourceId">The column "resource_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Resource.</returns>
+        MixERP.Net.Entities.Localization.Resource GetNext(int resourceId);
+
+        /// <summary>
+        /// Gets the last record of Resource.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Resource.</returns>
+        MixERP.Net.Entities.Localization.Resource GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Resource against resourceIds. 
         /// </summary>
         /// <param name="resourceIds">Array of column "resource_id" parameter used on where filter.</param>

@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.CustomFieldSetup customFieldSetup = Fixture().GetFirst();
+            Assert.NotNull(customFieldSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.CustomFieldSetup customFieldSetup = Fixture().GetPrevious(0);
+            Assert.NotNull(customFieldSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.CustomFieldSetup customFieldSetup = Fixture().GetNext(0);
+            Assert.NotNull(customFieldSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.CustomFieldSetup customFieldSetup = Fixture().GetLast();
+            Assert.NotNull(customFieldSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.CustomFieldSetup> customFieldSetups = Fixture().Get(new int[] { });

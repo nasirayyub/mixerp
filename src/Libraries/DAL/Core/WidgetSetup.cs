@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.widget_setup". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "WidgetSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.WidgetSetup GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"WidgetSetup\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.widget_setup ORDER BY widget_setup_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.WidgetSetup>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.widget_setup" sorted by widgetSetupId.
+        /// </summary>
+        /// <param name="widgetSetupId">The column "widget_setup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "WidgetSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.WidgetSetup GetPrevious(int widgetSetupId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"WidgetSetup\" by \"WidgetSetupId\" with value {WidgetSetupId} was denied to the user with Login ID {_LoginId}", widgetSetupId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.widget_setup WHERE widget_setup_id < @0 ORDER BY widget_setup_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.WidgetSetup>(this._Catalog, sql, widgetSetupId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.widget_setup" sorted by widgetSetupId.
+        /// </summary>
+        /// <param name="widgetSetupId">The column "widget_setup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "WidgetSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.WidgetSetup GetNext(int widgetSetupId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"WidgetSetup\" by \"WidgetSetupId\" with value {WidgetSetupId} was denied to the user with Login ID {_LoginId}", widgetSetupId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.widget_setup WHERE widget_setup_id > @0 ORDER BY widget_setup_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.WidgetSetup>(this._Catalog, sql, widgetSetupId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.widget_setup". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "WidgetSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.WidgetSetup GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"WidgetSetup\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.widget_setup ORDER BY widget_setup_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.WidgetSetup>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.widget_setup" with a where filter on the column "widget_setup_id" to return a multiple instances of the "WidgetSetup" class. 
         /// </summary>
         /// <param name="widgetSetupIds">Array of column "widget_setup_id" parameter used on where filter.</param>

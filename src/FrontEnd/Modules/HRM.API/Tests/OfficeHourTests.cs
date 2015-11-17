@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.HRM.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.HRM.OfficeHour officeHour = Fixture().GetFirst();
+            Assert.NotNull(officeHour);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.HRM.OfficeHour officeHour = Fixture().GetPrevious(0);
+            Assert.NotNull(officeHour);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.HRM.OfficeHour officeHour = Fixture().GetNext(0);
+            Assert.NotNull(officeHour);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.HRM.OfficeHour officeHour = Fixture().GetLast();
+            Assert.NotNull(officeHour);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.HRM.OfficeHour> officeHours = Fixture().Get(new int[] { });

@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.SalespersonBonusSetup(), 1);
         }
 
+        public MixERP.Net.Entities.Core.SalespersonBonusSetup GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.SalespersonBonusSetup();
+        }
+
+        public MixERP.Net.Entities.Core.SalespersonBonusSetup GetPrevious(int salespersonBonusSetupId)
+        {
+            return new MixERP.Net.Entities.Core.SalespersonBonusSetup();
+        }
+
+        public MixERP.Net.Entities.Core.SalespersonBonusSetup GetNext(int salespersonBonusSetupId)
+        {
+            return new MixERP.Net.Entities.Core.SalespersonBonusSetup();
+        }
+
+        public MixERP.Net.Entities.Core.SalespersonBonusSetup GetLast()
+        {
+            return new MixERP.Net.Entities.Core.SalespersonBonusSetup();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.SalespersonBonusSetup> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.SalespersonBonusSetup(), 1);

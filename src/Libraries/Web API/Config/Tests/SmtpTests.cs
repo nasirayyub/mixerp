@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Config.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Config.Smtp smtp = Fixture().GetFirst();
+            Assert.NotNull(smtp);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Config.Smtp smtp = Fixture().GetPrevious(0);
+            Assert.NotNull(smtp);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Config.Smtp smtp = Fixture().GetNext(0);
+            Assert.NotNull(smtp);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Config.Smtp smtp = Fixture().GetLast();
+            Assert.NotNull(smtp);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Config.Smtp> smtps = Fixture().Get(new int[] { });

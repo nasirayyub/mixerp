@@ -53,6 +53,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/termination/count-filtered/{filterName}", "GET", typeof(TerminationController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/termination/get-filtered/{pageNumber}/{filterName}", "GET", typeof(TerminationController), "GetFiltered")]
         [InlineData("/api/hrm/termination/get-filtered/{pageNumber}/{filterName}", "GET", typeof(TerminationController), "GetFiltered")]
+        [InlineData("/api/hrm/termination/first", "GET", typeof(TerminationController), "GetFirst")]
+        [InlineData("/api/hrm/termination/previous/1", "GET", typeof(TerminationController), "GetPrevious")]
+        [InlineData("/api/hrm/termination/next/1", "GET", typeof(TerminationController), "GetNext")]
+        [InlineData("/api/hrm/termination/last", "GET", typeof(TerminationController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/termination/custom-fields", "GET", typeof(TerminationController), "GetCustomFields")]
         [InlineData("/api/hrm/termination/custom-fields", "GET", typeof(TerminationController), "GetCustomFields")]
@@ -78,6 +82,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/termination/count-filtered/{filterName}", "HEAD", typeof(TerminationController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/termination/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(TerminationController), "GetFiltered")]
         [InlineData("/api/hrm/termination/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(TerminationController), "GetFiltered")]
+        [InlineData("/api/hrm/termination/first", "HEAD", typeof(TerminationController), "GetFirst")]
+        [InlineData("/api/hrm/termination/previous/1", "HEAD", typeof(TerminationController), "GetPrevious")]
+        [InlineData("/api/hrm/termination/next/1", "HEAD", typeof(TerminationController), "GetNext")]
+        [InlineData("/api/hrm/termination/last", "HEAD", typeof(TerminationController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/termination/custom-fields", "HEAD", typeof(TerminationController), "GetCustomFields")]
         [InlineData("/api/hrm/termination/custom-fields", "HEAD", typeof(TerminationController), "GetCustomFields")]

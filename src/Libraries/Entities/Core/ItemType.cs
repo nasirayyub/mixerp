@@ -28,5 +28,9 @@ namespace MixERP.Net.Entities.Core
         [Column("audit_ts")]
         [ColumnDbType("timestamptz", 0, true, "")]
         public DateTime? AuditTs { get; set; }
+
+        [Column("is_component")]
+        [ColumnDbType("bool", 0, false, "true")]
+        public bool IsComponent { get; set; }
     }
 }

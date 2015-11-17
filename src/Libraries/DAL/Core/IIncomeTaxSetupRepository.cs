@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.IncomeTaxSetup Get(int incomeTaxSetupId);
 
         /// <summary>
+        /// Gets the first record of IncomeTaxSetup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of IncomeTaxSetup.</returns>
+        MixERP.Net.Entities.Core.IncomeTaxSetup GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of IncomeTaxSetup sorted by incomeTaxSetupId. 
+        /// </summary>
+        /// <param name="incomeTaxSetupId">The column "income_tax_setup_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of IncomeTaxSetup.</returns>
+        MixERP.Net.Entities.Core.IncomeTaxSetup GetPrevious(int incomeTaxSetupId);
+
+        /// <summary>
+        /// Gets the next record of IncomeTaxSetup sorted by incomeTaxSetupId. 
+        /// </summary>
+        /// <param name="incomeTaxSetupId">The column "income_tax_setup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of IncomeTaxSetup.</returns>
+        MixERP.Net.Entities.Core.IncomeTaxSetup GetNext(int incomeTaxSetupId);
+
+        /// <summary>
+        /// Gets the last record of IncomeTaxSetup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of IncomeTaxSetup.</returns>
+        MixERP.Net.Entities.Core.IncomeTaxSetup GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the IncomeTaxSetup against incomeTaxSetupIds. 
         /// </summary>
         /// <param name="incomeTaxSetupIds">Array of column "income_tax_setup_id" parameter used on where filter.</param>

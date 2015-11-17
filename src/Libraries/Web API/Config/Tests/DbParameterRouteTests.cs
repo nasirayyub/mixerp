@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/db-parameter/count-filtered/{filterName}", "GET", typeof(DbParameterController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/db-parameter/get-filtered/{pageNumber}/{filterName}", "GET", typeof(DbParameterController), "GetFiltered")]
         [InlineData("/api/config/db-parameter/get-filtered/{pageNumber}/{filterName}", "GET", typeof(DbParameterController), "GetFiltered")]
+        [InlineData("/api/config/db-parameter/first", "GET", typeof(DbParameterController), "GetFirst")]
+        [InlineData("/api/config/db-parameter/previous/1", "GET", typeof(DbParameterController), "GetPrevious")]
+        [InlineData("/api/config/db-parameter/next/1", "GET", typeof(DbParameterController), "GetNext")]
+        [InlineData("/api/config/db-parameter/last", "GET", typeof(DbParameterController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/db-parameter/custom-fields", "GET", typeof(DbParameterController), "GetCustomFields")]
         [InlineData("/api/config/db-parameter/custom-fields", "GET", typeof(DbParameterController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/db-parameter/count-filtered/{filterName}", "HEAD", typeof(DbParameterController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/db-parameter/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(DbParameterController), "GetFiltered")]
         [InlineData("/api/config/db-parameter/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(DbParameterController), "GetFiltered")]
+        [InlineData("/api/config/db-parameter/first", "HEAD", typeof(DbParameterController), "GetFirst")]
+        [InlineData("/api/config/db-parameter/previous/1", "HEAD", typeof(DbParameterController), "GetPrevious")]
+        [InlineData("/api/config/db-parameter/next/1", "HEAD", typeof(DbParameterController), "GetNext")]
+        [InlineData("/api/config/db-parameter/last", "HEAD", typeof(DbParameterController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/db-parameter/custom-fields", "HEAD", typeof(DbParameterController), "GetCustomFields")]
         [InlineData("/api/config/db-parameter/custom-fields", "HEAD", typeof(DbParameterController), "GetCustomFields")]

@@ -20,14 +20,14 @@ namespace MixERP.Net.Api.Office
     ///     Provides a direct HTTP access to perform various tasks such as adding, editing, and removing Work Centers.
     /// </summary>
     [RoutePrefix("api/v1.5/office/work-center")]
-    public class WorkCenterController : ApiController
+    public class OfficeWorkCenterController : ApiController
     {
         /// <summary>
         ///     The WorkCenter repository.
         /// </summary>
         private readonly IWorkCenterRepository WorkCenterRepository;
 
-        public WorkCenterController()
+        public OfficeWorkCenterController()
         {
             this._LoginId = AppUsers.GetCurrent().View.LoginId.ToLong();
             this._UserId = AppUsers.GetCurrent().View.UserId.ToInt();
@@ -42,7 +42,7 @@ namespace MixERP.Net.Api.Office
             };
         }
 
-        public WorkCenterController(IWorkCenterRepository repository, string catalog, LoginView view)
+        public OfficeWorkCenterController(IWorkCenterRepository repository, string catalog, LoginView view)
         {
             this._LoginId = view.LoginId.ToLong();
             this._UserId = view.UserId.ToInt();
@@ -219,6 +219,132 @@ namespace MixERP.Net.Api.Office
             try
             {
                 return this.WorkCenterRepository.Get(workCenterIds);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the first instance of work center.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/office/work-center/first")]
+        public MixERP.Net.Entities.Office.WorkCenter GetFirst()
+        {
+            try
+            {
+                return this.WorkCenterRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of work center.
+        /// </summary>
+        /// <param name="workCenterId">Enter WorkCenterId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{workCenterId}")]
+        [Route("~/api/office/work-center/previous/{workCenterId}")]
+        public MixERP.Net.Entities.Office.WorkCenter GetPrevious(int workCenterId)
+        {
+            try
+            {
+                return this.WorkCenterRepository.GetPrevious(workCenterId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of work center.
+        /// </summary>
+        /// <param name="workCenterId">Enter WorkCenterId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{workCenterId}")]
+        [Route("~/api/office/work-center/next/{workCenterId}")]
+        public MixERP.Net.Entities.Office.WorkCenter GetNext(int workCenterId)
+        {
+            try
+            {
+                return this.WorkCenterRepository.GetNext(workCenterId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of work center.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/office/work-center/last")]
+        public MixERP.Net.Entities.Office.WorkCenter GetLast()
+        {
+            try
+            {
+                return this.WorkCenterRepository.GetLast();
             }
             catch (UnauthorizedException)
             {

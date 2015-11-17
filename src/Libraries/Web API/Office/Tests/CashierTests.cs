@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Office.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Office.Cashier cashier = Fixture().GetFirst();
+            Assert.NotNull(cashier);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Office.Cashier cashier = Fixture().GetPrevious(0);
+            Assert.NotNull(cashier);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Office.Cashier cashier = Fixture().GetNext(0);
+            Assert.NotNull(cashier);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Office.Cashier cashier = Fixture().GetLast();
+            Assert.NotNull(cashier);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Office.Cashier> cashiers = Fixture().Get(new long[] { });

@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.EmployeeType Get(int employeeTypeId);
 
         /// <summary>
+        /// Gets the first record of EmployeeType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeType.</returns>
+        MixERP.Net.Entities.HRM.EmployeeType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of EmployeeType sorted by employeeTypeId. 
+        /// </summary>
+        /// <param name="employeeTypeId">The column "employee_type_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeType.</returns>
+        MixERP.Net.Entities.HRM.EmployeeType GetPrevious(int employeeTypeId);
+
+        /// <summary>
+        /// Gets the next record of EmployeeType sorted by employeeTypeId. 
+        /// </summary>
+        /// <param name="employeeTypeId">The column "employee_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeType.</returns>
+        MixERP.Net.Entities.HRM.EmployeeType GetNext(int employeeTypeId);
+
+        /// <summary>
+        /// Gets the last record of EmployeeType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeType.</returns>
+        MixERP.Net.Entities.HRM.EmployeeType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the EmployeeType against employeeTypeIds. 
         /// </summary>
         /// <param name="employeeTypeIds">Array of column "employee_type_id" parameter used on where filter.</param>

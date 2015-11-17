@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Gender(), 1);
         }
 
+        public MixERP.Net.Entities.Core.Gender GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.Gender();
+        }
+
+        public MixERP.Net.Entities.Core.Gender GetPrevious(string genderCode)
+        {
+            return new MixERP.Net.Entities.Core.Gender();
+        }
+
+        public MixERP.Net.Entities.Core.Gender GetNext(string genderCode)
+        {
+            return new MixERP.Net.Entities.Core.Gender();
+        }
+
+        public MixERP.Net.Entities.Core.Gender GetLast()
+        {
+            return new MixERP.Net.Entities.Core.Gender();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.Gender> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Gender(), 1);

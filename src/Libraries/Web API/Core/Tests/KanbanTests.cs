@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.Kanban kanban = Fixture().GetFirst();
+            Assert.NotNull(kanban);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.Kanban kanban = Fixture().GetPrevious(0);
+            Assert.NotNull(kanban);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.Kanban kanban = Fixture().GetNext(0);
+            Assert.NotNull(kanban);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.Kanban kanban = Fixture().GetLast();
+            Assert.NotNull(kanban);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.Kanban> kanbans = Fixture().Get(new long[] { });

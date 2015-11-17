@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.ItemCostPrice itemCostPrice = Fixture().GetFirst();
+            Assert.NotNull(itemCostPrice);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.ItemCostPrice itemCostPrice = Fixture().GetPrevious(0);
+            Assert.NotNull(itemCostPrice);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.ItemCostPrice itemCostPrice = Fixture().GetNext(0);
+            Assert.NotNull(itemCostPrice);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.ItemCostPrice itemCostPrice = Fixture().GetLast();
+            Assert.NotNull(itemCostPrice);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.ItemCostPrice> itemCostPrices = Fixture().Get(new long[] { });

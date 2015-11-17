@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/menu-access/count-filtered/{filterName}", "GET", typeof(MenuAccessController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/menu-access/get-filtered/{pageNumber}/{filterName}", "GET", typeof(MenuAccessController), "GetFiltered")]
         [InlineData("/api/policy/menu-access/get-filtered/{pageNumber}/{filterName}", "GET", typeof(MenuAccessController), "GetFiltered")]
+        [InlineData("/api/policy/menu-access/first", "GET", typeof(MenuAccessController), "GetFirst")]
+        [InlineData("/api/policy/menu-access/previous/1", "GET", typeof(MenuAccessController), "GetPrevious")]
+        [InlineData("/api/policy/menu-access/next/1", "GET", typeof(MenuAccessController), "GetNext")]
+        [InlineData("/api/policy/menu-access/last", "GET", typeof(MenuAccessController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/menu-access/custom-fields", "GET", typeof(MenuAccessController), "GetCustomFields")]
         [InlineData("/api/policy/menu-access/custom-fields", "GET", typeof(MenuAccessController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/menu-access/count-filtered/{filterName}", "HEAD", typeof(MenuAccessController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/menu-access/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(MenuAccessController), "GetFiltered")]
         [InlineData("/api/policy/menu-access/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(MenuAccessController), "GetFiltered")]
+        [InlineData("/api/policy/menu-access/first", "HEAD", typeof(MenuAccessController), "GetFirst")]
+        [InlineData("/api/policy/menu-access/previous/1", "HEAD", typeof(MenuAccessController), "GetPrevious")]
+        [InlineData("/api/policy/menu-access/next/1", "HEAD", typeof(MenuAccessController), "GetNext")]
+        [InlineData("/api/policy/menu-access/last", "HEAD", typeof(MenuAccessController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/menu-access/custom-fields", "HEAD", typeof(MenuAccessController), "GetCustomFields")]
         [InlineData("/api/policy/menu-access/custom-fields", "HEAD", typeof(MenuAccessController), "GetCustomFields")]

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.SalesTaxType Get(int salesTaxTypeId);
 
         /// <summary>
+        /// Gets the first record of SalesTaxType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTaxType.</returns>
+        MixERP.Net.Entities.Core.SalesTaxType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of SalesTaxType sorted by salesTaxTypeId. 
+        /// </summary>
+        /// <param name="salesTaxTypeId">The column "sales_tax_type_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTaxType.</returns>
+        MixERP.Net.Entities.Core.SalesTaxType GetPrevious(int salesTaxTypeId);
+
+        /// <summary>
+        /// Gets the next record of SalesTaxType sorted by salesTaxTypeId. 
+        /// </summary>
+        /// <param name="salesTaxTypeId">The column "sales_tax_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTaxType.</returns>
+        MixERP.Net.Entities.Core.SalesTaxType GetNext(int salesTaxTypeId);
+
+        /// <summary>
+        /// Gets the last record of SalesTaxType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTaxType.</returns>
+        MixERP.Net.Entities.Core.SalesTaxType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the SalesTaxType against salesTaxTypeIds. 
         /// </summary>
         /// <param name="salesTaxTypeIds">Array of column "sales_tax_type_id" parameter used on where filter.</param>

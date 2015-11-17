@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/employee-qualification/count-filtered/{filterName}", "GET", typeof(EmployeeQualificationController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/employee-qualification/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmployeeQualificationController), "GetFiltered")]
         [InlineData("/api/hrm/employee-qualification/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmployeeQualificationController), "GetFiltered")]
+        [InlineData("/api/hrm/employee-qualification/first", "GET", typeof(EmployeeQualificationController), "GetFirst")]
+        [InlineData("/api/hrm/employee-qualification/previous/1", "GET", typeof(EmployeeQualificationController), "GetPrevious")]
+        [InlineData("/api/hrm/employee-qualification/next/1", "GET", typeof(EmployeeQualificationController), "GetNext")]
+        [InlineData("/api/hrm/employee-qualification/last", "GET", typeof(EmployeeQualificationController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/employee-qualification/custom-fields", "GET", typeof(EmployeeQualificationController), "GetCustomFields")]
         [InlineData("/api/hrm/employee-qualification/custom-fields", "GET", typeof(EmployeeQualificationController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/employee-qualification/count-filtered/{filterName}", "HEAD", typeof(EmployeeQualificationController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/employee-qualification/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmployeeQualificationController), "GetFiltered")]
         [InlineData("/api/hrm/employee-qualification/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmployeeQualificationController), "GetFiltered")]
+        [InlineData("/api/hrm/employee-qualification/first", "HEAD", typeof(EmployeeQualificationController), "GetFirst")]
+        [InlineData("/api/hrm/employee-qualification/previous/1", "HEAD", typeof(EmployeeQualificationController), "GetPrevious")]
+        [InlineData("/api/hrm/employee-qualification/next/1", "HEAD", typeof(EmployeeQualificationController), "GetNext")]
+        [InlineData("/api/hrm/employee-qualification/last", "HEAD", typeof(EmployeeQualificationController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/employee-qualification/custom-fields", "HEAD", typeof(EmployeeQualificationController), "GetCustomFields")]
         [InlineData("/api/hrm/employee-qualification/custom-fields", "HEAD", typeof(EmployeeQualificationController), "GetCustomFields")]

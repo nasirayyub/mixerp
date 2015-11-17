@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.CashFlowSetup cashFlowSetup = Fixture().GetFirst();
+            Assert.NotNull(cashFlowSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.CashFlowSetup cashFlowSetup = Fixture().GetPrevious(0);
+            Assert.NotNull(cashFlowSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.CashFlowSetup cashFlowSetup = Fixture().GetNext(0);
+            Assert.NotNull(cashFlowSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.CashFlowSetup cashFlowSetup = Fixture().GetLast();
+            Assert.NotNull(cashFlowSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.CashFlowSetup> cashFlowSetups = Fixture().Get(new int[] { });

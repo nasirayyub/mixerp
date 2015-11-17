@@ -240,6 +240,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of party type.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/party-type/first")]
+        public MixERP.Net.Entities.Core.PartyType GetFirst()
+        {
+            try
+            {
+                return this.PartyTypeRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of party type.
+        /// </summary>
+        /// <param name="partyTypeId">Enter PartyTypeId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{partyTypeId}")]
+        [Route("~/api/core/party-type/previous/{partyTypeId}")]
+        public MixERP.Net.Entities.Core.PartyType GetPrevious(int partyTypeId)
+        {
+            try
+            {
+                return this.PartyTypeRepository.GetPrevious(partyTypeId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of party type.
+        /// </summary>
+        /// <param name="partyTypeId">Enter PartyTypeId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{partyTypeId}")]
+        [Route("~/api/core/party-type/next/{partyTypeId}")]
+        public MixERP.Net.Entities.Core.PartyType GetNext(int partyTypeId)
+        {
+            try
+            {
+                return this.PartyTypeRepository.GetNext(partyTypeId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of party type.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/party-type/last")]
+        public MixERP.Net.Entities.Core.PartyType GetLast()
+        {
+            try
+            {
+                return this.PartyTypeRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 party types on each page, sorted by the property PartyTypeId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

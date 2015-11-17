@@ -1,5 +1,5 @@
 ﻿<div class="form factory" style="display: none;">
-    
+
     <div id="ScrudFormErrorModal" class="ui small negative modal">
         <i class="close icon"></i>
         <div class="orange header">
@@ -8,8 +8,7 @@
         </div>
         <div class="content">
             <div class="ui header">Form Invalid</div>
-            <ul class="error-list error-message">
-            </ul>
+            <ul class="error-list error-message"></ul>
         </div>
         <div class="actions">
             <div class="ui positive close button">
@@ -27,11 +26,27 @@
             </div>
         </div>
         <div class="eight wide right aligned column">
-            <div class="ui small basic icon buttons">
-                <div class="ui basic button" title="First"><i class="arrow  left icon"></i></div>
-                <div class="ui basic button" title="Previous"><i class="angle left icon"></i></div>
-                <div class="ui basic button" title="Next"><i class="angle right icon"></i></div>
-                <div class="ui basic button" title="Last"><i class="arrow right icon"></i></div>
+            <div class="ui mini basic icon buttons">
+                <a class="ui basic button" id="ReturnToViewButton" data-localized-resource="Titles.ReturnToView" data-localization-target="title">
+                    <i class="mini list layout icon"></i>
+                </a>
+                <a class="ui basic button" id="CreateDuplicateButton" data-localized-resource="Titles.CreateDuplicate" data-localization-target="title">
+                    <i class="mini copy icon"></i>
+                </a>
+            </div>
+            <div class="ui mini basic icon buttons">
+                <a class="ui basic button" id="FirstButton" data-localized-resource="Titles.First" data-localization-target="title">
+                    <i class="mini arrow  left icon"></i>
+                </a>
+                <div class="ui basic button" id="PreviousButton" data-localized-resource="Titles.Previous" data-localization-target="title">
+                    <i class="mini angle left icon"></i>
+                </div>
+                <div class="ui basic button" id="NextButton" data-localized-resource="Titles.Next" data-localization-target="title">
+                    <i class="mini angle right icon"></i>
+                </div>
+                <div class="ui basic button" id="LastButton" data-localized-resource="Titles.Last" data-localization-target="title">
+                    <i class="mini arrow right icon"></i>
+                </div>
             </div>
 
         </div>

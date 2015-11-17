@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.TaxRateType taxRateType = Fixture().GetFirst();
+            Assert.NotNull(taxRateType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.TaxRateType taxRateType = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(taxRateType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.TaxRateType taxRateType = Fixture().GetNext(string.Empty);
+            Assert.NotNull(taxRateType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.TaxRateType taxRateType = Fixture().GetLast();
+            Assert.NotNull(taxRateType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.TaxRateType> taxRateTypes = Fixture().Get(new string[] { });

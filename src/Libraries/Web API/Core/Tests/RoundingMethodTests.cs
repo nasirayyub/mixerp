@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.RoundingMethod roundingMethod = Fixture().GetFirst();
+            Assert.NotNull(roundingMethod);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.RoundingMethod roundingMethod = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(roundingMethod);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.RoundingMethod roundingMethod = Fixture().GetNext(string.Empty);
+            Assert.NotNull(roundingMethod);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.RoundingMethod roundingMethod = Fixture().GetLast();
+            Assert.NotNull(roundingMethod);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.RoundingMethod> roundingMethods = Fixture().Get(new string[] { });

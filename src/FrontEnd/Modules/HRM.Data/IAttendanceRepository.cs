@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.Attendance Get(long attendanceId);
 
         /// <summary>
+        /// Gets the first record of Attendance.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Attendance.</returns>
+        MixERP.Net.Entities.HRM.Attendance GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Attendance sorted by attendanceId. 
+        /// </summary>
+        /// <param name="attendanceId">The column "attendance_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Attendance.</returns>
+        MixERP.Net.Entities.HRM.Attendance GetPrevious(long attendanceId);
+
+        /// <summary>
+        /// Gets the next record of Attendance sorted by attendanceId. 
+        /// </summary>
+        /// <param name="attendanceId">The column "attendance_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Attendance.</returns>
+        MixERP.Net.Entities.HRM.Attendance GetNext(long attendanceId);
+
+        /// <summary>
+        /// Gets the last record of Attendance.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Attendance.</returns>
+        MixERP.Net.Entities.HRM.Attendance GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Attendance against attendanceIds. 
         /// </summary>
         /// <param name="attendanceIds">Array of column "attendance_id" parameter used on where filter.</param>

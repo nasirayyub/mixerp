@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Office.Fakes
             return new MixERP.Net.Entities.Office.Department();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Office.Department> Get([FromUri] int[] departmentIds)
+        public IEnumerable<MixERP.Net.Entities.Office.Department> Get(int[] departmentIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Office.Department(), 1);
+        }
+
+        public MixERP.Net.Entities.Office.Department GetFirst()
+        {
+            return new MixERP.Net.Entities.Office.Department();
+        }
+
+        public MixERP.Net.Entities.Office.Department GetPrevious(int departmentId)
+        {
+            return new MixERP.Net.Entities.Office.Department();
+        }
+
+        public MixERP.Net.Entities.Office.Department GetNext(int departmentId)
+        {
+            return new MixERP.Net.Entities.Office.Department();
+        }
+
+        public MixERP.Net.Entities.Office.Department GetLast()
+        {
+            return new MixERP.Net.Entities.Office.Department();
         }
 
         public IEnumerable<MixERP.Net.Entities.Office.Department> GetPaginatedResult()

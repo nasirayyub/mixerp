@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.EmploymentStatusCode Get(int employmentStatusCodeId);
 
         /// <summary>
+        /// Gets the first record of EmploymentStatusCode.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EmploymentStatusCode.</returns>
+        MixERP.Net.Entities.HRM.EmploymentStatusCode GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of EmploymentStatusCode sorted by employmentStatusCodeId. 
+        /// </summary>
+        /// <param name="employmentStatusCodeId">The column "employment_status_code_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EmploymentStatusCode.</returns>
+        MixERP.Net.Entities.HRM.EmploymentStatusCode GetPrevious(int employmentStatusCodeId);
+
+        /// <summary>
+        /// Gets the next record of EmploymentStatusCode sorted by employmentStatusCodeId. 
+        /// </summary>
+        /// <param name="employmentStatusCodeId">The column "employment_status_code_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EmploymentStatusCode.</returns>
+        MixERP.Net.Entities.HRM.EmploymentStatusCode GetNext(int employmentStatusCodeId);
+
+        /// <summary>
+        /// Gets the last record of EmploymentStatusCode.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EmploymentStatusCode.</returns>
+        MixERP.Net.Entities.HRM.EmploymentStatusCode GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the EmploymentStatusCode against employmentStatusCodeIds. 
         /// </summary>
         /// <param name="employmentStatusCodeIds">Array of column "employment_status_code_id" parameter used on where filter.</param>

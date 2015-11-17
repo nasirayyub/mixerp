@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.MenuLocale menuLocale = Fixture().GetFirst();
+            Assert.NotNull(menuLocale);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.MenuLocale menuLocale = Fixture().GetPrevious(0);
+            Assert.NotNull(menuLocale);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.MenuLocale menuLocale = Fixture().GetNext(0);
+            Assert.NotNull(menuLocale);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.MenuLocale menuLocale = Fixture().GetLast();
+            Assert.NotNull(menuLocale);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.MenuLocale> menuLocales = Fixture().Get(new int[] { });

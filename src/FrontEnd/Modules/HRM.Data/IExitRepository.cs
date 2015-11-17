@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.Exit Get(long exitId);
 
         /// <summary>
+        /// Gets the first record of Exit.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Exit.</returns>
+        MixERP.Net.Entities.HRM.Exit GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Exit sorted by exitId. 
+        /// </summary>
+        /// <param name="exitId">The column "exit_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Exit.</returns>
+        MixERP.Net.Entities.HRM.Exit GetPrevious(long exitId);
+
+        /// <summary>
+        /// Gets the next record of Exit sorted by exitId. 
+        /// </summary>
+        /// <param name="exitId">The column "exit_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Exit.</returns>
+        MixERP.Net.Entities.HRM.Exit GetNext(long exitId);
+
+        /// <summary>
+        /// Gets the last record of Exit.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Exit.</returns>
+        MixERP.Net.Entities.HRM.Exit GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Exit against exitIds. 
         /// </summary>
         /// <param name="exitIds">Array of column "exit_id" parameter used on where filter.</param>

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/attribute/count-filtered/{filterName}", "GET", typeof(CoreAttributeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/attribute/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CoreAttributeController), "GetFiltered")]
         [InlineData("/api/core/attribute/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CoreAttributeController), "GetFiltered")]
+        [InlineData("/api/core/attribute/first", "GET", typeof(CoreAttributeController), "GetFirst")]
+        [InlineData("/api/core/attribute/previous/1", "GET", typeof(CoreAttributeController), "GetPrevious")]
+        [InlineData("/api/core/attribute/next/1", "GET", typeof(CoreAttributeController), "GetNext")]
+        [InlineData("/api/core/attribute/last", "GET", typeof(CoreAttributeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/attribute/custom-fields", "GET", typeof(CoreAttributeController), "GetCustomFields")]
         [InlineData("/api/core/attribute/custom-fields", "GET", typeof(CoreAttributeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/attribute/count-filtered/{filterName}", "HEAD", typeof(CoreAttributeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/attribute/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CoreAttributeController), "GetFiltered")]
         [InlineData("/api/core/attribute/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CoreAttributeController), "GetFiltered")]
+        [InlineData("/api/core/attribute/first", "HEAD", typeof(CoreAttributeController), "GetFirst")]
+        [InlineData("/api/core/attribute/previous/1", "HEAD", typeof(CoreAttributeController), "GetPrevious")]
+        [InlineData("/api/core/attribute/next/1", "HEAD", typeof(CoreAttributeController), "GetNext")]
+        [InlineData("/api/core/attribute/last", "HEAD", typeof(CoreAttributeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/attribute/custom-fields", "HEAD", typeof(CoreAttributeController), "GetCustomFields")]
         [InlineData("/api/core/attribute/custom-fields", "HEAD", typeof(CoreAttributeController), "GetCustomFields")]

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Party Get(long partyId);
 
         /// <summary>
+        /// Gets the first record of Party.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Party.</returns>
+        MixERP.Net.Entities.Core.Party GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Party sorted by partyId. 
+        /// </summary>
+        /// <param name="partyId">The column "party_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Party.</returns>
+        MixERP.Net.Entities.Core.Party GetPrevious(long partyId);
+
+        /// <summary>
+        /// Gets the next record of Party sorted by partyId. 
+        /// </summary>
+        /// <param name="partyId">The column "party_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Party.</returns>
+        MixERP.Net.Entities.Core.Party GetNext(long partyId);
+
+        /// <summary>
+        /// Gets the last record of Party.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Party.</returns>
+        MixERP.Net.Entities.Core.Party GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Party against partyIds. 
         /// </summary>
         /// <param name="partyIds">Array of column "party_id" parameter used on where filter.</param>

@@ -727,9 +727,12 @@
     <Content Include="Scripts\mixerp\core\enums.js" />
     <Content Include="Scripts\mixerp\master-page\notification.js" />
     <Content Include="Scripts\mixerp\master-page\menu.js" />
+    <Content Include="Scripts\mixerp\utitlities\validator.js" />
     <Content Include="Scripts\mixerp\utitlities\localizable.js" />
     <Content Include="Scripts\mixerp\utitlities\countries.js" />
     <Content Include="Scripts\Modules\ScrudFactory\form\event-on-doc-keydown.js" />
+    <Content Include="Scripts\Modules\ScrudFactory\form\form-actions.js" />
+    <Content Include="Scripts\Modules\ScrudFactory\form\form-navigation.js" />
     <Content Include="Scripts\Modules\ScrudFactory\form\form-layout-field-group.js" />
     <Content Include="Scripts\Modules\ScrudFactory\form\form-load-default-values.js" />
     <Content Include="Scripts\Modules\ScrudFactory\form\form-load-dropdowns.js" />

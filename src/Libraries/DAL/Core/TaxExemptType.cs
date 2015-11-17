@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.tax_exempt_types". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "TaxExemptType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.TaxExemptType GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"TaxExemptType\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.tax_exempt_types ORDER BY tax_exempt_type_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.TaxExemptType>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.tax_exempt_types" sorted by taxExemptTypeId.
+        /// </summary>
+        /// <param name="taxExemptTypeId">The column "tax_exempt_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "TaxExemptType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.TaxExemptType GetPrevious(int taxExemptTypeId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"TaxExemptType\" by \"TaxExemptTypeId\" with value {TaxExemptTypeId} was denied to the user with Login ID {_LoginId}", taxExemptTypeId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.tax_exempt_types WHERE tax_exempt_type_id < @0 ORDER BY tax_exempt_type_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.TaxExemptType>(this._Catalog, sql, taxExemptTypeId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.tax_exempt_types" sorted by taxExemptTypeId.
+        /// </summary>
+        /// <param name="taxExemptTypeId">The column "tax_exempt_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "TaxExemptType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.TaxExemptType GetNext(int taxExemptTypeId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"TaxExemptType\" by \"TaxExemptTypeId\" with value {TaxExemptTypeId} was denied to the user with Login ID {_LoginId}", taxExemptTypeId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.tax_exempt_types WHERE tax_exempt_type_id > @0 ORDER BY tax_exempt_type_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.TaxExemptType>(this._Catalog, sql, taxExemptTypeId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.tax_exempt_types". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "TaxExemptType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.TaxExemptType GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"TaxExemptType\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.tax_exempt_types ORDER BY tax_exempt_type_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.TaxExemptType>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.tax_exempt_types" with a where filter on the column "tax_exempt_type_id" to return a multiple instances of the "TaxExemptType" class. 
         /// </summary>
         /// <param name="taxExemptTypeIds">Array of column "tax_exempt_type_id" parameter used on where filter.</param>

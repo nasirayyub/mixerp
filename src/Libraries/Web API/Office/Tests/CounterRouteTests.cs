@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/counter/count-filtered/{filterName}", "GET", typeof(CounterController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/counter/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CounterController), "GetFiltered")]
         [InlineData("/api/office/counter/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CounterController), "GetFiltered")]
+        [InlineData("/api/office/counter/first", "GET", typeof(CounterController), "GetFirst")]
+        [InlineData("/api/office/counter/previous/1", "GET", typeof(CounterController), "GetPrevious")]
+        [InlineData("/api/office/counter/next/1", "GET", typeof(CounterController), "GetNext")]
+        [InlineData("/api/office/counter/last", "GET", typeof(CounterController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/counter/custom-fields", "GET", typeof(CounterController), "GetCustomFields")]
         [InlineData("/api/office/counter/custom-fields", "GET", typeof(CounterController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/counter/count-filtered/{filterName}", "HEAD", typeof(CounterController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/counter/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CounterController), "GetFiltered")]
         [InlineData("/api/office/counter/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CounterController), "GetFiltered")]
+        [InlineData("/api/office/counter/first", "HEAD", typeof(CounterController), "GetFirst")]
+        [InlineData("/api/office/counter/previous/1", "HEAD", typeof(CounterController), "GetPrevious")]
+        [InlineData("/api/office/counter/next/1", "HEAD", typeof(CounterController), "GetNext")]
+        [InlineData("/api/office/counter/last", "HEAD", typeof(CounterController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/counter/custom-fields", "HEAD", typeof(CounterController), "GetCustomFields")]
         [InlineData("/api/office/counter/custom-fields", "HEAD", typeof(CounterController), "GetCustomFields")]

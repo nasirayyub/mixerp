@@ -240,6 +240,132 @@ namespace MixERP.Net.Api.Policy
         }
 
         /// <summary>
+        ///     Returns the first instance of entity access.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/policy/entity-access/first")]
+        public MixERP.Net.Entities.Policy.EntityAccess GetFirst()
+        {
+            try
+            {
+                return this.EntityAccessRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of entity access.
+        /// </summary>
+        /// <param name="entityAccessId">Enter EntityAccessId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{entityAccessId}")]
+        [Route("~/api/policy/entity-access/previous/{entityAccessId}")]
+        public MixERP.Net.Entities.Policy.EntityAccess GetPrevious(int entityAccessId)
+        {
+            try
+            {
+                return this.EntityAccessRepository.GetPrevious(entityAccessId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of entity access.
+        /// </summary>
+        /// <param name="entityAccessId">Enter EntityAccessId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{entityAccessId}")]
+        [Route("~/api/policy/entity-access/next/{entityAccessId}")]
+        public MixERP.Net.Entities.Policy.EntityAccess GetNext(int entityAccessId)
+        {
+            try
+            {
+                return this.EntityAccessRepository.GetNext(entityAccessId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of entity access.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/policy/entity-access/last")]
+        public MixERP.Net.Entities.Policy.EntityAccess GetLast()
+        {
+            try
+            {
+                return this.EntityAccessRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 entity accesses on each page, sorted by the property EntityAccessId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Filter Get(long filterId);
 
         /// <summary>
+        /// Gets the first record of Filter.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Filter.</returns>
+        MixERP.Net.Entities.Core.Filter GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Filter sorted by filterId. 
+        /// </summary>
+        /// <param name="filterId">The column "filter_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Filter.</returns>
+        MixERP.Net.Entities.Core.Filter GetPrevious(long filterId);
+
+        /// <summary>
+        /// Gets the next record of Filter sorted by filterId. 
+        /// </summary>
+        /// <param name="filterId">The column "filter_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Filter.</returns>
+        MixERP.Net.Entities.Core.Filter GetNext(long filterId);
+
+        /// <summary>
+        /// Gets the last record of Filter.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Filter.</returns>
+        MixERP.Net.Entities.Core.Filter GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Filter against filterIds. 
         /// </summary>
         /// <param name="filterIds">Array of column "filter_id" parameter used on where filter.</param>

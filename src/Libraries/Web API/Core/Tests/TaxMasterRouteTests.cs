@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/tax-master/count-filtered/{filterName}", "GET", typeof(TaxMasterController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/tax-master/get-filtered/{pageNumber}/{filterName}", "GET", typeof(TaxMasterController), "GetFiltered")]
         [InlineData("/api/core/tax-master/get-filtered/{pageNumber}/{filterName}", "GET", typeof(TaxMasterController), "GetFiltered")]
+        [InlineData("/api/core/tax-master/first", "GET", typeof(TaxMasterController), "GetFirst")]
+        [InlineData("/api/core/tax-master/previous/1", "GET", typeof(TaxMasterController), "GetPrevious")]
+        [InlineData("/api/core/tax-master/next/1", "GET", typeof(TaxMasterController), "GetNext")]
+        [InlineData("/api/core/tax-master/last", "GET", typeof(TaxMasterController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/tax-master/custom-fields", "GET", typeof(TaxMasterController), "GetCustomFields")]
         [InlineData("/api/core/tax-master/custom-fields", "GET", typeof(TaxMasterController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/tax-master/count-filtered/{filterName}", "HEAD", typeof(TaxMasterController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/tax-master/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(TaxMasterController), "GetFiltered")]
         [InlineData("/api/core/tax-master/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(TaxMasterController), "GetFiltered")]
+        [InlineData("/api/core/tax-master/first", "HEAD", typeof(TaxMasterController), "GetFirst")]
+        [InlineData("/api/core/tax-master/previous/1", "HEAD", typeof(TaxMasterController), "GetPrevious")]
+        [InlineData("/api/core/tax-master/next/1", "HEAD", typeof(TaxMasterController), "GetNext")]
+        [InlineData("/api/core/tax-master/last", "HEAD", typeof(TaxMasterController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/tax-master/custom-fields", "HEAD", typeof(TaxMasterController), "GetCustomFields")]
         [InlineData("/api/core/tax-master/custom-fields", "HEAD", typeof(TaxMasterController), "GetCustomFields")]

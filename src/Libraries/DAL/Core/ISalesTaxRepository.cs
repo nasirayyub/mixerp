@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.SalesTax Get(int salesTaxId);
 
         /// <summary>
+        /// Gets the first record of SalesTax.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTax.</returns>
+        MixERP.Net.Entities.Core.SalesTax GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of SalesTax sorted by salesTaxId. 
+        /// </summary>
+        /// <param name="salesTaxId">The column "sales_tax_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTax.</returns>
+        MixERP.Net.Entities.Core.SalesTax GetPrevious(int salesTaxId);
+
+        /// <summary>
+        /// Gets the next record of SalesTax sorted by salesTaxId. 
+        /// </summary>
+        /// <param name="salesTaxId">The column "sales_tax_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTax.</returns>
+        MixERP.Net.Entities.Core.SalesTax GetNext(int salesTaxId);
+
+        /// <summary>
+        /// Gets the last record of SalesTax.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTax.</returns>
+        MixERP.Net.Entities.Core.SalesTax GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the SalesTax against salesTaxIds. 
         /// </summary>
         /// <param name="salesTaxIds">Array of column "sales_tax_id" parameter used on where filter.</param>

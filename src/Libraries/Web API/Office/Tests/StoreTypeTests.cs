@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Office.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Office.StoreType storeType = Fixture().GetFirst();
+            Assert.NotNull(storeType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Office.StoreType storeType = Fixture().GetPrevious(0);
+            Assert.NotNull(storeType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Office.StoreType storeType = Fixture().GetNext(0);
+            Assert.NotNull(storeType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Office.StoreType storeType = Fixture().GetLast();
+            Assert.NotNull(storeType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Office.StoreType> storeTypes = Fixture().Get(new int[] { });

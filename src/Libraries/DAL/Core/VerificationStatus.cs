@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.verification_statuses". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "VerificationStatus" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.VerificationStatus GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"VerificationStatus\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.verification_statuses ORDER BY verification_status_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.VerificationStatus>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.verification_statuses" sorted by verificationStatusId.
+        /// </summary>
+        /// <param name="verificationStatusId">The column "verification_status_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "VerificationStatus" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.VerificationStatus GetPrevious(short verificationStatusId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"VerificationStatus\" by \"VerificationStatusId\" with value {VerificationStatusId} was denied to the user with Login ID {_LoginId}", verificationStatusId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.verification_statuses WHERE verification_status_id < @0 ORDER BY verification_status_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.VerificationStatus>(this._Catalog, sql, verificationStatusId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.verification_statuses" sorted by verificationStatusId.
+        /// </summary>
+        /// <param name="verificationStatusId">The column "verification_status_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "VerificationStatus" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.VerificationStatus GetNext(short verificationStatusId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"VerificationStatus\" by \"VerificationStatusId\" with value {VerificationStatusId} was denied to the user with Login ID {_LoginId}", verificationStatusId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.verification_statuses WHERE verification_status_id > @0 ORDER BY verification_status_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.VerificationStatus>(this._Catalog, sql, verificationStatusId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.verification_statuses". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "VerificationStatus" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.VerificationStatus GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"VerificationStatus\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.verification_statuses ORDER BY verification_status_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.VerificationStatus>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.verification_statuses" with a where filter on the column "verification_status_id" to return a multiple instances of the "VerificationStatus" class. 
         /// </summary>
         /// <param name="verificationStatusIds">Array of column "verification_status_id" parameter used on where filter.</param>

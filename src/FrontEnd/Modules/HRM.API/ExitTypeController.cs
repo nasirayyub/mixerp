@@ -238,6 +238,132 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
+        ///     Returns the first instance of exit type.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/hrm/exit-type/first")]
+        public MixERP.Net.Entities.HRM.ExitType GetFirst()
+        {
+            try
+            {
+                return this.ExitTypeRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of exit type.
+        /// </summary>
+        /// <param name="exitTypeId">Enter ExitTypeId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{exitTypeId}")]
+        [Route("~/api/hrm/exit-type/previous/{exitTypeId}")]
+        public MixERP.Net.Entities.HRM.ExitType GetPrevious(int exitTypeId)
+        {
+            try
+            {
+                return this.ExitTypeRepository.GetPrevious(exitTypeId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of exit type.
+        /// </summary>
+        /// <param name="exitTypeId">Enter ExitTypeId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{exitTypeId}")]
+        [Route("~/api/hrm/exit-type/next/{exitTypeId}")]
+        public MixERP.Net.Entities.HRM.ExitType GetNext(int exitTypeId)
+        {
+            try
+            {
+                return this.ExitTypeRepository.GetNext(exitTypeId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of exit type.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/hrm/exit-type/last")]
+        public MixERP.Net.Entities.HRM.ExitType GetLast()
+        {
+            try
+            {
+                return this.ExitTypeRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 exit types on each page, sorted by the property ExitTypeId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

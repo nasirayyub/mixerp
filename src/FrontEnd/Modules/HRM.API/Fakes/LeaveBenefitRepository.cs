@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.HRM.Fakes
             return new MixERP.Net.Entities.HRM.LeaveBenefit();
         }
 
-        public IEnumerable<MixERP.Net.Entities.HRM.LeaveBenefit> Get([FromUri] int[] leaveBenefitIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.LeaveBenefit> Get(int[] leaveBenefitIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.HRM.LeaveBenefit(), 1);
+        }
+
+        public MixERP.Net.Entities.HRM.LeaveBenefit GetFirst()
+        {
+            return new MixERP.Net.Entities.HRM.LeaveBenefit();
+        }
+
+        public MixERP.Net.Entities.HRM.LeaveBenefit GetPrevious(int leaveBenefitId)
+        {
+            return new MixERP.Net.Entities.HRM.LeaveBenefit();
+        }
+
+        public MixERP.Net.Entities.HRM.LeaveBenefit GetNext(int leaveBenefitId)
+        {
+            return new MixERP.Net.Entities.HRM.LeaveBenefit();
+        }
+
+        public MixERP.Net.Entities.HRM.LeaveBenefit GetLast()
+        {
+            return new MixERP.Net.Entities.HRM.LeaveBenefit();
         }
 
         public IEnumerable<MixERP.Net.Entities.HRM.LeaveBenefit> GetPaginatedResult()

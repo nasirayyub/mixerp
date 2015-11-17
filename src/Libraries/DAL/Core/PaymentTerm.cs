@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.payment_terms". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "PaymentTerm" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.PaymentTerm GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"PaymentTerm\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.payment_terms ORDER BY payment_term_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.PaymentTerm>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.payment_terms" sorted by paymentTermId.
+        /// </summary>
+        /// <param name="paymentTermId">The column "payment_term_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "PaymentTerm" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.PaymentTerm GetPrevious(int paymentTermId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"PaymentTerm\" by \"PaymentTermId\" with value {PaymentTermId} was denied to the user with Login ID {_LoginId}", paymentTermId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.payment_terms WHERE payment_term_id < @0 ORDER BY payment_term_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.PaymentTerm>(this._Catalog, sql, paymentTermId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.payment_terms" sorted by paymentTermId.
+        /// </summary>
+        /// <param name="paymentTermId">The column "payment_term_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "PaymentTerm" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.PaymentTerm GetNext(int paymentTermId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"PaymentTerm\" by \"PaymentTermId\" with value {PaymentTermId} was denied to the user with Login ID {_LoginId}", paymentTermId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.payment_terms WHERE payment_term_id > @0 ORDER BY payment_term_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.PaymentTerm>(this._Catalog, sql, paymentTermId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.payment_terms". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "PaymentTerm" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.PaymentTerm GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"PaymentTerm\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.payment_terms ORDER BY payment_term_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.PaymentTerm>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.payment_terms" with a where filter on the column "payment_term_id" to return a multiple instances of the "PaymentTerm" class. 
         /// </summary>
         /// <param name="paymentTermIds">Array of column "payment_term_id" parameter used on where filter.</param>

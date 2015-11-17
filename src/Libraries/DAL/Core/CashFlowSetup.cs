@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.cash_flow_setup". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "CashFlowSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.CashFlowSetup GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"CashFlowSetup\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.cash_flow_setup ORDER BY cash_flow_setup_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.CashFlowSetup>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.cash_flow_setup" sorted by cashFlowSetupId.
+        /// </summary>
+        /// <param name="cashFlowSetupId">The column "cash_flow_setup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "CashFlowSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.CashFlowSetup GetPrevious(int cashFlowSetupId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"CashFlowSetup\" by \"CashFlowSetupId\" with value {CashFlowSetupId} was denied to the user with Login ID {_LoginId}", cashFlowSetupId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.cash_flow_setup WHERE cash_flow_setup_id < @0 ORDER BY cash_flow_setup_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.CashFlowSetup>(this._Catalog, sql, cashFlowSetupId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.cash_flow_setup" sorted by cashFlowSetupId.
+        /// </summary>
+        /// <param name="cashFlowSetupId">The column "cash_flow_setup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "CashFlowSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.CashFlowSetup GetNext(int cashFlowSetupId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"CashFlowSetup\" by \"CashFlowSetupId\" with value {CashFlowSetupId} was denied to the user with Login ID {_LoginId}", cashFlowSetupId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.cash_flow_setup WHERE cash_flow_setup_id > @0 ORDER BY cash_flow_setup_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.CashFlowSetup>(this._Catalog, sql, cashFlowSetupId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.cash_flow_setup". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "CashFlowSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.CashFlowSetup GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"CashFlowSetup\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.cash_flow_setup ORDER BY cash_flow_setup_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.CashFlowSetup>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.cash_flow_setup" with a where filter on the column "cash_flow_setup_id" to return a multiple instances of the "CashFlowSetup" class. 
         /// </summary>
         /// <param name="cashFlowSetupIds">Array of column "cash_flow_setup_id" parameter used on where filter.</param>

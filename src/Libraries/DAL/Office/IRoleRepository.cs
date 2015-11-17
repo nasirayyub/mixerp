@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Office.Data
         MixERP.Net.Entities.Office.Role Get(int roleId);
 
         /// <summary>
+        /// Gets the first record of Role.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Role.</returns>
+        MixERP.Net.Entities.Office.Role GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Role sorted by roleId. 
+        /// </summary>
+        /// <param name="roleId">The column "role_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Role.</returns>
+        MixERP.Net.Entities.Office.Role GetPrevious(int roleId);
+
+        /// <summary>
+        /// Gets the next record of Role sorted by roleId. 
+        /// </summary>
+        /// <param name="roleId">The column "role_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Role.</returns>
+        MixERP.Net.Entities.Office.Role GetNext(int roleId);
+
+        /// <summary>
+        /// Gets the last record of Role.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Role.</returns>
+        MixERP.Net.Entities.Office.Role GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Role against roleIds. 
         /// </summary>
         /// <param name="roleIds">Array of column "role_id" parameter used on where filter.</param>

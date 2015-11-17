@@ -241,6 +241,132 @@ namespace MixERP.Net.Api.Policy
         }
 
         /// <summary>
+        ///     Returns the first instance of api access policy.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/policy/api-access-policy/first")]
+        public MixERP.Net.Entities.Policy.ApiAccessPolicy GetFirst()
+        {
+            try
+            {
+                return this.ApiAccessPolicyRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of api access policy.
+        /// </summary>
+        /// <param name="apiAccessPolicyId">Enter ApiAccessPolicyId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{apiAccessPolicyId}")]
+        [Route("~/api/policy/api-access-policy/previous/{apiAccessPolicyId}")]
+        public MixERP.Net.Entities.Policy.ApiAccessPolicy GetPrevious(long apiAccessPolicyId)
+        {
+            try
+            {
+                return this.ApiAccessPolicyRepository.GetPrevious(apiAccessPolicyId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of api access policy.
+        /// </summary>
+        /// <param name="apiAccessPolicyId">Enter ApiAccessPolicyId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{apiAccessPolicyId}")]
+        [Route("~/api/policy/api-access-policy/next/{apiAccessPolicyId}")]
+        public MixERP.Net.Entities.Policy.ApiAccessPolicy GetNext(long apiAccessPolicyId)
+        {
+            try
+            {
+                return this.ApiAccessPolicyRepository.GetNext(apiAccessPolicyId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of api access policy.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/policy/api-access-policy/last")]
+        public MixERP.Net.Entities.Policy.ApiAccessPolicy GetLast()
+        {
+            try
+            {
+                return this.ApiAccessPolicyRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 api access policies on each page, sorted by the property ApiAccessPolicyId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

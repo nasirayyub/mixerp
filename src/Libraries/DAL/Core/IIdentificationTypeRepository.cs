@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.IdentificationType Get(string identificationTypeCode);
 
         /// <summary>
+        /// Gets the first record of IdentificationType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of IdentificationType.</returns>
+        MixERP.Net.Entities.Core.IdentificationType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of IdentificationType sorted by identificationTypeCode. 
+        /// </summary>
+        /// <param name="identificationTypeCode">The column "identification_type_code" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of IdentificationType.</returns>
+        MixERP.Net.Entities.Core.IdentificationType GetPrevious(string identificationTypeCode);
+
+        /// <summary>
+        /// Gets the next record of IdentificationType sorted by identificationTypeCode. 
+        /// </summary>
+        /// <param name="identificationTypeCode">The column "identification_type_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of IdentificationType.</returns>
+        MixERP.Net.Entities.Core.IdentificationType GetNext(string identificationTypeCode);
+
+        /// <summary>
+        /// Gets the last record of IdentificationType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of IdentificationType.</returns>
+        MixERP.Net.Entities.Core.IdentificationType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the IdentificationType against identificationTypeCodes. 
         /// </summary>
         /// <param name="identificationTypeCodes">Array of column "identification_type_code" parameter used on where filter.</param>

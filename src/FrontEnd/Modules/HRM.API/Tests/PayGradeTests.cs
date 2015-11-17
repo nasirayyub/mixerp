@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.HRM.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.HRM.PayGrade payGrade = Fixture().GetFirst();
+            Assert.NotNull(payGrade);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.HRM.PayGrade payGrade = Fixture().GetPrevious(0);
+            Assert.NotNull(payGrade);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.HRM.PayGrade payGrade = Fixture().GetNext(0);
+            Assert.NotNull(payGrade);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.HRM.PayGrade payGrade = Fixture().GetLast();
+            Assert.NotNull(payGrade);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.HRM.PayGrade> payGrades = Fixture().Get(new int[] { });

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Audit.Tests
         [InlineData("/api/audit/logged-action/count-filtered/{filterName}", "GET", typeof(LoggedActionController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/audit/logged-action/get-filtered/{pageNumber}/{filterName}", "GET", typeof(LoggedActionController), "GetFiltered")]
         [InlineData("/api/audit/logged-action/get-filtered/{pageNumber}/{filterName}", "GET", typeof(LoggedActionController), "GetFiltered")]
+        [InlineData("/api/audit/logged-action/first", "GET", typeof(LoggedActionController), "GetFirst")]
+        [InlineData("/api/audit/logged-action/previous/1", "GET", typeof(LoggedActionController), "GetPrevious")]
+        [InlineData("/api/audit/logged-action/next/1", "GET", typeof(LoggedActionController), "GetNext")]
+        [InlineData("/api/audit/logged-action/last", "GET", typeof(LoggedActionController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/audit/logged-action/custom-fields", "GET", typeof(LoggedActionController), "GetCustomFields")]
         [InlineData("/api/audit/logged-action/custom-fields", "GET", typeof(LoggedActionController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Audit.Tests
         [InlineData("/api/audit/logged-action/count-filtered/{filterName}", "HEAD", typeof(LoggedActionController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/audit/logged-action/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(LoggedActionController), "GetFiltered")]
         [InlineData("/api/audit/logged-action/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(LoggedActionController), "GetFiltered")]
+        [InlineData("/api/audit/logged-action/first", "HEAD", typeof(LoggedActionController), "GetFirst")]
+        [InlineData("/api/audit/logged-action/previous/1", "HEAD", typeof(LoggedActionController), "GetPrevious")]
+        [InlineData("/api/audit/logged-action/next/1", "HEAD", typeof(LoggedActionController), "GetNext")]
+        [InlineData("/api/audit/logged-action/last", "HEAD", typeof(LoggedActionController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/audit/logged-action/custom-fields", "HEAD", typeof(LoggedActionController), "GetCustomFields")]
         [InlineData("/api/audit/logged-action/custom-fields", "HEAD", typeof(LoggedActionController), "GetCustomFields")]

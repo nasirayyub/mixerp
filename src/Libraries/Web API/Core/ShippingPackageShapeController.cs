@@ -239,6 +239,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of shipping package shape.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/shipping-package-shape/first")]
+        public MixERP.Net.Entities.Core.ShippingPackageShape GetFirst()
+        {
+            try
+            {
+                return this.ShippingPackageShapeRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of shipping package shape.
+        /// </summary>
+        /// <param name="shippingPackageShapeId">Enter ShippingPackageShapeId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{shippingPackageShapeId}")]
+        [Route("~/api/core/shipping-package-shape/previous/{shippingPackageShapeId}")]
+        public MixERP.Net.Entities.Core.ShippingPackageShape GetPrevious(int shippingPackageShapeId)
+        {
+            try
+            {
+                return this.ShippingPackageShapeRepository.GetPrevious(shippingPackageShapeId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of shipping package shape.
+        /// </summary>
+        /// <param name="shippingPackageShapeId">Enter ShippingPackageShapeId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{shippingPackageShapeId}")]
+        [Route("~/api/core/shipping-package-shape/next/{shippingPackageShapeId}")]
+        public MixERP.Net.Entities.Core.ShippingPackageShape GetNext(int shippingPackageShapeId)
+        {
+            try
+            {
+                return this.ShippingPackageShapeRepository.GetNext(shippingPackageShapeId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of shipping package shape.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/shipping-package-shape/last")]
+        public MixERP.Net.Entities.Core.ShippingPackageShape GetLast()
+        {
+            try
+            {
+                return this.ShippingPackageShapeRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 shipping package shapes on each page, sorted by the property ShippingPackageShapeId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

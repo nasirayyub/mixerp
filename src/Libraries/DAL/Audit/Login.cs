@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Audit.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "audit.logins". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Login" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Audit.Login GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"Login\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM audit.logins ORDER BY login_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Audit.Login>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "audit.logins" sorted by loginId.
+        /// </summary>
+        /// <param name="loginId">The column "login_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Login" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Audit.Login GetPrevious(long loginId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"Login\" by \"LoginId\" with value {LoginId} was denied to the user with Login ID {_LoginId}", loginId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM audit.logins WHERE login_id < @0 ORDER BY login_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Audit.Login>(this._Catalog, sql, loginId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "audit.logins" sorted by loginId.
+        /// </summary>
+        /// <param name="loginId">The column "login_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Login" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Audit.Login GetNext(long loginId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"Login\" by \"LoginId\" with value {LoginId} was denied to the user with Login ID {_LoginId}", loginId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM audit.logins WHERE login_id > @0 ORDER BY login_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Audit.Login>(this._Catalog, sql, loginId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "audit.logins". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Login" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Audit.Login GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"Login\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM audit.logins ORDER BY login_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Audit.Login>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "audit.logins" with a where filter on the column "login_id" to return a multiple instances of the "Login" class. 
         /// </summary>
         /// <param name="loginIds">Array of column "login_id" parameter used on where filter.</param>

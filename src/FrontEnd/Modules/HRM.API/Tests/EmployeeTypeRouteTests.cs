@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/employee-type/count-filtered/{filterName}", "GET", typeof(EmployeeTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/employee-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmployeeTypeController), "GetFiltered")]
         [InlineData("/api/hrm/employee-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmployeeTypeController), "GetFiltered")]
+        [InlineData("/api/hrm/employee-type/first", "GET", typeof(EmployeeTypeController), "GetFirst")]
+        [InlineData("/api/hrm/employee-type/previous/1", "GET", typeof(EmployeeTypeController), "GetPrevious")]
+        [InlineData("/api/hrm/employee-type/next/1", "GET", typeof(EmployeeTypeController), "GetNext")]
+        [InlineData("/api/hrm/employee-type/last", "GET", typeof(EmployeeTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/employee-type/custom-fields", "GET", typeof(EmployeeTypeController), "GetCustomFields")]
         [InlineData("/api/hrm/employee-type/custom-fields", "GET", typeof(EmployeeTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/employee-type/count-filtered/{filterName}", "HEAD", typeof(EmployeeTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/employee-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmployeeTypeController), "GetFiltered")]
         [InlineData("/api/hrm/employee-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmployeeTypeController), "GetFiltered")]
+        [InlineData("/api/hrm/employee-type/first", "HEAD", typeof(EmployeeTypeController), "GetFirst")]
+        [InlineData("/api/hrm/employee-type/previous/1", "HEAD", typeof(EmployeeTypeController), "GetPrevious")]
+        [InlineData("/api/hrm/employee-type/next/1", "HEAD", typeof(EmployeeTypeController), "GetNext")]
+        [InlineData("/api/hrm/employee-type/last", "HEAD", typeof(EmployeeTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/employee-type/custom-fields", "HEAD", typeof(EmployeeTypeController), "GetCustomFields")]
         [InlineData("/api/hrm/employee-type/custom-fields", "HEAD", typeof(EmployeeTypeController), "GetCustomFields")]

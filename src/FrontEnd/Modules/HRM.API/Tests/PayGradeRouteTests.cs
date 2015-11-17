@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/pay-grade/count-filtered/{filterName}", "GET", typeof(PayGradeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/pay-grade/get-filtered/{pageNumber}/{filterName}", "GET", typeof(PayGradeController), "GetFiltered")]
         [InlineData("/api/hrm/pay-grade/get-filtered/{pageNumber}/{filterName}", "GET", typeof(PayGradeController), "GetFiltered")]
+        [InlineData("/api/hrm/pay-grade/first", "GET", typeof(PayGradeController), "GetFirst")]
+        [InlineData("/api/hrm/pay-grade/previous/1", "GET", typeof(PayGradeController), "GetPrevious")]
+        [InlineData("/api/hrm/pay-grade/next/1", "GET", typeof(PayGradeController), "GetNext")]
+        [InlineData("/api/hrm/pay-grade/last", "GET", typeof(PayGradeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/pay-grade/custom-fields", "GET", typeof(PayGradeController), "GetCustomFields")]
         [InlineData("/api/hrm/pay-grade/custom-fields", "GET", typeof(PayGradeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/pay-grade/count-filtered/{filterName}", "HEAD", typeof(PayGradeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/pay-grade/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(PayGradeController), "GetFiltered")]
         [InlineData("/api/hrm/pay-grade/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(PayGradeController), "GetFiltered")]
+        [InlineData("/api/hrm/pay-grade/first", "HEAD", typeof(PayGradeController), "GetFirst")]
+        [InlineData("/api/hrm/pay-grade/previous/1", "HEAD", typeof(PayGradeController), "GetPrevious")]
+        [InlineData("/api/hrm/pay-grade/next/1", "HEAD", typeof(PayGradeController), "GetNext")]
+        [InlineData("/api/hrm/pay-grade/last", "HEAD", typeof(PayGradeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/pay-grade/custom-fields", "HEAD", typeof(PayGradeController), "GetCustomFields")]
         [InlineData("/api/hrm/pay-grade/custom-fields", "HEAD", typeof(PayGradeController), "GetCustomFields")]

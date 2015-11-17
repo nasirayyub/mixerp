@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Office.Data
         MixERP.Net.Entities.Office.Holiday Get(int holidayId);
 
         /// <summary>
+        /// Gets the first record of Holiday.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Holiday.</returns>
+        MixERP.Net.Entities.Office.Holiday GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Holiday sorted by holidayId. 
+        /// </summary>
+        /// <param name="holidayId">The column "holiday_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Holiday.</returns>
+        MixERP.Net.Entities.Office.Holiday GetPrevious(int holidayId);
+
+        /// <summary>
+        /// Gets the next record of Holiday sorted by holidayId. 
+        /// </summary>
+        /// <param name="holidayId">The column "holiday_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Holiday.</returns>
+        MixERP.Net.Entities.Office.Holiday GetNext(int holidayId);
+
+        /// <summary>
+        /// Gets the last record of Holiday.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Holiday.</returns>
+        MixERP.Net.Entities.Office.Holiday GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Holiday against holidayIds. 
         /// </summary>
         /// <param name="holidayIds">Array of column "holiday_id" parameter used on where filter.</param>

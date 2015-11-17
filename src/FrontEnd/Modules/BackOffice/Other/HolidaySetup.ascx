@@ -22,6 +22,7 @@
         {
             tab: "",
             fields: [
+                ["HolidayId", ""],
                 ["OfficeId", "HolidayName", "", ""],
                 ["OccursOn", "EndsOn", "", ""],
                 ["Description", ""]

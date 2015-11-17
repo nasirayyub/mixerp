@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.RecurrenceType Get(int recurrenceTypeId);
 
         /// <summary>
+        /// Gets the first record of RecurrenceType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of RecurrenceType.</returns>
+        MixERP.Net.Entities.Core.RecurrenceType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of RecurrenceType sorted by recurrenceTypeId. 
+        /// </summary>
+        /// <param name="recurrenceTypeId">The column "recurrence_type_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of RecurrenceType.</returns>
+        MixERP.Net.Entities.Core.RecurrenceType GetPrevious(int recurrenceTypeId);
+
+        /// <summary>
+        /// Gets the next record of RecurrenceType sorted by recurrenceTypeId. 
+        /// </summary>
+        /// <param name="recurrenceTypeId">The column "recurrence_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of RecurrenceType.</returns>
+        MixERP.Net.Entities.Core.RecurrenceType GetNext(int recurrenceTypeId);
+
+        /// <summary>
+        /// Gets the last record of RecurrenceType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of RecurrenceType.</returns>
+        MixERP.Net.Entities.Core.RecurrenceType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the RecurrenceType against recurrenceTypeIds. 
         /// </summary>
         /// <param name="recurrenceTypeIds">Array of column "recurrence_type_id" parameter used on where filter.</param>

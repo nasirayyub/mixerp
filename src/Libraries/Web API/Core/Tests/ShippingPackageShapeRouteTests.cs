@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/shipping-package-shape/count-filtered/{filterName}", "GET", typeof(ShippingPackageShapeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/shipping-package-shape/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ShippingPackageShapeController), "GetFiltered")]
         [InlineData("/api/core/shipping-package-shape/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ShippingPackageShapeController), "GetFiltered")]
+        [InlineData("/api/core/shipping-package-shape/first", "GET", typeof(ShippingPackageShapeController), "GetFirst")]
+        [InlineData("/api/core/shipping-package-shape/previous/1", "GET", typeof(ShippingPackageShapeController), "GetPrevious")]
+        [InlineData("/api/core/shipping-package-shape/next/1", "GET", typeof(ShippingPackageShapeController), "GetNext")]
+        [InlineData("/api/core/shipping-package-shape/last", "GET", typeof(ShippingPackageShapeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/shipping-package-shape/custom-fields", "GET", typeof(ShippingPackageShapeController), "GetCustomFields")]
         [InlineData("/api/core/shipping-package-shape/custom-fields", "GET", typeof(ShippingPackageShapeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/shipping-package-shape/count-filtered/{filterName}", "HEAD", typeof(ShippingPackageShapeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/shipping-package-shape/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ShippingPackageShapeController), "GetFiltered")]
         [InlineData("/api/core/shipping-package-shape/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ShippingPackageShapeController), "GetFiltered")]
+        [InlineData("/api/core/shipping-package-shape/first", "HEAD", typeof(ShippingPackageShapeController), "GetFirst")]
+        [InlineData("/api/core/shipping-package-shape/previous/1", "HEAD", typeof(ShippingPackageShapeController), "GetPrevious")]
+        [InlineData("/api/core/shipping-package-shape/next/1", "HEAD", typeof(ShippingPackageShapeController), "GetNext")]
+        [InlineData("/api/core/shipping-package-shape/last", "HEAD", typeof(ShippingPackageShapeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/shipping-package-shape/custom-fields", "HEAD", typeof(ShippingPackageShapeController), "GetCustomFields")]
         [InlineData("/api/core/shipping-package-shape/custom-fields", "HEAD", typeof(ShippingPackageShapeController), "GetCustomFields")]

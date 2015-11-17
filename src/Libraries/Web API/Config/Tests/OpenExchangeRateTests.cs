@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Config.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Config.OpenExchangeRate openExchangeRate = Fixture().GetFirst();
+            Assert.NotNull(openExchangeRate);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Config.OpenExchangeRate openExchangeRate = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(openExchangeRate);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Config.OpenExchangeRate openExchangeRate = Fixture().GetNext(string.Empty);
+            Assert.NotNull(openExchangeRate);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Config.OpenExchangeRate openExchangeRate = Fixture().GetLast();
+            Assert.NotNull(openExchangeRate);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Config.OpenExchangeRate> openExchangeRates = Fixture().Get(new string[] { });

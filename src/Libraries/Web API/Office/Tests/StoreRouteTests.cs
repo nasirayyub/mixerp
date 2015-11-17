@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/store/count-filtered/{filterName}", "GET", typeof(StoreController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/store/get-filtered/{pageNumber}/{filterName}", "GET", typeof(StoreController), "GetFiltered")]
         [InlineData("/api/office/store/get-filtered/{pageNumber}/{filterName}", "GET", typeof(StoreController), "GetFiltered")]
+        [InlineData("/api/office/store/first", "GET", typeof(StoreController), "GetFirst")]
+        [InlineData("/api/office/store/previous/1", "GET", typeof(StoreController), "GetPrevious")]
+        [InlineData("/api/office/store/next/1", "GET", typeof(StoreController), "GetNext")]
+        [InlineData("/api/office/store/last", "GET", typeof(StoreController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/store/custom-fields", "GET", typeof(StoreController), "GetCustomFields")]
         [InlineData("/api/office/store/custom-fields", "GET", typeof(StoreController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/store/count-filtered/{filterName}", "HEAD", typeof(StoreController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/store/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(StoreController), "GetFiltered")]
         [InlineData("/api/office/store/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(StoreController), "GetFiltered")]
+        [InlineData("/api/office/store/first", "HEAD", typeof(StoreController), "GetFirst")]
+        [InlineData("/api/office/store/previous/1", "HEAD", typeof(StoreController), "GetPrevious")]
+        [InlineData("/api/office/store/next/1", "HEAD", typeof(StoreController), "GetNext")]
+        [InlineData("/api/office/store/last", "HEAD", typeof(StoreController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/store/custom-fields", "HEAD", typeof(StoreController), "GetCustomFields")]
         [InlineData("/api/office/store/custom-fields", "HEAD", typeof(StoreController), "GetCustomFields")]

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/entity/count-filtered/{filterName}", "GET", typeof(EntityController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/entity/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EntityController), "GetFiltered")]
         [InlineData("/api/core/entity/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EntityController), "GetFiltered")]
+        [InlineData("/api/core/entity/first", "GET", typeof(EntityController), "GetFirst")]
+        [InlineData("/api/core/entity/previous/1", "GET", typeof(EntityController), "GetPrevious")]
+        [InlineData("/api/core/entity/next/1", "GET", typeof(EntityController), "GetNext")]
+        [InlineData("/api/core/entity/last", "GET", typeof(EntityController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/entity/custom-fields", "GET", typeof(EntityController), "GetCustomFields")]
         [InlineData("/api/core/entity/custom-fields", "GET", typeof(EntityController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/entity/count-filtered/{filterName}", "HEAD", typeof(EntityController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/entity/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EntityController), "GetFiltered")]
         [InlineData("/api/core/entity/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EntityController), "GetFiltered")]
+        [InlineData("/api/core/entity/first", "HEAD", typeof(EntityController), "GetFirst")]
+        [InlineData("/api/core/entity/previous/1", "HEAD", typeof(EntityController), "GetPrevious")]
+        [InlineData("/api/core/entity/next/1", "HEAD", typeof(EntityController), "GetNext")]
+        [InlineData("/api/core/entity/last", "HEAD", typeof(EntityController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/entity/custom-fields", "HEAD", typeof(EntityController), "GetCustomFields")]
         [InlineData("/api/core/entity/custom-fields", "HEAD", typeof(EntityController), "GetCustomFields")]

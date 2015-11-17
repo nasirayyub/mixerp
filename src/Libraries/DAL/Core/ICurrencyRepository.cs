@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Currency Get(string currencyCode);
 
         /// <summary>
+        /// Gets the first record of Currency.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Currency.</returns>
+        MixERP.Net.Entities.Core.Currency GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Currency sorted by currencyCode. 
+        /// </summary>
+        /// <param name="currencyCode">The column "currency_code" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Currency.</returns>
+        MixERP.Net.Entities.Core.Currency GetPrevious(string currencyCode);
+
+        /// <summary>
+        /// Gets the next record of Currency sorted by currencyCode. 
+        /// </summary>
+        /// <param name="currencyCode">The column "currency_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Currency.</returns>
+        MixERP.Net.Entities.Core.Currency GetNext(string currencyCode);
+
+        /// <summary>
+        /// Gets the last record of Currency.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Currency.</returns>
+        MixERP.Net.Entities.Core.Currency GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Currency against currencyCodes. 
         /// </summary>
         /// <param name="currencyCodes">Array of column "currency_code" parameter used on where filter.</param>

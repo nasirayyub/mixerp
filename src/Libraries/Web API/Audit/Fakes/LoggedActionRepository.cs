@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Audit.Fakes
             return new MixERP.Net.Entities.Audit.LoggedAction();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Audit.LoggedAction> Get([FromUri] long[] eventIds)
+        public IEnumerable<MixERP.Net.Entities.Audit.LoggedAction> Get(long[] eventIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Audit.LoggedAction(), 1);
+        }
+
+        public MixERP.Net.Entities.Audit.LoggedAction GetFirst()
+        {
+            return new MixERP.Net.Entities.Audit.LoggedAction();
+        }
+
+        public MixERP.Net.Entities.Audit.LoggedAction GetPrevious(long eventId)
+        {
+            return new MixERP.Net.Entities.Audit.LoggedAction();
+        }
+
+        public MixERP.Net.Entities.Audit.LoggedAction GetNext(long eventId)
+        {
+            return new MixERP.Net.Entities.Audit.LoggedAction();
+        }
+
+        public MixERP.Net.Entities.Audit.LoggedAction GetLast()
+        {
+            return new MixERP.Net.Entities.Audit.LoggedAction();
         }
 
         public IEnumerable<MixERP.Net.Entities.Audit.LoggedAction> GetPaginatedResult()

@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Config.Fakes
             return new MixERP.Net.Entities.Config.OpenExchangeRate();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Config.OpenExchangeRate> Get([FromUri] string[] keys)
+        public IEnumerable<MixERP.Net.Entities.Config.OpenExchangeRate> Get(string[] keys)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Config.OpenExchangeRate(), 1);
+        }
+
+        public MixERP.Net.Entities.Config.OpenExchangeRate GetFirst()
+        {
+            return new MixERP.Net.Entities.Config.OpenExchangeRate();
+        }
+
+        public MixERP.Net.Entities.Config.OpenExchangeRate GetPrevious(string key)
+        {
+            return new MixERP.Net.Entities.Config.OpenExchangeRate();
+        }
+
+        public MixERP.Net.Entities.Config.OpenExchangeRate GetNext(string key)
+        {
+            return new MixERP.Net.Entities.Config.OpenExchangeRate();
+        }
+
+        public MixERP.Net.Entities.Config.OpenExchangeRate GetLast()
+        {
+            return new MixERP.Net.Entities.Config.OpenExchangeRate();
         }
 
         public IEnumerable<MixERP.Net.Entities.Config.OpenExchangeRate> GetPaginatedResult()

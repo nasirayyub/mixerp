@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.FiscalYear(), 1);
         }
 
+        public MixERP.Net.Entities.Core.FiscalYear GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.FiscalYear();
+        }
+
+        public MixERP.Net.Entities.Core.FiscalYear GetPrevious(string fiscalYearCode)
+        {
+            return new MixERP.Net.Entities.Core.FiscalYear();
+        }
+
+        public MixERP.Net.Entities.Core.FiscalYear GetNext(string fiscalYearCode)
+        {
+            return new MixERP.Net.Entities.Core.FiscalYear();
+        }
+
+        public MixERP.Net.Entities.Core.FiscalYear GetLast()
+        {
+            return new MixERP.Net.Entities.Core.FiscalYear();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.FiscalYear> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.FiscalYear(), 1);

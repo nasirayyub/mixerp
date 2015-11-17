@@ -242,6 +242,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of merchant fee setup.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/merchant-fee-setup/first")]
+        public MixERP.Net.Entities.Core.MerchantFeeSetup GetFirst()
+        {
+            try
+            {
+                return this.MerchantFeeSetupRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of merchant fee setup.
+        /// </summary>
+        /// <param name="merchantFeeSetupId">Enter MerchantFeeSetupId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{merchantFeeSetupId}")]
+        [Route("~/api/core/merchant-fee-setup/previous/{merchantFeeSetupId}")]
+        public MixERP.Net.Entities.Core.MerchantFeeSetup GetPrevious(int merchantFeeSetupId)
+        {
+            try
+            {
+                return this.MerchantFeeSetupRepository.GetPrevious(merchantFeeSetupId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of merchant fee setup.
+        /// </summary>
+        /// <param name="merchantFeeSetupId">Enter MerchantFeeSetupId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{merchantFeeSetupId}")]
+        [Route("~/api/core/merchant-fee-setup/next/{merchantFeeSetupId}")]
+        public MixERP.Net.Entities.Core.MerchantFeeSetup GetNext(int merchantFeeSetupId)
+        {
+            try
+            {
+                return this.MerchantFeeSetupRepository.GetNext(merchantFeeSetupId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of merchant fee setup.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/merchant-fee-setup/last")]
+        public MixERP.Net.Entities.Core.MerchantFeeSetup GetLast()
+        {
+            try
+            {
+                return this.MerchantFeeSetupRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 merchant fee setups on each page, sorted by the property MerchantFeeSetupId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

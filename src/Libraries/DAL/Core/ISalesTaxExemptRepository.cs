@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.SalesTaxExempt Get(int salesTaxExemptId);
 
         /// <summary>
+        /// Gets the first record of SalesTaxExempt.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTaxExempt.</returns>
+        MixERP.Net.Entities.Core.SalesTaxExempt GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of SalesTaxExempt sorted by salesTaxExemptId. 
+        /// </summary>
+        /// <param name="salesTaxExemptId">The column "sales_tax_exempt_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTaxExempt.</returns>
+        MixERP.Net.Entities.Core.SalesTaxExempt GetPrevious(int salesTaxExemptId);
+
+        /// <summary>
+        /// Gets the next record of SalesTaxExempt sorted by salesTaxExemptId. 
+        /// </summary>
+        /// <param name="salesTaxExemptId">The column "sales_tax_exempt_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTaxExempt.</returns>
+        MixERP.Net.Entities.Core.SalesTaxExempt GetNext(int salesTaxExemptId);
+
+        /// <summary>
+        /// Gets the last record of SalesTaxExempt.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTaxExempt.</returns>
+        MixERP.Net.Entities.Core.SalesTaxExempt GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the SalesTaxExempt against salesTaxExemptIds. 
         /// </summary>
         /// <param name="salesTaxExemptIds">Array of column "sales_tax_exempt_id" parameter used on where filter.</param>

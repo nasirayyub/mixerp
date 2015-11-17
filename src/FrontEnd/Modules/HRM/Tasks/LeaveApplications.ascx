@@ -39,7 +39,7 @@
         {
             tab: "",
             fields: [
-                ["LeaveTypeId", "", "", ""],
+                ["LeaveApplicationId", "LeaveTypeId", "", ""],
                 ["StartDate", "EndDate", "", ""],
                 ["Reason", ""]
             ]

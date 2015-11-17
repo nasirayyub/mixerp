@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/employee-experience/count-filtered/{filterName}", "GET", typeof(EmployeeExperienceController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/employee-experience/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmployeeExperienceController), "GetFiltered")]
         [InlineData("/api/hrm/employee-experience/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmployeeExperienceController), "GetFiltered")]
+        [InlineData("/api/hrm/employee-experience/first", "GET", typeof(EmployeeExperienceController), "GetFirst")]
+        [InlineData("/api/hrm/employee-experience/previous/1", "GET", typeof(EmployeeExperienceController), "GetPrevious")]
+        [InlineData("/api/hrm/employee-experience/next/1", "GET", typeof(EmployeeExperienceController), "GetNext")]
+        [InlineData("/api/hrm/employee-experience/last", "GET", typeof(EmployeeExperienceController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/employee-experience/custom-fields", "GET", typeof(EmployeeExperienceController), "GetCustomFields")]
         [InlineData("/api/hrm/employee-experience/custom-fields", "GET", typeof(EmployeeExperienceController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/employee-experience/count-filtered/{filterName}", "HEAD", typeof(EmployeeExperienceController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/employee-experience/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmployeeExperienceController), "GetFiltered")]
         [InlineData("/api/hrm/employee-experience/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmployeeExperienceController), "GetFiltered")]
+        [InlineData("/api/hrm/employee-experience/first", "HEAD", typeof(EmployeeExperienceController), "GetFirst")]
+        [InlineData("/api/hrm/employee-experience/previous/1", "HEAD", typeof(EmployeeExperienceController), "GetPrevious")]
+        [InlineData("/api/hrm/employee-experience/next/1", "HEAD", typeof(EmployeeExperienceController), "GetNext")]
+        [InlineData("/api/hrm/employee-experience/last", "HEAD", typeof(EmployeeExperienceController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/employee-experience/custom-fields", "HEAD", typeof(EmployeeExperienceController), "GetCustomFields")]
         [InlineData("/api/hrm/employee-experience/custom-fields", "HEAD", typeof(EmployeeExperienceController), "GetCustomFields")]

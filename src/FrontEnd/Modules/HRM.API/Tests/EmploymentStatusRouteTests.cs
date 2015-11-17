@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/employment-status/count-filtered/{filterName}", "GET", typeof(EmploymentStatusController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/employment-status/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmploymentStatusController), "GetFiltered")]
         [InlineData("/api/hrm/employment-status/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmploymentStatusController), "GetFiltered")]
+        [InlineData("/api/hrm/employment-status/first", "GET", typeof(EmploymentStatusController), "GetFirst")]
+        [InlineData("/api/hrm/employment-status/previous/1", "GET", typeof(EmploymentStatusController), "GetPrevious")]
+        [InlineData("/api/hrm/employment-status/next/1", "GET", typeof(EmploymentStatusController), "GetNext")]
+        [InlineData("/api/hrm/employment-status/last", "GET", typeof(EmploymentStatusController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/employment-status/custom-fields", "GET", typeof(EmploymentStatusController), "GetCustomFields")]
         [InlineData("/api/hrm/employment-status/custom-fields", "GET", typeof(EmploymentStatusController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/employment-status/count-filtered/{filterName}", "HEAD", typeof(EmploymentStatusController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/employment-status/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmploymentStatusController), "GetFiltered")]
         [InlineData("/api/hrm/employment-status/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmploymentStatusController), "GetFiltered")]
+        [InlineData("/api/hrm/employment-status/first", "HEAD", typeof(EmploymentStatusController), "GetFirst")]
+        [InlineData("/api/hrm/employment-status/previous/1", "HEAD", typeof(EmploymentStatusController), "GetPrevious")]
+        [InlineData("/api/hrm/employment-status/next/1", "HEAD", typeof(EmploymentStatusController), "GetNext")]
+        [InlineData("/api/hrm/employment-status/last", "HEAD", typeof(EmploymentStatusController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/employment-status/custom-fields", "HEAD", typeof(EmploymentStatusController), "GetCustomFields")]
         [InlineData("/api/hrm/employment-status/custom-fields", "HEAD", typeof(EmploymentStatusController), "GetCustomFields")]

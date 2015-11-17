@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/employee-social-network-detail/count-filtered/{filterName}", "GET", typeof(EmployeeSocialNetworkDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/employee-social-network-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmployeeSocialNetworkDetailController), "GetFiltered")]
         [InlineData("/api/hrm/employee-social-network-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmployeeSocialNetworkDetailController), "GetFiltered")]
+        [InlineData("/api/hrm/employee-social-network-detail/first", "GET", typeof(EmployeeSocialNetworkDetailController), "GetFirst")]
+        [InlineData("/api/hrm/employee-social-network-detail/previous/1", "GET", typeof(EmployeeSocialNetworkDetailController), "GetPrevious")]
+        [InlineData("/api/hrm/employee-social-network-detail/next/1", "GET", typeof(EmployeeSocialNetworkDetailController), "GetNext")]
+        [InlineData("/api/hrm/employee-social-network-detail/last", "GET", typeof(EmployeeSocialNetworkDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/employee-social-network-detail/custom-fields", "GET", typeof(EmployeeSocialNetworkDetailController), "GetCustomFields")]
         [InlineData("/api/hrm/employee-social-network-detail/custom-fields", "GET", typeof(EmployeeSocialNetworkDetailController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/employee-social-network-detail/count-filtered/{filterName}", "HEAD", typeof(EmployeeSocialNetworkDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/employee-social-network-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmployeeSocialNetworkDetailController), "GetFiltered")]
         [InlineData("/api/hrm/employee-social-network-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmployeeSocialNetworkDetailController), "GetFiltered")]
+        [InlineData("/api/hrm/employee-social-network-detail/first", "HEAD", typeof(EmployeeSocialNetworkDetailController), "GetFirst")]
+        [InlineData("/api/hrm/employee-social-network-detail/previous/1", "HEAD", typeof(EmployeeSocialNetworkDetailController), "GetPrevious")]
+        [InlineData("/api/hrm/employee-social-network-detail/next/1", "HEAD", typeof(EmployeeSocialNetworkDetailController), "GetNext")]
+        [InlineData("/api/hrm/employee-social-network-detail/last", "HEAD", typeof(EmployeeSocialNetworkDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/employee-social-network-detail/custom-fields", "HEAD", typeof(EmployeeSocialNetworkDetailController), "GetCustomFields")]
         [InlineData("/api/hrm/employee-social-network-detail/custom-fields", "HEAD", typeof(EmployeeSocialNetworkDetailController), "GetCustomFields")]

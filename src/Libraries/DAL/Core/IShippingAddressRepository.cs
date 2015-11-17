@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.ShippingAddress Get(long shippingAddressId);
 
         /// <summary>
+        /// Gets the first record of ShippingAddress.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ShippingAddress.</returns>
+        MixERP.Net.Entities.Core.ShippingAddress GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of ShippingAddress sorted by shippingAddressId. 
+        /// </summary>
+        /// <param name="shippingAddressId">The column "shipping_address_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ShippingAddress.</returns>
+        MixERP.Net.Entities.Core.ShippingAddress GetPrevious(long shippingAddressId);
+
+        /// <summary>
+        /// Gets the next record of ShippingAddress sorted by shippingAddressId. 
+        /// </summary>
+        /// <param name="shippingAddressId">The column "shipping_address_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ShippingAddress.</returns>
+        MixERP.Net.Entities.Core.ShippingAddress GetNext(long shippingAddressId);
+
+        /// <summary>
+        /// Gets the last record of ShippingAddress.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ShippingAddress.</returns>
+        MixERP.Net.Entities.Core.ShippingAddress GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the ShippingAddress against shippingAddressIds. 
         /// </summary>
         /// <param name="shippingAddressIds">Array of column "shipping_address_id" parameter used on where filter.</param>

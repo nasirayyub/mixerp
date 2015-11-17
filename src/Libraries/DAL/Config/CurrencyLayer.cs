@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Config.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "config.currency_layer". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "CurrencyLayer" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Config.CurrencyLayer GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"CurrencyLayer\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM config.currency_layer ORDER BY key LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Config.CurrencyLayer>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "config.currency_layer" sorted by key.
+        /// </summary>
+        /// <param name="key">The column "key" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "CurrencyLayer" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Config.CurrencyLayer GetPrevious(string key)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"CurrencyLayer\" by \"Key\" with value {Key} was denied to the user with Login ID {_LoginId}", key, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM config.currency_layer WHERE key < @0 ORDER BY key DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Config.CurrencyLayer>(this._Catalog, sql, key).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "config.currency_layer" sorted by key.
+        /// </summary>
+        /// <param name="key">The column "key" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "CurrencyLayer" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Config.CurrencyLayer GetNext(string key)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"CurrencyLayer\" by \"Key\" with value {Key} was denied to the user with Login ID {_LoginId}", key, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM config.currency_layer WHERE key > @0 ORDER BY key LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Config.CurrencyLayer>(this._Catalog, sql, key).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "config.currency_layer". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "CurrencyLayer" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Config.CurrencyLayer GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"CurrencyLayer\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM config.currency_layer ORDER BY key DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Config.CurrencyLayer>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "config.currency_layer" with a where filter on the column "key" to return a multiple instances of the "CurrencyLayer" class. 
         /// </summary>
         /// <param name="keys">Array of column "key" parameter used on where filter.</param>

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.TaxBaseAmountType Get(string taxBaseAmountTypeCode);
 
         /// <summary>
+        /// Gets the first record of TaxBaseAmountType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of TaxBaseAmountType.</returns>
+        MixERP.Net.Entities.Core.TaxBaseAmountType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of TaxBaseAmountType sorted by taxBaseAmountTypeCode. 
+        /// </summary>
+        /// <param name="taxBaseAmountTypeCode">The column "tax_base_amount_type_code" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of TaxBaseAmountType.</returns>
+        MixERP.Net.Entities.Core.TaxBaseAmountType GetPrevious(string taxBaseAmountTypeCode);
+
+        /// <summary>
+        /// Gets the next record of TaxBaseAmountType sorted by taxBaseAmountTypeCode. 
+        /// </summary>
+        /// <param name="taxBaseAmountTypeCode">The column "tax_base_amount_type_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of TaxBaseAmountType.</returns>
+        MixERP.Net.Entities.Core.TaxBaseAmountType GetNext(string taxBaseAmountTypeCode);
+
+        /// <summary>
+        /// Gets the last record of TaxBaseAmountType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of TaxBaseAmountType.</returns>
+        MixERP.Net.Entities.Core.TaxBaseAmountType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the TaxBaseAmountType against taxBaseAmountTypeCodes. 
         /// </summary>
         /// <param name="taxBaseAmountTypeCodes">Array of column "tax_base_amount_type_code" parameter used on where filter.</param>

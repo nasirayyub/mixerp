@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Office.Data
         MixERP.Net.Entities.Office.Cashier Get(long cashierId);
 
         /// <summary>
+        /// Gets the first record of Cashier.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Cashier.</returns>
+        MixERP.Net.Entities.Office.Cashier GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Cashier sorted by cashierId. 
+        /// </summary>
+        /// <param name="cashierId">The column "cashier_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Cashier.</returns>
+        MixERP.Net.Entities.Office.Cashier GetPrevious(long cashierId);
+
+        /// <summary>
+        /// Gets the next record of Cashier sorted by cashierId. 
+        /// </summary>
+        /// <param name="cashierId">The column "cashier_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Cashier.</returns>
+        MixERP.Net.Entities.Office.Cashier GetNext(long cashierId);
+
+        /// <summary>
+        /// Gets the last record of Cashier.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Cashier.</returns>
+        MixERP.Net.Entities.Office.Cashier GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Cashier against cashierIds. 
         /// </summary>
         /// <param name="cashierIds">Array of column "cashier_id" parameter used on where filter.</param>

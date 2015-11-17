@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/shift/count-filtered/{filterName}", "GET", typeof(ShiftController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/shift/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ShiftController), "GetFiltered")]
         [InlineData("/api/hrm/shift/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ShiftController), "GetFiltered")]
+        [InlineData("/api/hrm/shift/first", "GET", typeof(ShiftController), "GetFirst")]
+        [InlineData("/api/hrm/shift/previous/1", "GET", typeof(ShiftController), "GetPrevious")]
+        [InlineData("/api/hrm/shift/next/1", "GET", typeof(ShiftController), "GetNext")]
+        [InlineData("/api/hrm/shift/last", "GET", typeof(ShiftController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/shift/custom-fields", "GET", typeof(ShiftController), "GetCustomFields")]
         [InlineData("/api/hrm/shift/custom-fields", "GET", typeof(ShiftController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/shift/count-filtered/{filterName}", "HEAD", typeof(ShiftController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/shift/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ShiftController), "GetFiltered")]
         [InlineData("/api/hrm/shift/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ShiftController), "GetFiltered")]
+        [InlineData("/api/hrm/shift/first", "HEAD", typeof(ShiftController), "GetFirst")]
+        [InlineData("/api/hrm/shift/previous/1", "HEAD", typeof(ShiftController), "GetPrevious")]
+        [InlineData("/api/hrm/shift/next/1", "HEAD", typeof(ShiftController), "GetNext")]
+        [InlineData("/api/hrm/shift/last", "HEAD", typeof(ShiftController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/shift/custom-fields", "HEAD", typeof(ShiftController), "GetCustomFields")]
         [InlineData("/api/hrm/shift/custom-fields", "HEAD", typeof(ShiftController), "GetCustomFields")]

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Gender Get(string genderCode);
 
         /// <summary>
+        /// Gets the first record of Gender.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Gender.</returns>
+        MixERP.Net.Entities.Core.Gender GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Gender sorted by genderCode. 
+        /// </summary>
+        /// <param name="genderCode">The column "gender_code" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Gender.</returns>
+        MixERP.Net.Entities.Core.Gender GetPrevious(string genderCode);
+
+        /// <summary>
+        /// Gets the next record of Gender sorted by genderCode. 
+        /// </summary>
+        /// <param name="genderCode">The column "gender_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Gender.</returns>
+        MixERP.Net.Entities.Core.Gender GetNext(string genderCode);
+
+        /// <summary>
+        /// Gets the last record of Gender.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Gender.</returns>
+        MixERP.Net.Entities.Core.Gender GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Gender against genderCodes. 
         /// </summary>
         /// <param name="genderCodes">Array of column "gender_code" parameter used on where filter.</param>

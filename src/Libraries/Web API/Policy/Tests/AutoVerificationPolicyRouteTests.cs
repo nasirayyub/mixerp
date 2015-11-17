@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/auto-verification-policy/count-filtered/{filterName}", "GET", typeof(AutoVerificationPolicyController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/auto-verification-policy/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AutoVerificationPolicyController), "GetFiltered")]
         [InlineData("/api/policy/auto-verification-policy/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AutoVerificationPolicyController), "GetFiltered")]
+        [InlineData("/api/policy/auto-verification-policy/first", "GET", typeof(AutoVerificationPolicyController), "GetFirst")]
+        [InlineData("/api/policy/auto-verification-policy/previous/1", "GET", typeof(AutoVerificationPolicyController), "GetPrevious")]
+        [InlineData("/api/policy/auto-verification-policy/next/1", "GET", typeof(AutoVerificationPolicyController), "GetNext")]
+        [InlineData("/api/policy/auto-verification-policy/last", "GET", typeof(AutoVerificationPolicyController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/auto-verification-policy/custom-fields", "GET", typeof(AutoVerificationPolicyController), "GetCustomFields")]
         [InlineData("/api/policy/auto-verification-policy/custom-fields", "GET", typeof(AutoVerificationPolicyController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/auto-verification-policy/count-filtered/{filterName}", "HEAD", typeof(AutoVerificationPolicyController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/auto-verification-policy/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AutoVerificationPolicyController), "GetFiltered")]
         [InlineData("/api/policy/auto-verification-policy/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AutoVerificationPolicyController), "GetFiltered")]
+        [InlineData("/api/policy/auto-verification-policy/first", "HEAD", typeof(AutoVerificationPolicyController), "GetFirst")]
+        [InlineData("/api/policy/auto-verification-policy/previous/1", "HEAD", typeof(AutoVerificationPolicyController), "GetPrevious")]
+        [InlineData("/api/policy/auto-verification-policy/next/1", "HEAD", typeof(AutoVerificationPolicyController), "GetNext")]
+        [InlineData("/api/policy/auto-verification-policy/last", "HEAD", typeof(AutoVerificationPolicyController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/auto-verification-policy/custom-fields", "HEAD", typeof(AutoVerificationPolicyController), "GetCustomFields")]
         [InlineData("/api/policy/auto-verification-policy/custom-fields", "HEAD", typeof(AutoVerificationPolicyController), "GetCustomFields")]

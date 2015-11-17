@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Frequency(), 1);
         }
 
+        public MixERP.Net.Entities.Core.Frequency GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.Frequency();
+        }
+
+        public MixERP.Net.Entities.Core.Frequency GetPrevious(int frequencyId)
+        {
+            return new MixERP.Net.Entities.Core.Frequency();
+        }
+
+        public MixERP.Net.Entities.Core.Frequency GetNext(int frequencyId)
+        {
+            return new MixERP.Net.Entities.Core.Frequency();
+        }
+
+        public MixERP.Net.Entities.Core.Frequency GetLast()
+        {
+            return new MixERP.Net.Entities.Core.Frequency();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.Frequency> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Frequency(), 1);

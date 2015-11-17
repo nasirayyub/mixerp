@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.AccountMaster accountMaster = Fixture().GetFirst();
+            Assert.NotNull(accountMaster);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.AccountMaster accountMaster = Fixture().GetPrevious(0);
+            Assert.NotNull(accountMaster);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.AccountMaster accountMaster = Fixture().GetNext(0);
+            Assert.NotNull(accountMaster);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.AccountMaster accountMaster = Fixture().GetLast();
+            Assert.NotNull(accountMaster);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.AccountMaster> accountMasters = Fixture().Get(new short[] { });

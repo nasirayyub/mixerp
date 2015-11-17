@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/marital-status/count-filtered/{filterName}", "GET", typeof(MaritalStatusController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/marital-status/get-filtered/{pageNumber}/{filterName}", "GET", typeof(MaritalStatusController), "GetFiltered")]
         [InlineData("/api/core/marital-status/get-filtered/{pageNumber}/{filterName}", "GET", typeof(MaritalStatusController), "GetFiltered")]
+        [InlineData("/api/core/marital-status/first", "GET", typeof(MaritalStatusController), "GetFirst")]
+        [InlineData("/api/core/marital-status/previous/1", "GET", typeof(MaritalStatusController), "GetPrevious")]
+        [InlineData("/api/core/marital-status/next/1", "GET", typeof(MaritalStatusController), "GetNext")]
+        [InlineData("/api/core/marital-status/last", "GET", typeof(MaritalStatusController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/marital-status/custom-fields", "GET", typeof(MaritalStatusController), "GetCustomFields")]
         [InlineData("/api/core/marital-status/custom-fields", "GET", typeof(MaritalStatusController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/marital-status/count-filtered/{filterName}", "HEAD", typeof(MaritalStatusController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/marital-status/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(MaritalStatusController), "GetFiltered")]
         [InlineData("/api/core/marital-status/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(MaritalStatusController), "GetFiltered")]
+        [InlineData("/api/core/marital-status/first", "HEAD", typeof(MaritalStatusController), "GetFirst")]
+        [InlineData("/api/core/marital-status/previous/1", "HEAD", typeof(MaritalStatusController), "GetPrevious")]
+        [InlineData("/api/core/marital-status/next/1", "HEAD", typeof(MaritalStatusController), "GetNext")]
+        [InlineData("/api/core/marital-status/last", "HEAD", typeof(MaritalStatusController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/marital-status/custom-fields", "HEAD", typeof(MaritalStatusController), "GetCustomFields")]
         [InlineData("/api/core/marital-status/custom-fields", "HEAD", typeof(MaritalStatusController), "GetCustomFields")]

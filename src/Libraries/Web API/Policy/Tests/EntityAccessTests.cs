@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Policy.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Policy.EntityAccess entityAccess = Fixture().GetFirst();
+            Assert.NotNull(entityAccess);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Policy.EntityAccess entityAccess = Fixture().GetPrevious(0);
+            Assert.NotNull(entityAccess);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Policy.EntityAccess entityAccess = Fixture().GetNext(0);
+            Assert.NotNull(entityAccess);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Policy.EntityAccess entityAccess = Fixture().GetLast();
+            Assert.NotNull(entityAccess);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Policy.EntityAccess> entityAccesses = Fixture().Get(new int[] { });

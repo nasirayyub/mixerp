@@ -254,6 +254,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of sales tax detail.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/sales-tax-detail/first")]
+        public MixERP.Net.Entities.Core.SalesTaxDetail GetFirst()
+        {
+            try
+            {
+                return this.SalesTaxDetailRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of sales tax detail.
+        /// </summary>
+        /// <param name="salesTaxDetailId">Enter SalesTaxDetailId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{salesTaxDetailId}")]
+        [Route("~/api/core/sales-tax-detail/previous/{salesTaxDetailId}")]
+        public MixERP.Net.Entities.Core.SalesTaxDetail GetPrevious(int salesTaxDetailId)
+        {
+            try
+            {
+                return this.SalesTaxDetailRepository.GetPrevious(salesTaxDetailId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of sales tax detail.
+        /// </summary>
+        /// <param name="salesTaxDetailId">Enter SalesTaxDetailId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{salesTaxDetailId}")]
+        [Route("~/api/core/sales-tax-detail/next/{salesTaxDetailId}")]
+        public MixERP.Net.Entities.Core.SalesTaxDetail GetNext(int salesTaxDetailId)
+        {
+            try
+            {
+                return this.SalesTaxDetailRepository.GetNext(salesTaxDetailId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of sales tax detail.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/sales-tax-detail/last")]
+        public MixERP.Net.Entities.Core.SalesTaxDetail GetLast()
+        {
+            try
+            {
+                return this.SalesTaxDetailRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 sales tax details on each page, sorted by the property SalesTaxDetailId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

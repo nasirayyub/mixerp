@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/compound-item-detail/count-filtered/{filterName}", "GET", typeof(CompoundItemDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/compound-item-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CompoundItemDetailController), "GetFiltered")]
         [InlineData("/api/core/compound-item-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CompoundItemDetailController), "GetFiltered")]
+        [InlineData("/api/core/compound-item-detail/first", "GET", typeof(CompoundItemDetailController), "GetFirst")]
+        [InlineData("/api/core/compound-item-detail/previous/1", "GET", typeof(CompoundItemDetailController), "GetPrevious")]
+        [InlineData("/api/core/compound-item-detail/next/1", "GET", typeof(CompoundItemDetailController), "GetNext")]
+        [InlineData("/api/core/compound-item-detail/last", "GET", typeof(CompoundItemDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/compound-item-detail/custom-fields", "GET", typeof(CompoundItemDetailController), "GetCustomFields")]
         [InlineData("/api/core/compound-item-detail/custom-fields", "GET", typeof(CompoundItemDetailController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/compound-item-detail/count-filtered/{filterName}", "HEAD", typeof(CompoundItemDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/compound-item-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CompoundItemDetailController), "GetFiltered")]
         [InlineData("/api/core/compound-item-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CompoundItemDetailController), "GetFiltered")]
+        [InlineData("/api/core/compound-item-detail/first", "HEAD", typeof(CompoundItemDetailController), "GetFirst")]
+        [InlineData("/api/core/compound-item-detail/previous/1", "HEAD", typeof(CompoundItemDetailController), "GetPrevious")]
+        [InlineData("/api/core/compound-item-detail/next/1", "HEAD", typeof(CompoundItemDetailController), "GetNext")]
+        [InlineData("/api/core/compound-item-detail/last", "HEAD", typeof(CompoundItemDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/compound-item-detail/custom-fields", "HEAD", typeof(CompoundItemDetailController), "GetCustomFields")]
         [InlineData("/api/core/compound-item-detail/custom-fields", "HEAD", typeof(CompoundItemDetailController), "GetCustomFields")]

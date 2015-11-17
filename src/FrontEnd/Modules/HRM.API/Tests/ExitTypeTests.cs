@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.HRM.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.HRM.ExitType exitType = Fixture().GetFirst();
+            Assert.NotNull(exitType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.HRM.ExitType exitType = Fixture().GetPrevious(0);
+            Assert.NotNull(exitType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.HRM.ExitType exitType = Fixture().GetNext(0);
+            Assert.NotNull(exitType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.HRM.ExitType exitType = Fixture().GetLast();
+            Assert.NotNull(exitType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.HRM.ExitType> exitTypes = Fixture().Get(new int[] { });

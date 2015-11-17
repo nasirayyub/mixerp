@@ -53,6 +53,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/resignation/count-filtered/{filterName}", "GET", typeof(ResignationController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/resignation/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ResignationController), "GetFiltered")]
         [InlineData("/api/hrm/resignation/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ResignationController), "GetFiltered")]
+        [InlineData("/api/hrm/resignation/first", "GET", typeof(ResignationController), "GetFirst")]
+        [InlineData("/api/hrm/resignation/previous/1", "GET", typeof(ResignationController), "GetPrevious")]
+        [InlineData("/api/hrm/resignation/next/1", "GET", typeof(ResignationController), "GetNext")]
+        [InlineData("/api/hrm/resignation/last", "GET", typeof(ResignationController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/resignation/custom-fields", "GET", typeof(ResignationController), "GetCustomFields")]
         [InlineData("/api/hrm/resignation/custom-fields", "GET", typeof(ResignationController), "GetCustomFields")]
@@ -78,6 +82,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/resignation/count-filtered/{filterName}", "HEAD", typeof(ResignationController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/resignation/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ResignationController), "GetFiltered")]
         [InlineData("/api/hrm/resignation/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ResignationController), "GetFiltered")]
+        [InlineData("/api/hrm/resignation/first", "HEAD", typeof(ResignationController), "GetFirst")]
+        [InlineData("/api/hrm/resignation/previous/1", "HEAD", typeof(ResignationController), "GetPrevious")]
+        [InlineData("/api/hrm/resignation/next/1", "HEAD", typeof(ResignationController), "GetNext")]
+        [InlineData("/api/hrm/resignation/last", "HEAD", typeof(ResignationController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/resignation/custom-fields", "HEAD", typeof(ResignationController), "GetCustomFields")]
         [InlineData("/api/hrm/resignation/custom-fields", "HEAD", typeof(ResignationController), "GetCustomFields")]

@@ -12,6 +12,12 @@
 
     var primaryKeyValue = getPrimaryKeyValue($(el), isCard);
 
+
+    if (typeof (scrudFactory.deleteHandler) === "function") {
+        scrudFactory.deleteHandler(primaryKeyValue);
+        return;
+    };
+
     var ajax = request(primaryKeyValue);
 
     ajax.success(function () {

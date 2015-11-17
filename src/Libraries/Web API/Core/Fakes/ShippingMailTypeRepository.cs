@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.ShippingMailType(), 1);
         }
 
+        public MixERP.Net.Entities.Core.ShippingMailType GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.ShippingMailType();
+        }
+
+        public MixERP.Net.Entities.Core.ShippingMailType GetPrevious(int shippingMailTypeId)
+        {
+            return new MixERP.Net.Entities.Core.ShippingMailType();
+        }
+
+        public MixERP.Net.Entities.Core.ShippingMailType GetNext(int shippingMailTypeId)
+        {
+            return new MixERP.Net.Entities.Core.ShippingMailType();
+        }
+
+        public MixERP.Net.Entities.Core.ShippingMailType GetLast()
+        {
+            return new MixERP.Net.Entities.Core.ShippingMailType();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.ShippingMailType> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.ShippingMailType(), 1);

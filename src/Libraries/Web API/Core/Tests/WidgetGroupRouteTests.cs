@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/widget-group/count-filtered/{filterName}", "GET", typeof(WidgetGroupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/widget-group/get-filtered/{pageNumber}/{filterName}", "GET", typeof(WidgetGroupController), "GetFiltered")]
         [InlineData("/api/core/widget-group/get-filtered/{pageNumber}/{filterName}", "GET", typeof(WidgetGroupController), "GetFiltered")]
+        [InlineData("/api/core/widget-group/first", "GET", typeof(WidgetGroupController), "GetFirst")]
+        [InlineData("/api/core/widget-group/previous/1", "GET", typeof(WidgetGroupController), "GetPrevious")]
+        [InlineData("/api/core/widget-group/next/1", "GET", typeof(WidgetGroupController), "GetNext")]
+        [InlineData("/api/core/widget-group/last", "GET", typeof(WidgetGroupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/widget-group/custom-fields", "GET", typeof(WidgetGroupController), "GetCustomFields")]
         [InlineData("/api/core/widget-group/custom-fields", "GET", typeof(WidgetGroupController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/widget-group/count-filtered/{filterName}", "HEAD", typeof(WidgetGroupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/widget-group/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(WidgetGroupController), "GetFiltered")]
         [InlineData("/api/core/widget-group/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(WidgetGroupController), "GetFiltered")]
+        [InlineData("/api/core/widget-group/first", "HEAD", typeof(WidgetGroupController), "GetFirst")]
+        [InlineData("/api/core/widget-group/previous/1", "HEAD", typeof(WidgetGroupController), "GetPrevious")]
+        [InlineData("/api/core/widget-group/next/1", "HEAD", typeof(WidgetGroupController), "GetNext")]
+        [InlineData("/api/core/widget-group/last", "HEAD", typeof(WidgetGroupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/widget-group/custom-fields", "HEAD", typeof(WidgetGroupController), "GetCustomFields")]
         [InlineData("/api/core/widget-group/custom-fields", "HEAD", typeof(WidgetGroupController), "GetCustomFields")]

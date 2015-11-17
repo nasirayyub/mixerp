@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.County(), 1);
         }
 
+        public MixERP.Net.Entities.Core.County GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.County();
+        }
+
+        public MixERP.Net.Entities.Core.County GetPrevious(int countyId)
+        {
+            return new MixERP.Net.Entities.Core.County();
+        }
+
+        public MixERP.Net.Entities.Core.County GetNext(int countyId)
+        {
+            return new MixERP.Net.Entities.Core.County();
+        }
+
+        public MixERP.Net.Entities.Core.County GetLast()
+        {
+            return new MixERP.Net.Entities.Core.County();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.County> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.County(), 1);

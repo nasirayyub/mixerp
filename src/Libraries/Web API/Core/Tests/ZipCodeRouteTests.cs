@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/zip-code/count-filtered/{filterName}", "GET", typeof(ZipCodeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/zip-code/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ZipCodeController), "GetFiltered")]
         [InlineData("/api/core/zip-code/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ZipCodeController), "GetFiltered")]
+        [InlineData("/api/core/zip-code/first", "GET", typeof(ZipCodeController), "GetFirst")]
+        [InlineData("/api/core/zip-code/previous/1", "GET", typeof(ZipCodeController), "GetPrevious")]
+        [InlineData("/api/core/zip-code/next/1", "GET", typeof(ZipCodeController), "GetNext")]
+        [InlineData("/api/core/zip-code/last", "GET", typeof(ZipCodeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/zip-code/custom-fields", "GET", typeof(ZipCodeController), "GetCustomFields")]
         [InlineData("/api/core/zip-code/custom-fields", "GET", typeof(ZipCodeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/zip-code/count-filtered/{filterName}", "HEAD", typeof(ZipCodeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/zip-code/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ZipCodeController), "GetFiltered")]
         [InlineData("/api/core/zip-code/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ZipCodeController), "GetFiltered")]
+        [InlineData("/api/core/zip-code/first", "HEAD", typeof(ZipCodeController), "GetFirst")]
+        [InlineData("/api/core/zip-code/previous/1", "HEAD", typeof(ZipCodeController), "GetPrevious")]
+        [InlineData("/api/core/zip-code/next/1", "HEAD", typeof(ZipCodeController), "GetNext")]
+        [InlineData("/api/core/zip-code/last", "HEAD", typeof(ZipCodeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/zip-code/custom-fields", "HEAD", typeof(ZipCodeController), "GetCustomFields")]
         [InlineData("/api/core/zip-code/custom-fields", "HEAD", typeof(ZipCodeController), "GetCustomFields")]

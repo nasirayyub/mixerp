@@ -23,12 +23,18 @@
         return;
     };
 
+    var primaryKeyValue = getPrimaryKeyValue($(el), isCard);
+
+    if (scrudFactory.editUrl) {
+        window.location = scrudFactory.editUrl + primaryKeyValue;
+        return;
+    };
+
     if (window.scrudForm === "undefined") {
         displayMessage(window.Resources.Labels.NoFormFound());
         return;
     };
 
-    var primaryKeyValue = getPrimaryKeyValue($(el), isCard);
     var tableName = scrudFactory.formTableName;
 
     if (checkIfProcedure()) {

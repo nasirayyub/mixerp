@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Localization.Fakes
             return new MixERP.Net.Entities.Localization.LocalizedResource();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Localization.LocalizedResource> Get([FromUri] long[] localizedResourceIds)
+        public IEnumerable<MixERP.Net.Entities.Localization.LocalizedResource> Get(long[] localizedResourceIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Localization.LocalizedResource(), 1);
+        }
+
+        public MixERP.Net.Entities.Localization.LocalizedResource GetFirst()
+        {
+            return new MixERP.Net.Entities.Localization.LocalizedResource();
+        }
+
+        public MixERP.Net.Entities.Localization.LocalizedResource GetPrevious(long localizedResourceId)
+        {
+            return new MixERP.Net.Entities.Localization.LocalizedResource();
+        }
+
+        public MixERP.Net.Entities.Localization.LocalizedResource GetNext(long localizedResourceId)
+        {
+            return new MixERP.Net.Entities.Localization.LocalizedResource();
+        }
+
+        public MixERP.Net.Entities.Localization.LocalizedResource GetLast()
+        {
+            return new MixERP.Net.Entities.Localization.LocalizedResource();
         }
 
         public IEnumerable<MixERP.Net.Entities.Localization.LocalizedResource> GetPaginatedResult()

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/configuration/count-filtered/{filterName}", "GET", typeof(ConfigurationController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/configuration/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ConfigurationController), "GetFiltered")]
         [InlineData("/api/office/configuration/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ConfigurationController), "GetFiltered")]
+        [InlineData("/api/office/configuration/first", "GET", typeof(ConfigurationController), "GetFirst")]
+        [InlineData("/api/office/configuration/previous/1", "GET", typeof(ConfigurationController), "GetPrevious")]
+        [InlineData("/api/office/configuration/next/1", "GET", typeof(ConfigurationController), "GetNext")]
+        [InlineData("/api/office/configuration/last", "GET", typeof(ConfigurationController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/configuration/custom-fields", "GET", typeof(ConfigurationController), "GetCustomFields")]
         [InlineData("/api/office/configuration/custom-fields", "GET", typeof(ConfigurationController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/configuration/count-filtered/{filterName}", "HEAD", typeof(ConfigurationController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/configuration/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ConfigurationController), "GetFiltered")]
         [InlineData("/api/office/configuration/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ConfigurationController), "GetFiltered")]
+        [InlineData("/api/office/configuration/first", "HEAD", typeof(ConfigurationController), "GetFirst")]
+        [InlineData("/api/office/configuration/previous/1", "HEAD", typeof(ConfigurationController), "GetPrevious")]
+        [InlineData("/api/office/configuration/next/1", "HEAD", typeof(ConfigurationController), "GetNext")]
+        [InlineData("/api/office/configuration/last", "HEAD", typeof(ConfigurationController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/configuration/custom-fields", "HEAD", typeof(ConfigurationController), "GetCustomFields")]
         [InlineData("/api/office/configuration/custom-fields", "HEAD", typeof(ConfigurationController), "GetCustomFields")]

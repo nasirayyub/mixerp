@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.LateFee Get(int lateFeeId);
 
         /// <summary>
+        /// Gets the first record of LateFee.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of LateFee.</returns>
+        MixERP.Net.Entities.Core.LateFee GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of LateFee sorted by lateFeeId. 
+        /// </summary>
+        /// <param name="lateFeeId">The column "late_fee_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of LateFee.</returns>
+        MixERP.Net.Entities.Core.LateFee GetPrevious(int lateFeeId);
+
+        /// <summary>
+        /// Gets the next record of LateFee sorted by lateFeeId. 
+        /// </summary>
+        /// <param name="lateFeeId">The column "late_fee_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of LateFee.</returns>
+        MixERP.Net.Entities.Core.LateFee GetNext(int lateFeeId);
+
+        /// <summary>
+        /// Gets the last record of LateFee.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of LateFee.</returns>
+        MixERP.Net.Entities.Core.LateFee GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the LateFee against lateFeeIds. 
         /// </summary>
         /// <param name="lateFeeIds">Array of column "late_fee_id" parameter used on where filter.</param>

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/smtp/count-filtered/{filterName}", "GET", typeof(SmtpController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/smtp/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SmtpController), "GetFiltered")]
         [InlineData("/api/config/smtp/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SmtpController), "GetFiltered")]
+        [InlineData("/api/config/smtp/first", "GET", typeof(SmtpController), "GetFirst")]
+        [InlineData("/api/config/smtp/previous/1", "GET", typeof(SmtpController), "GetPrevious")]
+        [InlineData("/api/config/smtp/next/1", "GET", typeof(SmtpController), "GetNext")]
+        [InlineData("/api/config/smtp/last", "GET", typeof(SmtpController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/smtp/custom-fields", "GET", typeof(SmtpController), "GetCustomFields")]
         [InlineData("/api/config/smtp/custom-fields", "GET", typeof(SmtpController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/smtp/count-filtered/{filterName}", "HEAD", typeof(SmtpController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/smtp/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SmtpController), "GetFiltered")]
         [InlineData("/api/config/smtp/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SmtpController), "GetFiltered")]
+        [InlineData("/api/config/smtp/first", "HEAD", typeof(SmtpController), "GetFirst")]
+        [InlineData("/api/config/smtp/previous/1", "HEAD", typeof(SmtpController), "GetPrevious")]
+        [InlineData("/api/config/smtp/next/1", "HEAD", typeof(SmtpController), "GetNext")]
+        [InlineData("/api/config/smtp/last", "HEAD", typeof(SmtpController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/smtp/custom-fields", "HEAD", typeof(SmtpController), "GetCustomFields")]
         [InlineData("/api/config/smtp/custom-fields", "HEAD", typeof(SmtpController), "GetCustomFields")]

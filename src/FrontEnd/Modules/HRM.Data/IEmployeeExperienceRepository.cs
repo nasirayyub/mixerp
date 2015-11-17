@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.EmployeeExperience Get(long employeeExperienceId);
 
         /// <summary>
+        /// Gets the first record of EmployeeExperience.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeExperience.</returns>
+        MixERP.Net.Entities.HRM.EmployeeExperience GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of EmployeeExperience sorted by employeeExperienceId. 
+        /// </summary>
+        /// <param name="employeeExperienceId">The column "employee_experience_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeExperience.</returns>
+        MixERP.Net.Entities.HRM.EmployeeExperience GetPrevious(long employeeExperienceId);
+
+        /// <summary>
+        /// Gets the next record of EmployeeExperience sorted by employeeExperienceId. 
+        /// </summary>
+        /// <param name="employeeExperienceId">The column "employee_experience_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeExperience.</returns>
+        MixERP.Net.Entities.HRM.EmployeeExperience GetNext(long employeeExperienceId);
+
+        /// <summary>
+        /// Gets the last record of EmployeeExperience.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeExperience.</returns>
+        MixERP.Net.Entities.HRM.EmployeeExperience GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the EmployeeExperience against employeeExperienceIds. 
         /// </summary>
         /// <param name="employeeExperienceIds">Array of column "employee_experience_id" parameter used on where filter.</param>

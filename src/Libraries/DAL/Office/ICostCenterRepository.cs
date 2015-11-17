@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Office.Data
         MixERP.Net.Entities.Office.CostCenter Get(int costCenterId);
 
         /// <summary>
+        /// Gets the first record of CostCenter.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CostCenter.</returns>
+        MixERP.Net.Entities.Office.CostCenter GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of CostCenter sorted by costCenterId. 
+        /// </summary>
+        /// <param name="costCenterId">The column "cost_center_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CostCenter.</returns>
+        MixERP.Net.Entities.Office.CostCenter GetPrevious(int costCenterId);
+
+        /// <summary>
+        /// Gets the next record of CostCenter sorted by costCenterId. 
+        /// </summary>
+        /// <param name="costCenterId">The column "cost_center_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CostCenter.</returns>
+        MixERP.Net.Entities.Office.CostCenter GetNext(int costCenterId);
+
+        /// <summary>
+        /// Gets the last record of CostCenter.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CostCenter.</returns>
+        MixERP.Net.Entities.Office.CostCenter GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the CostCenter against costCenterIds. 
         /// </summary>
         /// <param name="costCenterIds">Array of column "cost_center_id" parameter used on where filter.</param>

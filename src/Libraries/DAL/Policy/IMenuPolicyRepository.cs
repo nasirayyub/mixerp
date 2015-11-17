@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Policy.Data
         MixERP.Net.Entities.Policy.MenuPolicy Get(int policyId);
 
         /// <summary>
+        /// Gets the first record of MenuPolicy.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of MenuPolicy.</returns>
+        MixERP.Net.Entities.Policy.MenuPolicy GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of MenuPolicy sorted by policyId. 
+        /// </summary>
+        /// <param name="policyId">The column "policy_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of MenuPolicy.</returns>
+        MixERP.Net.Entities.Policy.MenuPolicy GetPrevious(int policyId);
+
+        /// <summary>
+        /// Gets the next record of MenuPolicy sorted by policyId. 
+        /// </summary>
+        /// <param name="policyId">The column "policy_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of MenuPolicy.</returns>
+        MixERP.Net.Entities.Policy.MenuPolicy GetNext(int policyId);
+
+        /// <summary>
+        /// Gets the last record of MenuPolicy.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of MenuPolicy.</returns>
+        MixERP.Net.Entities.Policy.MenuPolicy GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the MenuPolicy against policyIds. 
         /// </summary>
         /// <param name="policyIds">Array of column "policy_id" parameter used on where filter.</param>

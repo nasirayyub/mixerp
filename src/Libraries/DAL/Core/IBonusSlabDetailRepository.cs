@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.BonusSlabDetail Get(int bonusSlabDetailId);
 
         /// <summary>
+        /// Gets the first record of BonusSlabDetail.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of BonusSlabDetail.</returns>
+        MixERP.Net.Entities.Core.BonusSlabDetail GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of BonusSlabDetail sorted by bonusSlabDetailId. 
+        /// </summary>
+        /// <param name="bonusSlabDetailId">The column "bonus_slab_detail_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of BonusSlabDetail.</returns>
+        MixERP.Net.Entities.Core.BonusSlabDetail GetPrevious(int bonusSlabDetailId);
+
+        /// <summary>
+        /// Gets the next record of BonusSlabDetail sorted by bonusSlabDetailId. 
+        /// </summary>
+        /// <param name="bonusSlabDetailId">The column "bonus_slab_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of BonusSlabDetail.</returns>
+        MixERP.Net.Entities.Core.BonusSlabDetail GetNext(int bonusSlabDetailId);
+
+        /// <summary>
+        /// Gets the last record of BonusSlabDetail.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of BonusSlabDetail.</returns>
+        MixERP.Net.Entities.Core.BonusSlabDetail GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the BonusSlabDetail against bonusSlabDetailIds. 
         /// </summary>
         /// <param name="bonusSlabDetailIds">Array of column "bonus_slab_detail_id" parameter used on where filter.</param>

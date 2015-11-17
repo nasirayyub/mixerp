@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.ZipCode(), 1);
         }
 
+        public MixERP.Net.Entities.Core.ZipCode GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.ZipCode();
+        }
+
+        public MixERP.Net.Entities.Core.ZipCode GetPrevious(long zipCodeId)
+        {
+            return new MixERP.Net.Entities.Core.ZipCode();
+        }
+
+        public MixERP.Net.Entities.Core.ZipCode GetNext(long zipCodeId)
+        {
+            return new MixERP.Net.Entities.Core.ZipCode();
+        }
+
+        public MixERP.Net.Entities.Core.ZipCode GetLast()
+        {
+            return new MixERP.Net.Entities.Core.ZipCode();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.ZipCode> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.ZipCode(), 1);

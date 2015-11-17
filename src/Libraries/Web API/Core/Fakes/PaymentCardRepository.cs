@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.PaymentCard(), 1);
         }
 
+        public MixERP.Net.Entities.Core.PaymentCard GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.PaymentCard();
+        }
+
+        public MixERP.Net.Entities.Core.PaymentCard GetPrevious(int paymentCardId)
+        {
+            return new MixERP.Net.Entities.Core.PaymentCard();
+        }
+
+        public MixERP.Net.Entities.Core.PaymentCard GetNext(int paymentCardId)
+        {
+            return new MixERP.Net.Entities.Core.PaymentCard();
+        }
+
+        public MixERP.Net.Entities.Core.PaymentCard GetLast()
+        {
+            return new MixERP.Net.Entities.Core.PaymentCard();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.PaymentCard> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.PaymentCard(), 1);

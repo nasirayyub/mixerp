@@ -242,6 +242,132 @@ namespace MixERP.Net.Api.Audit
         }
 
         /// <summary>
+        ///     Returns the first instance of failed login.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/audit/failed-login/first")]
+        public MixERP.Net.Entities.Audit.FailedLogin GetFirst()
+        {
+            try
+            {
+                return this.FailedLoginRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of failed login.
+        /// </summary>
+        /// <param name="failedLoginId">Enter FailedLoginId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{failedLoginId}")]
+        [Route("~/api/audit/failed-login/previous/{failedLoginId}")]
+        public MixERP.Net.Entities.Audit.FailedLogin GetPrevious(long failedLoginId)
+        {
+            try
+            {
+                return this.FailedLoginRepository.GetPrevious(failedLoginId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of failed login.
+        /// </summary>
+        /// <param name="failedLoginId">Enter FailedLoginId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{failedLoginId}")]
+        [Route("~/api/audit/failed-login/next/{failedLoginId}")]
+        public MixERP.Net.Entities.Audit.FailedLogin GetNext(long failedLoginId)
+        {
+            try
+            {
+                return this.FailedLoginRepository.GetNext(failedLoginId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of failed login.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/audit/failed-login/last")]
+        public MixERP.Net.Entities.Audit.FailedLogin GetLast()
+        {
+            try
+            {
+                return this.FailedLoginRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 failed logins on each page, sorted by the property FailedLoginId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

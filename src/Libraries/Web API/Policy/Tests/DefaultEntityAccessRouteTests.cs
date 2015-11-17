@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/default-entity-access/count-filtered/{filterName}", "GET", typeof(DefaultEntityAccessController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/default-entity-access/get-filtered/{pageNumber}/{filterName}", "GET", typeof(DefaultEntityAccessController), "GetFiltered")]
         [InlineData("/api/policy/default-entity-access/get-filtered/{pageNumber}/{filterName}", "GET", typeof(DefaultEntityAccessController), "GetFiltered")]
+        [InlineData("/api/policy/default-entity-access/first", "GET", typeof(DefaultEntityAccessController), "GetFirst")]
+        [InlineData("/api/policy/default-entity-access/previous/1", "GET", typeof(DefaultEntityAccessController), "GetPrevious")]
+        [InlineData("/api/policy/default-entity-access/next/1", "GET", typeof(DefaultEntityAccessController), "GetNext")]
+        [InlineData("/api/policy/default-entity-access/last", "GET", typeof(DefaultEntityAccessController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/default-entity-access/custom-fields", "GET", typeof(DefaultEntityAccessController), "GetCustomFields")]
         [InlineData("/api/policy/default-entity-access/custom-fields", "GET", typeof(DefaultEntityAccessController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/default-entity-access/count-filtered/{filterName}", "HEAD", typeof(DefaultEntityAccessController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/default-entity-access/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(DefaultEntityAccessController), "GetFiltered")]
         [InlineData("/api/policy/default-entity-access/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(DefaultEntityAccessController), "GetFiltered")]
+        [InlineData("/api/policy/default-entity-access/first", "HEAD", typeof(DefaultEntityAccessController), "GetFirst")]
+        [InlineData("/api/policy/default-entity-access/previous/1", "HEAD", typeof(DefaultEntityAccessController), "GetPrevious")]
+        [InlineData("/api/policy/default-entity-access/next/1", "HEAD", typeof(DefaultEntityAccessController), "GetNext")]
+        [InlineData("/api/policy/default-entity-access/last", "HEAD", typeof(DefaultEntityAccessController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/default-entity-access/custom-fields", "HEAD", typeof(DefaultEntityAccessController), "GetCustomFields")]
         [InlineData("/api/policy/default-entity-access/custom-fields", "HEAD", typeof(DefaultEntityAccessController), "GetCustomFields")]

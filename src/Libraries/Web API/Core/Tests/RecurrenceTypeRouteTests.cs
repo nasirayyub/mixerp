@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/recurrence-type/count-filtered/{filterName}", "GET", typeof(RecurrenceTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/recurrence-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(RecurrenceTypeController), "GetFiltered")]
         [InlineData("/api/core/recurrence-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(RecurrenceTypeController), "GetFiltered")]
+        [InlineData("/api/core/recurrence-type/first", "GET", typeof(RecurrenceTypeController), "GetFirst")]
+        [InlineData("/api/core/recurrence-type/previous/1", "GET", typeof(RecurrenceTypeController), "GetPrevious")]
+        [InlineData("/api/core/recurrence-type/next/1", "GET", typeof(RecurrenceTypeController), "GetNext")]
+        [InlineData("/api/core/recurrence-type/last", "GET", typeof(RecurrenceTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/recurrence-type/custom-fields", "GET", typeof(RecurrenceTypeController), "GetCustomFields")]
         [InlineData("/api/core/recurrence-type/custom-fields", "GET", typeof(RecurrenceTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/recurrence-type/count-filtered/{filterName}", "HEAD", typeof(RecurrenceTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/recurrence-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(RecurrenceTypeController), "GetFiltered")]
         [InlineData("/api/core/recurrence-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(RecurrenceTypeController), "GetFiltered")]
+        [InlineData("/api/core/recurrence-type/first", "HEAD", typeof(RecurrenceTypeController), "GetFirst")]
+        [InlineData("/api/core/recurrence-type/previous/1", "HEAD", typeof(RecurrenceTypeController), "GetPrevious")]
+        [InlineData("/api/core/recurrence-type/next/1", "HEAD", typeof(RecurrenceTypeController), "GetNext")]
+        [InlineData("/api/core/recurrence-type/last", "HEAD", typeof(RecurrenceTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/recurrence-type/custom-fields", "HEAD", typeof(RecurrenceTypeController), "GetCustomFields")]
         [InlineData("/api/core/recurrence-type/custom-fields", "HEAD", typeof(RecurrenceTypeController), "GetCustomFields")]

@@ -238,6 +238,132 @@ namespace MixERP.Net.Api.Config
         }
 
         /// <summary>
+        ///     Returns the first instance of open exchange rate.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/config/open-exchange-rate/first")]
+        public MixERP.Net.Entities.Config.OpenExchangeRate GetFirst()
+        {
+            try
+            {
+                return this.OpenExchangeRateRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of open exchange rate.
+        /// </summary>
+        /// <param name="key">Enter Key to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{key}")]
+        [Route("~/api/config/open-exchange-rate/previous/{key}")]
+        public MixERP.Net.Entities.Config.OpenExchangeRate GetPrevious(string key)
+        {
+            try
+            {
+                return this.OpenExchangeRateRepository.GetPrevious(key);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of open exchange rate.
+        /// </summary>
+        /// <param name="key">Enter Key to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{key}")]
+        [Route("~/api/config/open-exchange-rate/next/{key}")]
+        public MixERP.Net.Entities.Config.OpenExchangeRate GetNext(string key)
+        {
+            try
+            {
+                return this.OpenExchangeRateRepository.GetNext(key);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of open exchange rate.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/config/open-exchange-rate/last")]
+        public MixERP.Net.Entities.Config.OpenExchangeRate GetLast()
+        {
+            try
+            {
+                return this.OpenExchangeRateRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 open exchange rates on each page, sorted by the property Key.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

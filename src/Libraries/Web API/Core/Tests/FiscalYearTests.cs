@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.FiscalYear fiscalYear = Fixture().GetFirst();
+            Assert.NotNull(fiscalYear);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.FiscalYear fiscalYear = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(fiscalYear);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.FiscalYear fiscalYear = Fixture().GetNext(string.Empty);
+            Assert.NotNull(fiscalYear);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.FiscalYear fiscalYear = Fixture().GetLast();
+            Assert.NotNull(fiscalYear);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.FiscalYear> fiscalYears = Fixture().Get(new string[] { });

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.FiscalYear Get(string fiscalYearCode);
 
         /// <summary>
+        /// Gets the first record of FiscalYear.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of FiscalYear.</returns>
+        MixERP.Net.Entities.Core.FiscalYear GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of FiscalYear sorted by fiscalYearCode. 
+        /// </summary>
+        /// <param name="fiscalYearCode">The column "fiscal_year_code" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of FiscalYear.</returns>
+        MixERP.Net.Entities.Core.FiscalYear GetPrevious(string fiscalYearCode);
+
+        /// <summary>
+        /// Gets the next record of FiscalYear sorted by fiscalYearCode. 
+        /// </summary>
+        /// <param name="fiscalYearCode">The column "fiscal_year_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of FiscalYear.</returns>
+        MixERP.Net.Entities.Core.FiscalYear GetNext(string fiscalYearCode);
+
+        /// <summary>
+        /// Gets the last record of FiscalYear.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of FiscalYear.</returns>
+        MixERP.Net.Entities.Core.FiscalYear GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the FiscalYear against fiscalYearCodes. 
         /// </summary>
         /// <param name="fiscalYearCodes">Array of column "fiscal_year_code" parameter used on where filter.</param>

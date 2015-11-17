@@ -161,6 +161,125 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "hrm.exit_types". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "ExitType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.ExitType GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"ExitType\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.exit_types ORDER BY exit_type_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.ExitType>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "hrm.exit_types" sorted by exitTypeId.
+        /// </summary>
+        /// <param name="exitTypeId">The column "exit_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "ExitType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.ExitType GetPrevious(int exitTypeId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"ExitType\" by \"ExitTypeId\" with value {ExitTypeId} was denied to the user with Login ID {_LoginId}", exitTypeId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.exit_types WHERE exit_type_id < @0 ORDER BY exit_type_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.ExitType>(this._Catalog, sql, exitTypeId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "hrm.exit_types" sorted by exitTypeId.
+        /// </summary>
+        /// <param name="exitTypeId">The column "exit_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "ExitType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.ExitType GetNext(int exitTypeId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"ExitType\" by \"ExitTypeId\" with value {ExitTypeId} was denied to the user with Login ID {_LoginId}", exitTypeId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.exit_types WHERE exit_type_id > @0 ORDER BY exit_type_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.ExitType>(this._Catalog, sql, exitTypeId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "hrm.exit_types". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "ExitType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.ExitType GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"ExitType\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.exit_types ORDER BY exit_type_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.ExitType>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "hrm.exit_types" with a where filter on the column "exit_type_id" to return a multiple instances of the "ExitType" class. 
         /// </summary>
         /// <param name="exitTypeIds">Array of column "exit_type_id" parameter used on where filter.</param>

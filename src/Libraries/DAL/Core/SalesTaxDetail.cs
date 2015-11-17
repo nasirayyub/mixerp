@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.sales_tax_details". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTaxDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTaxDetail GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"SalesTaxDetail\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_tax_details ORDER BY sales_tax_detail_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTaxDetail>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.sales_tax_details" sorted by salesTaxDetailId.
+        /// </summary>
+        /// <param name="salesTaxDetailId">The column "sales_tax_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTaxDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTaxDetail GetPrevious(int salesTaxDetailId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"SalesTaxDetail\" by \"SalesTaxDetailId\" with value {SalesTaxDetailId} was denied to the user with Login ID {_LoginId}", salesTaxDetailId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_tax_details WHERE sales_tax_detail_id < @0 ORDER BY sales_tax_detail_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTaxDetail>(this._Catalog, sql, salesTaxDetailId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.sales_tax_details" sorted by salesTaxDetailId.
+        /// </summary>
+        /// <param name="salesTaxDetailId">The column "sales_tax_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTaxDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTaxDetail GetNext(int salesTaxDetailId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"SalesTaxDetail\" by \"SalesTaxDetailId\" with value {SalesTaxDetailId} was denied to the user with Login ID {_LoginId}", salesTaxDetailId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_tax_details WHERE sales_tax_detail_id > @0 ORDER BY sales_tax_detail_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTaxDetail>(this._Catalog, sql, salesTaxDetailId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.sales_tax_details". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTaxDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTaxDetail GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"SalesTaxDetail\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_tax_details ORDER BY sales_tax_detail_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTaxDetail>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.sales_tax_details" with a where filter on the column "sales_tax_detail_id" to return a multiple instances of the "SalesTaxDetail" class. 
         /// </summary>
         /// <param name="salesTaxDetailIds">Array of column "sales_tax_detail_id" parameter used on where filter.</param>

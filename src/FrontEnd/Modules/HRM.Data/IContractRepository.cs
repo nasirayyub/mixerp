@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.Contract Get(long contractId);
 
         /// <summary>
+        /// Gets the first record of Contract.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Contract.</returns>
+        MixERP.Net.Entities.HRM.Contract GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Contract sorted by contractId. 
+        /// </summary>
+        /// <param name="contractId">The column "contract_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Contract.</returns>
+        MixERP.Net.Entities.HRM.Contract GetPrevious(long contractId);
+
+        /// <summary>
+        /// Gets the next record of Contract sorted by contractId. 
+        /// </summary>
+        /// <param name="contractId">The column "contract_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Contract.</returns>
+        MixERP.Net.Entities.HRM.Contract GetNext(long contractId);
+
+        /// <summary>
+        /// Gets the last record of Contract.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Contract.</returns>
+        MixERP.Net.Entities.HRM.Contract GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Contract against contractIds. 
         /// </summary>
         /// <param name="contractIds">Array of column "contract_id" parameter used on where filter.</param>

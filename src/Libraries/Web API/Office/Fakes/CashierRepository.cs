@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Office.Fakes
             return new MixERP.Net.Entities.Office.Cashier();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Office.Cashier> Get([FromUri] long[] cashierIds)
+        public IEnumerable<MixERP.Net.Entities.Office.Cashier> Get(long[] cashierIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Office.Cashier(), 1);
+        }
+
+        public MixERP.Net.Entities.Office.Cashier GetFirst()
+        {
+            return new MixERP.Net.Entities.Office.Cashier();
+        }
+
+        public MixERP.Net.Entities.Office.Cashier GetPrevious(long cashierId)
+        {
+            return new MixERP.Net.Entities.Office.Cashier();
+        }
+
+        public MixERP.Net.Entities.Office.Cashier GetNext(long cashierId)
+        {
+            return new MixERP.Net.Entities.Office.Cashier();
+        }
+
+        public MixERP.Net.Entities.Office.Cashier GetLast()
+        {
+            return new MixERP.Net.Entities.Office.Cashier();
         }
 
         public IEnumerable<MixERP.Net.Entities.Office.Cashier> GetPaginatedResult()

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Item Get(int itemId);
 
         /// <summary>
+        /// Gets the first record of Item.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Item.</returns>
+        MixERP.Net.Entities.Core.Item GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Item sorted by itemId. 
+        /// </summary>
+        /// <param name="itemId">The column "item_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Item.</returns>
+        MixERP.Net.Entities.Core.Item GetPrevious(int itemId);
+
+        /// <summary>
+        /// Gets the next record of Item sorted by itemId. 
+        /// </summary>
+        /// <param name="itemId">The column "item_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Item.</returns>
+        MixERP.Net.Entities.Core.Item GetNext(int itemId);
+
+        /// <summary>
+        /// Gets the last record of Item.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Item.</returns>
+        MixERP.Net.Entities.Core.Item GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Item against itemIds. 
         /// </summary>
         /// <param name="itemIds">Array of column "item_id" parameter used on where filter.</param>

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/nationality/count-filtered/{filterName}", "GET", typeof(NationalityController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/nationality/get-filtered/{pageNumber}/{filterName}", "GET", typeof(NationalityController), "GetFiltered")]
         [InlineData("/api/core/nationality/get-filtered/{pageNumber}/{filterName}", "GET", typeof(NationalityController), "GetFiltered")]
+        [InlineData("/api/core/nationality/first", "GET", typeof(NationalityController), "GetFirst")]
+        [InlineData("/api/core/nationality/previous/1", "GET", typeof(NationalityController), "GetPrevious")]
+        [InlineData("/api/core/nationality/next/1", "GET", typeof(NationalityController), "GetNext")]
+        [InlineData("/api/core/nationality/last", "GET", typeof(NationalityController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/nationality/custom-fields", "GET", typeof(NationalityController), "GetCustomFields")]
         [InlineData("/api/core/nationality/custom-fields", "GET", typeof(NationalityController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/nationality/count-filtered/{filterName}", "HEAD", typeof(NationalityController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/nationality/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(NationalityController), "GetFiltered")]
         [InlineData("/api/core/nationality/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(NationalityController), "GetFiltered")]
+        [InlineData("/api/core/nationality/first", "HEAD", typeof(NationalityController), "GetFirst")]
+        [InlineData("/api/core/nationality/previous/1", "HEAD", typeof(NationalityController), "GetPrevious")]
+        [InlineData("/api/core/nationality/next/1", "HEAD", typeof(NationalityController), "GetNext")]
+        [InlineData("/api/core/nationality/last", "HEAD", typeof(NationalityController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/nationality/custom-fields", "HEAD", typeof(NationalityController), "GetCustomFields")]
         [InlineData("/api/core/nationality/custom-fields", "HEAD", typeof(NationalityController), "GetCustomFields")]

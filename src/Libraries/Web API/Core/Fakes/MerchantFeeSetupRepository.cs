@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.MerchantFeeSetup(), 1);
         }
 
+        public MixERP.Net.Entities.Core.MerchantFeeSetup GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.MerchantFeeSetup();
+        }
+
+        public MixERP.Net.Entities.Core.MerchantFeeSetup GetPrevious(int merchantFeeSetupId)
+        {
+            return new MixERP.Net.Entities.Core.MerchantFeeSetup();
+        }
+
+        public MixERP.Net.Entities.Core.MerchantFeeSetup GetNext(int merchantFeeSetupId)
+        {
+            return new MixERP.Net.Entities.Core.MerchantFeeSetup();
+        }
+
+        public MixERP.Net.Entities.Core.MerchantFeeSetup GetLast()
+        {
+            return new MixERP.Net.Entities.Core.MerchantFeeSetup();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.MerchantFeeSetup> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.MerchantFeeSetup(), 1);

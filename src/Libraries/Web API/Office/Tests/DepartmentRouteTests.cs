@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/department/count-filtered/{filterName}", "GET", typeof(DepartmentController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/department/get-filtered/{pageNumber}/{filterName}", "GET", typeof(DepartmentController), "GetFiltered")]
         [InlineData("/api/office/department/get-filtered/{pageNumber}/{filterName}", "GET", typeof(DepartmentController), "GetFiltered")]
+        [InlineData("/api/office/department/first", "GET", typeof(DepartmentController), "GetFirst")]
+        [InlineData("/api/office/department/previous/1", "GET", typeof(DepartmentController), "GetPrevious")]
+        [InlineData("/api/office/department/next/1", "GET", typeof(DepartmentController), "GetNext")]
+        [InlineData("/api/office/department/last", "GET", typeof(DepartmentController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/department/custom-fields", "GET", typeof(DepartmentController), "GetCustomFields")]
         [InlineData("/api/office/department/custom-fields", "GET", typeof(DepartmentController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/department/count-filtered/{filterName}", "HEAD", typeof(DepartmentController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/department/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(DepartmentController), "GetFiltered")]
         [InlineData("/api/office/department/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(DepartmentController), "GetFiltered")]
+        [InlineData("/api/office/department/first", "HEAD", typeof(DepartmentController), "GetFirst")]
+        [InlineData("/api/office/department/previous/1", "HEAD", typeof(DepartmentController), "GetPrevious")]
+        [InlineData("/api/office/department/next/1", "HEAD", typeof(DepartmentController), "GetNext")]
+        [InlineData("/api/office/department/last", "HEAD", typeof(DepartmentController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/department/custom-fields", "HEAD", typeof(DepartmentController), "GetCustomFields")]
         [InlineData("/api/office/department/custom-fields", "HEAD", typeof(DepartmentController), "GetCustomFields")]

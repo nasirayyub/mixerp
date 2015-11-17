@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Attachment Get(long attachmentId);
 
         /// <summary>
+        /// Gets the first record of Attachment.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Attachment.</returns>
+        MixERP.Net.Entities.Core.Attachment GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Attachment sorted by attachmentId. 
+        /// </summary>
+        /// <param name="attachmentId">The column "attachment_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Attachment.</returns>
+        MixERP.Net.Entities.Core.Attachment GetPrevious(long attachmentId);
+
+        /// <summary>
+        /// Gets the next record of Attachment sorted by attachmentId. 
+        /// </summary>
+        /// <param name="attachmentId">The column "attachment_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Attachment.</returns>
+        MixERP.Net.Entities.Core.Attachment GetNext(long attachmentId);
+
+        /// <summary>
+        /// Gets the last record of Attachment.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Attachment.</returns>
+        MixERP.Net.Entities.Core.Attachment GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Attachment against attachmentIds. 
         /// </summary>
         /// <param name="attachmentIds">Array of column "attachment_id" parameter used on where filter.</param>

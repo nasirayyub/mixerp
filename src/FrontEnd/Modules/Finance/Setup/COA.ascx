@@ -15,6 +15,17 @@
     scrudFactory.allowDelete = true;
     scrudFactory.allowEdit = true;
 
+    scrudFactory.layout = [
+        {
+            tab: "",
+            fields: [
+                ["AccountId", ""],
+                ["AccountMasterId", ""],
+                ["AccountNumber", "AccountName", "", ""]
+            ]
+        }
+    ];
+
     scrudFactory.live = "AccountName";
     scrudFactory.queryStringKey = "AccountId";
 

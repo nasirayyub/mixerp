@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Kanban Get(long kanbanId);
 
         /// <summary>
+        /// Gets the first record of Kanban.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Kanban.</returns>
+        MixERP.Net.Entities.Core.Kanban GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Kanban sorted by kanbanId. 
+        /// </summary>
+        /// <param name="kanbanId">The column "kanban_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Kanban.</returns>
+        MixERP.Net.Entities.Core.Kanban GetPrevious(long kanbanId);
+
+        /// <summary>
+        /// Gets the next record of Kanban sorted by kanbanId. 
+        /// </summary>
+        /// <param name="kanbanId">The column "kanban_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Kanban.</returns>
+        MixERP.Net.Entities.Core.Kanban GetNext(long kanbanId);
+
+        /// <summary>
+        /// Gets the last record of Kanban.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Kanban.</returns>
+        MixERP.Net.Entities.Core.Kanban GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Kanban against kanbanIds. 
         /// </summary>
         /// <param name="kanbanIds">Array of column "kanban_id" parameter used on where filter.</param>

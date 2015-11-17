@@ -247,6 +247,132 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
+        ///     Returns the first instance of leave application.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/hrm/leave-application/first")]
+        public MixERP.Net.Entities.HRM.LeaveApplication GetFirst()
+        {
+            try
+            {
+                return this.LeaveApplicationRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of leave application.
+        /// </summary>
+        /// <param name="leaveApplicationId">Enter LeaveApplicationId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{leaveApplicationId}")]
+        [Route("~/api/hrm/leave-application/previous/{leaveApplicationId}")]
+        public MixERP.Net.Entities.HRM.LeaveApplication GetPrevious(long leaveApplicationId)
+        {
+            try
+            {
+                return this.LeaveApplicationRepository.GetPrevious(leaveApplicationId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of leave application.
+        /// </summary>
+        /// <param name="leaveApplicationId">Enter LeaveApplicationId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{leaveApplicationId}")]
+        [Route("~/api/hrm/leave-application/next/{leaveApplicationId}")]
+        public MixERP.Net.Entities.HRM.LeaveApplication GetNext(long leaveApplicationId)
+        {
+            try
+            {
+                return this.LeaveApplicationRepository.GetNext(leaveApplicationId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of leave application.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/hrm/leave-application/last")]
+        public MixERP.Net.Entities.HRM.LeaveApplication GetLast()
+        {
+            try
+            {
+                return this.LeaveApplicationRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 leave applications on each page, sorted by the property LeaveApplicationId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

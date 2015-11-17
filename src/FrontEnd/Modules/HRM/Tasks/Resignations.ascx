@@ -61,6 +61,7 @@
         {
             tab: "",
             fields: [
+                ["ResignationId", ""],
                 ["NoticeDate", "DesiredResignDate", "", ""],
                 ["ForwardTo", ""],
                 ["ChangeStatusTo", ""],

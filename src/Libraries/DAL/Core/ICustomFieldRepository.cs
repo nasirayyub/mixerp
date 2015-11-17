@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.CustomField Get(long customFieldId);
 
         /// <summary>
+        /// Gets the first record of CustomField.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CustomField.</returns>
+        MixERP.Net.Entities.Core.CustomField GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of CustomField sorted by customFieldId. 
+        /// </summary>
+        /// <param name="customFieldId">The column "custom_field_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CustomField.</returns>
+        MixERP.Net.Entities.Core.CustomField GetPrevious(long customFieldId);
+
+        /// <summary>
+        /// Gets the next record of CustomField sorted by customFieldId. 
+        /// </summary>
+        /// <param name="customFieldId">The column "custom_field_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CustomField.</returns>
+        MixERP.Net.Entities.Core.CustomField GetNext(long customFieldId);
+
+        /// <summary>
+        /// Gets the last record of CustomField.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CustomField.</returns>
+        MixERP.Net.Entities.Core.CustomField GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the CustomField against customFieldIds. 
         /// </summary>
         /// <param name="customFieldIds">Array of column "custom_field_id" parameter used on where filter.</param>

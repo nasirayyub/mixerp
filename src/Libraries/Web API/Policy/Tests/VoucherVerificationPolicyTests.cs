@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Policy.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Policy.VoucherVerificationPolicy voucherVerificationPolicy = Fixture().GetFirst();
+            Assert.NotNull(voucherVerificationPolicy);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Policy.VoucherVerificationPolicy voucherVerificationPolicy = Fixture().GetPrevious(0);
+            Assert.NotNull(voucherVerificationPolicy);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Policy.VoucherVerificationPolicy voucherVerificationPolicy = Fixture().GetNext(0);
+            Assert.NotNull(voucherVerificationPolicy);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Policy.VoucherVerificationPolicy voucherVerificationPolicy = Fixture().GetLast();
+            Assert.NotNull(voucherVerificationPolicy);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Policy.VoucherVerificationPolicy> voucherVerificationPolicies = Fixture().Get(new int[] { });

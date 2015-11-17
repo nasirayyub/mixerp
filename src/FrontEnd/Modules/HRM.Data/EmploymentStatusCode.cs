@@ -161,6 +161,125 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "hrm.employment_status_codes". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "EmploymentStatusCode" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.EmploymentStatusCode GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"EmploymentStatusCode\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.employment_status_codes ORDER BY employment_status_code_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.EmploymentStatusCode>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "hrm.employment_status_codes" sorted by employmentStatusCodeId.
+        /// </summary>
+        /// <param name="employmentStatusCodeId">The column "employment_status_code_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "EmploymentStatusCode" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.EmploymentStatusCode GetPrevious(int employmentStatusCodeId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"EmploymentStatusCode\" by \"EmploymentStatusCodeId\" with value {EmploymentStatusCodeId} was denied to the user with Login ID {_LoginId}", employmentStatusCodeId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.employment_status_codes WHERE employment_status_code_id < @0 ORDER BY employment_status_code_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.EmploymentStatusCode>(this._Catalog, sql, employmentStatusCodeId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "hrm.employment_status_codes" sorted by employmentStatusCodeId.
+        /// </summary>
+        /// <param name="employmentStatusCodeId">The column "employment_status_code_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "EmploymentStatusCode" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.EmploymentStatusCode GetNext(int employmentStatusCodeId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"EmploymentStatusCode\" by \"EmploymentStatusCodeId\" with value {EmploymentStatusCodeId} was denied to the user with Login ID {_LoginId}", employmentStatusCodeId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.employment_status_codes WHERE employment_status_code_id > @0 ORDER BY employment_status_code_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.EmploymentStatusCode>(this._Catalog, sql, employmentStatusCodeId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "hrm.employment_status_codes". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "EmploymentStatusCode" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.EmploymentStatusCode GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"EmploymentStatusCode\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.employment_status_codes ORDER BY employment_status_code_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.EmploymentStatusCode>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "hrm.employment_status_codes" with a where filter on the column "employment_status_code_id" to return a multiple instances of the "EmploymentStatusCode" class. 
         /// </summary>
         /// <param name="employmentStatusCodeIds">Array of column "employment_status_code_id" parameter used on where filter.</param>

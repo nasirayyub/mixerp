@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/shipping-address/count-filtered/{filterName}", "GET", typeof(ShippingAddressController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/shipping-address/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ShippingAddressController), "GetFiltered")]
         [InlineData("/api/core/shipping-address/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ShippingAddressController), "GetFiltered")]
+        [InlineData("/api/core/shipping-address/first", "GET", typeof(ShippingAddressController), "GetFirst")]
+        [InlineData("/api/core/shipping-address/previous/1", "GET", typeof(ShippingAddressController), "GetPrevious")]
+        [InlineData("/api/core/shipping-address/next/1", "GET", typeof(ShippingAddressController), "GetNext")]
+        [InlineData("/api/core/shipping-address/last", "GET", typeof(ShippingAddressController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/shipping-address/custom-fields", "GET", typeof(ShippingAddressController), "GetCustomFields")]
         [InlineData("/api/core/shipping-address/custom-fields", "GET", typeof(ShippingAddressController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/shipping-address/count-filtered/{filterName}", "HEAD", typeof(ShippingAddressController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/shipping-address/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ShippingAddressController), "GetFiltered")]
         [InlineData("/api/core/shipping-address/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ShippingAddressController), "GetFiltered")]
+        [InlineData("/api/core/shipping-address/first", "HEAD", typeof(ShippingAddressController), "GetFirst")]
+        [InlineData("/api/core/shipping-address/previous/1", "HEAD", typeof(ShippingAddressController), "GetPrevious")]
+        [InlineData("/api/core/shipping-address/next/1", "HEAD", typeof(ShippingAddressController), "GetNext")]
+        [InlineData("/api/core/shipping-address/last", "HEAD", typeof(ShippingAddressController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/shipping-address/custom-fields", "HEAD", typeof(ShippingAddressController), "GetCustomFields")]
         [InlineData("/api/core/shipping-address/custom-fields", "HEAD", typeof(ShippingAddressController), "GetCustomFields")]

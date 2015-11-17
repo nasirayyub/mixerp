@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.kanbans". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Kanban" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Kanban GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"Kanban\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.kanbans ORDER BY kanban_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Kanban>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.kanbans" sorted by kanbanId.
+        /// </summary>
+        /// <param name="kanbanId">The column "kanban_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Kanban" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Kanban GetPrevious(long kanbanId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"Kanban\" by \"KanbanId\" with value {KanbanId} was denied to the user with Login ID {_LoginId}", kanbanId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.kanbans WHERE kanban_id < @0 ORDER BY kanban_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Kanban>(this._Catalog, sql, kanbanId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.kanbans" sorted by kanbanId.
+        /// </summary>
+        /// <param name="kanbanId">The column "kanban_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Kanban" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Kanban GetNext(long kanbanId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"Kanban\" by \"KanbanId\" with value {KanbanId} was denied to the user with Login ID {_LoginId}", kanbanId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.kanbans WHERE kanban_id > @0 ORDER BY kanban_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Kanban>(this._Catalog, sql, kanbanId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.kanbans". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Kanban" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Kanban GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"Kanban\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.kanbans ORDER BY kanban_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Kanban>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.kanbans" with a where filter on the column "kanban_id" to return a multiple instances of the "Kanban" class. 
         /// </summary>
         /// <param name="kanbanIds">Array of column "kanban_id" parameter used on where filter.</param>

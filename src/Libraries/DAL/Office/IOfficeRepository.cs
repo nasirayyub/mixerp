@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Office.Data
         MixERP.Net.Entities.Office.Office Get(int officeId);
 
         /// <summary>
+        /// Gets the first record of Office.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Office.</returns>
+        MixERP.Net.Entities.Office.Office GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Office sorted by officeId. 
+        /// </summary>
+        /// <param name="officeId">The column "office_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Office.</returns>
+        MixERP.Net.Entities.Office.Office GetPrevious(int officeId);
+
+        /// <summary>
+        /// Gets the next record of Office sorted by officeId. 
+        /// </summary>
+        /// <param name="officeId">The column "office_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Office.</returns>
+        MixERP.Net.Entities.Office.Office GetNext(int officeId);
+
+        /// <summary>
+        /// Gets the last record of Office.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Office.</returns>
+        MixERP.Net.Entities.Office.Office GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Office against officeIds. 
         /// </summary>
         /// <param name="officeIds">Array of column "office_id" parameter used on where filter.</param>

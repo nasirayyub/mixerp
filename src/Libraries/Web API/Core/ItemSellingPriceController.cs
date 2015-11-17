@@ -242,6 +242,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of item selling price.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/item-selling-price/first")]
+        public MixERP.Net.Entities.Core.ItemSellingPrice GetFirst()
+        {
+            try
+            {
+                return this.ItemSellingPriceRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of item selling price.
+        /// </summary>
+        /// <param name="itemSellingPriceId">Enter ItemSellingPriceId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{itemSellingPriceId}")]
+        [Route("~/api/core/item-selling-price/previous/{itemSellingPriceId}")]
+        public MixERP.Net.Entities.Core.ItemSellingPrice GetPrevious(long itemSellingPriceId)
+        {
+            try
+            {
+                return this.ItemSellingPriceRepository.GetPrevious(itemSellingPriceId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of item selling price.
+        /// </summary>
+        /// <param name="itemSellingPriceId">Enter ItemSellingPriceId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{itemSellingPriceId}")]
+        [Route("~/api/core/item-selling-price/next/{itemSellingPriceId}")]
+        public MixERP.Net.Entities.Core.ItemSellingPrice GetNext(long itemSellingPriceId)
+        {
+            try
+            {
+                return this.ItemSellingPriceRepository.GetNext(itemSellingPriceId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of item selling price.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/item-selling-price/last")]
+        public MixERP.Net.Entities.Core.ItemSellingPrice GetLast()
+        {
+            try
+            {
+                return this.ItemSellingPriceRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 item selling prices on each page, sorted by the property ItemSellingPriceId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

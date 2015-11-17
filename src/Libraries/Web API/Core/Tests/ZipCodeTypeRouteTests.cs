@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/zip-code-type/count-filtered/{filterName}", "GET", typeof(ZipCodeTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/zip-code-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ZipCodeTypeController), "GetFiltered")]
         [InlineData("/api/core/zip-code-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ZipCodeTypeController), "GetFiltered")]
+        [InlineData("/api/core/zip-code-type/first", "GET", typeof(ZipCodeTypeController), "GetFirst")]
+        [InlineData("/api/core/zip-code-type/previous/1", "GET", typeof(ZipCodeTypeController), "GetPrevious")]
+        [InlineData("/api/core/zip-code-type/next/1", "GET", typeof(ZipCodeTypeController), "GetNext")]
+        [InlineData("/api/core/zip-code-type/last", "GET", typeof(ZipCodeTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/zip-code-type/custom-fields", "GET", typeof(ZipCodeTypeController), "GetCustomFields")]
         [InlineData("/api/core/zip-code-type/custom-fields", "GET", typeof(ZipCodeTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/zip-code-type/count-filtered/{filterName}", "HEAD", typeof(ZipCodeTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/zip-code-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ZipCodeTypeController), "GetFiltered")]
         [InlineData("/api/core/zip-code-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ZipCodeTypeController), "GetFiltered")]
+        [InlineData("/api/core/zip-code-type/first", "HEAD", typeof(ZipCodeTypeController), "GetFirst")]
+        [InlineData("/api/core/zip-code-type/previous/1", "HEAD", typeof(ZipCodeTypeController), "GetPrevious")]
+        [InlineData("/api/core/zip-code-type/next/1", "HEAD", typeof(ZipCodeTypeController), "GetNext")]
+        [InlineData("/api/core/zip-code-type/last", "HEAD", typeof(ZipCodeTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/zip-code-type/custom-fields", "HEAD", typeof(ZipCodeTypeController), "GetCustomFields")]
         [InlineData("/api/core/zip-code-type/custom-fields", "HEAD", typeof(ZipCodeTypeController), "GetCustomFields")]

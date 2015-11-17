@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.account_masters". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "AccountMaster" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.AccountMaster GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"AccountMaster\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.account_masters ORDER BY account_master_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.AccountMaster>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.account_masters" sorted by accountMasterId.
+        /// </summary>
+        /// <param name="accountMasterId">The column "account_master_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "AccountMaster" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.AccountMaster GetPrevious(short accountMasterId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"AccountMaster\" by \"AccountMasterId\" with value {AccountMasterId} was denied to the user with Login ID {_LoginId}", accountMasterId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.account_masters WHERE account_master_id < @0 ORDER BY account_master_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.AccountMaster>(this._Catalog, sql, accountMasterId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.account_masters" sorted by accountMasterId.
+        /// </summary>
+        /// <param name="accountMasterId">The column "account_master_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "AccountMaster" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.AccountMaster GetNext(short accountMasterId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"AccountMaster\" by \"AccountMasterId\" with value {AccountMasterId} was denied to the user with Login ID {_LoginId}", accountMasterId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.account_masters WHERE account_master_id > @0 ORDER BY account_master_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.AccountMaster>(this._Catalog, sql, accountMasterId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.account_masters". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "AccountMaster" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.AccountMaster GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"AccountMaster\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.account_masters ORDER BY account_master_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.AccountMaster>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.account_masters" with a where filter on the column "account_master_id" to return a multiple instances of the "AccountMaster" class. 
         /// </summary>
         /// <param name="accountMasterIds">Array of column "account_master_id" parameter used on where filter.</param>

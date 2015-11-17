@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail Get(long employeeSocialNetworkDetailId);
 
         /// <summary>
+        /// Gets the first record of EmployeeSocialNetworkDetail.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeSocialNetworkDetail.</returns>
+        MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of EmployeeSocialNetworkDetail sorted by employeeSocialNetworkDetailId. 
+        /// </summary>
+        /// <param name="employeeSocialNetworkDetailId">The column "employee_social_network_detail_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeSocialNetworkDetail.</returns>
+        MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail GetPrevious(long employeeSocialNetworkDetailId);
+
+        /// <summary>
+        /// Gets the next record of EmployeeSocialNetworkDetail sorted by employeeSocialNetworkDetailId. 
+        /// </summary>
+        /// <param name="employeeSocialNetworkDetailId">The column "employee_social_network_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeSocialNetworkDetail.</returns>
+        MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail GetNext(long employeeSocialNetworkDetailId);
+
+        /// <summary>
+        /// Gets the last record of EmployeeSocialNetworkDetail.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeSocialNetworkDetail.</returns>
+        MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the EmployeeSocialNetworkDetail against employeeSocialNetworkDetailIds. 
         /// </summary>
         /// <param name="employeeSocialNetworkDetailIds">Array of column "employee_social_network_detail_id" parameter used on where filter.</param>

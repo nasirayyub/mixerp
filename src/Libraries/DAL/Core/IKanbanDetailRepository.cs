@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.KanbanDetail Get(long kanbanDetailId);
 
         /// <summary>
+        /// Gets the first record of KanbanDetail.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of KanbanDetail.</returns>
+        MixERP.Net.Entities.Core.KanbanDetail GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of KanbanDetail sorted by kanbanDetailId. 
+        /// </summary>
+        /// <param name="kanbanDetailId">The column "kanban_detail_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of KanbanDetail.</returns>
+        MixERP.Net.Entities.Core.KanbanDetail GetPrevious(long kanbanDetailId);
+
+        /// <summary>
+        /// Gets the next record of KanbanDetail sorted by kanbanDetailId. 
+        /// </summary>
+        /// <param name="kanbanDetailId">The column "kanban_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of KanbanDetail.</returns>
+        MixERP.Net.Entities.Core.KanbanDetail GetNext(long kanbanDetailId);
+
+        /// <summary>
+        /// Gets the last record of KanbanDetail.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of KanbanDetail.</returns>
+        MixERP.Net.Entities.Core.KanbanDetail GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the KanbanDetail against kanbanDetailIds. 
         /// </summary>
         /// <param name="kanbanDetailIds">Array of column "kanban_detail_id" parameter used on where filter.</param>

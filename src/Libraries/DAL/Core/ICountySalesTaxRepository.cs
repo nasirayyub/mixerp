@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.CountySalesTax Get(int countySalesTaxId);
 
         /// <summary>
+        /// Gets the first record of CountySalesTax.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CountySalesTax.</returns>
+        MixERP.Net.Entities.Core.CountySalesTax GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of CountySalesTax sorted by countySalesTaxId. 
+        /// </summary>
+        /// <param name="countySalesTaxId">The column "county_sales_tax_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CountySalesTax.</returns>
+        MixERP.Net.Entities.Core.CountySalesTax GetPrevious(int countySalesTaxId);
+
+        /// <summary>
+        /// Gets the next record of CountySalesTax sorted by countySalesTaxId. 
+        /// </summary>
+        /// <param name="countySalesTaxId">The column "county_sales_tax_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CountySalesTax.</returns>
+        MixERP.Net.Entities.Core.CountySalesTax GetNext(int countySalesTaxId);
+
+        /// <summary>
+        /// Gets the last record of CountySalesTax.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CountySalesTax.</returns>
+        MixERP.Net.Entities.Core.CountySalesTax GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the CountySalesTax against countySalesTaxIds. 
         /// </summary>
         /// <param name="countySalesTaxIds">Array of column "county_sales_tax_id" parameter used on where filter.</param>

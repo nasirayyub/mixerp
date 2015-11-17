@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/cost-center/count-filtered/{filterName}", "GET", typeof(CostCenterController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/cost-center/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CostCenterController), "GetFiltered")]
         [InlineData("/api/office/cost-center/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CostCenterController), "GetFiltered")]
+        [InlineData("/api/office/cost-center/first", "GET", typeof(CostCenterController), "GetFirst")]
+        [InlineData("/api/office/cost-center/previous/1", "GET", typeof(CostCenterController), "GetPrevious")]
+        [InlineData("/api/office/cost-center/next/1", "GET", typeof(CostCenterController), "GetNext")]
+        [InlineData("/api/office/cost-center/last", "GET", typeof(CostCenterController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/cost-center/custom-fields", "GET", typeof(CostCenterController), "GetCustomFields")]
         [InlineData("/api/office/cost-center/custom-fields", "GET", typeof(CostCenterController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/cost-center/count-filtered/{filterName}", "HEAD", typeof(CostCenterController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/cost-center/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CostCenterController), "GetFiltered")]
         [InlineData("/api/office/cost-center/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CostCenterController), "GetFiltered")]
+        [InlineData("/api/office/cost-center/first", "HEAD", typeof(CostCenterController), "GetFirst")]
+        [InlineData("/api/office/cost-center/previous/1", "HEAD", typeof(CostCenterController), "GetPrevious")]
+        [InlineData("/api/office/cost-center/next/1", "HEAD", typeof(CostCenterController), "GetNext")]
+        [InlineData("/api/office/cost-center/last", "HEAD", typeof(CostCenterController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/cost-center/custom-fields", "HEAD", typeof(CostCenterController), "GetCustomFields")]
         [InlineData("/api/office/cost-center/custom-fields", "HEAD", typeof(CostCenterController), "GetCustomFields")]

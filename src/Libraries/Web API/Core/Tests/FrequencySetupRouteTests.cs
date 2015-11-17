@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/frequency-setup/count-filtered/{filterName}", "GET", typeof(FrequencySetupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/frequency-setup/get-filtered/{pageNumber}/{filterName}", "GET", typeof(FrequencySetupController), "GetFiltered")]
         [InlineData("/api/core/frequency-setup/get-filtered/{pageNumber}/{filterName}", "GET", typeof(FrequencySetupController), "GetFiltered")]
+        [InlineData("/api/core/frequency-setup/first", "GET", typeof(FrequencySetupController), "GetFirst")]
+        [InlineData("/api/core/frequency-setup/previous/1", "GET", typeof(FrequencySetupController), "GetPrevious")]
+        [InlineData("/api/core/frequency-setup/next/1", "GET", typeof(FrequencySetupController), "GetNext")]
+        [InlineData("/api/core/frequency-setup/last", "GET", typeof(FrequencySetupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/frequency-setup/custom-fields", "GET", typeof(FrequencySetupController), "GetCustomFields")]
         [InlineData("/api/core/frequency-setup/custom-fields", "GET", typeof(FrequencySetupController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/frequency-setup/count-filtered/{filterName}", "HEAD", typeof(FrequencySetupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/frequency-setup/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(FrequencySetupController), "GetFiltered")]
         [InlineData("/api/core/frequency-setup/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(FrequencySetupController), "GetFiltered")]
+        [InlineData("/api/core/frequency-setup/first", "HEAD", typeof(FrequencySetupController), "GetFirst")]
+        [InlineData("/api/core/frequency-setup/previous/1", "HEAD", typeof(FrequencySetupController), "GetPrevious")]
+        [InlineData("/api/core/frequency-setup/next/1", "HEAD", typeof(FrequencySetupController), "GetNext")]
+        [InlineData("/api/core/frequency-setup/last", "HEAD", typeof(FrequencySetupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/frequency-setup/custom-fields", "HEAD", typeof(FrequencySetupController), "GetCustomFields")]
         [InlineData("/api/core/frequency-setup/custom-fields", "HEAD", typeof(FrequencySetupController), "GetCustomFields")]

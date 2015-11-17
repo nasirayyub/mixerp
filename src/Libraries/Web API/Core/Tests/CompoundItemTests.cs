@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.CompoundItem compoundItem = Fixture().GetFirst();
+            Assert.NotNull(compoundItem);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.CompoundItem compoundItem = Fixture().GetPrevious(0);
+            Assert.NotNull(compoundItem);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.CompoundItem compoundItem = Fixture().GetNext(0);
+            Assert.NotNull(compoundItem);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.CompoundItem compoundItem = Fixture().GetLast();
+            Assert.NotNull(compoundItem);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.CompoundItem> compoundItems = Fixture().Get(new int[] { });

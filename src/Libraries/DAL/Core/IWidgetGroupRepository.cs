@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.WidgetGroup Get(string widgetGroupName);
 
         /// <summary>
+        /// Gets the first record of WidgetGroup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of WidgetGroup.</returns>
+        MixERP.Net.Entities.Core.WidgetGroup GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of WidgetGroup sorted by widgetGroupName. 
+        /// </summary>
+        /// <param name="widgetGroupName">The column "widget_group_name" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of WidgetGroup.</returns>
+        MixERP.Net.Entities.Core.WidgetGroup GetPrevious(string widgetGroupName);
+
+        /// <summary>
+        /// Gets the next record of WidgetGroup sorted by widgetGroupName. 
+        /// </summary>
+        /// <param name="widgetGroupName">The column "widget_group_name" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of WidgetGroup.</returns>
+        MixERP.Net.Entities.Core.WidgetGroup GetNext(string widgetGroupName);
+
+        /// <summary>
+        /// Gets the last record of WidgetGroup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of WidgetGroup.</returns>
+        MixERP.Net.Entities.Core.WidgetGroup GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the WidgetGroup against widgetGroupNames. 
         /// </summary>
         /// <param name="widgetGroupNames">Array of column "widget_group_name" parameter used on where filter.</param>

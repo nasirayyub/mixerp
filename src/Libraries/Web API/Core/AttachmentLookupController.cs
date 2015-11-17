@@ -237,6 +237,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of attachment lookup.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/attachment-lookup/first")]
+        public MixERP.Net.Entities.Core.AttachmentLookup GetFirst()
+        {
+            try
+            {
+                return this.AttachmentLookupRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of attachment lookup.
+        /// </summary>
+        /// <param name="attachmentLookupId">Enter AttachmentLookupId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{attachmentLookupId}")]
+        [Route("~/api/core/attachment-lookup/previous/{attachmentLookupId}")]
+        public MixERP.Net.Entities.Core.AttachmentLookup GetPrevious(int attachmentLookupId)
+        {
+            try
+            {
+                return this.AttachmentLookupRepository.GetPrevious(attachmentLookupId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of attachment lookup.
+        /// </summary>
+        /// <param name="attachmentLookupId">Enter AttachmentLookupId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{attachmentLookupId}")]
+        [Route("~/api/core/attachment-lookup/next/{attachmentLookupId}")]
+        public MixERP.Net.Entities.Core.AttachmentLookup GetNext(int attachmentLookupId)
+        {
+            try
+            {
+                return this.AttachmentLookupRepository.GetNext(attachmentLookupId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of attachment lookup.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/attachment-lookup/last")]
+        public MixERP.Net.Entities.Core.AttachmentLookup GetLast()
+        {
+            try
+            {
+                return this.AttachmentLookupRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 attachment lookups on each page, sorted by the property AttachmentLookupId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

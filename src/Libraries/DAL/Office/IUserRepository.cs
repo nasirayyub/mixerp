@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Office.Data
         MixERP.Net.Entities.Office.User Get(int userId);
 
         /// <summary>
+        /// Gets the first record of User.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of User.</returns>
+        MixERP.Net.Entities.Office.User GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of User sorted by userId. 
+        /// </summary>
+        /// <param name="userId">The column "user_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of User.</returns>
+        MixERP.Net.Entities.Office.User GetPrevious(int userId);
+
+        /// <summary>
+        /// Gets the next record of User sorted by userId. 
+        /// </summary>
+        /// <param name="userId">The column "user_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of User.</returns>
+        MixERP.Net.Entities.Office.User GetNext(int userId);
+
+        /// <summary>
+        /// Gets the last record of User.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of User.</returns>
+        MixERP.Net.Entities.Office.User GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the User against userIds. 
         /// </summary>
         /// <param name="userIds">Array of column "user_id" parameter used on where filter.</param>

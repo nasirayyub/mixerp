@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/state/count-filtered/{filterName}", "GET", typeof(StateController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/state/get-filtered/{pageNumber}/{filterName}", "GET", typeof(StateController), "GetFiltered")]
         [InlineData("/api/core/state/get-filtered/{pageNumber}/{filterName}", "GET", typeof(StateController), "GetFiltered")]
+        [InlineData("/api/core/state/first", "GET", typeof(StateController), "GetFirst")]
+        [InlineData("/api/core/state/previous/1", "GET", typeof(StateController), "GetPrevious")]
+        [InlineData("/api/core/state/next/1", "GET", typeof(StateController), "GetNext")]
+        [InlineData("/api/core/state/last", "GET", typeof(StateController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/state/custom-fields", "GET", typeof(StateController), "GetCustomFields")]
         [InlineData("/api/core/state/custom-fields", "GET", typeof(StateController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/state/count-filtered/{filterName}", "HEAD", typeof(StateController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/state/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(StateController), "GetFiltered")]
         [InlineData("/api/core/state/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(StateController), "GetFiltered")]
+        [InlineData("/api/core/state/first", "HEAD", typeof(StateController), "GetFirst")]
+        [InlineData("/api/core/state/previous/1", "HEAD", typeof(StateController), "GetPrevious")]
+        [InlineData("/api/core/state/next/1", "HEAD", typeof(StateController), "GetNext")]
+        [InlineData("/api/core/state/last", "HEAD", typeof(StateController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/state/custom-fields", "HEAD", typeof(StateController), "GetCustomFields")]
         [InlineData("/api/core/state/custom-fields", "HEAD", typeof(StateController), "GetCustomFields")]

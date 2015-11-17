@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Office.Fakes
             return new MixERP.Net.Entities.Office.Holiday();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Office.Holiday> Get([FromUri] int[] holidayIds)
+        public IEnumerable<MixERP.Net.Entities.Office.Holiday> Get(int[] holidayIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Office.Holiday(), 1);
+        }
+
+        public MixERP.Net.Entities.Office.Holiday GetFirst()
+        {
+            return new MixERP.Net.Entities.Office.Holiday();
+        }
+
+        public MixERP.Net.Entities.Office.Holiday GetPrevious(int holidayId)
+        {
+            return new MixERP.Net.Entities.Office.Holiday();
+        }
+
+        public MixERP.Net.Entities.Office.Holiday GetNext(int holidayId)
+        {
+            return new MixERP.Net.Entities.Office.Holiday();
+        }
+
+        public MixERP.Net.Entities.Office.Holiday GetLast()
+        {
+            return new MixERP.Net.Entities.Office.Holiday();
         }
 
         public IEnumerable<MixERP.Net.Entities.Office.Holiday> GetPaginatedResult()

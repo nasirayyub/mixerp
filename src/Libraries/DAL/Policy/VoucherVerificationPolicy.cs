@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Policy.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "policy.voucher_verification_policy". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "VoucherVerificationPolicy" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"VoucherVerificationPolicy\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.voucher_verification_policy ORDER BY policy_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.VoucherVerificationPolicy>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "policy.voucher_verification_policy" sorted by policyId.
+        /// </summary>
+        /// <param name="policyId">The column "policy_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "VoucherVerificationPolicy" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetPrevious(int policyId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"VoucherVerificationPolicy\" by \"PolicyId\" with value {PolicyId} was denied to the user with Login ID {_LoginId}", policyId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.voucher_verification_policy WHERE policy_id < @0 ORDER BY policy_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.VoucherVerificationPolicy>(this._Catalog, sql, policyId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "policy.voucher_verification_policy" sorted by policyId.
+        /// </summary>
+        /// <param name="policyId">The column "policy_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "VoucherVerificationPolicy" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetNext(int policyId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"VoucherVerificationPolicy\" by \"PolicyId\" with value {PolicyId} was denied to the user with Login ID {_LoginId}", policyId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.voucher_verification_policy WHERE policy_id > @0 ORDER BY policy_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.VoucherVerificationPolicy>(this._Catalog, sql, policyId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "policy.voucher_verification_policy". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "VoucherVerificationPolicy" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"VoucherVerificationPolicy\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.voucher_verification_policy ORDER BY policy_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.VoucherVerificationPolicy>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "policy.voucher_verification_policy" with a where filter on the column "policy_id" to return a multiple instances of the "VoucherVerificationPolicy" class. 
         /// </summary>
         /// <param name="policyIds">Array of column "policy_id" parameter used on where filter.</param>

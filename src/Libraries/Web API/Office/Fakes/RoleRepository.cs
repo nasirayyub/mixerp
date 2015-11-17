@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Office.Fakes
             return new MixERP.Net.Entities.Office.Role();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Office.Role> Get([FromUri] int[] roleIds)
+        public IEnumerable<MixERP.Net.Entities.Office.Role> Get(int[] roleIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Office.Role(), 1);
+        }
+
+        public MixERP.Net.Entities.Office.Role GetFirst()
+        {
+            return new MixERP.Net.Entities.Office.Role();
+        }
+
+        public MixERP.Net.Entities.Office.Role GetPrevious(int roleId)
+        {
+            return new MixERP.Net.Entities.Office.Role();
+        }
+
+        public MixERP.Net.Entities.Office.Role GetNext(int roleId)
+        {
+            return new MixERP.Net.Entities.Office.Role();
+        }
+
+        public MixERP.Net.Entities.Office.Role GetLast()
+        {
+            return new MixERP.Net.Entities.Office.Role();
         }
 
         public IEnumerable<MixERP.Net.Entities.Office.Role> GetPaginatedResult()

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/role/count-filtered/{filterName}", "GET", typeof(RoleController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/role/get-filtered/{pageNumber}/{filterName}", "GET", typeof(RoleController), "GetFiltered")]
         [InlineData("/api/office/role/get-filtered/{pageNumber}/{filterName}", "GET", typeof(RoleController), "GetFiltered")]
+        [InlineData("/api/office/role/first", "GET", typeof(RoleController), "GetFirst")]
+        [InlineData("/api/office/role/previous/1", "GET", typeof(RoleController), "GetPrevious")]
+        [InlineData("/api/office/role/next/1", "GET", typeof(RoleController), "GetNext")]
+        [InlineData("/api/office/role/last", "GET", typeof(RoleController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/role/custom-fields", "GET", typeof(RoleController), "GetCustomFields")]
         [InlineData("/api/office/role/custom-fields", "GET", typeof(RoleController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/role/count-filtered/{filterName}", "HEAD", typeof(RoleController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/role/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(RoleController), "GetFiltered")]
         [InlineData("/api/office/role/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(RoleController), "GetFiltered")]
+        [InlineData("/api/office/role/first", "HEAD", typeof(RoleController), "GetFirst")]
+        [InlineData("/api/office/role/previous/1", "HEAD", typeof(RoleController), "GetPrevious")]
+        [InlineData("/api/office/role/next/1", "HEAD", typeof(RoleController), "GetNext")]
+        [InlineData("/api/office/role/last", "HEAD", typeof(RoleController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/role/custom-fields", "HEAD", typeof(RoleController), "GetCustomFields")]
         [InlineData("/api/office/role/custom-fields", "HEAD", typeof(RoleController), "GetCustomFields")]

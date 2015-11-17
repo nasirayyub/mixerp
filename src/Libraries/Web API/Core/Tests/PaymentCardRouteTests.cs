@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/payment-card/count-filtered/{filterName}", "GET", typeof(PaymentCardController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/payment-card/get-filtered/{pageNumber}/{filterName}", "GET", typeof(PaymentCardController), "GetFiltered")]
         [InlineData("/api/core/payment-card/get-filtered/{pageNumber}/{filterName}", "GET", typeof(PaymentCardController), "GetFiltered")]
+        [InlineData("/api/core/payment-card/first", "GET", typeof(PaymentCardController), "GetFirst")]
+        [InlineData("/api/core/payment-card/previous/1", "GET", typeof(PaymentCardController), "GetPrevious")]
+        [InlineData("/api/core/payment-card/next/1", "GET", typeof(PaymentCardController), "GetNext")]
+        [InlineData("/api/core/payment-card/last", "GET", typeof(PaymentCardController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/payment-card/custom-fields", "GET", typeof(PaymentCardController), "GetCustomFields")]
         [InlineData("/api/core/payment-card/custom-fields", "GET", typeof(PaymentCardController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/payment-card/count-filtered/{filterName}", "HEAD", typeof(PaymentCardController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/payment-card/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(PaymentCardController), "GetFiltered")]
         [InlineData("/api/core/payment-card/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(PaymentCardController), "GetFiltered")]
+        [InlineData("/api/core/payment-card/first", "HEAD", typeof(PaymentCardController), "GetFirst")]
+        [InlineData("/api/core/payment-card/previous/1", "HEAD", typeof(PaymentCardController), "GetPrevious")]
+        [InlineData("/api/core/payment-card/next/1", "HEAD", typeof(PaymentCardController), "GetNext")]
+        [InlineData("/api/core/payment-card/last", "HEAD", typeof(PaymentCardController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/payment-card/custom-fields", "HEAD", typeof(PaymentCardController), "GetCustomFields")]
         [InlineData("/api/core/payment-card/custom-fields", "HEAD", typeof(PaymentCardController), "GetCustomFields")]

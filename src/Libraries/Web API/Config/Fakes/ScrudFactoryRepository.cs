@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Config.Fakes
             return new MixERP.Net.Entities.Config.ScrudFactory();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Config.ScrudFactory> Get([FromUri] string[] keys)
+        public IEnumerable<MixERP.Net.Entities.Config.ScrudFactory> Get(string[] keys)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Config.ScrudFactory(), 1);
+        }
+
+        public MixERP.Net.Entities.Config.ScrudFactory GetFirst()
+        {
+            return new MixERP.Net.Entities.Config.ScrudFactory();
+        }
+
+        public MixERP.Net.Entities.Config.ScrudFactory GetPrevious(string key)
+        {
+            return new MixERP.Net.Entities.Config.ScrudFactory();
+        }
+
+        public MixERP.Net.Entities.Config.ScrudFactory GetNext(string key)
+        {
+            return new MixERP.Net.Entities.Config.ScrudFactory();
+        }
+
+        public MixERP.Net.Entities.Config.ScrudFactory GetLast()
+        {
+            return new MixERP.Net.Entities.Config.ScrudFactory();
         }
 
         public IEnumerable<MixERP.Net.Entities.Config.ScrudFactory> GetPaginatedResult()

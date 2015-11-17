@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.ExchangeRateDetail exchangeRateDetail = Fixture().GetFirst();
+            Assert.NotNull(exchangeRateDetail);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.ExchangeRateDetail exchangeRateDetail = Fixture().GetPrevious(0);
+            Assert.NotNull(exchangeRateDetail);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.ExchangeRateDetail exchangeRateDetail = Fixture().GetNext(0);
+            Assert.NotNull(exchangeRateDetail);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.ExchangeRateDetail exchangeRateDetail = Fixture().GetLast();
+            Assert.NotNull(exchangeRateDetail);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.ExchangeRateDetail> exchangeRateDetails = Fixture().Get(new long[] { });

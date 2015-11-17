@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Policy.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Policy.MenuPolicy menuPolicy = Fixture().GetFirst();
+            Assert.NotNull(menuPolicy);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Policy.MenuPolicy menuPolicy = Fixture().GetPrevious(0);
+            Assert.NotNull(menuPolicy);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Policy.MenuPolicy menuPolicy = Fixture().GetNext(0);
+            Assert.NotNull(menuPolicy);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Policy.MenuPolicy menuPolicy = Fixture().GetLast();
+            Assert.NotNull(menuPolicy);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Policy.MenuPolicy> menuPolicies = Fixture().Get(new int[] { });

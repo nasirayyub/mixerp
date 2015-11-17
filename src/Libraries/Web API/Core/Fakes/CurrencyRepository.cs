@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Currency(), 1);
         }
 
+        public MixERP.Net.Entities.Core.Currency GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.Currency();
+        }
+
+        public MixERP.Net.Entities.Core.Currency GetPrevious(string currencyCode)
+        {
+            return new MixERP.Net.Entities.Core.Currency();
+        }
+
+        public MixERP.Net.Entities.Core.Currency GetNext(string currencyCode)
+        {
+            return new MixERP.Net.Entities.Core.Currency();
+        }
+
+        public MixERP.Net.Entities.Core.Currency GetLast()
+        {
+            return new MixERP.Net.Entities.Core.Currency();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.Currency> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Currency(), 1);

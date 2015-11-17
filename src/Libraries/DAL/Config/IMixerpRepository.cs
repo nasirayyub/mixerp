@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Config.Data
         MixERP.Net.Entities.Config.Mixerp Get(string key);
 
         /// <summary>
+        /// Gets the first record of Mixerp.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Mixerp.</returns>
+        MixERP.Net.Entities.Config.Mixerp GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Mixerp sorted by key. 
+        /// </summary>
+        /// <param name="key">The column "key" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Mixerp.</returns>
+        MixERP.Net.Entities.Config.Mixerp GetPrevious(string key);
+
+        /// <summary>
+        /// Gets the next record of Mixerp sorted by key. 
+        /// </summary>
+        /// <param name="key">The column "key" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Mixerp.</returns>
+        MixERP.Net.Entities.Config.Mixerp GetNext(string key);
+
+        /// <summary>
+        /// Gets the last record of Mixerp.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Mixerp.</returns>
+        MixERP.Net.Entities.Config.Mixerp GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Mixerp against keys. 
         /// </summary>
         /// <param name="keys">Array of column "key" parameter used on where filter.</param>

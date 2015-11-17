@@ -161,6 +161,125 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "hrm.resignations". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Resignation" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Resignation GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"Resignation\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.resignations ORDER BY resignation_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Resignation>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "hrm.resignations" sorted by resignationId.
+        /// </summary>
+        /// <param name="resignationId">The column "resignation_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Resignation" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Resignation GetPrevious(int resignationId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"Resignation\" by \"ResignationId\" with value {ResignationId} was denied to the user with Login ID {_LoginId}", resignationId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.resignations WHERE resignation_id < @0 ORDER BY resignation_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Resignation>(this._Catalog, sql, resignationId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "hrm.resignations" sorted by resignationId.
+        /// </summary>
+        /// <param name="resignationId">The column "resignation_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Resignation" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Resignation GetNext(int resignationId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"Resignation\" by \"ResignationId\" with value {ResignationId} was denied to the user with Login ID {_LoginId}", resignationId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.resignations WHERE resignation_id > @0 ORDER BY resignation_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Resignation>(this._Catalog, sql, resignationId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "hrm.resignations". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Resignation" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Resignation GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"Resignation\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.resignations ORDER BY resignation_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Resignation>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "hrm.resignations" with a where filter on the column "resignation_id" to return a multiple instances of the "Resignation" class. 
         /// </summary>
         /// <param name="resignationIds">Array of column "resignation_id" parameter used on where filter.</param>

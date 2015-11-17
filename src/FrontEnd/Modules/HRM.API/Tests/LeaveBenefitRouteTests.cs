@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/leave-benefit/count-filtered/{filterName}", "GET", typeof(LeaveBenefitController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/leave-benefit/get-filtered/{pageNumber}/{filterName}", "GET", typeof(LeaveBenefitController), "GetFiltered")]
         [InlineData("/api/hrm/leave-benefit/get-filtered/{pageNumber}/{filterName}", "GET", typeof(LeaveBenefitController), "GetFiltered")]
+        [InlineData("/api/hrm/leave-benefit/first", "GET", typeof(LeaveBenefitController), "GetFirst")]
+        [InlineData("/api/hrm/leave-benefit/previous/1", "GET", typeof(LeaveBenefitController), "GetPrevious")]
+        [InlineData("/api/hrm/leave-benefit/next/1", "GET", typeof(LeaveBenefitController), "GetNext")]
+        [InlineData("/api/hrm/leave-benefit/last", "GET", typeof(LeaveBenefitController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/leave-benefit/custom-fields", "GET", typeof(LeaveBenefitController), "GetCustomFields")]
         [InlineData("/api/hrm/leave-benefit/custom-fields", "GET", typeof(LeaveBenefitController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/leave-benefit/count-filtered/{filterName}", "HEAD", typeof(LeaveBenefitController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/leave-benefit/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(LeaveBenefitController), "GetFiltered")]
         [InlineData("/api/hrm/leave-benefit/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(LeaveBenefitController), "GetFiltered")]
+        [InlineData("/api/hrm/leave-benefit/first", "HEAD", typeof(LeaveBenefitController), "GetFirst")]
+        [InlineData("/api/hrm/leave-benefit/previous/1", "HEAD", typeof(LeaveBenefitController), "GetPrevious")]
+        [InlineData("/api/hrm/leave-benefit/next/1", "HEAD", typeof(LeaveBenefitController), "GetNext")]
+        [InlineData("/api/hrm/leave-benefit/last", "HEAD", typeof(LeaveBenefitController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/leave-benefit/custom-fields", "HEAD", typeof(LeaveBenefitController), "GetCustomFields")]
         [InlineData("/api/hrm/leave-benefit/custom-fields", "HEAD", typeof(LeaveBenefitController), "GetCustomFields")]

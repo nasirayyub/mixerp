@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.HRM.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.HRM.Termination termination = Fixture().GetFirst();
+            Assert.NotNull(termination);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.HRM.Termination termination = Fixture().GetPrevious(0);
+            Assert.NotNull(termination);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.HRM.Termination termination = Fixture().GetNext(0);
+            Assert.NotNull(termination);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.HRM.Termination termination = Fixture().GetLast();
+            Assert.NotNull(termination);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.HRM.Termination> terminations = Fixture().Get(new int[] { });

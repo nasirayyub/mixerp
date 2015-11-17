@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.merchant_fee_setup". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "MerchantFeeSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.MerchantFeeSetup GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"MerchantFeeSetup\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.merchant_fee_setup ORDER BY merchant_fee_setup_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.MerchantFeeSetup>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.merchant_fee_setup" sorted by merchantFeeSetupId.
+        /// </summary>
+        /// <param name="merchantFeeSetupId">The column "merchant_fee_setup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "MerchantFeeSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.MerchantFeeSetup GetPrevious(int merchantFeeSetupId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"MerchantFeeSetup\" by \"MerchantFeeSetupId\" with value {MerchantFeeSetupId} was denied to the user with Login ID {_LoginId}", merchantFeeSetupId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.merchant_fee_setup WHERE merchant_fee_setup_id < @0 ORDER BY merchant_fee_setup_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.MerchantFeeSetup>(this._Catalog, sql, merchantFeeSetupId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.merchant_fee_setup" sorted by merchantFeeSetupId.
+        /// </summary>
+        /// <param name="merchantFeeSetupId">The column "merchant_fee_setup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "MerchantFeeSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.MerchantFeeSetup GetNext(int merchantFeeSetupId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"MerchantFeeSetup\" by \"MerchantFeeSetupId\" with value {MerchantFeeSetupId} was denied to the user with Login ID {_LoginId}", merchantFeeSetupId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.merchant_fee_setup WHERE merchant_fee_setup_id > @0 ORDER BY merchant_fee_setup_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.MerchantFeeSetup>(this._Catalog, sql, merchantFeeSetupId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.merchant_fee_setup". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "MerchantFeeSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.MerchantFeeSetup GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"MerchantFeeSetup\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.merchant_fee_setup ORDER BY merchant_fee_setup_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.MerchantFeeSetup>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.merchant_fee_setup" with a where filter on the column "merchant_fee_setup_id" to return a multiple instances of the "MerchantFeeSetup" class. 
         /// </summary>
         /// <param name="merchantFeeSetupIds">Array of column "merchant_fee_setup_id" parameter used on where filter.</param>

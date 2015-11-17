@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Nationality Get(string nationalityCode);
 
         /// <summary>
+        /// Gets the first record of Nationality.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Nationality.</returns>
+        MixERP.Net.Entities.Core.Nationality GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Nationality sorted by nationalityCode. 
+        /// </summary>
+        /// <param name="nationalityCode">The column "nationality_code" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Nationality.</returns>
+        MixERP.Net.Entities.Core.Nationality GetPrevious(string nationalityCode);
+
+        /// <summary>
+        /// Gets the next record of Nationality sorted by nationalityCode. 
+        /// </summary>
+        /// <param name="nationalityCode">The column "nationality_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Nationality.</returns>
+        MixERP.Net.Entities.Core.Nationality GetNext(string nationalityCode);
+
+        /// <summary>
+        /// Gets the last record of Nationality.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Nationality.</returns>
+        MixERP.Net.Entities.Core.Nationality GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Nationality against nationalityCodes. 
         /// </summary>
         /// <param name="nationalityCodes">Array of column "nationality_code" parameter used on where filter.</param>

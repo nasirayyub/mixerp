@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Office.Data
         MixERP.Net.Entities.Office.Configuration Get(int configurationId);
 
         /// <summary>
+        /// Gets the first record of Configuration.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Configuration.</returns>
+        MixERP.Net.Entities.Office.Configuration GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Configuration sorted by configurationId. 
+        /// </summary>
+        /// <param name="configurationId">The column "configuration_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Configuration.</returns>
+        MixERP.Net.Entities.Office.Configuration GetPrevious(int configurationId);
+
+        /// <summary>
+        /// Gets the next record of Configuration sorted by configurationId. 
+        /// </summary>
+        /// <param name="configurationId">The column "configuration_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Configuration.</returns>
+        MixERP.Net.Entities.Office.Configuration GetNext(int configurationId);
+
+        /// <summary>
+        /// Gets the last record of Configuration.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Configuration.</returns>
+        MixERP.Net.Entities.Office.Configuration GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Configuration against configurationIds. 
         /// </summary>
         /// <param name="configurationIds">Array of column "configuration_id" parameter used on where filter.</param>

@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Policy.Fakes
             return new MixERP.Net.Entities.Policy.MenuPolicy();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Policy.MenuPolicy> Get([FromUri] int[] policyIds)
+        public IEnumerable<MixERP.Net.Entities.Policy.MenuPolicy> Get(int[] policyIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Policy.MenuPolicy(), 1);
+        }
+
+        public MixERP.Net.Entities.Policy.MenuPolicy GetFirst()
+        {
+            return new MixERP.Net.Entities.Policy.MenuPolicy();
+        }
+
+        public MixERP.Net.Entities.Policy.MenuPolicy GetPrevious(int policyId)
+        {
+            return new MixERP.Net.Entities.Policy.MenuPolicy();
+        }
+
+        public MixERP.Net.Entities.Policy.MenuPolicy GetNext(int policyId)
+        {
+            return new MixERP.Net.Entities.Policy.MenuPolicy();
+        }
+
+        public MixERP.Net.Entities.Policy.MenuPolicy GetLast()
+        {
+            return new MixERP.Net.Entities.Policy.MenuPolicy();
         }
 
         public IEnumerable<MixERP.Net.Entities.Policy.MenuPolicy> GetPaginatedResult()

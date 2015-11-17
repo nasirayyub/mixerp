@@ -37,7 +37,9 @@
                     val = val === "yes" ? true : false;
                     break;
                 case "DateTime":
-                    if (dbDataType !== "time") {
+                    if (dbDataType === "time") {
+                        val = val || null;
+                    } else {
                         val = window.parseLocalizedDate(val) || null;
                     };
                     break;

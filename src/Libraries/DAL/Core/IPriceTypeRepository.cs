@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.PriceType Get(int priceTypeId);
 
         /// <summary>
+        /// Gets the first record of PriceType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of PriceType.</returns>
+        MixERP.Net.Entities.Core.PriceType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of PriceType sorted by priceTypeId. 
+        /// </summary>
+        /// <param name="priceTypeId">The column "price_type_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of PriceType.</returns>
+        MixERP.Net.Entities.Core.PriceType GetPrevious(int priceTypeId);
+
+        /// <summary>
+        /// Gets the next record of PriceType sorted by priceTypeId. 
+        /// </summary>
+        /// <param name="priceTypeId">The column "price_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of PriceType.</returns>
+        MixERP.Net.Entities.Core.PriceType GetNext(int priceTypeId);
+
+        /// <summary>
+        /// Gets the last record of PriceType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of PriceType.</returns>
+        MixERP.Net.Entities.Core.PriceType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the PriceType against priceTypeIds. 
         /// </summary>
         /// <param name="priceTypeIds">Array of column "price_type_id" parameter used on where filter.</param>

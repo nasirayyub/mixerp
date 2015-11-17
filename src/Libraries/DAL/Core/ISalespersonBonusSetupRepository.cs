@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.SalespersonBonusSetup Get(int salespersonBonusSetupId);
 
         /// <summary>
+        /// Gets the first record of SalespersonBonusSetup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of SalespersonBonusSetup.</returns>
+        MixERP.Net.Entities.Core.SalespersonBonusSetup GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of SalespersonBonusSetup sorted by salespersonBonusSetupId. 
+        /// </summary>
+        /// <param name="salespersonBonusSetupId">The column "salesperson_bonus_setup_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of SalespersonBonusSetup.</returns>
+        MixERP.Net.Entities.Core.SalespersonBonusSetup GetPrevious(int salespersonBonusSetupId);
+
+        /// <summary>
+        /// Gets the next record of SalespersonBonusSetup sorted by salespersonBonusSetupId. 
+        /// </summary>
+        /// <param name="salespersonBonusSetupId">The column "salesperson_bonus_setup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of SalespersonBonusSetup.</returns>
+        MixERP.Net.Entities.Core.SalespersonBonusSetup GetNext(int salespersonBonusSetupId);
+
+        /// <summary>
+        /// Gets the last record of SalespersonBonusSetup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of SalespersonBonusSetup.</returns>
+        MixERP.Net.Entities.Core.SalespersonBonusSetup GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the SalespersonBonusSetup against salespersonBonusSetupIds. 
         /// </summary>
         /// <param name="salespersonBonusSetupIds">Array of column "salesperson_bonus_setup_id" parameter used on where filter.</param>

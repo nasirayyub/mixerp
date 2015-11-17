@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Policy.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Policy.StorePolicy storePolicy = Fixture().GetFirst();
+            Assert.NotNull(storePolicy);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Policy.StorePolicy storePolicy = Fixture().GetPrevious(0);
+            Assert.NotNull(storePolicy);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Policy.StorePolicy storePolicy = Fixture().GetNext(0);
+            Assert.NotNull(storePolicy);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Policy.StorePolicy storePolicy = Fixture().GetLast();
+            Assert.NotNull(storePolicy);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Policy.StorePolicy> storePolicies = Fixture().Get(new long[] { });

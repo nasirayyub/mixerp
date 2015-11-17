@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Policy.Data
         MixERP.Net.Entities.Policy.DefaultEntityAccess Get(int defaultEntityAccessId);
 
         /// <summary>
+        /// Gets the first record of DefaultEntityAccess.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of DefaultEntityAccess.</returns>
+        MixERP.Net.Entities.Policy.DefaultEntityAccess GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of DefaultEntityAccess sorted by defaultEntityAccessId. 
+        /// </summary>
+        /// <param name="defaultEntityAccessId">The column "default_entity_access_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of DefaultEntityAccess.</returns>
+        MixERP.Net.Entities.Policy.DefaultEntityAccess GetPrevious(int defaultEntityAccessId);
+
+        /// <summary>
+        /// Gets the next record of DefaultEntityAccess sorted by defaultEntityAccessId. 
+        /// </summary>
+        /// <param name="defaultEntityAccessId">The column "default_entity_access_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of DefaultEntityAccess.</returns>
+        MixERP.Net.Entities.Policy.DefaultEntityAccess GetNext(int defaultEntityAccessId);
+
+        /// <summary>
+        /// Gets the last record of DefaultEntityAccess.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of DefaultEntityAccess.</returns>
+        MixERP.Net.Entities.Policy.DefaultEntityAccess GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the DefaultEntityAccess against defaultEntityAccessIds. 
         /// </summary>
         /// <param name="defaultEntityAccessIds">Array of column "default_entity_access_id" parameter used on where filter.</param>

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/tax-authority/count-filtered/{filterName}", "GET", typeof(TaxAuthorityController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/tax-authority/get-filtered/{pageNumber}/{filterName}", "GET", typeof(TaxAuthorityController), "GetFiltered")]
         [InlineData("/api/core/tax-authority/get-filtered/{pageNumber}/{filterName}", "GET", typeof(TaxAuthorityController), "GetFiltered")]
+        [InlineData("/api/core/tax-authority/first", "GET", typeof(TaxAuthorityController), "GetFirst")]
+        [InlineData("/api/core/tax-authority/previous/1", "GET", typeof(TaxAuthorityController), "GetPrevious")]
+        [InlineData("/api/core/tax-authority/next/1", "GET", typeof(TaxAuthorityController), "GetNext")]
+        [InlineData("/api/core/tax-authority/last", "GET", typeof(TaxAuthorityController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/tax-authority/custom-fields", "GET", typeof(TaxAuthorityController), "GetCustomFields")]
         [InlineData("/api/core/tax-authority/custom-fields", "GET", typeof(TaxAuthorityController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/tax-authority/count-filtered/{filterName}", "HEAD", typeof(TaxAuthorityController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/tax-authority/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(TaxAuthorityController), "GetFiltered")]
         [InlineData("/api/core/tax-authority/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(TaxAuthorityController), "GetFiltered")]
+        [InlineData("/api/core/tax-authority/first", "HEAD", typeof(TaxAuthorityController), "GetFirst")]
+        [InlineData("/api/core/tax-authority/previous/1", "HEAD", typeof(TaxAuthorityController), "GetPrevious")]
+        [InlineData("/api/core/tax-authority/next/1", "HEAD", typeof(TaxAuthorityController), "GetNext")]
+        [InlineData("/api/core/tax-authority/last", "HEAD", typeof(TaxAuthorityController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/tax-authority/custom-fields", "HEAD", typeof(TaxAuthorityController), "GetCustomFields")]
         [InlineData("/api/core/tax-authority/custom-fields", "HEAD", typeof(TaxAuthorityController), "GetCustomFields")]

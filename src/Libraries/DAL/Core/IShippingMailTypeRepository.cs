@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.ShippingMailType Get(int shippingMailTypeId);
 
         /// <summary>
+        /// Gets the first record of ShippingMailType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ShippingMailType.</returns>
+        MixERP.Net.Entities.Core.ShippingMailType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of ShippingMailType sorted by shippingMailTypeId. 
+        /// </summary>
+        /// <param name="shippingMailTypeId">The column "shipping_mail_type_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ShippingMailType.</returns>
+        MixERP.Net.Entities.Core.ShippingMailType GetPrevious(int shippingMailTypeId);
+
+        /// <summary>
+        /// Gets the next record of ShippingMailType sorted by shippingMailTypeId. 
+        /// </summary>
+        /// <param name="shippingMailTypeId">The column "shipping_mail_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ShippingMailType.</returns>
+        MixERP.Net.Entities.Core.ShippingMailType GetNext(int shippingMailTypeId);
+
+        /// <summary>
+        /// Gets the last record of ShippingMailType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ShippingMailType.</returns>
+        MixERP.Net.Entities.Core.ShippingMailType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the ShippingMailType against shippingMailTypeIds. 
         /// </summary>
         /// <param name="shippingMailTypeIds">Array of column "shipping_mail_type_id" parameter used on where filter.</param>

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.CompoundUnit Get(int compoundUnitId);
 
         /// <summary>
+        /// Gets the first record of CompoundUnit.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CompoundUnit.</returns>
+        MixERP.Net.Entities.Core.CompoundUnit GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of CompoundUnit sorted by compoundUnitId. 
+        /// </summary>
+        /// <param name="compoundUnitId">The column "compound_unit_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CompoundUnit.</returns>
+        MixERP.Net.Entities.Core.CompoundUnit GetPrevious(int compoundUnitId);
+
+        /// <summary>
+        /// Gets the next record of CompoundUnit sorted by compoundUnitId. 
+        /// </summary>
+        /// <param name="compoundUnitId">The column "compound_unit_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CompoundUnit.</returns>
+        MixERP.Net.Entities.Core.CompoundUnit GetNext(int compoundUnitId);
+
+        /// <summary>
+        /// Gets the last record of CompoundUnit.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CompoundUnit.</returns>
+        MixERP.Net.Entities.Core.CompoundUnit GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the CompoundUnit against compoundUnitIds. 
         /// </summary>
         /// <param name="compoundUnitIds">Array of column "compound_unit_id" parameter used on where filter.</param>

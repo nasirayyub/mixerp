@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.ageing_slabs". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "AgeingSlab" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.AgeingSlab GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"AgeingSlab\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.ageing_slabs ORDER BY ageing_slab_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.AgeingSlab>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.ageing_slabs" sorted by ageingSlabId.
+        /// </summary>
+        /// <param name="ageingSlabId">The column "ageing_slab_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "AgeingSlab" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.AgeingSlab GetPrevious(int ageingSlabId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"AgeingSlab\" by \"AgeingSlabId\" with value {AgeingSlabId} was denied to the user with Login ID {_LoginId}", ageingSlabId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.ageing_slabs WHERE ageing_slab_id < @0 ORDER BY ageing_slab_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.AgeingSlab>(this._Catalog, sql, ageingSlabId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.ageing_slabs" sorted by ageingSlabId.
+        /// </summary>
+        /// <param name="ageingSlabId">The column "ageing_slab_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "AgeingSlab" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.AgeingSlab GetNext(int ageingSlabId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"AgeingSlab\" by \"AgeingSlabId\" with value {AgeingSlabId} was denied to the user with Login ID {_LoginId}", ageingSlabId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.ageing_slabs WHERE ageing_slab_id > @0 ORDER BY ageing_slab_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.AgeingSlab>(this._Catalog, sql, ageingSlabId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.ageing_slabs". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "AgeingSlab" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.AgeingSlab GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"AgeingSlab\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.ageing_slabs ORDER BY ageing_slab_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.AgeingSlab>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.ageing_slabs" with a where filter on the column "ageing_slab_id" to return a multiple instances of the "AgeingSlab" class. 
         /// </summary>
         /// <param name="ageingSlabIds">Array of column "ageing_slab_id" parameter used on where filter.</param>

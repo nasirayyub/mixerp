@@ -53,6 +53,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/leave-application/count-filtered/{filterName}", "GET", typeof(LeaveApplicationController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/leave-application/get-filtered/{pageNumber}/{filterName}", "GET", typeof(LeaveApplicationController), "GetFiltered")]
         [InlineData("/api/hrm/leave-application/get-filtered/{pageNumber}/{filterName}", "GET", typeof(LeaveApplicationController), "GetFiltered")]
+        [InlineData("/api/hrm/leave-application/first", "GET", typeof(LeaveApplicationController), "GetFirst")]
+        [InlineData("/api/hrm/leave-application/previous/1", "GET", typeof(LeaveApplicationController), "GetPrevious")]
+        [InlineData("/api/hrm/leave-application/next/1", "GET", typeof(LeaveApplicationController), "GetNext")]
+        [InlineData("/api/hrm/leave-application/last", "GET", typeof(LeaveApplicationController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/leave-application/custom-fields", "GET", typeof(LeaveApplicationController), "GetCustomFields")]
         [InlineData("/api/hrm/leave-application/custom-fields", "GET", typeof(LeaveApplicationController), "GetCustomFields")]
@@ -78,6 +82,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/leave-application/count-filtered/{filterName}", "HEAD", typeof(LeaveApplicationController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/leave-application/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(LeaveApplicationController), "GetFiltered")]
         [InlineData("/api/hrm/leave-application/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(LeaveApplicationController), "GetFiltered")]
+        [InlineData("/api/hrm/leave-application/first", "HEAD", typeof(LeaveApplicationController), "GetFirst")]
+        [InlineData("/api/hrm/leave-application/previous/1", "HEAD", typeof(LeaveApplicationController), "GetPrevious")]
+        [InlineData("/api/hrm/leave-application/next/1", "HEAD", typeof(LeaveApplicationController), "GetNext")]
+        [InlineData("/api/hrm/leave-application/last", "HEAD", typeof(LeaveApplicationController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/leave-application/custom-fields", "HEAD", typeof(LeaveApplicationController), "GetCustomFields")]
         [InlineData("/api/hrm/leave-application/custom-fields", "HEAD", typeof(LeaveApplicationController), "GetCustomFields")]

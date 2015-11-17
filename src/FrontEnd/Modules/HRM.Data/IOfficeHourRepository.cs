@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.OfficeHour Get(int officeHourId);
 
         /// <summary>
+        /// Gets the first record of OfficeHour.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of OfficeHour.</returns>
+        MixERP.Net.Entities.HRM.OfficeHour GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of OfficeHour sorted by officeHourId. 
+        /// </summary>
+        /// <param name="officeHourId">The column "office_hour_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of OfficeHour.</returns>
+        MixERP.Net.Entities.HRM.OfficeHour GetPrevious(int officeHourId);
+
+        /// <summary>
+        /// Gets the next record of OfficeHour sorted by officeHourId. 
+        /// </summary>
+        /// <param name="officeHourId">The column "office_hour_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of OfficeHour.</returns>
+        MixERP.Net.Entities.HRM.OfficeHour GetNext(int officeHourId);
+
+        /// <summary>
+        /// Gets the last record of OfficeHour.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of OfficeHour.</returns>
+        MixERP.Net.Entities.HRM.OfficeHour GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the OfficeHour against officeHourIds. 
         /// </summary>
         /// <param name="officeHourIds">Array of column "office_hour_id" parameter used on where filter.</param>

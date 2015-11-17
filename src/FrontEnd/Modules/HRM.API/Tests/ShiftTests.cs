@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.HRM.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.HRM.Shift shift = Fixture().GetFirst();
+            Assert.NotNull(shift);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.HRM.Shift shift = Fixture().GetPrevious(0);
+            Assert.NotNull(shift);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.HRM.Shift shift = Fixture().GetNext(0);
+            Assert.NotNull(shift);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.HRM.Shift shift = Fixture().GetLast();
+            Assert.NotNull(shift);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.HRM.Shift> shifts = Fixture().Get(new int[] { });

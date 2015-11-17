@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.LateFee(), 1);
         }
 
+        public MixERP.Net.Entities.Core.LateFee GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.LateFee();
+        }
+
+        public MixERP.Net.Entities.Core.LateFee GetPrevious(int lateFeeId)
+        {
+            return new MixERP.Net.Entities.Core.LateFee();
+        }
+
+        public MixERP.Net.Entities.Core.LateFee GetNext(int lateFeeId)
+        {
+            return new MixERP.Net.Entities.Core.LateFee();
+        }
+
+        public MixERP.Net.Entities.Core.LateFee GetLast()
+        {
+            return new MixERP.Net.Entities.Core.LateFee();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.LateFee> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.LateFee(), 1);

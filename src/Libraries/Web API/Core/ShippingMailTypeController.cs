@@ -238,6 +238,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of shipping mail type.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/shipping-mail-type/first")]
+        public MixERP.Net.Entities.Core.ShippingMailType GetFirst()
+        {
+            try
+            {
+                return this.ShippingMailTypeRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of shipping mail type.
+        /// </summary>
+        /// <param name="shippingMailTypeId">Enter ShippingMailTypeId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{shippingMailTypeId}")]
+        [Route("~/api/core/shipping-mail-type/previous/{shippingMailTypeId}")]
+        public MixERP.Net.Entities.Core.ShippingMailType GetPrevious(int shippingMailTypeId)
+        {
+            try
+            {
+                return this.ShippingMailTypeRepository.GetPrevious(shippingMailTypeId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of shipping mail type.
+        /// </summary>
+        /// <param name="shippingMailTypeId">Enter ShippingMailTypeId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{shippingMailTypeId}")]
+        [Route("~/api/core/shipping-mail-type/next/{shippingMailTypeId}")]
+        public MixERP.Net.Entities.Core.ShippingMailType GetNext(int shippingMailTypeId)
+        {
+            try
+            {
+                return this.ShippingMailTypeRepository.GetNext(shippingMailTypeId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of shipping mail type.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/shipping-mail-type/last")]
+        public MixERP.Net.Entities.Core.ShippingMailType GetLast()
+        {
+            try
+            {
+                return this.ShippingMailTypeRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 shipping mail types on each page, sorted by the property ShippingMailTypeId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

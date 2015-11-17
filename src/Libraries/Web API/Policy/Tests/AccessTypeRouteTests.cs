@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/access-type/count-filtered/{filterName}", "GET", typeof(AccessTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/access-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AccessTypeController), "GetFiltered")]
         [InlineData("/api/policy/access-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AccessTypeController), "GetFiltered")]
+        [InlineData("/api/policy/access-type/first", "GET", typeof(AccessTypeController), "GetFirst")]
+        [InlineData("/api/policy/access-type/previous/1", "GET", typeof(AccessTypeController), "GetPrevious")]
+        [InlineData("/api/policy/access-type/next/1", "GET", typeof(AccessTypeController), "GetNext")]
+        [InlineData("/api/policy/access-type/last", "GET", typeof(AccessTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/access-type/custom-fields", "GET", typeof(AccessTypeController), "GetCustomFields")]
         [InlineData("/api/policy/access-type/custom-fields", "GET", typeof(AccessTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/access-type/count-filtered/{filterName}", "HEAD", typeof(AccessTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/access-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AccessTypeController), "GetFiltered")]
         [InlineData("/api/policy/access-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AccessTypeController), "GetFiltered")]
+        [InlineData("/api/policy/access-type/first", "HEAD", typeof(AccessTypeController), "GetFirst")]
+        [InlineData("/api/policy/access-type/previous/1", "HEAD", typeof(AccessTypeController), "GetPrevious")]
+        [InlineData("/api/policy/access-type/next/1", "HEAD", typeof(AccessTypeController), "GetNext")]
+        [InlineData("/api/policy/access-type/last", "HEAD", typeof(AccessTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/access-type/custom-fields", "HEAD", typeof(AccessTypeController), "GetCustomFields")]
         [InlineData("/api/policy/access-type/custom-fields", "HEAD", typeof(AccessTypeController), "GetCustomFields")]

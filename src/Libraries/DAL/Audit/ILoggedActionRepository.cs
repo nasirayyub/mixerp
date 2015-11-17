@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Audit.Data
         MixERP.Net.Entities.Audit.LoggedAction Get(long eventId);
 
         /// <summary>
+        /// Gets the first record of LoggedAction.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of LoggedAction.</returns>
+        MixERP.Net.Entities.Audit.LoggedAction GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of LoggedAction sorted by eventId. 
+        /// </summary>
+        /// <param name="eventId">The column "event_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of LoggedAction.</returns>
+        MixERP.Net.Entities.Audit.LoggedAction GetPrevious(long eventId);
+
+        /// <summary>
+        /// Gets the next record of LoggedAction sorted by eventId. 
+        /// </summary>
+        /// <param name="eventId">The column "event_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of LoggedAction.</returns>
+        MixERP.Net.Entities.Audit.LoggedAction GetNext(long eventId);
+
+        /// <summary>
+        /// Gets the last record of LoggedAction.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of LoggedAction.</returns>
+        MixERP.Net.Entities.Audit.LoggedAction GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the LoggedAction against eventIds. 
         /// </summary>
         /// <param name="eventIds">Array of column "event_id" parameter used on where filter.</param>

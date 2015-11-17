@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.HRM.Fakes
             return new MixERP.Net.Entities.HRM.EducationLevel();
         }
 
-        public IEnumerable<MixERP.Net.Entities.HRM.EducationLevel> Get([FromUri] int[] educationLevelIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.EducationLevel> Get(int[] educationLevelIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.HRM.EducationLevel(), 1);
+        }
+
+        public MixERP.Net.Entities.HRM.EducationLevel GetFirst()
+        {
+            return new MixERP.Net.Entities.HRM.EducationLevel();
+        }
+
+        public MixERP.Net.Entities.HRM.EducationLevel GetPrevious(int educationLevelId)
+        {
+            return new MixERP.Net.Entities.HRM.EducationLevel();
+        }
+
+        public MixERP.Net.Entities.HRM.EducationLevel GetNext(int educationLevelId)
+        {
+            return new MixERP.Net.Entities.HRM.EducationLevel();
+        }
+
+        public MixERP.Net.Entities.HRM.EducationLevel GetLast()
+        {
+            return new MixERP.Net.Entities.HRM.EducationLevel();
         }
 
         public IEnumerable<MixERP.Net.Entities.HRM.EducationLevel> GetPaginatedResult()

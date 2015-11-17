@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Office.Fakes
             return new MixERP.Net.Entities.Office.CashRepository();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Office.CashRepository> Get([FromUri] int[] cashRepositoryIds)
+        public IEnumerable<MixERP.Net.Entities.Office.CashRepository> Get(int[] cashRepositoryIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Office.CashRepository(), 1);
+        }
+
+        public MixERP.Net.Entities.Office.CashRepository GetFirst()
+        {
+            return new MixERP.Net.Entities.Office.CashRepository();
+        }
+
+        public MixERP.Net.Entities.Office.CashRepository GetPrevious(int cashRepositoryId)
+        {
+            return new MixERP.Net.Entities.Office.CashRepository();
+        }
+
+        public MixERP.Net.Entities.Office.CashRepository GetNext(int cashRepositoryId)
+        {
+            return new MixERP.Net.Entities.Office.CashRepository();
+        }
+
+        public MixERP.Net.Entities.Office.CashRepository GetLast()
+        {
+            return new MixERP.Net.Entities.Office.CashRepository();
         }
 
         public IEnumerable<MixERP.Net.Entities.Office.CashRepository> GetPaginatedResult()

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/price-type/count-filtered/{filterName}", "GET", typeof(PriceTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/price-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(PriceTypeController), "GetFiltered")]
         [InlineData("/api/core/price-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(PriceTypeController), "GetFiltered")]
+        [InlineData("/api/core/price-type/first", "GET", typeof(PriceTypeController), "GetFirst")]
+        [InlineData("/api/core/price-type/previous/1", "GET", typeof(PriceTypeController), "GetPrevious")]
+        [InlineData("/api/core/price-type/next/1", "GET", typeof(PriceTypeController), "GetNext")]
+        [InlineData("/api/core/price-type/last", "GET", typeof(PriceTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/price-type/custom-fields", "GET", typeof(PriceTypeController), "GetCustomFields")]
         [InlineData("/api/core/price-type/custom-fields", "GET", typeof(PriceTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/price-type/count-filtered/{filterName}", "HEAD", typeof(PriceTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/price-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(PriceTypeController), "GetFiltered")]
         [InlineData("/api/core/price-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(PriceTypeController), "GetFiltered")]
+        [InlineData("/api/core/price-type/first", "HEAD", typeof(PriceTypeController), "GetFirst")]
+        [InlineData("/api/core/price-type/previous/1", "HEAD", typeof(PriceTypeController), "GetPrevious")]
+        [InlineData("/api/core/price-type/next/1", "HEAD", typeof(PriceTypeController), "GetNext")]
+        [InlineData("/api/core/price-type/last", "HEAD", typeof(PriceTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/price-type/custom-fields", "HEAD", typeof(PriceTypeController), "GetCustomFields")]
         [InlineData("/api/core/price-type/custom-fields", "HEAD", typeof(PriceTypeController), "GetCustomFields")]

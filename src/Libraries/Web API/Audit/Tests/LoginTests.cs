@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Audit.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Audit.Login login = Fixture().GetFirst();
+            Assert.NotNull(login);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Audit.Login login = Fixture().GetPrevious(0);
+            Assert.NotNull(login);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Audit.Login login = Fixture().GetNext(0);
+            Assert.NotNull(login);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Audit.Login login = Fixture().GetLast();
+            Assert.NotNull(login);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Audit.Login> logins = Fixture().Get(new long[] { });

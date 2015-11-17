@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/employee/count-filtered/{filterName}", "GET", typeof(EmployeeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/employee/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmployeeController), "GetFiltered")]
         [InlineData("/api/hrm/employee/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmployeeController), "GetFiltered")]
+        [InlineData("/api/hrm/employee/first", "GET", typeof(EmployeeController), "GetFirst")]
+        [InlineData("/api/hrm/employee/previous/1", "GET", typeof(EmployeeController), "GetPrevious")]
+        [InlineData("/api/hrm/employee/next/1", "GET", typeof(EmployeeController), "GetNext")]
+        [InlineData("/api/hrm/employee/last", "GET", typeof(EmployeeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/employee/custom-fields", "GET", typeof(EmployeeController), "GetCustomFields")]
         [InlineData("/api/hrm/employee/custom-fields", "GET", typeof(EmployeeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/employee/count-filtered/{filterName}", "HEAD", typeof(EmployeeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/employee/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmployeeController), "GetFiltered")]
         [InlineData("/api/hrm/employee/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmployeeController), "GetFiltered")]
+        [InlineData("/api/hrm/employee/first", "HEAD", typeof(EmployeeController), "GetFirst")]
+        [InlineData("/api/hrm/employee/previous/1", "HEAD", typeof(EmployeeController), "GetPrevious")]
+        [InlineData("/api/hrm/employee/next/1", "HEAD", typeof(EmployeeController), "GetNext")]
+        [InlineData("/api/hrm/employee/last", "HEAD", typeof(EmployeeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/employee/custom-fields", "HEAD", typeof(EmployeeController), "GetCustomFields")]
         [InlineData("/api/hrm/employee/custom-fields", "HEAD", typeof(EmployeeController), "GetCustomFields")]

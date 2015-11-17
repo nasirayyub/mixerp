@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Policy.Data
         MixERP.Net.Entities.Policy.LockOut Get(long lockOutId);
 
         /// <summary>
+        /// Gets the first record of LockOut.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of LockOut.</returns>
+        MixERP.Net.Entities.Policy.LockOut GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of LockOut sorted by lockOutId. 
+        /// </summary>
+        /// <param name="lockOutId">The column "lock_out_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of LockOut.</returns>
+        MixERP.Net.Entities.Policy.LockOut GetPrevious(long lockOutId);
+
+        /// <summary>
+        /// Gets the next record of LockOut sorted by lockOutId. 
+        /// </summary>
+        /// <param name="lockOutId">The column "lock_out_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of LockOut.</returns>
+        MixERP.Net.Entities.Policy.LockOut GetNext(long lockOutId);
+
+        /// <summary>
+        /// Gets the last record of LockOut.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of LockOut.</returns>
+        MixERP.Net.Entities.Policy.LockOut GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the LockOut against lockOutIds. 
         /// </summary>
         /// <param name="lockOutIds">Array of column "lock_out_id" parameter used on where filter.</param>

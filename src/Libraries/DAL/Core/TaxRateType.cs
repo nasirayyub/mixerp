@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.tax_rate_types". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "TaxRateType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.TaxRateType GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"TaxRateType\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.tax_rate_types ORDER BY tax_rate_type_code LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.TaxRateType>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.tax_rate_types" sorted by taxRateTypeCode.
+        /// </summary>
+        /// <param name="taxRateTypeCode">The column "tax_rate_type_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "TaxRateType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.TaxRateType GetPrevious(string taxRateTypeCode)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"TaxRateType\" by \"TaxRateTypeCode\" with value {TaxRateTypeCode} was denied to the user with Login ID {_LoginId}", taxRateTypeCode, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.tax_rate_types WHERE tax_rate_type_code < @0 ORDER BY tax_rate_type_code DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.TaxRateType>(this._Catalog, sql, taxRateTypeCode).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.tax_rate_types" sorted by taxRateTypeCode.
+        /// </summary>
+        /// <param name="taxRateTypeCode">The column "tax_rate_type_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "TaxRateType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.TaxRateType GetNext(string taxRateTypeCode)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"TaxRateType\" by \"TaxRateTypeCode\" with value {TaxRateTypeCode} was denied to the user with Login ID {_LoginId}", taxRateTypeCode, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.tax_rate_types WHERE tax_rate_type_code > @0 ORDER BY tax_rate_type_code LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.TaxRateType>(this._Catalog, sql, taxRateTypeCode).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.tax_rate_types". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "TaxRateType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.TaxRateType GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"TaxRateType\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.tax_rate_types ORDER BY tax_rate_type_code DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.TaxRateType>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.tax_rate_types" with a where filter on the column "tax_rate_type_code" to return a multiple instances of the "TaxRateType" class. 
         /// </summary>
         /// <param name="taxRateTypeCodes">Array of column "tax_rate_type_code" parameter used on where filter.</param>

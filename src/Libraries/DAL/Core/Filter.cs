@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.filters". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Filter" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Filter GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"Filter\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.filters ORDER BY filter_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Filter>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.filters" sorted by filterId.
+        /// </summary>
+        /// <param name="filterId">The column "filter_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Filter" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Filter GetPrevious(long filterId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"Filter\" by \"FilterId\" with value {FilterId} was denied to the user with Login ID {_LoginId}", filterId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.filters WHERE filter_id < @0 ORDER BY filter_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Filter>(this._Catalog, sql, filterId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.filters" sorted by filterId.
+        /// </summary>
+        /// <param name="filterId">The column "filter_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Filter" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Filter GetNext(long filterId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"Filter\" by \"FilterId\" with value {FilterId} was denied to the user with Login ID {_LoginId}", filterId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.filters WHERE filter_id > @0 ORDER BY filter_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Filter>(this._Catalog, sql, filterId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.filters". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Filter" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Filter GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"Filter\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.filters ORDER BY filter_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Filter>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.filters" with a where filter on the column "filter_id" to return a multiple instances of the "Filter" class. 
         /// </summary>
         /// <param name="filterIds">Array of column "filter_id" parameter used on where filter.</param>

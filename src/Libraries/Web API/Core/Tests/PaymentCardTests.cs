@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.PaymentCard paymentCard = Fixture().GetFirst();
+            Assert.NotNull(paymentCard);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.PaymentCard paymentCard = Fixture().GetPrevious(0);
+            Assert.NotNull(paymentCard);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.PaymentCard paymentCard = Fixture().GetNext(0);
+            Assert.NotNull(paymentCard);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.PaymentCard paymentCard = Fixture().GetLast();
+            Assert.NotNull(paymentCard);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.PaymentCard> paymentCards = Fixture().Get(new int[] { });

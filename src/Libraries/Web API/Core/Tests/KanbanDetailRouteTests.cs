@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/kanban-detail/count-filtered/{filterName}", "GET", typeof(KanbanDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/kanban-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(KanbanDetailController), "GetFiltered")]
         [InlineData("/api/core/kanban-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(KanbanDetailController), "GetFiltered")]
+        [InlineData("/api/core/kanban-detail/first", "GET", typeof(KanbanDetailController), "GetFirst")]
+        [InlineData("/api/core/kanban-detail/previous/1", "GET", typeof(KanbanDetailController), "GetPrevious")]
+        [InlineData("/api/core/kanban-detail/next/1", "GET", typeof(KanbanDetailController), "GetNext")]
+        [InlineData("/api/core/kanban-detail/last", "GET", typeof(KanbanDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/kanban-detail/custom-fields", "GET", typeof(KanbanDetailController), "GetCustomFields")]
         [InlineData("/api/core/kanban-detail/custom-fields", "GET", typeof(KanbanDetailController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/kanban-detail/count-filtered/{filterName}", "HEAD", typeof(KanbanDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/kanban-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(KanbanDetailController), "GetFiltered")]
         [InlineData("/api/core/kanban-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(KanbanDetailController), "GetFiltered")]
+        [InlineData("/api/core/kanban-detail/first", "HEAD", typeof(KanbanDetailController), "GetFirst")]
+        [InlineData("/api/core/kanban-detail/previous/1", "HEAD", typeof(KanbanDetailController), "GetPrevious")]
+        [InlineData("/api/core/kanban-detail/next/1", "HEAD", typeof(KanbanDetailController), "GetNext")]
+        [InlineData("/api/core/kanban-detail/last", "HEAD", typeof(KanbanDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/kanban-detail/custom-fields", "HEAD", typeof(KanbanDetailController), "GetCustomFields")]
         [InlineData("/api/core/kanban-detail/custom-fields", "HEAD", typeof(KanbanDetailController), "GetCustomFields")]

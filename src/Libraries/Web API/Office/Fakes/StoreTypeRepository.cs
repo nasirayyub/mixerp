@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Office.Fakes
             return new MixERP.Net.Entities.Office.StoreType();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Office.StoreType> Get([FromUri] int[] storeTypeIds)
+        public IEnumerable<MixERP.Net.Entities.Office.StoreType> Get(int[] storeTypeIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Office.StoreType(), 1);
+        }
+
+        public MixERP.Net.Entities.Office.StoreType GetFirst()
+        {
+            return new MixERP.Net.Entities.Office.StoreType();
+        }
+
+        public MixERP.Net.Entities.Office.StoreType GetPrevious(int storeTypeId)
+        {
+            return new MixERP.Net.Entities.Office.StoreType();
+        }
+
+        public MixERP.Net.Entities.Office.StoreType GetNext(int storeTypeId)
+        {
+            return new MixERP.Net.Entities.Office.StoreType();
+        }
+
+        public MixERP.Net.Entities.Office.StoreType GetLast()
+        {
+            return new MixERP.Net.Entities.Office.StoreType();
         }
 
         public IEnumerable<MixERP.Net.Entities.Office.StoreType> GetPaginatedResult()

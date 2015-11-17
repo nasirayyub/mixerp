@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.shipping_addresses". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "ShippingAddress" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.ShippingAddress GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"ShippingAddress\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.shipping_addresses ORDER BY shipping_address_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.ShippingAddress>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.shipping_addresses" sorted by shippingAddressId.
+        /// </summary>
+        /// <param name="shippingAddressId">The column "shipping_address_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "ShippingAddress" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.ShippingAddress GetPrevious(long shippingAddressId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"ShippingAddress\" by \"ShippingAddressId\" with value {ShippingAddressId} was denied to the user with Login ID {_LoginId}", shippingAddressId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.shipping_addresses WHERE shipping_address_id < @0 ORDER BY shipping_address_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.ShippingAddress>(this._Catalog, sql, shippingAddressId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.shipping_addresses" sorted by shippingAddressId.
+        /// </summary>
+        /// <param name="shippingAddressId">The column "shipping_address_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "ShippingAddress" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.ShippingAddress GetNext(long shippingAddressId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"ShippingAddress\" by \"ShippingAddressId\" with value {ShippingAddressId} was denied to the user with Login ID {_LoginId}", shippingAddressId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.shipping_addresses WHERE shipping_address_id > @0 ORDER BY shipping_address_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.ShippingAddress>(this._Catalog, sql, shippingAddressId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.shipping_addresses". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "ShippingAddress" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.ShippingAddress GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"ShippingAddress\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.shipping_addresses ORDER BY shipping_address_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.ShippingAddress>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.shipping_addresses" with a where filter on the column "shipping_address_id" to return a multiple instances of the "ShippingAddress" class. 
         /// </summary>
         /// <param name="shippingAddressIds">Array of column "shipping_address_id" parameter used on where filter.</param>

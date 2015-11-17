@@ -250,6 +250,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of recurring invoice.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/recurring-invoice/first")]
+        public MixERP.Net.Entities.Core.RecurringInvoice GetFirst()
+        {
+            try
+            {
+                return this.RecurringInvoiceRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of recurring invoice.
+        /// </summary>
+        /// <param name="recurringInvoiceId">Enter RecurringInvoiceId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{recurringInvoiceId}")]
+        [Route("~/api/core/recurring-invoice/previous/{recurringInvoiceId}")]
+        public MixERP.Net.Entities.Core.RecurringInvoice GetPrevious(int recurringInvoiceId)
+        {
+            try
+            {
+                return this.RecurringInvoiceRepository.GetPrevious(recurringInvoiceId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of recurring invoice.
+        /// </summary>
+        /// <param name="recurringInvoiceId">Enter RecurringInvoiceId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{recurringInvoiceId}")]
+        [Route("~/api/core/recurring-invoice/next/{recurringInvoiceId}")]
+        public MixERP.Net.Entities.Core.RecurringInvoice GetNext(int recurringInvoiceId)
+        {
+            try
+            {
+                return this.RecurringInvoiceRepository.GetNext(recurringInvoiceId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of recurring invoice.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/recurring-invoice/last")]
+        public MixERP.Net.Entities.Core.RecurringInvoice GetLast()
+        {
+            try
+            {
+                return this.RecurringInvoiceRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 recurring invoices on each page, sorted by the property RecurringInvoiceId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

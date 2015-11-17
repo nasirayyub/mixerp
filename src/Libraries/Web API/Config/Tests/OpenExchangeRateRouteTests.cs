@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/open-exchange-rate/count-filtered/{filterName}", "GET", typeof(OpenExchangeRateController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/open-exchange-rate/get-filtered/{pageNumber}/{filterName}", "GET", typeof(OpenExchangeRateController), "GetFiltered")]
         [InlineData("/api/config/open-exchange-rate/get-filtered/{pageNumber}/{filterName}", "GET", typeof(OpenExchangeRateController), "GetFiltered")]
+        [InlineData("/api/config/open-exchange-rate/first", "GET", typeof(OpenExchangeRateController), "GetFirst")]
+        [InlineData("/api/config/open-exchange-rate/previous/1", "GET", typeof(OpenExchangeRateController), "GetPrevious")]
+        [InlineData("/api/config/open-exchange-rate/next/1", "GET", typeof(OpenExchangeRateController), "GetNext")]
+        [InlineData("/api/config/open-exchange-rate/last", "GET", typeof(OpenExchangeRateController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/open-exchange-rate/custom-fields", "GET", typeof(OpenExchangeRateController), "GetCustomFields")]
         [InlineData("/api/config/open-exchange-rate/custom-fields", "GET", typeof(OpenExchangeRateController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/open-exchange-rate/count-filtered/{filterName}", "HEAD", typeof(OpenExchangeRateController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/open-exchange-rate/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(OpenExchangeRateController), "GetFiltered")]
         [InlineData("/api/config/open-exchange-rate/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(OpenExchangeRateController), "GetFiltered")]
+        [InlineData("/api/config/open-exchange-rate/first", "HEAD", typeof(OpenExchangeRateController), "GetFirst")]
+        [InlineData("/api/config/open-exchange-rate/previous/1", "HEAD", typeof(OpenExchangeRateController), "GetPrevious")]
+        [InlineData("/api/config/open-exchange-rate/next/1", "HEAD", typeof(OpenExchangeRateController), "GetNext")]
+        [InlineData("/api/config/open-exchange-rate/last", "HEAD", typeof(OpenExchangeRateController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/open-exchange-rate/custom-fields", "HEAD", typeof(OpenExchangeRateController), "GetCustomFields")]
         [InlineData("/api/config/open-exchange-rate/custom-fields", "HEAD", typeof(OpenExchangeRateController), "GetCustomFields")]

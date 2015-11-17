@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.shippers". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Shipper" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Shipper GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"Shipper\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.shippers ORDER BY shipper_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Shipper>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.shippers" sorted by shipperId.
+        /// </summary>
+        /// <param name="shipperId">The column "shipper_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Shipper" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Shipper GetPrevious(int shipperId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"Shipper\" by \"ShipperId\" with value {ShipperId} was denied to the user with Login ID {_LoginId}", shipperId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.shippers WHERE shipper_id < @0 ORDER BY shipper_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Shipper>(this._Catalog, sql, shipperId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.shippers" sorted by shipperId.
+        /// </summary>
+        /// <param name="shipperId">The column "shipper_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Shipper" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Shipper GetNext(int shipperId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"Shipper\" by \"ShipperId\" with value {ShipperId} was denied to the user with Login ID {_LoginId}", shipperId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.shippers WHERE shipper_id > @0 ORDER BY shipper_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Shipper>(this._Catalog, sql, shipperId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.shippers". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Shipper" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Shipper GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"Shipper\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.shippers ORDER BY shipper_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Shipper>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.shippers" with a where filter on the column "shipper_id" to return a multiple instances of the "Shipper" class. 
         /// </summary>
         /// <param name="shipperIds">Array of column "shipper_id" parameter used on where filter.</param>

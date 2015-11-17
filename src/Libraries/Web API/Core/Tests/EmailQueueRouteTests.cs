@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/email-queue/count-filtered/{filterName}", "GET", typeof(EmailQueueController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/email-queue/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmailQueueController), "GetFiltered")]
         [InlineData("/api/core/email-queue/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmailQueueController), "GetFiltered")]
+        [InlineData("/api/core/email-queue/first", "GET", typeof(EmailQueueController), "GetFirst")]
+        [InlineData("/api/core/email-queue/previous/1", "GET", typeof(EmailQueueController), "GetPrevious")]
+        [InlineData("/api/core/email-queue/next/1", "GET", typeof(EmailQueueController), "GetNext")]
+        [InlineData("/api/core/email-queue/last", "GET", typeof(EmailQueueController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/email-queue/custom-fields", "GET", typeof(EmailQueueController), "GetCustomFields")]
         [InlineData("/api/core/email-queue/custom-fields", "GET", typeof(EmailQueueController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/email-queue/count-filtered/{filterName}", "HEAD", typeof(EmailQueueController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/email-queue/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmailQueueController), "GetFiltered")]
         [InlineData("/api/core/email-queue/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmailQueueController), "GetFiltered")]
+        [InlineData("/api/core/email-queue/first", "HEAD", typeof(EmailQueueController), "GetFirst")]
+        [InlineData("/api/core/email-queue/previous/1", "HEAD", typeof(EmailQueueController), "GetPrevious")]
+        [InlineData("/api/core/email-queue/next/1", "HEAD", typeof(EmailQueueController), "GetNext")]
+        [InlineData("/api/core/email-queue/last", "HEAD", typeof(EmailQueueController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/email-queue/custom-fields", "HEAD", typeof(EmailQueueController), "GetCustomFields")]
         [InlineData("/api/core/email-queue/custom-fields", "HEAD", typeof(EmailQueueController), "GetCustomFields")]

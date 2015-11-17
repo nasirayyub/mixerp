@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/county-sales-tax/count-filtered/{filterName}", "GET", typeof(CountySalesTaxController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/county-sales-tax/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CountySalesTaxController), "GetFiltered")]
         [InlineData("/api/core/county-sales-tax/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CountySalesTaxController), "GetFiltered")]
+        [InlineData("/api/core/county-sales-tax/first", "GET", typeof(CountySalesTaxController), "GetFirst")]
+        [InlineData("/api/core/county-sales-tax/previous/1", "GET", typeof(CountySalesTaxController), "GetPrevious")]
+        [InlineData("/api/core/county-sales-tax/next/1", "GET", typeof(CountySalesTaxController), "GetNext")]
+        [InlineData("/api/core/county-sales-tax/last", "GET", typeof(CountySalesTaxController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/county-sales-tax/custom-fields", "GET", typeof(CountySalesTaxController), "GetCustomFields")]
         [InlineData("/api/core/county-sales-tax/custom-fields", "GET", typeof(CountySalesTaxController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/county-sales-tax/count-filtered/{filterName}", "HEAD", typeof(CountySalesTaxController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/county-sales-tax/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CountySalesTaxController), "GetFiltered")]
         [InlineData("/api/core/county-sales-tax/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CountySalesTaxController), "GetFiltered")]
+        [InlineData("/api/core/county-sales-tax/first", "HEAD", typeof(CountySalesTaxController), "GetFirst")]
+        [InlineData("/api/core/county-sales-tax/previous/1", "HEAD", typeof(CountySalesTaxController), "GetPrevious")]
+        [InlineData("/api/core/county-sales-tax/next/1", "HEAD", typeof(CountySalesTaxController), "GetNext")]
+        [InlineData("/api/core/county-sales-tax/last", "HEAD", typeof(CountySalesTaxController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/county-sales-tax/custom-fields", "HEAD", typeof(CountySalesTaxController), "GetCustomFields")]
         [InlineData("/api/core/county-sales-tax/custom-fields", "HEAD", typeof(CountySalesTaxController), "GetCustomFields")]

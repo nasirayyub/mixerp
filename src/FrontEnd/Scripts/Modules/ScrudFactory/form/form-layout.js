@@ -96,17 +96,14 @@ function createLayout(collection, container) {
     initializeAjaxRequest();
     initializeUploader();
 
-    var initialValue = $(".initial.value").html();
-
     function displayLive(val) {
         if (!val.length) {
-            $(".initial.value").html(initialValue);
             $(".huge.header .sub.header").html("");
             $("span.live").html("");
+            $(".initial.value").html(scrudFactory.title);
         } else {
+            $(".huge.header .sub.header").html(scrudFactory.title);            
             $(".initial.value").html("");
-            $(".huge.header .sub.header").html(initialValue);
-
             $("span.live").html(val);
         };
     }

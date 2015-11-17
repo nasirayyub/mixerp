@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.IdentificationType identificationType = Fixture().GetFirst();
+            Assert.NotNull(identificationType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.IdentificationType identificationType = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(identificationType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.IdentificationType identificationType = Fixture().GetNext(string.Empty);
+            Assert.NotNull(identificationType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.IdentificationType identificationType = Fixture().GetLast();
+            Assert.NotNull(identificationType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.IdentificationType> identificationTypes = Fixture().Get(new string[] { });

@@ -241,6 +241,132 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
+        ///     Returns the first instance of employment status.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/hrm/employment-status/first")]
+        public MixERP.Net.Entities.HRM.EmploymentStatus GetFirst()
+        {
+            try
+            {
+                return this.EmploymentStatusRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of employment status.
+        /// </summary>
+        /// <param name="employmentStatusId">Enter EmploymentStatusId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{employmentStatusId}")]
+        [Route("~/api/hrm/employment-status/previous/{employmentStatusId}")]
+        public MixERP.Net.Entities.HRM.EmploymentStatus GetPrevious(int employmentStatusId)
+        {
+            try
+            {
+                return this.EmploymentStatusRepository.GetPrevious(employmentStatusId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of employment status.
+        /// </summary>
+        /// <param name="employmentStatusId">Enter EmploymentStatusId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{employmentStatusId}")]
+        [Route("~/api/hrm/employment-status/next/{employmentStatusId}")]
+        public MixERP.Net.Entities.HRM.EmploymentStatus GetNext(int employmentStatusId)
+        {
+            try
+            {
+                return this.EmploymentStatusRepository.GetNext(employmentStatusId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of employment status.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/hrm/employment-status/last")]
+        public MixERP.Net.Entities.HRM.EmploymentStatus GetLast()
+        {
+            try
+            {
+                return this.EmploymentStatusRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 employment statuses on each page, sorted by the property EmploymentStatusId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

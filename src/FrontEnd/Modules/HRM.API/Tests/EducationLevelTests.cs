@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.HRM.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.HRM.EducationLevel educationLevel = Fixture().GetFirst();
+            Assert.NotNull(educationLevel);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.HRM.EducationLevel educationLevel = Fixture().GetPrevious(0);
+            Assert.NotNull(educationLevel);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.HRM.EducationLevel educationLevel = Fixture().GetNext(0);
+            Assert.NotNull(educationLevel);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.HRM.EducationLevel educationLevel = Fixture().GetLast();
+            Assert.NotNull(educationLevel);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.HRM.EducationLevel> educationLevels = Fixture().Get(new int[] { });

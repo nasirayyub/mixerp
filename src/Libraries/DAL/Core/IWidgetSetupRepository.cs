@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.WidgetSetup Get(int widgetSetupId);
 
         /// <summary>
+        /// Gets the first record of WidgetSetup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of WidgetSetup.</returns>
+        MixERP.Net.Entities.Core.WidgetSetup GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of WidgetSetup sorted by widgetSetupId. 
+        /// </summary>
+        /// <param name="widgetSetupId">The column "widget_setup_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of WidgetSetup.</returns>
+        MixERP.Net.Entities.Core.WidgetSetup GetPrevious(int widgetSetupId);
+
+        /// <summary>
+        /// Gets the next record of WidgetSetup sorted by widgetSetupId. 
+        /// </summary>
+        /// <param name="widgetSetupId">The column "widget_setup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of WidgetSetup.</returns>
+        MixERP.Net.Entities.Core.WidgetSetup GetNext(int widgetSetupId);
+
+        /// <summary>
+        /// Gets the last record of WidgetSetup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of WidgetSetup.</returns>
+        MixERP.Net.Entities.Core.WidgetSetup GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the WidgetSetup against widgetSetupIds. 
         /// </summary>
         /// <param name="widgetSetupIds">Array of column "widget_setup_id" parameter used on where filter.</param>

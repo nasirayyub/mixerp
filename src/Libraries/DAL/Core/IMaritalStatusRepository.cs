@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.MaritalStatus Get(int maritalStatusId);
 
         /// <summary>
+        /// Gets the first record of MaritalStatus.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of MaritalStatus.</returns>
+        MixERP.Net.Entities.Core.MaritalStatus GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of MaritalStatus sorted by maritalStatusId. 
+        /// </summary>
+        /// <param name="maritalStatusId">The column "marital_status_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of MaritalStatus.</returns>
+        MixERP.Net.Entities.Core.MaritalStatus GetPrevious(int maritalStatusId);
+
+        /// <summary>
+        /// Gets the next record of MaritalStatus sorted by maritalStatusId. 
+        /// </summary>
+        /// <param name="maritalStatusId">The column "marital_status_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of MaritalStatus.</returns>
+        MixERP.Net.Entities.Core.MaritalStatus GetNext(int maritalStatusId);
+
+        /// <summary>
+        /// Gets the last record of MaritalStatus.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of MaritalStatus.</returns>
+        MixERP.Net.Entities.Core.MaritalStatus GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the MaritalStatus against maritalStatusIds. 
         /// </summary>
         /// <param name="maritalStatusIds">Array of column "marital_status_id" parameter used on where filter.</param>

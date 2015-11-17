@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.SalespersonBonusSetup salespersonBonusSetup = Fixture().GetFirst();
+            Assert.NotNull(salespersonBonusSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.SalespersonBonusSetup salespersonBonusSetup = Fixture().GetPrevious(0);
+            Assert.NotNull(salespersonBonusSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.SalespersonBonusSetup salespersonBonusSetup = Fixture().GetNext(0);
+            Assert.NotNull(salespersonBonusSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.SalespersonBonusSetup salespersonBonusSetup = Fixture().GetLast();
+            Assert.NotNull(salespersonBonusSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.SalespersonBonusSetup> salespersonBonusSetups = Fixture().Get(new int[] { });

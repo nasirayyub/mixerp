@@ -161,6 +161,125 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "hrm.job_titles". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "JobTitle" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.JobTitle GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"JobTitle\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.job_titles ORDER BY job_title_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.JobTitle>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "hrm.job_titles" sorted by jobTitleId.
+        /// </summary>
+        /// <param name="jobTitleId">The column "job_title_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "JobTitle" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.JobTitle GetPrevious(int jobTitleId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"JobTitle\" by \"JobTitleId\" with value {JobTitleId} was denied to the user with Login ID {_LoginId}", jobTitleId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.job_titles WHERE job_title_id < @0 ORDER BY job_title_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.JobTitle>(this._Catalog, sql, jobTitleId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "hrm.job_titles" sorted by jobTitleId.
+        /// </summary>
+        /// <param name="jobTitleId">The column "job_title_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "JobTitle" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.JobTitle GetNext(int jobTitleId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"JobTitle\" by \"JobTitleId\" with value {JobTitleId} was denied to the user with Login ID {_LoginId}", jobTitleId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.job_titles WHERE job_title_id > @0 ORDER BY job_title_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.JobTitle>(this._Catalog, sql, jobTitleId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "hrm.job_titles". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "JobTitle" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.JobTitle GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"JobTitle\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.job_titles ORDER BY job_title_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.JobTitle>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "hrm.job_titles" with a where filter on the column "job_title_id" to return a multiple instances of the "JobTitle" class. 
         /// </summary>
         /// <param name="jobTitleIds">Array of column "job_title_id" parameter used on where filter.</param>

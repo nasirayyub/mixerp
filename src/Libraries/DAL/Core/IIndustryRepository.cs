@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Industry Get(int industryId);
 
         /// <summary>
+        /// Gets the first record of Industry.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Industry.</returns>
+        MixERP.Net.Entities.Core.Industry GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Industry sorted by industryId. 
+        /// </summary>
+        /// <param name="industryId">The column "industry_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Industry.</returns>
+        MixERP.Net.Entities.Core.Industry GetPrevious(int industryId);
+
+        /// <summary>
+        /// Gets the next record of Industry sorted by industryId. 
+        /// </summary>
+        /// <param name="industryId">The column "industry_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Industry.</returns>
+        MixERP.Net.Entities.Core.Industry GetNext(int industryId);
+
+        /// <summary>
+        /// Gets the last record of Industry.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Industry.</returns>
+        MixERP.Net.Entities.Core.Industry GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Industry against industryIds. 
         /// </summary>
         /// <param name="industryIds">Array of column "industry_id" parameter used on where filter.</param>

@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.Currency currency = Fixture().GetFirst();
+            Assert.NotNull(currency);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.Currency currency = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(currency);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.Currency currency = Fixture().GetNext(string.Empty);
+            Assert.NotNull(currency);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.Currency currency = Fixture().GetLast();
+            Assert.NotNull(currency);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.Currency> currencies = Fixture().Get(new string[] { });

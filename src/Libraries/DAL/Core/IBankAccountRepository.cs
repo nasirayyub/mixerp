@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.BankAccount Get(long accountId);
 
         /// <summary>
+        /// Gets the first record of BankAccount.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of BankAccount.</returns>
+        MixERP.Net.Entities.Core.BankAccount GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of BankAccount sorted by accountId. 
+        /// </summary>
+        /// <param name="accountId">The column "account_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of BankAccount.</returns>
+        MixERP.Net.Entities.Core.BankAccount GetPrevious(long accountId);
+
+        /// <summary>
+        /// Gets the next record of BankAccount sorted by accountId. 
+        /// </summary>
+        /// <param name="accountId">The column "account_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of BankAccount.</returns>
+        MixERP.Net.Entities.Core.BankAccount GetNext(long accountId);
+
+        /// <summary>
+        /// Gets the last record of BankAccount.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of BankAccount.</returns>
+        MixERP.Net.Entities.Core.BankAccount GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the BankAccount against accountIds. 
         /// </summary>
         /// <param name="accountIds">Array of column "account_id" parameter used on where filter.</param>

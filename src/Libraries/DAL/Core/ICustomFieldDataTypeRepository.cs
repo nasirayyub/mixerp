@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.CustomFieldDataType Get(string dataType);
 
         /// <summary>
+        /// Gets the first record of CustomFieldDataType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CustomFieldDataType.</returns>
+        MixERP.Net.Entities.Core.CustomFieldDataType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of CustomFieldDataType sorted by dataType. 
+        /// </summary>
+        /// <param name="dataType">The column "data_type" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CustomFieldDataType.</returns>
+        MixERP.Net.Entities.Core.CustomFieldDataType GetPrevious(string dataType);
+
+        /// <summary>
+        /// Gets the next record of CustomFieldDataType sorted by dataType. 
+        /// </summary>
+        /// <param name="dataType">The column "data_type" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CustomFieldDataType.</returns>
+        MixERP.Net.Entities.Core.CustomFieldDataType GetNext(string dataType);
+
+        /// <summary>
+        /// Gets the last record of CustomFieldDataType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CustomFieldDataType.</returns>
+        MixERP.Net.Entities.Core.CustomFieldDataType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the CustomFieldDataType against dataTypes. 
         /// </summary>
         /// <param name="dataTypes">Array of column "data_type" parameter used on where filter.</param>

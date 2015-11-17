@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.EmailQueue Get(long queueId);
 
         /// <summary>
+        /// Gets the first record of EmailQueue.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EmailQueue.</returns>
+        MixERP.Net.Entities.Core.EmailQueue GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of EmailQueue sorted by queueId. 
+        /// </summary>
+        /// <param name="queueId">The column "queue_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EmailQueue.</returns>
+        MixERP.Net.Entities.Core.EmailQueue GetPrevious(long queueId);
+
+        /// <summary>
+        /// Gets the next record of EmailQueue sorted by queueId. 
+        /// </summary>
+        /// <param name="queueId">The column "queue_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EmailQueue.</returns>
+        MixERP.Net.Entities.Core.EmailQueue GetNext(long queueId);
+
+        /// <summary>
+        /// Gets the last record of EmailQueue.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EmailQueue.</returns>
+        MixERP.Net.Entities.Core.EmailQueue GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the EmailQueue against queueIds. 
         /// </summary>
         /// <param name="queueIds">Array of column "queue_id" parameter used on where filter.</param>

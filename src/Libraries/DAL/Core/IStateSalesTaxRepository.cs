@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.StateSalesTax Get(int stateSalesTaxId);
 
         /// <summary>
+        /// Gets the first record of StateSalesTax.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of StateSalesTax.</returns>
+        MixERP.Net.Entities.Core.StateSalesTax GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of StateSalesTax sorted by stateSalesTaxId. 
+        /// </summary>
+        /// <param name="stateSalesTaxId">The column "state_sales_tax_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of StateSalesTax.</returns>
+        MixERP.Net.Entities.Core.StateSalesTax GetPrevious(int stateSalesTaxId);
+
+        /// <summary>
+        /// Gets the next record of StateSalesTax sorted by stateSalesTaxId. 
+        /// </summary>
+        /// <param name="stateSalesTaxId">The column "state_sales_tax_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of StateSalesTax.</returns>
+        MixERP.Net.Entities.Core.StateSalesTax GetNext(int stateSalesTaxId);
+
+        /// <summary>
+        /// Gets the last record of StateSalesTax.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of StateSalesTax.</returns>
+        MixERP.Net.Entities.Core.StateSalesTax GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the StateSalesTax against stateSalesTaxIds. 
         /// </summary>
         /// <param name="stateSalesTaxIds">Array of column "state_sales_tax_id" parameter used on where filter.</param>

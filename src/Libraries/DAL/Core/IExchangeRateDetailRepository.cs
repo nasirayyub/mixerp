@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.ExchangeRateDetail Get(long exchangeRateDetailId);
 
         /// <summary>
+        /// Gets the first record of ExchangeRateDetail.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ExchangeRateDetail.</returns>
+        MixERP.Net.Entities.Core.ExchangeRateDetail GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of ExchangeRateDetail sorted by exchangeRateDetailId. 
+        /// </summary>
+        /// <param name="exchangeRateDetailId">The column "exchange_rate_detail_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ExchangeRateDetail.</returns>
+        MixERP.Net.Entities.Core.ExchangeRateDetail GetPrevious(long exchangeRateDetailId);
+
+        /// <summary>
+        /// Gets the next record of ExchangeRateDetail sorted by exchangeRateDetailId. 
+        /// </summary>
+        /// <param name="exchangeRateDetailId">The column "exchange_rate_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ExchangeRateDetail.</returns>
+        MixERP.Net.Entities.Core.ExchangeRateDetail GetNext(long exchangeRateDetailId);
+
+        /// <summary>
+        /// Gets the last record of ExchangeRateDetail.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ExchangeRateDetail.</returns>
+        MixERP.Net.Entities.Core.ExchangeRateDetail GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the ExchangeRateDetail against exchangeRateDetailIds. 
         /// </summary>
         /// <param name="exchangeRateDetailIds">Array of column "exchange_rate_detail_id" parameter used on where filter.</param>

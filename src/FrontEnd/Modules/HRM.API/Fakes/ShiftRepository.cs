@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.HRM.Fakes
             return new MixERP.Net.Entities.HRM.Shift();
         }
 
-        public IEnumerable<MixERP.Net.Entities.HRM.Shift> Get([FromUri] int[] shiftIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.Shift> Get(int[] shiftIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.HRM.Shift(), 1);
+        }
+
+        public MixERP.Net.Entities.HRM.Shift GetFirst()
+        {
+            return new MixERP.Net.Entities.HRM.Shift();
+        }
+
+        public MixERP.Net.Entities.HRM.Shift GetPrevious(int shiftId)
+        {
+            return new MixERP.Net.Entities.HRM.Shift();
+        }
+
+        public MixERP.Net.Entities.HRM.Shift GetNext(int shiftId)
+        {
+            return new MixERP.Net.Entities.HRM.Shift();
+        }
+
+        public MixERP.Net.Entities.HRM.Shift GetLast()
+        {
+            return new MixERP.Net.Entities.HRM.Shift();
         }
 
         public IEnumerable<MixERP.Net.Entities.HRM.Shift> GetPaginatedResult()

@@ -50,6 +50,7 @@
         {
             tab: "",
             fields: [
+                ["TerminationId", ""],
                 ["EmployeeId", "NoticeDate", "", ""],
                 ["ForwardTo", "ServiceEndDate", "", ""],
                 ["ChangeStatusTo", ""],

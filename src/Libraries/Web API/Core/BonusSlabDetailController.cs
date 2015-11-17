@@ -240,6 +240,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of bonus slab detail.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/bonus-slab-detail/first")]
+        public MixERP.Net.Entities.Core.BonusSlabDetail GetFirst()
+        {
+            try
+            {
+                return this.BonusSlabDetailRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of bonus slab detail.
+        /// </summary>
+        /// <param name="bonusSlabDetailId">Enter BonusSlabDetailId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{bonusSlabDetailId}")]
+        [Route("~/api/core/bonus-slab-detail/previous/{bonusSlabDetailId}")]
+        public MixERP.Net.Entities.Core.BonusSlabDetail GetPrevious(int bonusSlabDetailId)
+        {
+            try
+            {
+                return this.BonusSlabDetailRepository.GetPrevious(bonusSlabDetailId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of bonus slab detail.
+        /// </summary>
+        /// <param name="bonusSlabDetailId">Enter BonusSlabDetailId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{bonusSlabDetailId}")]
+        [Route("~/api/core/bonus-slab-detail/next/{bonusSlabDetailId}")]
+        public MixERP.Net.Entities.Core.BonusSlabDetail GetNext(int bonusSlabDetailId)
+        {
+            try
+            {
+                return this.BonusSlabDetailRepository.GetNext(bonusSlabDetailId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of bonus slab detail.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/bonus-slab-detail/last")]
+        public MixERP.Net.Entities.Core.BonusSlabDetail GetLast()
+        {
+            try
+            {
+                return this.BonusSlabDetailRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 bonus slab details on each page, sorted by the property BonusSlabDetailId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

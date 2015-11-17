@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Office.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Office.User user = Fixture().GetFirst();
+            Assert.NotNull(user);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Office.User user = Fixture().GetPrevious(0);
+            Assert.NotNull(user);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Office.User user = Fixture().GetNext(0);
+            Assert.NotNull(user);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Office.User user = Fixture().GetLast();
+            Assert.NotNull(user);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Office.User> users = Fixture().Get(new int[] { });

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/sales-tax-exempt-detail/count-filtered/{filterName}", "GET", typeof(SalesTaxExemptDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/sales-tax-exempt-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SalesTaxExemptDetailController), "GetFiltered")]
         [InlineData("/api/core/sales-tax-exempt-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SalesTaxExemptDetailController), "GetFiltered")]
+        [InlineData("/api/core/sales-tax-exempt-detail/first", "GET", typeof(SalesTaxExemptDetailController), "GetFirst")]
+        [InlineData("/api/core/sales-tax-exempt-detail/previous/1", "GET", typeof(SalesTaxExemptDetailController), "GetPrevious")]
+        [InlineData("/api/core/sales-tax-exempt-detail/next/1", "GET", typeof(SalesTaxExemptDetailController), "GetNext")]
+        [InlineData("/api/core/sales-tax-exempt-detail/last", "GET", typeof(SalesTaxExemptDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/sales-tax-exempt-detail/custom-fields", "GET", typeof(SalesTaxExemptDetailController), "GetCustomFields")]
         [InlineData("/api/core/sales-tax-exempt-detail/custom-fields", "GET", typeof(SalesTaxExemptDetailController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/sales-tax-exempt-detail/count-filtered/{filterName}", "HEAD", typeof(SalesTaxExemptDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/sales-tax-exempt-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SalesTaxExemptDetailController), "GetFiltered")]
         [InlineData("/api/core/sales-tax-exempt-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SalesTaxExemptDetailController), "GetFiltered")]
+        [InlineData("/api/core/sales-tax-exempt-detail/first", "HEAD", typeof(SalesTaxExemptDetailController), "GetFirst")]
+        [InlineData("/api/core/sales-tax-exempt-detail/previous/1", "HEAD", typeof(SalesTaxExemptDetailController), "GetPrevious")]
+        [InlineData("/api/core/sales-tax-exempt-detail/next/1", "HEAD", typeof(SalesTaxExemptDetailController), "GetNext")]
+        [InlineData("/api/core/sales-tax-exempt-detail/last", "HEAD", typeof(SalesTaxExemptDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/sales-tax-exempt-detail/custom-fields", "HEAD", typeof(SalesTaxExemptDetailController), "GetCustomFields")]
         [InlineData("/api/core/sales-tax-exempt-detail/custom-fields", "HEAD", typeof(SalesTaxExemptDetailController), "GetCustomFields")]

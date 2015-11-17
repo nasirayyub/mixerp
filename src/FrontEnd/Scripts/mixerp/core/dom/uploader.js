@@ -1,8 +1,8 @@
 var uploaderInitialized = false;
 var allowedExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
-var uploaderTemplate = '<div class="uploader field">\
-                            <div class="ui segment">\
-                                <img src="{0}" class="ui image preview">\
+var uploaderTemplate = '<div class="ui uploader field">\
+                            <div class="">\
+                                <img src="{0}" class="ui bordered rounded image preview">\
                             </div>\
                             </div>\
                             <div class="uploader">\

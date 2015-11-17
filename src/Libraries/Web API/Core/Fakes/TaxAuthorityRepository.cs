@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.TaxAuthority(), 1);
         }
 
+        public MixERP.Net.Entities.Core.TaxAuthority GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.TaxAuthority();
+        }
+
+        public MixERP.Net.Entities.Core.TaxAuthority GetPrevious(int taxAuthorityId)
+        {
+            return new MixERP.Net.Entities.Core.TaxAuthority();
+        }
+
+        public MixERP.Net.Entities.Core.TaxAuthority GetNext(int taxAuthorityId)
+        {
+            return new MixERP.Net.Entities.Core.TaxAuthority();
+        }
+
+        public MixERP.Net.Entities.Core.TaxAuthority GetLast()
+        {
+            return new MixERP.Net.Entities.Core.TaxAuthority();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.TaxAuthority> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.TaxAuthority(), 1);

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/item-type/count-filtered/{filterName}", "GET", typeof(ItemTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/item-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ItemTypeController), "GetFiltered")]
         [InlineData("/api/core/item-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ItemTypeController), "GetFiltered")]
+        [InlineData("/api/core/item-type/first", "GET", typeof(ItemTypeController), "GetFirst")]
+        [InlineData("/api/core/item-type/previous/1", "GET", typeof(ItemTypeController), "GetPrevious")]
+        [InlineData("/api/core/item-type/next/1", "GET", typeof(ItemTypeController), "GetNext")]
+        [InlineData("/api/core/item-type/last", "GET", typeof(ItemTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/item-type/custom-fields", "GET", typeof(ItemTypeController), "GetCustomFields")]
         [InlineData("/api/core/item-type/custom-fields", "GET", typeof(ItemTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/item-type/count-filtered/{filterName}", "HEAD", typeof(ItemTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/item-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ItemTypeController), "GetFiltered")]
         [InlineData("/api/core/item-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ItemTypeController), "GetFiltered")]
+        [InlineData("/api/core/item-type/first", "HEAD", typeof(ItemTypeController), "GetFirst")]
+        [InlineData("/api/core/item-type/previous/1", "HEAD", typeof(ItemTypeController), "GetPrevious")]
+        [InlineData("/api/core/item-type/next/1", "HEAD", typeof(ItemTypeController), "GetNext")]
+        [InlineData("/api/core/item-type/last", "HEAD", typeof(ItemTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/item-type/custom-fields", "HEAD", typeof(ItemTypeController), "GetCustomFields")]
         [InlineData("/api/core/item-type/custom-fields", "HEAD", typeof(ItemTypeController), "GetCustomFields")]

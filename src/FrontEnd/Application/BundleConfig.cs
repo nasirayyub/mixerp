@@ -88,6 +88,8 @@ namespace MixERP.Net.FrontEnd.Application
                 "~/Scripts/Modules/ScrudFactory/form/form-cancel.js",
                 "~/Scripts/Modules/ScrudFactory/form/form-custom-fields.js",
                 "~/Scripts/Modules/ScrudFactory/form/form-edit.js",
+                "~/Scripts/Modules/ScrudFactory/form/form-navigation.js",
+                "~/Scripts/Modules/ScrudFactory/form/form-actions.js",
                 "~/Scripts/Modules/ScrudFactory/form/form-layout-field-group.js",
                 "~/Scripts/Modules/ScrudFactory/form/form-layout.js",
                 "~/Scripts/Modules/ScrudFactory/form/form-load-default-values.js",

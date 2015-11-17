@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.ItemGroup Get(int itemGroupId);
 
         /// <summary>
+        /// Gets the first record of ItemGroup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ItemGroup.</returns>
+        MixERP.Net.Entities.Core.ItemGroup GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of ItemGroup sorted by itemGroupId. 
+        /// </summary>
+        /// <param name="itemGroupId">The column "item_group_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ItemGroup.</returns>
+        MixERP.Net.Entities.Core.ItemGroup GetPrevious(int itemGroupId);
+
+        /// <summary>
+        /// Gets the next record of ItemGroup sorted by itemGroupId. 
+        /// </summary>
+        /// <param name="itemGroupId">The column "item_group_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ItemGroup.</returns>
+        MixERP.Net.Entities.Core.ItemGroup GetNext(int itemGroupId);
+
+        /// <summary>
+        /// Gets the last record of ItemGroup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ItemGroup.</returns>
+        MixERP.Net.Entities.Core.ItemGroup GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the ItemGroup against itemGroupIds. 
         /// </summary>
         /// <param name="itemGroupIds">Array of column "item_group_id" parameter used on where filter.</param>

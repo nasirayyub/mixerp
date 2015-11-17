@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Frequency Get(int frequencyId);
 
         /// <summary>
+        /// Gets the first record of Frequency.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Frequency.</returns>
+        MixERP.Net.Entities.Core.Frequency GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Frequency sorted by frequencyId. 
+        /// </summary>
+        /// <param name="frequencyId">The column "frequency_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Frequency.</returns>
+        MixERP.Net.Entities.Core.Frequency GetPrevious(int frequencyId);
+
+        /// <summary>
+        /// Gets the next record of Frequency sorted by frequencyId. 
+        /// </summary>
+        /// <param name="frequencyId">The column "frequency_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Frequency.</returns>
+        MixERP.Net.Entities.Core.Frequency GetNext(int frequencyId);
+
+        /// <summary>
+        /// Gets the last record of Frequency.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Frequency.</returns>
+        MixERP.Net.Entities.Core.Frequency GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Frequency against frequencyIds. 
         /// </summary>
         /// <param name="frequencyIds">Array of column "frequency_id" parameter used on where filter.</param>

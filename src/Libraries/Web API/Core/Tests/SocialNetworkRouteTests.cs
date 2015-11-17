@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/social-network/count-filtered/{filterName}", "GET", typeof(SocialNetworkController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/social-network/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SocialNetworkController), "GetFiltered")]
         [InlineData("/api/core/social-network/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SocialNetworkController), "GetFiltered")]
+        [InlineData("/api/core/social-network/first", "GET", typeof(SocialNetworkController), "GetFirst")]
+        [InlineData("/api/core/social-network/previous/1", "GET", typeof(SocialNetworkController), "GetPrevious")]
+        [InlineData("/api/core/social-network/next/1", "GET", typeof(SocialNetworkController), "GetNext")]
+        [InlineData("/api/core/social-network/last", "GET", typeof(SocialNetworkController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/social-network/custom-fields", "GET", typeof(SocialNetworkController), "GetCustomFields")]
         [InlineData("/api/core/social-network/custom-fields", "GET", typeof(SocialNetworkController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/social-network/count-filtered/{filterName}", "HEAD", typeof(SocialNetworkController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/social-network/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SocialNetworkController), "GetFiltered")]
         [InlineData("/api/core/social-network/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SocialNetworkController), "GetFiltered")]
+        [InlineData("/api/core/social-network/first", "HEAD", typeof(SocialNetworkController), "GetFirst")]
+        [InlineData("/api/core/social-network/previous/1", "HEAD", typeof(SocialNetworkController), "GetPrevious")]
+        [InlineData("/api/core/social-network/next/1", "HEAD", typeof(SocialNetworkController), "GetNext")]
+        [InlineData("/api/core/social-network/last", "HEAD", typeof(SocialNetworkController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/social-network/custom-fields", "HEAD", typeof(SocialNetworkController), "GetCustomFields")]
         [InlineData("/api/core/social-network/custom-fields", "HEAD", typeof(SocialNetworkController), "GetCustomFields")]

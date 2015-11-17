@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.HRM.Fakes
             return new MixERP.Net.Entities.HRM.Contract();
         }
 
-        public IEnumerable<MixERP.Net.Entities.HRM.Contract> Get([FromUri] long[] contractIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.Contract> Get(long[] contractIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.HRM.Contract(), 1);
+        }
+
+        public MixERP.Net.Entities.HRM.Contract GetFirst()
+        {
+            return new MixERP.Net.Entities.HRM.Contract();
+        }
+
+        public MixERP.Net.Entities.HRM.Contract GetPrevious(long contractId)
+        {
+            return new MixERP.Net.Entities.HRM.Contract();
+        }
+
+        public MixERP.Net.Entities.HRM.Contract GetNext(long contractId)
+        {
+            return new MixERP.Net.Entities.HRM.Contract();
+        }
+
+        public MixERP.Net.Entities.HRM.Contract GetLast()
+        {
+            return new MixERP.Net.Entities.HRM.Contract();
         }
 
         public IEnumerable<MixERP.Net.Entities.HRM.Contract> GetPaginatedResult()

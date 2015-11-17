@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.ItemCostPrice(), 1);
         }
 
+        public MixERP.Net.Entities.Core.ItemCostPrice GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.ItemCostPrice();
+        }
+
+        public MixERP.Net.Entities.Core.ItemCostPrice GetPrevious(long itemCostPriceId)
+        {
+            return new MixERP.Net.Entities.Core.ItemCostPrice();
+        }
+
+        public MixERP.Net.Entities.Core.ItemCostPrice GetNext(long itemCostPriceId)
+        {
+            return new MixERP.Net.Entities.Core.ItemCostPrice();
+        }
+
+        public MixERP.Net.Entities.Core.ItemCostPrice GetLast()
+        {
+            return new MixERP.Net.Entities.Core.ItemCostPrice();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.ItemCostPrice> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.ItemCostPrice(), 1);

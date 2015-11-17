@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Policy.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "policy.default_entity_access". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "DefaultEntityAccess" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.DefaultEntityAccess GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"DefaultEntityAccess\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.default_entity_access ORDER BY default_entity_access_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.DefaultEntityAccess>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "policy.default_entity_access" sorted by defaultEntityAccessId.
+        /// </summary>
+        /// <param name="defaultEntityAccessId">The column "default_entity_access_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "DefaultEntityAccess" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.DefaultEntityAccess GetPrevious(int defaultEntityAccessId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"DefaultEntityAccess\" by \"DefaultEntityAccessId\" with value {DefaultEntityAccessId} was denied to the user with Login ID {_LoginId}", defaultEntityAccessId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.default_entity_access WHERE default_entity_access_id < @0 ORDER BY default_entity_access_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.DefaultEntityAccess>(this._Catalog, sql, defaultEntityAccessId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "policy.default_entity_access" sorted by defaultEntityAccessId.
+        /// </summary>
+        /// <param name="defaultEntityAccessId">The column "default_entity_access_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "DefaultEntityAccess" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.DefaultEntityAccess GetNext(int defaultEntityAccessId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"DefaultEntityAccess\" by \"DefaultEntityAccessId\" with value {DefaultEntityAccessId} was denied to the user with Login ID {_LoginId}", defaultEntityAccessId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.default_entity_access WHERE default_entity_access_id > @0 ORDER BY default_entity_access_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.DefaultEntityAccess>(this._Catalog, sql, defaultEntityAccessId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "policy.default_entity_access". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "DefaultEntityAccess" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.DefaultEntityAccess GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"DefaultEntityAccess\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.default_entity_access ORDER BY default_entity_access_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.DefaultEntityAccess>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "policy.default_entity_access" with a where filter on the column "default_entity_access_id" to return a multiple instances of the "DefaultEntityAccess" class. 
         /// </summary>
         /// <param name="defaultEntityAccessIds">Array of column "default_entity_access_id" parameter used on where filter.</param>

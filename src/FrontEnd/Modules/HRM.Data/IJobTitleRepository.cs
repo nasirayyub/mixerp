@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.JobTitle Get(int jobTitleId);
 
         /// <summary>
+        /// Gets the first record of JobTitle.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of JobTitle.</returns>
+        MixERP.Net.Entities.HRM.JobTitle GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of JobTitle sorted by jobTitleId. 
+        /// </summary>
+        /// <param name="jobTitleId">The column "job_title_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of JobTitle.</returns>
+        MixERP.Net.Entities.HRM.JobTitle GetPrevious(int jobTitleId);
+
+        /// <summary>
+        /// Gets the next record of JobTitle sorted by jobTitleId. 
+        /// </summary>
+        /// <param name="jobTitleId">The column "job_title_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of JobTitle.</returns>
+        MixERP.Net.Entities.HRM.JobTitle GetNext(int jobTitleId);
+
+        /// <summary>
+        /// Gets the last record of JobTitle.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of JobTitle.</returns>
+        MixERP.Net.Entities.HRM.JobTitle GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the JobTitle against jobTitleIds. 
         /// </summary>
         /// <param name="jobTitleIds">Array of column "job_title_id" parameter used on where filter.</param>

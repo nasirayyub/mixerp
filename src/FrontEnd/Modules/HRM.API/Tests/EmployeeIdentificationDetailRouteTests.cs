@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/employee-identification-detail/count-filtered/{filterName}", "GET", typeof(EmployeeIdentificationDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/employee-identification-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmployeeIdentificationDetailController), "GetFiltered")]
         [InlineData("/api/hrm/employee-identification-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EmployeeIdentificationDetailController), "GetFiltered")]
+        [InlineData("/api/hrm/employee-identification-detail/first", "GET", typeof(EmployeeIdentificationDetailController), "GetFirst")]
+        [InlineData("/api/hrm/employee-identification-detail/previous/1", "GET", typeof(EmployeeIdentificationDetailController), "GetPrevious")]
+        [InlineData("/api/hrm/employee-identification-detail/next/1", "GET", typeof(EmployeeIdentificationDetailController), "GetNext")]
+        [InlineData("/api/hrm/employee-identification-detail/last", "GET", typeof(EmployeeIdentificationDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/employee-identification-detail/custom-fields", "GET", typeof(EmployeeIdentificationDetailController), "GetCustomFields")]
         [InlineData("/api/hrm/employee-identification-detail/custom-fields", "GET", typeof(EmployeeIdentificationDetailController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/employee-identification-detail/count-filtered/{filterName}", "HEAD", typeof(EmployeeIdentificationDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/employee-identification-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmployeeIdentificationDetailController), "GetFiltered")]
         [InlineData("/api/hrm/employee-identification-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EmployeeIdentificationDetailController), "GetFiltered")]
+        [InlineData("/api/hrm/employee-identification-detail/first", "HEAD", typeof(EmployeeIdentificationDetailController), "GetFirst")]
+        [InlineData("/api/hrm/employee-identification-detail/previous/1", "HEAD", typeof(EmployeeIdentificationDetailController), "GetPrevious")]
+        [InlineData("/api/hrm/employee-identification-detail/next/1", "HEAD", typeof(EmployeeIdentificationDetailController), "GetNext")]
+        [InlineData("/api/hrm/employee-identification-detail/last", "HEAD", typeof(EmployeeIdentificationDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/employee-identification-detail/custom-fields", "HEAD", typeof(EmployeeIdentificationDetailController), "GetCustomFields")]
         [InlineData("/api/hrm/employee-identification-detail/custom-fields", "HEAD", typeof(EmployeeIdentificationDetailController), "GetCustomFields")]

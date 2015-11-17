@@ -161,6 +161,125 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "hrm.contracts". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Contract" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Contract GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"Contract\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.contracts ORDER BY contract_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Contract>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "hrm.contracts" sorted by contractId.
+        /// </summary>
+        /// <param name="contractId">The column "contract_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Contract" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Contract GetPrevious(long contractId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"Contract\" by \"ContractId\" with value {ContractId} was denied to the user with Login ID {_LoginId}", contractId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.contracts WHERE contract_id < @0 ORDER BY contract_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Contract>(this._Catalog, sql, contractId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "hrm.contracts" sorted by contractId.
+        /// </summary>
+        /// <param name="contractId">The column "contract_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Contract" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Contract GetNext(long contractId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"Contract\" by \"ContractId\" with value {ContractId} was denied to the user with Login ID {_LoginId}", contractId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.contracts WHERE contract_id > @0 ORDER BY contract_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Contract>(this._Catalog, sql, contractId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "hrm.contracts". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Contract" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Contract GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"Contract\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.contracts ORDER BY contract_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Contract>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "hrm.contracts" with a where filter on the column "contract_id" to return a multiple instances of the "Contract" class. 
         /// </summary>
         /// <param name="contractIds">Array of column "contract_id" parameter used on where filter.</param>

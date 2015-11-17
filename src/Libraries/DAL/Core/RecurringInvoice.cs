@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.recurring_invoices". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "RecurringInvoice" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.RecurringInvoice GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"RecurringInvoice\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.recurring_invoices ORDER BY recurring_invoice_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.RecurringInvoice>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.recurring_invoices" sorted by recurringInvoiceId.
+        /// </summary>
+        /// <param name="recurringInvoiceId">The column "recurring_invoice_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "RecurringInvoice" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.RecurringInvoice GetPrevious(int recurringInvoiceId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"RecurringInvoice\" by \"RecurringInvoiceId\" with value {RecurringInvoiceId} was denied to the user with Login ID {_LoginId}", recurringInvoiceId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.recurring_invoices WHERE recurring_invoice_id < @0 ORDER BY recurring_invoice_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.RecurringInvoice>(this._Catalog, sql, recurringInvoiceId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.recurring_invoices" sorted by recurringInvoiceId.
+        /// </summary>
+        /// <param name="recurringInvoiceId">The column "recurring_invoice_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "RecurringInvoice" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.RecurringInvoice GetNext(int recurringInvoiceId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"RecurringInvoice\" by \"RecurringInvoiceId\" with value {RecurringInvoiceId} was denied to the user with Login ID {_LoginId}", recurringInvoiceId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.recurring_invoices WHERE recurring_invoice_id > @0 ORDER BY recurring_invoice_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.RecurringInvoice>(this._Catalog, sql, recurringInvoiceId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.recurring_invoices". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "RecurringInvoice" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.RecurringInvoice GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"RecurringInvoice\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.recurring_invoices ORDER BY recurring_invoice_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.RecurringInvoice>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.recurring_invoices" with a where filter on the column "recurring_invoice_id" to return a multiple instances of the "RecurringInvoice" class. 
         /// </summary>
         /// <param name="recurringInvoiceIds">Array of column "recurring_invoice_id" parameter used on where filter.</param>

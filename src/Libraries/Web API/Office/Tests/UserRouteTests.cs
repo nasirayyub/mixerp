@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/user/count-filtered/{filterName}", "GET", typeof(UserController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/user/get-filtered/{pageNumber}/{filterName}", "GET", typeof(UserController), "GetFiltered")]
         [InlineData("/api/office/user/get-filtered/{pageNumber}/{filterName}", "GET", typeof(UserController), "GetFiltered")]
+        [InlineData("/api/office/user/first", "GET", typeof(UserController), "GetFirst")]
+        [InlineData("/api/office/user/previous/1", "GET", typeof(UserController), "GetPrevious")]
+        [InlineData("/api/office/user/next/1", "GET", typeof(UserController), "GetNext")]
+        [InlineData("/api/office/user/last", "GET", typeof(UserController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/user/custom-fields", "GET", typeof(UserController), "GetCustomFields")]
         [InlineData("/api/office/user/custom-fields", "GET", typeof(UserController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/user/count-filtered/{filterName}", "HEAD", typeof(UserController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/user/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(UserController), "GetFiltered")]
         [InlineData("/api/office/user/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(UserController), "GetFiltered")]
+        [InlineData("/api/office/user/first", "HEAD", typeof(UserController), "GetFirst")]
+        [InlineData("/api/office/user/previous/1", "HEAD", typeof(UserController), "GetPrevious")]
+        [InlineData("/api/office/user/next/1", "HEAD", typeof(UserController), "GetNext")]
+        [InlineData("/api/office/user/last", "HEAD", typeof(UserController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/user/custom-fields", "HEAD", typeof(UserController), "GetCustomFields")]
         [InlineData("/api/office/user/custom-fields", "HEAD", typeof(UserController), "GetCustomFields")]

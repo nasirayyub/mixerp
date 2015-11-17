@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/party/count-filtered/{filterName}", "GET", typeof(PartyController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/party/get-filtered/{pageNumber}/{filterName}", "GET", typeof(PartyController), "GetFiltered")]
         [InlineData("/api/core/party/get-filtered/{pageNumber}/{filterName}", "GET", typeof(PartyController), "GetFiltered")]
+        [InlineData("/api/core/party/first", "GET", typeof(PartyController), "GetFirst")]
+        [InlineData("/api/core/party/previous/1", "GET", typeof(PartyController), "GetPrevious")]
+        [InlineData("/api/core/party/next/1", "GET", typeof(PartyController), "GetNext")]
+        [InlineData("/api/core/party/last", "GET", typeof(PartyController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/party/custom-fields", "GET", typeof(PartyController), "GetCustomFields")]
         [InlineData("/api/core/party/custom-fields", "GET", typeof(PartyController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/party/count-filtered/{filterName}", "HEAD", typeof(PartyController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/party/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(PartyController), "GetFiltered")]
         [InlineData("/api/core/party/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(PartyController), "GetFiltered")]
+        [InlineData("/api/core/party/first", "HEAD", typeof(PartyController), "GetFirst")]
+        [InlineData("/api/core/party/previous/1", "HEAD", typeof(PartyController), "GetPrevious")]
+        [InlineData("/api/core/party/next/1", "HEAD", typeof(PartyController), "GetNext")]
+        [InlineData("/api/core/party/last", "HEAD", typeof(PartyController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/party/custom-fields", "HEAD", typeof(PartyController), "GetCustomFields")]
         [InlineData("/api/core/party/custom-fields", "HEAD", typeof(PartyController), "GetCustomFields")]

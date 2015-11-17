@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/flag/count-filtered/{filterName}", "GET", typeof(FlagController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/flag/get-filtered/{pageNumber}/{filterName}", "GET", typeof(FlagController), "GetFiltered")]
         [InlineData("/api/core/flag/get-filtered/{pageNumber}/{filterName}", "GET", typeof(FlagController), "GetFiltered")]
+        [InlineData("/api/core/flag/first", "GET", typeof(FlagController), "GetFirst")]
+        [InlineData("/api/core/flag/previous/1", "GET", typeof(FlagController), "GetPrevious")]
+        [InlineData("/api/core/flag/next/1", "GET", typeof(FlagController), "GetNext")]
+        [InlineData("/api/core/flag/last", "GET", typeof(FlagController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/flag/custom-fields", "GET", typeof(FlagController), "GetCustomFields")]
         [InlineData("/api/core/flag/custom-fields", "GET", typeof(FlagController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/flag/count-filtered/{filterName}", "HEAD", typeof(FlagController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/flag/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(FlagController), "GetFiltered")]
         [InlineData("/api/core/flag/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(FlagController), "GetFiltered")]
+        [InlineData("/api/core/flag/first", "HEAD", typeof(FlagController), "GetFirst")]
+        [InlineData("/api/core/flag/previous/1", "HEAD", typeof(FlagController), "GetPrevious")]
+        [InlineData("/api/core/flag/next/1", "HEAD", typeof(FlagController), "GetNext")]
+        [InlineData("/api/core/flag/last", "HEAD", typeof(FlagController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/flag/custom-fields", "HEAD", typeof(FlagController), "GetCustomFields")]
         [InlineData("/api/core/flag/custom-fields", "HEAD", typeof(FlagController), "GetCustomFields")]

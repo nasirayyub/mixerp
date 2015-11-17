@@ -239,6 +239,132 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
+        ///     Returns the first instance of leave benefit.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/hrm/leave-benefit/first")]
+        public MixERP.Net.Entities.HRM.LeaveBenefit GetFirst()
+        {
+            try
+            {
+                return this.LeaveBenefitRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of leave benefit.
+        /// </summary>
+        /// <param name="leaveBenefitId">Enter LeaveBenefitId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{leaveBenefitId}")]
+        [Route("~/api/hrm/leave-benefit/previous/{leaveBenefitId}")]
+        public MixERP.Net.Entities.HRM.LeaveBenefit GetPrevious(int leaveBenefitId)
+        {
+            try
+            {
+                return this.LeaveBenefitRepository.GetPrevious(leaveBenefitId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of leave benefit.
+        /// </summary>
+        /// <param name="leaveBenefitId">Enter LeaveBenefitId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{leaveBenefitId}")]
+        [Route("~/api/hrm/leave-benefit/next/{leaveBenefitId}")]
+        public MixERP.Net.Entities.HRM.LeaveBenefit GetNext(int leaveBenefitId)
+        {
+            try
+            {
+                return this.LeaveBenefitRepository.GetNext(leaveBenefitId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of leave benefit.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/hrm/leave-benefit/last")]
+        public MixERP.Net.Entities.HRM.LeaveBenefit GetLast()
+        {
+            try
+            {
+                return this.LeaveBenefitRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 leave benefits on each page, sorted by the property LeaveBenefitId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.fiscal_year". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "FiscalYear" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.FiscalYear GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"FiscalYear\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.fiscal_year ORDER BY fiscal_year_code LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.FiscalYear>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.fiscal_year" sorted by fiscalYearCode.
+        /// </summary>
+        /// <param name="fiscalYearCode">The column "fiscal_year_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "FiscalYear" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.FiscalYear GetPrevious(string fiscalYearCode)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"FiscalYear\" by \"FiscalYearCode\" with value {FiscalYearCode} was denied to the user with Login ID {_LoginId}", fiscalYearCode, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.fiscal_year WHERE fiscal_year_code < @0 ORDER BY fiscal_year_code DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.FiscalYear>(this._Catalog, sql, fiscalYearCode).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.fiscal_year" sorted by fiscalYearCode.
+        /// </summary>
+        /// <param name="fiscalYearCode">The column "fiscal_year_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "FiscalYear" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.FiscalYear GetNext(string fiscalYearCode)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"FiscalYear\" by \"FiscalYearCode\" with value {FiscalYearCode} was denied to the user with Login ID {_LoginId}", fiscalYearCode, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.fiscal_year WHERE fiscal_year_code > @0 ORDER BY fiscal_year_code LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.FiscalYear>(this._Catalog, sql, fiscalYearCode).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.fiscal_year". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "FiscalYear" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.FiscalYear GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"FiscalYear\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.fiscal_year ORDER BY fiscal_year_code DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.FiscalYear>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.fiscal_year" with a where filter on the column "fiscal_year_code" to return a multiple instances of the "FiscalYear" class. 
         /// </summary>
         /// <param name="fiscalYearCodes">Array of column "fiscal_year_code" parameter used on where filter.</param>

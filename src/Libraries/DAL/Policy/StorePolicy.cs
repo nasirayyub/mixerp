@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Policy.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "policy.store_policies". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "StorePolicy" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.StorePolicy GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"StorePolicy\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.store_policies ORDER BY store_policy_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.StorePolicy>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "policy.store_policies" sorted by storePolicyId.
+        /// </summary>
+        /// <param name="storePolicyId">The column "store_policy_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "StorePolicy" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.StorePolicy GetPrevious(long storePolicyId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"StorePolicy\" by \"StorePolicyId\" with value {StorePolicyId} was denied to the user with Login ID {_LoginId}", storePolicyId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.store_policies WHERE store_policy_id < @0 ORDER BY store_policy_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.StorePolicy>(this._Catalog, sql, storePolicyId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "policy.store_policies" sorted by storePolicyId.
+        /// </summary>
+        /// <param name="storePolicyId">The column "store_policy_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "StorePolicy" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.StorePolicy GetNext(long storePolicyId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"StorePolicy\" by \"StorePolicyId\" with value {StorePolicyId} was denied to the user with Login ID {_LoginId}", storePolicyId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.store_policies WHERE store_policy_id > @0 ORDER BY store_policy_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.StorePolicy>(this._Catalog, sql, storePolicyId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "policy.store_policies". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "StorePolicy" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.StorePolicy GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"StorePolicy\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.store_policies ORDER BY store_policy_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.StorePolicy>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "policy.store_policies" with a where filter on the column "store_policy_id" to return a multiple instances of the "StorePolicy" class. 
         /// </summary>
         /// <param name="storePolicyIds">Array of column "store_policy_id" parameter used on where filter.</param>

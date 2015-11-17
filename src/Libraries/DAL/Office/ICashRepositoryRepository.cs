@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Office.Data
         MixERP.Net.Entities.Office.CashRepository Get(int cashRepositoryId);
 
         /// <summary>
+        /// Gets the first record of CashRepository.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CashRepository.</returns>
+        MixERP.Net.Entities.Office.CashRepository GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of CashRepository sorted by cashRepositoryId. 
+        /// </summary>
+        /// <param name="cashRepositoryId">The column "cash_repository_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CashRepository.</returns>
+        MixERP.Net.Entities.Office.CashRepository GetPrevious(int cashRepositoryId);
+
+        /// <summary>
+        /// Gets the next record of CashRepository sorted by cashRepositoryId. 
+        /// </summary>
+        /// <param name="cashRepositoryId">The column "cash_repository_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CashRepository.</returns>
+        MixERP.Net.Entities.Office.CashRepository GetNext(int cashRepositoryId);
+
+        /// <summary>
+        /// Gets the last record of CashRepository.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CashRepository.</returns>
+        MixERP.Net.Entities.Office.CashRepository GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the CashRepository against cashRepositoryIds. 
         /// </summary>
         /// <param name="cashRepositoryIds">Array of column "cash_repository_id" parameter used on where filter.</param>

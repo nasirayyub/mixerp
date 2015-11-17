@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Salesperson Get(int salespersonId);
 
         /// <summary>
+        /// Gets the first record of Salesperson.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Salesperson.</returns>
+        MixERP.Net.Entities.Core.Salesperson GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Salesperson sorted by salespersonId. 
+        /// </summary>
+        /// <param name="salespersonId">The column "salesperson_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Salesperson.</returns>
+        MixERP.Net.Entities.Core.Salesperson GetPrevious(int salespersonId);
+
+        /// <summary>
+        /// Gets the next record of Salesperson sorted by salespersonId. 
+        /// </summary>
+        /// <param name="salespersonId">The column "salesperson_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Salesperson.</returns>
+        MixERP.Net.Entities.Core.Salesperson GetNext(int salespersonId);
+
+        /// <summary>
+        /// Gets the last record of Salesperson.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Salesperson.</returns>
+        MixERP.Net.Entities.Core.Salesperson GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Salesperson against salespersonIds. 
         /// </summary>
         /// <param name="salespersonIds">Array of column "salesperson_id" parameter used on where filter.</param>

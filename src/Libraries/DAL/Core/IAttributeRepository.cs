@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Attribute Get(int attributeId);
 
         /// <summary>
+        /// Gets the first record of Attribute.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Attribute.</returns>
+        MixERP.Net.Entities.Core.Attribute GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Attribute sorted by attributeId. 
+        /// </summary>
+        /// <param name="attributeId">The column "attribute_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Attribute.</returns>
+        MixERP.Net.Entities.Core.Attribute GetPrevious(int attributeId);
+
+        /// <summary>
+        /// Gets the next record of Attribute sorted by attributeId. 
+        /// </summary>
+        /// <param name="attributeId">The column "attribute_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Attribute.</returns>
+        MixERP.Net.Entities.Core.Attribute GetNext(int attributeId);
+
+        /// <summary>
+        /// Gets the last record of Attribute.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Attribute.</returns>
+        MixERP.Net.Entities.Core.Attribute GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Attribute against attributeIds. 
         /// </summary>
         /// <param name="attributeIds">Array of column "attribute_id" parameter used on where filter.</param>

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Policy.Data
         MixERP.Net.Entities.Policy.StorePolicyDetail Get(long storePolicyDetailId);
 
         /// <summary>
+        /// Gets the first record of StorePolicyDetail.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of StorePolicyDetail.</returns>
+        MixERP.Net.Entities.Policy.StorePolicyDetail GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of StorePolicyDetail sorted by storePolicyDetailId. 
+        /// </summary>
+        /// <param name="storePolicyDetailId">The column "store_policy_detail_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of StorePolicyDetail.</returns>
+        MixERP.Net.Entities.Policy.StorePolicyDetail GetPrevious(long storePolicyDetailId);
+
+        /// <summary>
+        /// Gets the next record of StorePolicyDetail sorted by storePolicyDetailId. 
+        /// </summary>
+        /// <param name="storePolicyDetailId">The column "store_policy_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of StorePolicyDetail.</returns>
+        MixERP.Net.Entities.Policy.StorePolicyDetail GetNext(long storePolicyDetailId);
+
+        /// <summary>
+        /// Gets the last record of StorePolicyDetail.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of StorePolicyDetail.</returns>
+        MixERP.Net.Entities.Policy.StorePolicyDetail GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the StorePolicyDetail against storePolicyDetailIds. 
         /// </summary>
         /// <param name="storePolicyDetailIds">Array of column "store_policy_detail_id" parameter used on where filter.</param>

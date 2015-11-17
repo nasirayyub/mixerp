@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Office.Data
         MixERP.Net.Entities.Office.WorkCenter Get(int workCenterId);
 
         /// <summary>
+        /// Gets the first record of WorkCenter.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of WorkCenter.</returns>
+        MixERP.Net.Entities.Office.WorkCenter GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of WorkCenter sorted by workCenterId. 
+        /// </summary>
+        /// <param name="workCenterId">The column "work_center_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of WorkCenter.</returns>
+        MixERP.Net.Entities.Office.WorkCenter GetPrevious(int workCenterId);
+
+        /// <summary>
+        /// Gets the next record of WorkCenter sorted by workCenterId. 
+        /// </summary>
+        /// <param name="workCenterId">The column "work_center_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of WorkCenter.</returns>
+        MixERP.Net.Entities.Office.WorkCenter GetNext(int workCenterId);
+
+        /// <summary>
+        /// Gets the last record of WorkCenter.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of WorkCenter.</returns>
+        MixERP.Net.Entities.Office.WorkCenter GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the WorkCenter against workCenterIds. 
         /// </summary>
         /// <param name="workCenterIds">Array of column "work_center_id" parameter used on where filter.</param>

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/menu-locale/count-filtered/{filterName}", "GET", typeof(MenuLocaleController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/menu-locale/get-filtered/{pageNumber}/{filterName}", "GET", typeof(MenuLocaleController), "GetFiltered")]
         [InlineData("/api/core/menu-locale/get-filtered/{pageNumber}/{filterName}", "GET", typeof(MenuLocaleController), "GetFiltered")]
+        [InlineData("/api/core/menu-locale/first", "GET", typeof(MenuLocaleController), "GetFirst")]
+        [InlineData("/api/core/menu-locale/previous/1", "GET", typeof(MenuLocaleController), "GetPrevious")]
+        [InlineData("/api/core/menu-locale/next/1", "GET", typeof(MenuLocaleController), "GetNext")]
+        [InlineData("/api/core/menu-locale/last", "GET", typeof(MenuLocaleController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/menu-locale/custom-fields", "GET", typeof(MenuLocaleController), "GetCustomFields")]
         [InlineData("/api/core/menu-locale/custom-fields", "GET", typeof(MenuLocaleController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/menu-locale/count-filtered/{filterName}", "HEAD", typeof(MenuLocaleController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/menu-locale/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(MenuLocaleController), "GetFiltered")]
         [InlineData("/api/core/menu-locale/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(MenuLocaleController), "GetFiltered")]
+        [InlineData("/api/core/menu-locale/first", "HEAD", typeof(MenuLocaleController), "GetFirst")]
+        [InlineData("/api/core/menu-locale/previous/1", "HEAD", typeof(MenuLocaleController), "GetPrevious")]
+        [InlineData("/api/core/menu-locale/next/1", "HEAD", typeof(MenuLocaleController), "GetNext")]
+        [InlineData("/api/core/menu-locale/last", "HEAD", typeof(MenuLocaleController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/menu-locale/custom-fields", "HEAD", typeof(MenuLocaleController), "GetCustomFields")]
         [InlineData("/api/core/menu-locale/custom-fields", "HEAD", typeof(MenuLocaleController), "GetCustomFields")]

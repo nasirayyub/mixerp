@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.EducationLevel Get(int educationLevelId);
 
         /// <summary>
+        /// Gets the first record of EducationLevel.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EducationLevel.</returns>
+        MixERP.Net.Entities.HRM.EducationLevel GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of EducationLevel sorted by educationLevelId. 
+        /// </summary>
+        /// <param name="educationLevelId">The column "education_level_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EducationLevel.</returns>
+        MixERP.Net.Entities.HRM.EducationLevel GetPrevious(int educationLevelId);
+
+        /// <summary>
+        /// Gets the next record of EducationLevel sorted by educationLevelId. 
+        /// </summary>
+        /// <param name="educationLevelId">The column "education_level_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EducationLevel.</returns>
+        MixERP.Net.Entities.HRM.EducationLevel GetNext(int educationLevelId);
+
+        /// <summary>
+        /// Gets the last record of EducationLevel.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EducationLevel.</returns>
+        MixERP.Net.Entities.HRM.EducationLevel GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the EducationLevel against educationLevelIds. 
         /// </summary>
         /// <param name="educationLevelIds">Array of column "education_level_id" parameter used on where filter.</param>

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/party-type/count-filtered/{filterName}", "GET", typeof(PartyTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/party-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(PartyTypeController), "GetFiltered")]
         [InlineData("/api/core/party-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(PartyTypeController), "GetFiltered")]
+        [InlineData("/api/core/party-type/first", "GET", typeof(PartyTypeController), "GetFirst")]
+        [InlineData("/api/core/party-type/previous/1", "GET", typeof(PartyTypeController), "GetPrevious")]
+        [InlineData("/api/core/party-type/next/1", "GET", typeof(PartyTypeController), "GetNext")]
+        [InlineData("/api/core/party-type/last", "GET", typeof(PartyTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/party-type/custom-fields", "GET", typeof(PartyTypeController), "GetCustomFields")]
         [InlineData("/api/core/party-type/custom-fields", "GET", typeof(PartyTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/party-type/count-filtered/{filterName}", "HEAD", typeof(PartyTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/party-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(PartyTypeController), "GetFiltered")]
         [InlineData("/api/core/party-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(PartyTypeController), "GetFiltered")]
+        [InlineData("/api/core/party-type/first", "HEAD", typeof(PartyTypeController), "GetFirst")]
+        [InlineData("/api/core/party-type/previous/1", "HEAD", typeof(PartyTypeController), "GetPrevious")]
+        [InlineData("/api/core/party-type/next/1", "HEAD", typeof(PartyTypeController), "GetNext")]
+        [InlineData("/api/core/party-type/last", "HEAD", typeof(PartyTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/party-type/custom-fields", "HEAD", typeof(PartyTypeController), "GetCustomFields")]
         [InlineData("/api/core/party-type/custom-fields", "HEAD", typeof(PartyTypeController), "GetCustomFields")]

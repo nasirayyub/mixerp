@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Office.Data
         MixERP.Net.Entities.Office.Department Get(int departmentId);
 
         /// <summary>
+        /// Gets the first record of Department.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Department.</returns>
+        MixERP.Net.Entities.Office.Department GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Department sorted by departmentId. 
+        /// </summary>
+        /// <param name="departmentId">The column "department_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Department.</returns>
+        MixERP.Net.Entities.Office.Department GetPrevious(int departmentId);
+
+        /// <summary>
+        /// Gets the next record of Department sorted by departmentId. 
+        /// </summary>
+        /// <param name="departmentId">The column "department_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Department.</returns>
+        MixERP.Net.Entities.Office.Department GetNext(int departmentId);
+
+        /// <summary>
+        /// Gets the last record of Department.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Department.</returns>
+        MixERP.Net.Entities.Office.Department GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Department against departmentIds. 
         /// </summary>
         /// <param name="departmentIds">Array of column "department_id" parameter used on where filter.</param>

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Policy.Data
         MixERP.Net.Entities.Policy.MenuAccess Get(long accessId);
 
         /// <summary>
+        /// Gets the first record of MenuAccess.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of MenuAccess.</returns>
+        MixERP.Net.Entities.Policy.MenuAccess GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of MenuAccess sorted by accessId. 
+        /// </summary>
+        /// <param name="accessId">The column "access_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of MenuAccess.</returns>
+        MixERP.Net.Entities.Policy.MenuAccess GetPrevious(long accessId);
+
+        /// <summary>
+        /// Gets the next record of MenuAccess sorted by accessId. 
+        /// </summary>
+        /// <param name="accessId">The column "access_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of MenuAccess.</returns>
+        MixERP.Net.Entities.Policy.MenuAccess GetNext(long accessId);
+
+        /// <summary>
+        /// Gets the last record of MenuAccess.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of MenuAccess.</returns>
+        MixERP.Net.Entities.Policy.MenuAccess GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the MenuAccess against accessIds. 
         /// </summary>
         /// <param name="accessIds">Array of column "access_id" parameter used on where filter.</param>

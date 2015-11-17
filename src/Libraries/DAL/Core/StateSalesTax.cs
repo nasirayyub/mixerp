@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.state_sales_taxes". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "StateSalesTax" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.StateSalesTax GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"StateSalesTax\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.state_sales_taxes ORDER BY state_sales_tax_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.StateSalesTax>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.state_sales_taxes" sorted by stateSalesTaxId.
+        /// </summary>
+        /// <param name="stateSalesTaxId">The column "state_sales_tax_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "StateSalesTax" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.StateSalesTax GetPrevious(int stateSalesTaxId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"StateSalesTax\" by \"StateSalesTaxId\" with value {StateSalesTaxId} was denied to the user with Login ID {_LoginId}", stateSalesTaxId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.state_sales_taxes WHERE state_sales_tax_id < @0 ORDER BY state_sales_tax_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.StateSalesTax>(this._Catalog, sql, stateSalesTaxId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.state_sales_taxes" sorted by stateSalesTaxId.
+        /// </summary>
+        /// <param name="stateSalesTaxId">The column "state_sales_tax_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "StateSalesTax" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.StateSalesTax GetNext(int stateSalesTaxId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"StateSalesTax\" by \"StateSalesTaxId\" with value {StateSalesTaxId} was denied to the user with Login ID {_LoginId}", stateSalesTaxId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.state_sales_taxes WHERE state_sales_tax_id > @0 ORDER BY state_sales_tax_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.StateSalesTax>(this._Catalog, sql, stateSalesTaxId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.state_sales_taxes". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "StateSalesTax" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.StateSalesTax GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"StateSalesTax\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.state_sales_taxes ORDER BY state_sales_tax_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.StateSalesTax>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.state_sales_taxes" with a where filter on the column "state_sales_tax_id" to return a multiple instances of the "StateSalesTax" class. 
         /// </summary>
         /// <param name="stateSalesTaxIds">Array of column "state_sales_tax_id" parameter used on where filter.</param>

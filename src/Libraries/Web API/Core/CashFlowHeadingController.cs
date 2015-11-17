@@ -242,6 +242,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of cash flow heading.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/cash-flow-heading/first")]
+        public MixERP.Net.Entities.Core.CashFlowHeading GetFirst()
+        {
+            try
+            {
+                return this.CashFlowHeadingRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of cash flow heading.
+        /// </summary>
+        /// <param name="cashFlowHeadingId">Enter CashFlowHeadingId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{cashFlowHeadingId}")]
+        [Route("~/api/core/cash-flow-heading/previous/{cashFlowHeadingId}")]
+        public MixERP.Net.Entities.Core.CashFlowHeading GetPrevious(int cashFlowHeadingId)
+        {
+            try
+            {
+                return this.CashFlowHeadingRepository.GetPrevious(cashFlowHeadingId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of cash flow heading.
+        /// </summary>
+        /// <param name="cashFlowHeadingId">Enter CashFlowHeadingId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{cashFlowHeadingId}")]
+        [Route("~/api/core/cash-flow-heading/next/{cashFlowHeadingId}")]
+        public MixERP.Net.Entities.Core.CashFlowHeading GetNext(int cashFlowHeadingId)
+        {
+            try
+            {
+                return this.CashFlowHeadingRepository.GetNext(cashFlowHeadingId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of cash flow heading.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/cash-flow-heading/last")]
+        public MixERP.Net.Entities.Core.CashFlowHeading GetLast()
+        {
+            try
+            {
+                return this.CashFlowHeadingRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 cash flow headings on each page, sorted by the property CashFlowHeadingId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.CardType Get(int cardTypeId);
 
         /// <summary>
+        /// Gets the first record of CardType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CardType.</returns>
+        MixERP.Net.Entities.Core.CardType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of CardType sorted by cardTypeId. 
+        /// </summary>
+        /// <param name="cardTypeId">The column "card_type_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CardType.</returns>
+        MixERP.Net.Entities.Core.CardType GetPrevious(int cardTypeId);
+
+        /// <summary>
+        /// Gets the next record of CardType sorted by cardTypeId. 
+        /// </summary>
+        /// <param name="cardTypeId">The column "card_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CardType.</returns>
+        MixERP.Net.Entities.Core.CardType GetNext(int cardTypeId);
+
+        /// <summary>
+        /// Gets the last record of CardType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CardType.</returns>
+        MixERP.Net.Entities.Core.CardType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the CardType against cardTypeIds. 
         /// </summary>
         /// <param name="cardTypeIds">Array of column "card_type_id" parameter used on where filter.</param>

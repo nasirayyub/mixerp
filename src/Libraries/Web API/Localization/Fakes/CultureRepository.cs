@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Localization.Fakes
             return new MixERP.Net.Entities.Localization.Culture();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Localization.Culture> Get([FromUri] string[] cultureCodes)
+        public IEnumerable<MixERP.Net.Entities.Localization.Culture> Get(string[] cultureCodes)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Localization.Culture(), 1);
+        }
+
+        public MixERP.Net.Entities.Localization.Culture GetFirst()
+        {
+            return new MixERP.Net.Entities.Localization.Culture();
+        }
+
+        public MixERP.Net.Entities.Localization.Culture GetPrevious(string cultureCode)
+        {
+            return new MixERP.Net.Entities.Localization.Culture();
+        }
+
+        public MixERP.Net.Entities.Localization.Culture GetNext(string cultureCode)
+        {
+            return new MixERP.Net.Entities.Localization.Culture();
+        }
+
+        public MixERP.Net.Entities.Localization.Culture GetLast()
+        {
+            return new MixERP.Net.Entities.Localization.Culture();
         }
 
         public IEnumerable<MixERP.Net.Entities.Localization.Culture> GetPaginatedResult()

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/exit-type/count-filtered/{filterName}", "GET", typeof(ExitTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/exit-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ExitTypeController), "GetFiltered")]
         [InlineData("/api/hrm/exit-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ExitTypeController), "GetFiltered")]
+        [InlineData("/api/hrm/exit-type/first", "GET", typeof(ExitTypeController), "GetFirst")]
+        [InlineData("/api/hrm/exit-type/previous/1", "GET", typeof(ExitTypeController), "GetPrevious")]
+        [InlineData("/api/hrm/exit-type/next/1", "GET", typeof(ExitTypeController), "GetNext")]
+        [InlineData("/api/hrm/exit-type/last", "GET", typeof(ExitTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/exit-type/custom-fields", "GET", typeof(ExitTypeController), "GetCustomFields")]
         [InlineData("/api/hrm/exit-type/custom-fields", "GET", typeof(ExitTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/exit-type/count-filtered/{filterName}", "HEAD", typeof(ExitTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/exit-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ExitTypeController), "GetFiltered")]
         [InlineData("/api/hrm/exit-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ExitTypeController), "GetFiltered")]
+        [InlineData("/api/hrm/exit-type/first", "HEAD", typeof(ExitTypeController), "GetFirst")]
+        [InlineData("/api/hrm/exit-type/previous/1", "HEAD", typeof(ExitTypeController), "GetPrevious")]
+        [InlineData("/api/hrm/exit-type/next/1", "HEAD", typeof(ExitTypeController), "GetNext")]
+        [InlineData("/api/hrm/exit-type/last", "HEAD", typeof(ExitTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/exit-type/custom-fields", "HEAD", typeof(ExitTypeController), "GetCustomFields")]
         [InlineData("/api/hrm/exit-type/custom-fields", "HEAD", typeof(ExitTypeController), "GetCustomFields")]

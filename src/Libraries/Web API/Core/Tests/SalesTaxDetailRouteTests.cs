@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/sales-tax-detail/count-filtered/{filterName}", "GET", typeof(SalesTaxDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/sales-tax-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SalesTaxDetailController), "GetFiltered")]
         [InlineData("/api/core/sales-tax-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SalesTaxDetailController), "GetFiltered")]
+        [InlineData("/api/core/sales-tax-detail/first", "GET", typeof(SalesTaxDetailController), "GetFirst")]
+        [InlineData("/api/core/sales-tax-detail/previous/1", "GET", typeof(SalesTaxDetailController), "GetPrevious")]
+        [InlineData("/api/core/sales-tax-detail/next/1", "GET", typeof(SalesTaxDetailController), "GetNext")]
+        [InlineData("/api/core/sales-tax-detail/last", "GET", typeof(SalesTaxDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/sales-tax-detail/custom-fields", "GET", typeof(SalesTaxDetailController), "GetCustomFields")]
         [InlineData("/api/core/sales-tax-detail/custom-fields", "GET", typeof(SalesTaxDetailController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/sales-tax-detail/count-filtered/{filterName}", "HEAD", typeof(SalesTaxDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/sales-tax-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SalesTaxDetailController), "GetFiltered")]
         [InlineData("/api/core/sales-tax-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SalesTaxDetailController), "GetFiltered")]
+        [InlineData("/api/core/sales-tax-detail/first", "HEAD", typeof(SalesTaxDetailController), "GetFirst")]
+        [InlineData("/api/core/sales-tax-detail/previous/1", "HEAD", typeof(SalesTaxDetailController), "GetPrevious")]
+        [InlineData("/api/core/sales-tax-detail/next/1", "HEAD", typeof(SalesTaxDetailController), "GetNext")]
+        [InlineData("/api/core/sales-tax-detail/last", "HEAD", typeof(SalesTaxDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/sales-tax-detail/custom-fields", "HEAD", typeof(SalesTaxDetailController), "GetCustomFields")]
         [InlineData("/api/core/sales-tax-detail/custom-fields", "HEAD", typeof(SalesTaxDetailController), "GetCustomFields")]

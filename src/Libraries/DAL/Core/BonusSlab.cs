@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.bonus_slabs". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "BonusSlab" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.BonusSlab GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"BonusSlab\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.bonus_slabs ORDER BY bonus_slab_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.BonusSlab>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.bonus_slabs" sorted by bonusSlabId.
+        /// </summary>
+        /// <param name="bonusSlabId">The column "bonus_slab_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "BonusSlab" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.BonusSlab GetPrevious(int bonusSlabId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"BonusSlab\" by \"BonusSlabId\" with value {BonusSlabId} was denied to the user with Login ID {_LoginId}", bonusSlabId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.bonus_slabs WHERE bonus_slab_id < @0 ORDER BY bonus_slab_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.BonusSlab>(this._Catalog, sql, bonusSlabId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.bonus_slabs" sorted by bonusSlabId.
+        /// </summary>
+        /// <param name="bonusSlabId">The column "bonus_slab_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "BonusSlab" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.BonusSlab GetNext(int bonusSlabId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"BonusSlab\" by \"BonusSlabId\" with value {BonusSlabId} was denied to the user with Login ID {_LoginId}", bonusSlabId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.bonus_slabs WHERE bonus_slab_id > @0 ORDER BY bonus_slab_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.BonusSlab>(this._Catalog, sql, bonusSlabId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.bonus_slabs". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "BonusSlab" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.BonusSlab GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"BonusSlab\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.bonus_slabs ORDER BY bonus_slab_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.BonusSlab>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.bonus_slabs" with a where filter on the column "bonus_slab_id" to return a multiple instances of the "BonusSlab" class. 
         /// </summary>
         /// <param name="bonusSlabIds">Array of column "bonus_slab_id" parameter used on where filter.</param>

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/verification-status/count-filtered/{filterName}", "GET", typeof(VerificationStatusController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/verification-status/get-filtered/{pageNumber}/{filterName}", "GET", typeof(VerificationStatusController), "GetFiltered")]
         [InlineData("/api/core/verification-status/get-filtered/{pageNumber}/{filterName}", "GET", typeof(VerificationStatusController), "GetFiltered")]
+        [InlineData("/api/core/verification-status/first", "GET", typeof(VerificationStatusController), "GetFirst")]
+        [InlineData("/api/core/verification-status/previous/1", "GET", typeof(VerificationStatusController), "GetPrevious")]
+        [InlineData("/api/core/verification-status/next/1", "GET", typeof(VerificationStatusController), "GetNext")]
+        [InlineData("/api/core/verification-status/last", "GET", typeof(VerificationStatusController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/verification-status/custom-fields", "GET", typeof(VerificationStatusController), "GetCustomFields")]
         [InlineData("/api/core/verification-status/custom-fields", "GET", typeof(VerificationStatusController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/verification-status/count-filtered/{filterName}", "HEAD", typeof(VerificationStatusController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/verification-status/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(VerificationStatusController), "GetFiltered")]
         [InlineData("/api/core/verification-status/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(VerificationStatusController), "GetFiltered")]
+        [InlineData("/api/core/verification-status/first", "HEAD", typeof(VerificationStatusController), "GetFirst")]
+        [InlineData("/api/core/verification-status/previous/1", "HEAD", typeof(VerificationStatusController), "GetPrevious")]
+        [InlineData("/api/core/verification-status/next/1", "HEAD", typeof(VerificationStatusController), "GetNext")]
+        [InlineData("/api/core/verification-status/last", "HEAD", typeof(VerificationStatusController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/verification-status/custom-fields", "HEAD", typeof(VerificationStatusController), "GetCustomFields")]
         [InlineData("/api/core/verification-status/custom-fields", "HEAD", typeof(VerificationStatusController), "GetCustomFields")]

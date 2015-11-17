@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.HRM.Fakes
             return new MixERP.Net.Entities.HRM.EmploymentStatus();
         }
 
-        public IEnumerable<MixERP.Net.Entities.HRM.EmploymentStatus> Get([FromUri] int[] employmentStatusIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.EmploymentStatus> Get(int[] employmentStatusIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.HRM.EmploymentStatus(), 1);
+        }
+
+        public MixERP.Net.Entities.HRM.EmploymentStatus GetFirst()
+        {
+            return new MixERP.Net.Entities.HRM.EmploymentStatus();
+        }
+
+        public MixERP.Net.Entities.HRM.EmploymentStatus GetPrevious(int employmentStatusId)
+        {
+            return new MixERP.Net.Entities.HRM.EmploymentStatus();
+        }
+
+        public MixERP.Net.Entities.HRM.EmploymentStatus GetNext(int employmentStatusId)
+        {
+            return new MixERP.Net.Entities.HRM.EmploymentStatus();
+        }
+
+        public MixERP.Net.Entities.HRM.EmploymentStatus GetLast()
+        {
+            return new MixERP.Net.Entities.HRM.EmploymentStatus();
         }
 
         public IEnumerable<MixERP.Net.Entities.HRM.EmploymentStatus> GetPaginatedResult()

@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.SocialNetwork(), 1);
         }
 
+        public MixERP.Net.Entities.Core.SocialNetwork GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.SocialNetwork();
+        }
+
+        public MixERP.Net.Entities.Core.SocialNetwork GetPrevious(string socialNetworkName)
+        {
+            return new MixERP.Net.Entities.Core.SocialNetwork();
+        }
+
+        public MixERP.Net.Entities.Core.SocialNetwork GetNext(string socialNetworkName)
+        {
+            return new MixERP.Net.Entities.Core.SocialNetwork();
+        }
+
+        public MixERP.Net.Entities.Core.SocialNetwork GetLast()
+        {
+            return new MixERP.Net.Entities.Core.SocialNetwork();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.SocialNetwork> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.SocialNetwork(), 1);

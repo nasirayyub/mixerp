@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/attachment-factory/count-filtered/{filterName}", "GET", typeof(AttachmentFactoryController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/attachment-factory/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AttachmentFactoryController), "GetFiltered")]
         [InlineData("/api/config/attachment-factory/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AttachmentFactoryController), "GetFiltered")]
+        [InlineData("/api/config/attachment-factory/first", "GET", typeof(AttachmentFactoryController), "GetFirst")]
+        [InlineData("/api/config/attachment-factory/previous/1", "GET", typeof(AttachmentFactoryController), "GetPrevious")]
+        [InlineData("/api/config/attachment-factory/next/1", "GET", typeof(AttachmentFactoryController), "GetNext")]
+        [InlineData("/api/config/attachment-factory/last", "GET", typeof(AttachmentFactoryController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/attachment-factory/custom-fields", "GET", typeof(AttachmentFactoryController), "GetCustomFields")]
         [InlineData("/api/config/attachment-factory/custom-fields", "GET", typeof(AttachmentFactoryController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/attachment-factory/count-filtered/{filterName}", "HEAD", typeof(AttachmentFactoryController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/attachment-factory/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AttachmentFactoryController), "GetFiltered")]
         [InlineData("/api/config/attachment-factory/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AttachmentFactoryController), "GetFiltered")]
+        [InlineData("/api/config/attachment-factory/first", "HEAD", typeof(AttachmentFactoryController), "GetFirst")]
+        [InlineData("/api/config/attachment-factory/previous/1", "HEAD", typeof(AttachmentFactoryController), "GetPrevious")]
+        [InlineData("/api/config/attachment-factory/next/1", "HEAD", typeof(AttachmentFactoryController), "GetNext")]
+        [InlineData("/api/config/attachment-factory/last", "HEAD", typeof(AttachmentFactoryController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/attachment-factory/custom-fields", "HEAD", typeof(AttachmentFactoryController), "GetCustomFields")]
         [InlineData("/api/config/attachment-factory/custom-fields", "HEAD", typeof(AttachmentFactoryController), "GetCustomFields")]

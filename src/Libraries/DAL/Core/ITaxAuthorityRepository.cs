@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.TaxAuthority Get(int taxAuthorityId);
 
         /// <summary>
+        /// Gets the first record of TaxAuthority.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of TaxAuthority.</returns>
+        MixERP.Net.Entities.Core.TaxAuthority GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of TaxAuthority sorted by taxAuthorityId. 
+        /// </summary>
+        /// <param name="taxAuthorityId">The column "tax_authority_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of TaxAuthority.</returns>
+        MixERP.Net.Entities.Core.TaxAuthority GetPrevious(int taxAuthorityId);
+
+        /// <summary>
+        /// Gets the next record of TaxAuthority sorted by taxAuthorityId. 
+        /// </summary>
+        /// <param name="taxAuthorityId">The column "tax_authority_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of TaxAuthority.</returns>
+        MixERP.Net.Entities.Core.TaxAuthority GetNext(int taxAuthorityId);
+
+        /// <summary>
+        /// Gets the last record of TaxAuthority.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of TaxAuthority.</returns>
+        MixERP.Net.Entities.Core.TaxAuthority GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the TaxAuthority against taxAuthorityIds. 
         /// </summary>
         /// <param name="taxAuthorityIds">Array of column "tax_authority_id" parameter used on where filter.</param>

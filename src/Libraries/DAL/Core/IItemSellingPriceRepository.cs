@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.ItemSellingPrice Get(long itemSellingPriceId);
 
         /// <summary>
+        /// Gets the first record of ItemSellingPrice.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ItemSellingPrice.</returns>
+        MixERP.Net.Entities.Core.ItemSellingPrice GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of ItemSellingPrice sorted by itemSellingPriceId. 
+        /// </summary>
+        /// <param name="itemSellingPriceId">The column "item_selling_price_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ItemSellingPrice.</returns>
+        MixERP.Net.Entities.Core.ItemSellingPrice GetPrevious(long itemSellingPriceId);
+
+        /// <summary>
+        /// Gets the next record of ItemSellingPrice sorted by itemSellingPriceId. 
+        /// </summary>
+        /// <param name="itemSellingPriceId">The column "item_selling_price_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ItemSellingPrice.</returns>
+        MixERP.Net.Entities.Core.ItemSellingPrice GetNext(long itemSellingPriceId);
+
+        /// <summary>
+        /// Gets the last record of ItemSellingPrice.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ItemSellingPrice.</returns>
+        MixERP.Net.Entities.Core.ItemSellingPrice GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the ItemSellingPrice against itemSellingPriceIds. 
         /// </summary>
         /// <param name="itemSellingPriceIds">Array of column "item_selling_price_id" parameter used on where filter.</param>

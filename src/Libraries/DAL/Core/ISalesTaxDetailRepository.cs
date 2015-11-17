@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.SalesTaxDetail Get(int salesTaxDetailId);
 
         /// <summary>
+        /// Gets the first record of SalesTaxDetail.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTaxDetail.</returns>
+        MixERP.Net.Entities.Core.SalesTaxDetail GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of SalesTaxDetail sorted by salesTaxDetailId. 
+        /// </summary>
+        /// <param name="salesTaxDetailId">The column "sales_tax_detail_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTaxDetail.</returns>
+        MixERP.Net.Entities.Core.SalesTaxDetail GetPrevious(int salesTaxDetailId);
+
+        /// <summary>
+        /// Gets the next record of SalesTaxDetail sorted by salesTaxDetailId. 
+        /// </summary>
+        /// <param name="salesTaxDetailId">The column "sales_tax_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTaxDetail.</returns>
+        MixERP.Net.Entities.Core.SalesTaxDetail GetNext(int salesTaxDetailId);
+
+        /// <summary>
+        /// Gets the last record of SalesTaxDetail.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTaxDetail.</returns>
+        MixERP.Net.Entities.Core.SalesTaxDetail GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the SalesTaxDetail against salesTaxDetailIds. 
         /// </summary>
         /// <param name="salesTaxDetailIds">Array of column "sales_tax_detail_id" parameter used on where filter.</param>

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/income-tax-setup/count-filtered/{filterName}", "GET", typeof(IncomeTaxSetupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/income-tax-setup/get-filtered/{pageNumber}/{filterName}", "GET", typeof(IncomeTaxSetupController), "GetFiltered")]
         [InlineData("/api/core/income-tax-setup/get-filtered/{pageNumber}/{filterName}", "GET", typeof(IncomeTaxSetupController), "GetFiltered")]
+        [InlineData("/api/core/income-tax-setup/first", "GET", typeof(IncomeTaxSetupController), "GetFirst")]
+        [InlineData("/api/core/income-tax-setup/previous/1", "GET", typeof(IncomeTaxSetupController), "GetPrevious")]
+        [InlineData("/api/core/income-tax-setup/next/1", "GET", typeof(IncomeTaxSetupController), "GetNext")]
+        [InlineData("/api/core/income-tax-setup/last", "GET", typeof(IncomeTaxSetupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/income-tax-setup/custom-fields", "GET", typeof(IncomeTaxSetupController), "GetCustomFields")]
         [InlineData("/api/core/income-tax-setup/custom-fields", "GET", typeof(IncomeTaxSetupController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/income-tax-setup/count-filtered/{filterName}", "HEAD", typeof(IncomeTaxSetupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/income-tax-setup/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(IncomeTaxSetupController), "GetFiltered")]
         [InlineData("/api/core/income-tax-setup/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(IncomeTaxSetupController), "GetFiltered")]
+        [InlineData("/api/core/income-tax-setup/first", "HEAD", typeof(IncomeTaxSetupController), "GetFirst")]
+        [InlineData("/api/core/income-tax-setup/previous/1", "HEAD", typeof(IncomeTaxSetupController), "GetPrevious")]
+        [InlineData("/api/core/income-tax-setup/next/1", "HEAD", typeof(IncomeTaxSetupController), "GetNext")]
+        [InlineData("/api/core/income-tax-setup/last", "HEAD", typeof(IncomeTaxSetupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/income-tax-setup/custom-fields", "HEAD", typeof(IncomeTaxSetupController), "GetCustomFields")]
         [InlineData("/api/core/income-tax-setup/custom-fields", "HEAD", typeof(IncomeTaxSetupController), "GetCustomFields")]

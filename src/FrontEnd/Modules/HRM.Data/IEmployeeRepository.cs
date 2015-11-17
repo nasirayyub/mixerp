@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.Employee Get(int employeeId);
 
         /// <summary>
+        /// Gets the first record of Employee.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Employee.</returns>
+        MixERP.Net.Entities.HRM.Employee GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Employee sorted by employeeId. 
+        /// </summary>
+        /// <param name="employeeId">The column "employee_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Employee.</returns>
+        MixERP.Net.Entities.HRM.Employee GetPrevious(int employeeId);
+
+        /// <summary>
+        /// Gets the next record of Employee sorted by employeeId. 
+        /// </summary>
+        /// <param name="employeeId">The column "employee_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Employee.</returns>
+        MixERP.Net.Entities.HRM.Employee GetNext(int employeeId);
+
+        /// <summary>
+        /// Gets the last record of Employee.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Employee.</returns>
+        MixERP.Net.Entities.HRM.Employee GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Employee against employeeIds. 
         /// </summary>
         /// <param name="employeeIds">Array of column "employee_id" parameter used on where filter.</param>

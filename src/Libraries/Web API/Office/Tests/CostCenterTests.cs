@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Office.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Office.CostCenter costCenter = Fixture().GetFirst();
+            Assert.NotNull(costCenter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Office.CostCenter costCenter = Fixture().GetPrevious(0);
+            Assert.NotNull(costCenter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Office.CostCenter costCenter = Fixture().GetNext(0);
+            Assert.NotNull(costCenter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Office.CostCenter costCenter = Fixture().GetLast();
+            Assert.NotNull(costCenter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Office.CostCenter> costCenters = Fixture().Get(new int[] { });

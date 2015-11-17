@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.ZipCodeType Get(int zipCodeTypeId);
 
         /// <summary>
+        /// Gets the first record of ZipCodeType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ZipCodeType.</returns>
+        MixERP.Net.Entities.Core.ZipCodeType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of ZipCodeType sorted by zipCodeTypeId. 
+        /// </summary>
+        /// <param name="zipCodeTypeId">The column "zip_code_type_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ZipCodeType.</returns>
+        MixERP.Net.Entities.Core.ZipCodeType GetPrevious(int zipCodeTypeId);
+
+        /// <summary>
+        /// Gets the next record of ZipCodeType sorted by zipCodeTypeId. 
+        /// </summary>
+        /// <param name="zipCodeTypeId">The column "zip_code_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ZipCodeType.</returns>
+        MixERP.Net.Entities.Core.ZipCodeType GetNext(int zipCodeTypeId);
+
+        /// <summary>
+        /// Gets the last record of ZipCodeType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ZipCodeType.</returns>
+        MixERP.Net.Entities.Core.ZipCodeType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the ZipCodeType against zipCodeTypeIds. 
         /// </summary>
         /// <param name="zipCodeTypeIds">Array of column "zip_code_type_id" parameter used on where filter.</param>

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/store-policy/count-filtered/{filterName}", "GET", typeof(StorePolicyController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/store-policy/get-filtered/{pageNumber}/{filterName}", "GET", typeof(StorePolicyController), "GetFiltered")]
         [InlineData("/api/policy/store-policy/get-filtered/{pageNumber}/{filterName}", "GET", typeof(StorePolicyController), "GetFiltered")]
+        [InlineData("/api/policy/store-policy/first", "GET", typeof(StorePolicyController), "GetFirst")]
+        [InlineData("/api/policy/store-policy/previous/1", "GET", typeof(StorePolicyController), "GetPrevious")]
+        [InlineData("/api/policy/store-policy/next/1", "GET", typeof(StorePolicyController), "GetNext")]
+        [InlineData("/api/policy/store-policy/last", "GET", typeof(StorePolicyController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/store-policy/custom-fields", "GET", typeof(StorePolicyController), "GetCustomFields")]
         [InlineData("/api/policy/store-policy/custom-fields", "GET", typeof(StorePolicyController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/store-policy/count-filtered/{filterName}", "HEAD", typeof(StorePolicyController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/store-policy/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(StorePolicyController), "GetFiltered")]
         [InlineData("/api/policy/store-policy/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(StorePolicyController), "GetFiltered")]
+        [InlineData("/api/policy/store-policy/first", "HEAD", typeof(StorePolicyController), "GetFirst")]
+        [InlineData("/api/policy/store-policy/previous/1", "HEAD", typeof(StorePolicyController), "GetPrevious")]
+        [InlineData("/api/policy/store-policy/next/1", "HEAD", typeof(StorePolicyController), "GetNext")]
+        [InlineData("/api/policy/store-policy/last", "HEAD", typeof(StorePolicyController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/store-policy/custom-fields", "HEAD", typeof(StorePolicyController), "GetCustomFields")]
         [InlineData("/api/policy/store-policy/custom-fields", "HEAD", typeof(StorePolicyController), "GetCustomFields")]

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.CustomFieldSetup Get(int customFieldSetupId);
 
         /// <summary>
+        /// Gets the first record of CustomFieldSetup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CustomFieldSetup.</returns>
+        MixERP.Net.Entities.Core.CustomFieldSetup GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of CustomFieldSetup sorted by customFieldSetupId. 
+        /// </summary>
+        /// <param name="customFieldSetupId">The column "custom_field_setup_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CustomFieldSetup.</returns>
+        MixERP.Net.Entities.Core.CustomFieldSetup GetPrevious(int customFieldSetupId);
+
+        /// <summary>
+        /// Gets the next record of CustomFieldSetup sorted by customFieldSetupId. 
+        /// </summary>
+        /// <param name="customFieldSetupId">The column "custom_field_setup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CustomFieldSetup.</returns>
+        MixERP.Net.Entities.Core.CustomFieldSetup GetNext(int customFieldSetupId);
+
+        /// <summary>
+        /// Gets the last record of CustomFieldSetup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CustomFieldSetup.</returns>
+        MixERP.Net.Entities.Core.CustomFieldSetup GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the CustomFieldSetup against customFieldSetupIds. 
         /// </summary>
         /// <param name="customFieldSetupIds">Array of column "custom_field_setup_id" parameter used on where filter.</param>

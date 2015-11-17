@@ -238,6 +238,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of tax exempt type.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/tax-exempt-type/first")]
+        public MixERP.Net.Entities.Core.TaxExemptType GetFirst()
+        {
+            try
+            {
+                return this.TaxExemptTypeRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of tax exempt type.
+        /// </summary>
+        /// <param name="taxExemptTypeId">Enter TaxExemptTypeId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{taxExemptTypeId}")]
+        [Route("~/api/core/tax-exempt-type/previous/{taxExemptTypeId}")]
+        public MixERP.Net.Entities.Core.TaxExemptType GetPrevious(int taxExemptTypeId)
+        {
+            try
+            {
+                return this.TaxExemptTypeRepository.GetPrevious(taxExemptTypeId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of tax exempt type.
+        /// </summary>
+        /// <param name="taxExemptTypeId">Enter TaxExemptTypeId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{taxExemptTypeId}")]
+        [Route("~/api/core/tax-exempt-type/next/{taxExemptTypeId}")]
+        public MixERP.Net.Entities.Core.TaxExemptType GetNext(int taxExemptTypeId)
+        {
+            try
+            {
+                return this.TaxExemptTypeRepository.GetNext(taxExemptTypeId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of tax exempt type.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/tax-exempt-type/last")]
+        public MixERP.Net.Entities.Core.TaxExemptType GetLast()
+        {
+            try
+            {
+                return this.TaxExemptTypeRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 tax exempt types on each page, sorted by the property TaxExemptTypeId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

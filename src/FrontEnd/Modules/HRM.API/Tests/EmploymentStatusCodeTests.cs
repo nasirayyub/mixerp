@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.HRM.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.HRM.EmploymentStatusCode employmentStatusCode = Fixture().GetFirst();
+            Assert.NotNull(employmentStatusCode);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.HRM.EmploymentStatusCode employmentStatusCode = Fixture().GetPrevious(0);
+            Assert.NotNull(employmentStatusCode);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.HRM.EmploymentStatusCode employmentStatusCode = Fixture().GetNext(0);
+            Assert.NotNull(employmentStatusCode);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.HRM.EmploymentStatusCode employmentStatusCode = Fixture().GetLast();
+            Assert.NotNull(employmentStatusCode);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.HRM.EmploymentStatusCode> employmentStatusCodes = Fixture().Get(new int[] { });

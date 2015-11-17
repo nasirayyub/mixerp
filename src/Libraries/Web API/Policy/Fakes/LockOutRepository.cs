@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Policy.Fakes
             return new MixERP.Net.Entities.Policy.LockOut();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Policy.LockOut> Get([FromUri] long[] lockOutIds)
+        public IEnumerable<MixERP.Net.Entities.Policy.LockOut> Get(long[] lockOutIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Policy.LockOut(), 1);
+        }
+
+        public MixERP.Net.Entities.Policy.LockOut GetFirst()
+        {
+            return new MixERP.Net.Entities.Policy.LockOut();
+        }
+
+        public MixERP.Net.Entities.Policy.LockOut GetPrevious(long lockOutId)
+        {
+            return new MixERP.Net.Entities.Policy.LockOut();
+        }
+
+        public MixERP.Net.Entities.Policy.LockOut GetNext(long lockOutId)
+        {
+            return new MixERP.Net.Entities.Policy.LockOut();
+        }
+
+        public MixERP.Net.Entities.Policy.LockOut GetLast()
+        {
+            return new MixERP.Net.Entities.Policy.LockOut();
         }
 
         public IEnumerable<MixERP.Net.Entities.Policy.LockOut> GetPaginatedResult()

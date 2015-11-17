@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Nationality(), 1);
         }
 
+        public MixERP.Net.Entities.Core.Nationality GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.Nationality();
+        }
+
+        public MixERP.Net.Entities.Core.Nationality GetPrevious(string nationalityCode)
+        {
+            return new MixERP.Net.Entities.Core.Nationality();
+        }
+
+        public MixERP.Net.Entities.Core.Nationality GetNext(string nationalityCode)
+        {
+            return new MixERP.Net.Entities.Core.Nationality();
+        }
+
+        public MixERP.Net.Entities.Core.Nationality GetLast()
+        {
+            return new MixERP.Net.Entities.Core.Nationality();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.Nationality> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.Nationality(), 1);

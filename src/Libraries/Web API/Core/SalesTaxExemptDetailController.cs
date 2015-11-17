@@ -243,6 +243,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of sales tax exempt detail.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/sales-tax-exempt-detail/first")]
+        public MixERP.Net.Entities.Core.SalesTaxExemptDetail GetFirst()
+        {
+            try
+            {
+                return this.SalesTaxExemptDetailRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of sales tax exempt detail.
+        /// </summary>
+        /// <param name="salesTaxExemptDetailId">Enter SalesTaxExemptDetailId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{salesTaxExemptDetailId}")]
+        [Route("~/api/core/sales-tax-exempt-detail/previous/{salesTaxExemptDetailId}")]
+        public MixERP.Net.Entities.Core.SalesTaxExemptDetail GetPrevious(int salesTaxExemptDetailId)
+        {
+            try
+            {
+                return this.SalesTaxExemptDetailRepository.GetPrevious(salesTaxExemptDetailId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of sales tax exempt detail.
+        /// </summary>
+        /// <param name="salesTaxExemptDetailId">Enter SalesTaxExemptDetailId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{salesTaxExemptDetailId}")]
+        [Route("~/api/core/sales-tax-exempt-detail/next/{salesTaxExemptDetailId}")]
+        public MixERP.Net.Entities.Core.SalesTaxExemptDetail GetNext(int salesTaxExemptDetailId)
+        {
+            try
+            {
+                return this.SalesTaxExemptDetailRepository.GetNext(salesTaxExemptDetailId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of sales tax exempt detail.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/sales-tax-exempt-detail/last")]
+        public MixERP.Net.Entities.Core.SalesTaxExemptDetail GetLast()
+        {
+            try
+            {
+                return this.SalesTaxExemptDetailRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 sales tax exempt details on each page, sorted by the property SalesTaxExemptDetailId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

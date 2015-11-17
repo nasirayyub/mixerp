@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.units". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Unit" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Unit GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"Unit\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.units ORDER BY unit_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Unit>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.units" sorted by unitId.
+        /// </summary>
+        /// <param name="unitId">The column "unit_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Unit" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Unit GetPrevious(int unitId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"Unit\" by \"UnitId\" with value {UnitId} was denied to the user with Login ID {_LoginId}", unitId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.units WHERE unit_id < @0 ORDER BY unit_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Unit>(this._Catalog, sql, unitId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.units" sorted by unitId.
+        /// </summary>
+        /// <param name="unitId">The column "unit_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Unit" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Unit GetNext(int unitId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"Unit\" by \"UnitId\" with value {UnitId} was denied to the user with Login ID {_LoginId}", unitId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.units WHERE unit_id > @0 ORDER BY unit_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Unit>(this._Catalog, sql, unitId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.units". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Unit" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Unit GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"Unit\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.units ORDER BY unit_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Unit>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.units" with a where filter on the column "unit_id" to return a multiple instances of the "Unit" class. 
         /// </summary>
         /// <param name="unitIds">Array of column "unit_id" parameter used on where filter.</param>

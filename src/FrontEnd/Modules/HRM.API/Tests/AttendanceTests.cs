@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.HRM.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.HRM.Attendance attendance = Fixture().GetFirst();
+            Assert.NotNull(attendance);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.HRM.Attendance attendance = Fixture().GetPrevious(0);
+            Assert.NotNull(attendance);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.HRM.Attendance attendance = Fixture().GetNext(0);
+            Assert.NotNull(attendance);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.HRM.Attendance attendance = Fixture().GetLast();
+            Assert.NotNull(attendance);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.HRM.Attendance> attendances = Fixture().Get(new long[] { });

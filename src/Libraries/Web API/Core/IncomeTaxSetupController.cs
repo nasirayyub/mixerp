@@ -240,6 +240,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of income tax setup.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/income-tax-setup/first")]
+        public MixERP.Net.Entities.Core.IncomeTaxSetup GetFirst()
+        {
+            try
+            {
+                return this.IncomeTaxSetupRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of income tax setup.
+        /// </summary>
+        /// <param name="incomeTaxSetupId">Enter IncomeTaxSetupId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{incomeTaxSetupId}")]
+        [Route("~/api/core/income-tax-setup/previous/{incomeTaxSetupId}")]
+        public MixERP.Net.Entities.Core.IncomeTaxSetup GetPrevious(int incomeTaxSetupId)
+        {
+            try
+            {
+                return this.IncomeTaxSetupRepository.GetPrevious(incomeTaxSetupId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of income tax setup.
+        /// </summary>
+        /// <param name="incomeTaxSetupId">Enter IncomeTaxSetupId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{incomeTaxSetupId}")]
+        [Route("~/api/core/income-tax-setup/next/{incomeTaxSetupId}")]
+        public MixERP.Net.Entities.Core.IncomeTaxSetup GetNext(int incomeTaxSetupId)
+        {
+            try
+            {
+                return this.IncomeTaxSetupRepository.GetNext(incomeTaxSetupId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of income tax setup.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/income-tax-setup/last")]
+        public MixERP.Net.Entities.Core.IncomeTaxSetup GetLast()
+        {
+            try
+            {
+                return this.IncomeTaxSetupRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 income tax setups on each page, sorted by the property IncomeTaxSetupId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

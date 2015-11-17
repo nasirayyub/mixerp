@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/industry/count-filtered/{filterName}", "GET", typeof(IndustryController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/industry/get-filtered/{pageNumber}/{filterName}", "GET", typeof(IndustryController), "GetFiltered")]
         [InlineData("/api/core/industry/get-filtered/{pageNumber}/{filterName}", "GET", typeof(IndustryController), "GetFiltered")]
+        [InlineData("/api/core/industry/first", "GET", typeof(IndustryController), "GetFirst")]
+        [InlineData("/api/core/industry/previous/1", "GET", typeof(IndustryController), "GetPrevious")]
+        [InlineData("/api/core/industry/next/1", "GET", typeof(IndustryController), "GetNext")]
+        [InlineData("/api/core/industry/last", "GET", typeof(IndustryController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/industry/custom-fields", "GET", typeof(IndustryController), "GetCustomFields")]
         [InlineData("/api/core/industry/custom-fields", "GET", typeof(IndustryController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/industry/count-filtered/{filterName}", "HEAD", typeof(IndustryController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/industry/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(IndustryController), "GetFiltered")]
         [InlineData("/api/core/industry/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(IndustryController), "GetFiltered")]
+        [InlineData("/api/core/industry/first", "HEAD", typeof(IndustryController), "GetFirst")]
+        [InlineData("/api/core/industry/previous/1", "HEAD", typeof(IndustryController), "GetPrevious")]
+        [InlineData("/api/core/industry/next/1", "HEAD", typeof(IndustryController), "GetNext")]
+        [InlineData("/api/core/industry/last", "HEAD", typeof(IndustryController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/industry/custom-fields", "HEAD", typeof(IndustryController), "GetCustomFields")]
         [InlineData("/api/core/industry/custom-fields", "HEAD", typeof(IndustryController), "GetCustomFields")]

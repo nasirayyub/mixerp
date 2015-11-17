@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/account/count-filtered/{filterName}", "GET", typeof(AccountController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/account/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AccountController), "GetFiltered")]
         [InlineData("/api/core/account/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AccountController), "GetFiltered")]
+        [InlineData("/api/core/account/first", "GET", typeof(AccountController), "GetFirst")]
+        [InlineData("/api/core/account/previous/1", "GET", typeof(AccountController), "GetPrevious")]
+        [InlineData("/api/core/account/next/1", "GET", typeof(AccountController), "GetNext")]
+        [InlineData("/api/core/account/last", "GET", typeof(AccountController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/account/custom-fields", "GET", typeof(AccountController), "GetCustomFields")]
         [InlineData("/api/core/account/custom-fields", "GET", typeof(AccountController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/account/count-filtered/{filterName}", "HEAD", typeof(AccountController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/account/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AccountController), "GetFiltered")]
         [InlineData("/api/core/account/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AccountController), "GetFiltered")]
+        [InlineData("/api/core/account/first", "HEAD", typeof(AccountController), "GetFirst")]
+        [InlineData("/api/core/account/previous/1", "HEAD", typeof(AccountController), "GetPrevious")]
+        [InlineData("/api/core/account/next/1", "HEAD", typeof(AccountController), "GetNext")]
+        [InlineData("/api/core/account/last", "HEAD", typeof(AccountController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/account/custom-fields", "HEAD", typeof(AccountController), "GetCustomFields")]
         [InlineData("/api/core/account/custom-fields", "HEAD", typeof(AccountController), "GetCustomFields")]

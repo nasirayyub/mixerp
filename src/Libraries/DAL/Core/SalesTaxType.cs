@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.sales_tax_types". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTaxType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTaxType GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"SalesTaxType\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_tax_types ORDER BY sales_tax_type_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTaxType>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.sales_tax_types" sorted by salesTaxTypeId.
+        /// </summary>
+        /// <param name="salesTaxTypeId">The column "sales_tax_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTaxType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTaxType GetPrevious(int salesTaxTypeId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"SalesTaxType\" by \"SalesTaxTypeId\" with value {SalesTaxTypeId} was denied to the user with Login ID {_LoginId}", salesTaxTypeId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_tax_types WHERE sales_tax_type_id < @0 ORDER BY sales_tax_type_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTaxType>(this._Catalog, sql, salesTaxTypeId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.sales_tax_types" sorted by salesTaxTypeId.
+        /// </summary>
+        /// <param name="salesTaxTypeId">The column "sales_tax_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTaxType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTaxType GetNext(int salesTaxTypeId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"SalesTaxType\" by \"SalesTaxTypeId\" with value {SalesTaxTypeId} was denied to the user with Login ID {_LoginId}", salesTaxTypeId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_tax_types WHERE sales_tax_type_id > @0 ORDER BY sales_tax_type_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTaxType>(this._Catalog, sql, salesTaxTypeId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.sales_tax_types". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTaxType" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTaxType GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"SalesTaxType\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_tax_types ORDER BY sales_tax_type_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTaxType>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.sales_tax_types" with a where filter on the column "sales_tax_type_id" to return a multiple instances of the "SalesTaxType" class. 
         /// </summary>
         /// <param name="salesTaxTypeIds">Array of column "sales_tax_type_id" parameter used on where filter.</param>

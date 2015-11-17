@@ -53,6 +53,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/contract/count-filtered/{filterName}", "GET", typeof(ContractController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/contract/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ContractController), "GetFiltered")]
         [InlineData("/api/hrm/contract/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ContractController), "GetFiltered")]
+        [InlineData("/api/hrm/contract/first", "GET", typeof(ContractController), "GetFirst")]
+        [InlineData("/api/hrm/contract/previous/1", "GET", typeof(ContractController), "GetPrevious")]
+        [InlineData("/api/hrm/contract/next/1", "GET", typeof(ContractController), "GetNext")]
+        [InlineData("/api/hrm/contract/last", "GET", typeof(ContractController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/contract/custom-fields", "GET", typeof(ContractController), "GetCustomFields")]
         [InlineData("/api/hrm/contract/custom-fields", "GET", typeof(ContractController), "GetCustomFields")]
@@ -78,6 +82,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/contract/count-filtered/{filterName}", "HEAD", typeof(ContractController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/contract/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ContractController), "GetFiltered")]
         [InlineData("/api/hrm/contract/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ContractController), "GetFiltered")]
+        [InlineData("/api/hrm/contract/first", "HEAD", typeof(ContractController), "GetFirst")]
+        [InlineData("/api/hrm/contract/previous/1", "HEAD", typeof(ContractController), "GetPrevious")]
+        [InlineData("/api/hrm/contract/next/1", "HEAD", typeof(ContractController), "GetNext")]
+        [InlineData("/api/hrm/contract/last", "HEAD", typeof(ContractController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/contract/custom-fields", "HEAD", typeof(ContractController), "GetCustomFields")]
         [InlineData("/api/hrm/contract/custom-fields", "HEAD", typeof(ContractController), "GetCustomFields")]

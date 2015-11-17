@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/county/count-filtered/{filterName}", "GET", typeof(CountyController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/county/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CountyController), "GetFiltered")]
         [InlineData("/api/core/county/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CountyController), "GetFiltered")]
+        [InlineData("/api/core/county/first", "GET", typeof(CountyController), "GetFirst")]
+        [InlineData("/api/core/county/previous/1", "GET", typeof(CountyController), "GetPrevious")]
+        [InlineData("/api/core/county/next/1", "GET", typeof(CountyController), "GetNext")]
+        [InlineData("/api/core/county/last", "GET", typeof(CountyController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/county/custom-fields", "GET", typeof(CountyController), "GetCustomFields")]
         [InlineData("/api/core/county/custom-fields", "GET", typeof(CountyController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/county/count-filtered/{filterName}", "HEAD", typeof(CountyController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/county/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CountyController), "GetFiltered")]
         [InlineData("/api/core/county/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CountyController), "GetFiltered")]
+        [InlineData("/api/core/county/first", "HEAD", typeof(CountyController), "GetFirst")]
+        [InlineData("/api/core/county/previous/1", "HEAD", typeof(CountyController), "GetPrevious")]
+        [InlineData("/api/core/county/next/1", "HEAD", typeof(CountyController), "GetNext")]
+        [InlineData("/api/core/county/last", "HEAD", typeof(CountyController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/county/custom-fields", "HEAD", typeof(CountyController), "GetCustomFields")]
         [InlineData("/api/core/county/custom-fields", "HEAD", typeof(CountyController), "GetCustomFields")]

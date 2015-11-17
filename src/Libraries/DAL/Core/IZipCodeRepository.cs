@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.ZipCode Get(long zipCodeId);
 
         /// <summary>
+        /// Gets the first record of ZipCode.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ZipCode.</returns>
+        MixERP.Net.Entities.Core.ZipCode GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of ZipCode sorted by zipCodeId. 
+        /// </summary>
+        /// <param name="zipCodeId">The column "zip_code_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ZipCode.</returns>
+        MixERP.Net.Entities.Core.ZipCode GetPrevious(long zipCodeId);
+
+        /// <summary>
+        /// Gets the next record of ZipCode sorted by zipCodeId. 
+        /// </summary>
+        /// <param name="zipCodeId">The column "zip_code_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ZipCode.</returns>
+        MixERP.Net.Entities.Core.ZipCode GetNext(long zipCodeId);
+
+        /// <summary>
+        /// Gets the last record of ZipCode.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ZipCode.</returns>
+        MixERP.Net.Entities.Core.ZipCode GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the ZipCode against zipCodeIds. 
         /// </summary>
         /// <param name="zipCodeIds">Array of column "zip_code_id" parameter used on where filter.</param>

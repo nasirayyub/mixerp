@@ -161,6 +161,125 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "hrm.shifts". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Shift" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Shift GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"Shift\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.shifts ORDER BY shift_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Shift>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "hrm.shifts" sorted by shiftId.
+        /// </summary>
+        /// <param name="shiftId">The column "shift_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Shift" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Shift GetPrevious(int shiftId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"Shift\" by \"ShiftId\" with value {ShiftId} was denied to the user with Login ID {_LoginId}", shiftId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.shifts WHERE shift_id < @0 ORDER BY shift_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Shift>(this._Catalog, sql, shiftId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "hrm.shifts" sorted by shiftId.
+        /// </summary>
+        /// <param name="shiftId">The column "shift_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Shift" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Shift GetNext(int shiftId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"Shift\" by \"ShiftId\" with value {ShiftId} was denied to the user with Login ID {_LoginId}", shiftId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.shifts WHERE shift_id > @0 ORDER BY shift_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Shift>(this._Catalog, sql, shiftId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "hrm.shifts". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Shift" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Shift GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"Shift\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.shifts ORDER BY shift_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Shift>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "hrm.shifts" with a where filter on the column "shift_id" to return a multiple instances of the "Shift" class. 
         /// </summary>
         /// <param name="shiftIds">Array of column "shift_id" parameter used on where filter.</param>

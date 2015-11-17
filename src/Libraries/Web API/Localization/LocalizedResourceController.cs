@@ -237,6 +237,132 @@ namespace MixERP.Net.Api.Localization
         }
 
         /// <summary>
+        ///     Returns the first instance of localized resource.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/localization/localized-resource/first")]
+        public MixERP.Net.Entities.Localization.LocalizedResource GetFirst()
+        {
+            try
+            {
+                return this.LocalizedResourceRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of localized resource.
+        /// </summary>
+        /// <param name="localizedResourceId">Enter LocalizedResourceId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{localizedResourceId}")]
+        [Route("~/api/localization/localized-resource/previous/{localizedResourceId}")]
+        public MixERP.Net.Entities.Localization.LocalizedResource GetPrevious(long localizedResourceId)
+        {
+            try
+            {
+                return this.LocalizedResourceRepository.GetPrevious(localizedResourceId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of localized resource.
+        /// </summary>
+        /// <param name="localizedResourceId">Enter LocalizedResourceId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{localizedResourceId}")]
+        [Route("~/api/localization/localized-resource/next/{localizedResourceId}")]
+        public MixERP.Net.Entities.Localization.LocalizedResource GetNext(long localizedResourceId)
+        {
+            try
+            {
+                return this.LocalizedResourceRepository.GetNext(localizedResourceId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of localized resource.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/localization/localized-resource/last")]
+        public MixERP.Net.Entities.Localization.LocalizedResource GetLast()
+        {
+            try
+            {
+                return this.LocalizedResourceRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 localized resources on each page, sorted by the property LocalizedResourceId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

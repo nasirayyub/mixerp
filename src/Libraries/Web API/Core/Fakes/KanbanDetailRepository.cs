@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.KanbanDetail(), 1);
         }
 
+        public MixERP.Net.Entities.Core.KanbanDetail GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.KanbanDetail();
+        }
+
+        public MixERP.Net.Entities.Core.KanbanDetail GetPrevious(long kanbanDetailId)
+        {
+            return new MixERP.Net.Entities.Core.KanbanDetail();
+        }
+
+        public MixERP.Net.Entities.Core.KanbanDetail GetNext(long kanbanDetailId)
+        {
+            return new MixERP.Net.Entities.Core.KanbanDetail();
+        }
+
+        public MixERP.Net.Entities.Core.KanbanDetail GetLast()
+        {
+            return new MixERP.Net.Entities.Core.KanbanDetail();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.KanbanDetail> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.KanbanDetail(), 1);

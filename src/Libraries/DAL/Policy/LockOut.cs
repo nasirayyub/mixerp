@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Policy.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "policy.lock_outs". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "LockOut" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.LockOut GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"LockOut\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.lock_outs ORDER BY lock_out_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.LockOut>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "policy.lock_outs" sorted by lockOutId.
+        /// </summary>
+        /// <param name="lockOutId">The column "lock_out_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "LockOut" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.LockOut GetPrevious(long lockOutId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"LockOut\" by \"LockOutId\" with value {LockOutId} was denied to the user with Login ID {_LoginId}", lockOutId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.lock_outs WHERE lock_out_id < @0 ORDER BY lock_out_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.LockOut>(this._Catalog, sql, lockOutId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "policy.lock_outs" sorted by lockOutId.
+        /// </summary>
+        /// <param name="lockOutId">The column "lock_out_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "LockOut" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.LockOut GetNext(long lockOutId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"LockOut\" by \"LockOutId\" with value {LockOutId} was denied to the user with Login ID {_LoginId}", lockOutId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.lock_outs WHERE lock_out_id > @0 ORDER BY lock_out_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.LockOut>(this._Catalog, sql, lockOutId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "policy.lock_outs". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "LockOut" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Policy.LockOut GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"LockOut\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM policy.lock_outs ORDER BY lock_out_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Policy.LockOut>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "policy.lock_outs" with a where filter on the column "lock_out_id" to return a multiple instances of the "LockOut" class. 
         /// </summary>
         /// <param name="lockOutIds">Array of column "lock_out_id" parameter used on where filter.</param>

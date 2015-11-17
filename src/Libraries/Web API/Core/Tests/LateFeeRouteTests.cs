@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/late-fee/count-filtered/{filterName}", "GET", typeof(CoreLateFeeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/late-fee/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CoreLateFeeController), "GetFiltered")]
         [InlineData("/api/core/late-fee/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CoreLateFeeController), "GetFiltered")]
+        [InlineData("/api/core/late-fee/first", "GET", typeof(CoreLateFeeController), "GetFirst")]
+        [InlineData("/api/core/late-fee/previous/1", "GET", typeof(CoreLateFeeController), "GetPrevious")]
+        [InlineData("/api/core/late-fee/next/1", "GET", typeof(CoreLateFeeController), "GetNext")]
+        [InlineData("/api/core/late-fee/last", "GET", typeof(CoreLateFeeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/late-fee/custom-fields", "GET", typeof(CoreLateFeeController), "GetCustomFields")]
         [InlineData("/api/core/late-fee/custom-fields", "GET", typeof(CoreLateFeeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/late-fee/count-filtered/{filterName}", "HEAD", typeof(CoreLateFeeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/late-fee/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CoreLateFeeController), "GetFiltered")]
         [InlineData("/api/core/late-fee/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CoreLateFeeController), "GetFiltered")]
+        [InlineData("/api/core/late-fee/first", "HEAD", typeof(CoreLateFeeController), "GetFirst")]
+        [InlineData("/api/core/late-fee/previous/1", "HEAD", typeof(CoreLateFeeController), "GetPrevious")]
+        [InlineData("/api/core/late-fee/next/1", "HEAD", typeof(CoreLateFeeController), "GetNext")]
+        [InlineData("/api/core/late-fee/last", "HEAD", typeof(CoreLateFeeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/late-fee/custom-fields", "HEAD", typeof(CoreLateFeeController), "GetCustomFields")]
         [InlineData("/api/core/late-fee/custom-fields", "HEAD", typeof(CoreLateFeeController), "GetCustomFields")]

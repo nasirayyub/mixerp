@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.sales_teams". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTeam" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTeam GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"SalesTeam\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_teams ORDER BY sales_team_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTeam>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.sales_teams" sorted by salesTeamId.
+        /// </summary>
+        /// <param name="salesTeamId">The column "sales_team_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTeam" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTeam GetPrevious(int salesTeamId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"SalesTeam\" by \"SalesTeamId\" with value {SalesTeamId} was denied to the user with Login ID {_LoginId}", salesTeamId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_teams WHERE sales_team_id < @0 ORDER BY sales_team_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTeam>(this._Catalog, sql, salesTeamId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.sales_teams" sorted by salesTeamId.
+        /// </summary>
+        /// <param name="salesTeamId">The column "sales_team_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTeam" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTeam GetNext(int salesTeamId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"SalesTeam\" by \"SalesTeamId\" with value {SalesTeamId} was denied to the user with Login ID {_LoginId}", salesTeamId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_teams WHERE sales_team_id > @0 ORDER BY sales_team_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTeam>(this._Catalog, sql, salesTeamId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.sales_teams". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTeam" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTeam GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"SalesTeam\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_teams ORDER BY sales_team_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTeam>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.sales_teams" with a where filter on the column "sales_team_id" to return a multiple instances of the "SalesTeam" class. 
         /// </summary>
         /// <param name="salesTeamIds">Array of column "sales_team_id" parameter used on where filter.</param>

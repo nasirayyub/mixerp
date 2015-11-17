@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.WeekDay Get(int weekDayId);
 
         /// <summary>
+        /// Gets the first record of WeekDay.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of WeekDay.</returns>
+        MixERP.Net.Entities.Core.WeekDay GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of WeekDay sorted by weekDayId. 
+        /// </summary>
+        /// <param name="weekDayId">The column "week_day_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of WeekDay.</returns>
+        MixERP.Net.Entities.Core.WeekDay GetPrevious(int weekDayId);
+
+        /// <summary>
+        /// Gets the next record of WeekDay sorted by weekDayId. 
+        /// </summary>
+        /// <param name="weekDayId">The column "week_day_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of WeekDay.</returns>
+        MixERP.Net.Entities.Core.WeekDay GetNext(int weekDayId);
+
+        /// <summary>
+        /// Gets the last record of WeekDay.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of WeekDay.</returns>
+        MixERP.Net.Entities.Core.WeekDay GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the WeekDay against weekDayIds. 
         /// </summary>
         /// <param name="weekDayIds">Array of column "week_day_id" parameter used on where filter.</param>

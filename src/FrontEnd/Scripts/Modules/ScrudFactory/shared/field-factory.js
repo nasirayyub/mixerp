@@ -55,3 +55,39 @@
             return $("<input type='text' />");
     };
 };
+
+
+function editScrudFormElement(targetEl, value) {
+    if (targetEl.length) {
+        if (targetEl.hasClass("date")) {
+            value = value.toString().toFormattedDate();
+        };
+
+        if (targetEl.attr("data-type") === "time") {
+            value = getTime(value);
+        };
+
+        targetEl.val(value);
+
+        if (targetEl.attr("data-type") === "image") {
+            initializeUploader();
+        };
+
+        if (targetEl.is("select")) {
+            var type = targetEl.attr("data-type");
+
+            if (type === "bool") {
+                value = value ? "yes" : "no";
+            };
+
+            targetEl.dropdown("set selected", value.toString());
+            targetEl.trigger("blur");
+            targetEl.trigger("change");
+            return;
+        };
+
+        targetEl.trigger("blur");
+        targetEl.trigger("change");
+        targetEl.trigger("keyup");
+    };
+};

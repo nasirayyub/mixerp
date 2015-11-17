@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.PaymentTerm Get(int paymentTermId);
 
         /// <summary>
+        /// Gets the first record of PaymentTerm.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of PaymentTerm.</returns>
+        MixERP.Net.Entities.Core.PaymentTerm GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of PaymentTerm sorted by paymentTermId. 
+        /// </summary>
+        /// <param name="paymentTermId">The column "payment_term_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of PaymentTerm.</returns>
+        MixERP.Net.Entities.Core.PaymentTerm GetPrevious(int paymentTermId);
+
+        /// <summary>
+        /// Gets the next record of PaymentTerm sorted by paymentTermId. 
+        /// </summary>
+        /// <param name="paymentTermId">The column "payment_term_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of PaymentTerm.</returns>
+        MixERP.Net.Entities.Core.PaymentTerm GetNext(int paymentTermId);
+
+        /// <summary>
+        /// Gets the last record of PaymentTerm.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of PaymentTerm.</returns>
+        MixERP.Net.Entities.Core.PaymentTerm GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the PaymentTerm against paymentTermIds. 
         /// </summary>
         /// <param name="paymentTermIds">Array of column "payment_term_id" parameter used on where filter.</param>

@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.HRM.Fakes
             return new MixERP.Net.Entities.HRM.EmploymentStatusCode();
         }
 
-        public IEnumerable<MixERP.Net.Entities.HRM.EmploymentStatusCode> Get([FromUri] int[] employmentStatusCodeIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.EmploymentStatusCode> Get(int[] employmentStatusCodeIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.HRM.EmploymentStatusCode(), 1);
+        }
+
+        public MixERP.Net.Entities.HRM.EmploymentStatusCode GetFirst()
+        {
+            return new MixERP.Net.Entities.HRM.EmploymentStatusCode();
+        }
+
+        public MixERP.Net.Entities.HRM.EmploymentStatusCode GetPrevious(int employmentStatusCodeId)
+        {
+            return new MixERP.Net.Entities.HRM.EmploymentStatusCode();
+        }
+
+        public MixERP.Net.Entities.HRM.EmploymentStatusCode GetNext(int employmentStatusCodeId)
+        {
+            return new MixERP.Net.Entities.HRM.EmploymentStatusCode();
+        }
+
+        public MixERP.Net.Entities.HRM.EmploymentStatusCode GetLast()
+        {
+            return new MixERP.Net.Entities.HRM.EmploymentStatusCode();
         }
 
         public IEnumerable<MixERP.Net.Entities.HRM.EmploymentStatusCode> GetPaginatedResult()

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/office-hour/count-filtered/{filterName}", "GET", typeof(OfficeHourController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/office-hour/get-filtered/{pageNumber}/{filterName}", "GET", typeof(OfficeHourController), "GetFiltered")]
         [InlineData("/api/hrm/office-hour/get-filtered/{pageNumber}/{filterName}", "GET", typeof(OfficeHourController), "GetFiltered")]
+        [InlineData("/api/hrm/office-hour/first", "GET", typeof(OfficeHourController), "GetFirst")]
+        [InlineData("/api/hrm/office-hour/previous/1", "GET", typeof(OfficeHourController), "GetPrevious")]
+        [InlineData("/api/hrm/office-hour/next/1", "GET", typeof(OfficeHourController), "GetNext")]
+        [InlineData("/api/hrm/office-hour/last", "GET", typeof(OfficeHourController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/office-hour/custom-fields", "GET", typeof(OfficeHourController), "GetCustomFields")]
         [InlineData("/api/hrm/office-hour/custom-fields", "GET", typeof(OfficeHourController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/office-hour/count-filtered/{filterName}", "HEAD", typeof(OfficeHourController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/office-hour/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(OfficeHourController), "GetFiltered")]
         [InlineData("/api/hrm/office-hour/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(OfficeHourController), "GetFiltered")]
+        [InlineData("/api/hrm/office-hour/first", "HEAD", typeof(OfficeHourController), "GetFirst")]
+        [InlineData("/api/hrm/office-hour/previous/1", "HEAD", typeof(OfficeHourController), "GetPrevious")]
+        [InlineData("/api/hrm/office-hour/next/1", "HEAD", typeof(OfficeHourController), "GetNext")]
+        [InlineData("/api/hrm/office-hour/last", "HEAD", typeof(OfficeHourController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/office-hour/custom-fields", "HEAD", typeof(OfficeHourController), "GetCustomFields")]
         [InlineData("/api/hrm/office-hour/custom-fields", "HEAD", typeof(OfficeHourController), "GetCustomFields")]

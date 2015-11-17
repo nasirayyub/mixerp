@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Policy.Data
         MixERP.Net.Entities.Policy.HttpAction Get(string httpActionCode);
 
         /// <summary>
+        /// Gets the first record of HttpAction.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of HttpAction.</returns>
+        MixERP.Net.Entities.Policy.HttpAction GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of HttpAction sorted by httpActionCode. 
+        /// </summary>
+        /// <param name="httpActionCode">The column "http_action_code" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of HttpAction.</returns>
+        MixERP.Net.Entities.Policy.HttpAction GetPrevious(string httpActionCode);
+
+        /// <summary>
+        /// Gets the next record of HttpAction sorted by httpActionCode. 
+        /// </summary>
+        /// <param name="httpActionCode">The column "http_action_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of HttpAction.</returns>
+        MixERP.Net.Entities.Policy.HttpAction GetNext(string httpActionCode);
+
+        /// <summary>
+        /// Gets the last record of HttpAction.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of HttpAction.</returns>
+        MixERP.Net.Entities.Policy.HttpAction GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the HttpAction against httpActionCodes. 
         /// </summary>
         /// <param name="httpActionCodes">Array of column "http_action_code" parameter used on where filter.</param>

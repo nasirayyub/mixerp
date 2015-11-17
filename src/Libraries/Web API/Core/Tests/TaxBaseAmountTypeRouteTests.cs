@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/tax-base-amount-type/count-filtered/{filterName}", "GET", typeof(TaxBaseAmountTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/tax-base-amount-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(TaxBaseAmountTypeController), "GetFiltered")]
         [InlineData("/api/core/tax-base-amount-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(TaxBaseAmountTypeController), "GetFiltered")]
+        [InlineData("/api/core/tax-base-amount-type/first", "GET", typeof(TaxBaseAmountTypeController), "GetFirst")]
+        [InlineData("/api/core/tax-base-amount-type/previous/1", "GET", typeof(TaxBaseAmountTypeController), "GetPrevious")]
+        [InlineData("/api/core/tax-base-amount-type/next/1", "GET", typeof(TaxBaseAmountTypeController), "GetNext")]
+        [InlineData("/api/core/tax-base-amount-type/last", "GET", typeof(TaxBaseAmountTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/tax-base-amount-type/custom-fields", "GET", typeof(TaxBaseAmountTypeController), "GetCustomFields")]
         [InlineData("/api/core/tax-base-amount-type/custom-fields", "GET", typeof(TaxBaseAmountTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/tax-base-amount-type/count-filtered/{filterName}", "HEAD", typeof(TaxBaseAmountTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/tax-base-amount-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(TaxBaseAmountTypeController), "GetFiltered")]
         [InlineData("/api/core/tax-base-amount-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(TaxBaseAmountTypeController), "GetFiltered")]
+        [InlineData("/api/core/tax-base-amount-type/first", "HEAD", typeof(TaxBaseAmountTypeController), "GetFirst")]
+        [InlineData("/api/core/tax-base-amount-type/previous/1", "HEAD", typeof(TaxBaseAmountTypeController), "GetPrevious")]
+        [InlineData("/api/core/tax-base-amount-type/next/1", "HEAD", typeof(TaxBaseAmountTypeController), "GetNext")]
+        [InlineData("/api/core/tax-base-amount-type/last", "HEAD", typeof(TaxBaseAmountTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/tax-base-amount-type/custom-fields", "HEAD", typeof(TaxBaseAmountTypeController), "GetCustomFields")]
         [InlineData("/api/core/tax-base-amount-type/custom-fields", "HEAD", typeof(TaxBaseAmountTypeController), "GetCustomFields")]

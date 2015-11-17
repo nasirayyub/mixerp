@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/state-sales-tax/count-filtered/{filterName}", "GET", typeof(StateSalesTaxController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/state-sales-tax/get-filtered/{pageNumber}/{filterName}", "GET", typeof(StateSalesTaxController), "GetFiltered")]
         [InlineData("/api/core/state-sales-tax/get-filtered/{pageNumber}/{filterName}", "GET", typeof(StateSalesTaxController), "GetFiltered")]
+        [InlineData("/api/core/state-sales-tax/first", "GET", typeof(StateSalesTaxController), "GetFirst")]
+        [InlineData("/api/core/state-sales-tax/previous/1", "GET", typeof(StateSalesTaxController), "GetPrevious")]
+        [InlineData("/api/core/state-sales-tax/next/1", "GET", typeof(StateSalesTaxController), "GetNext")]
+        [InlineData("/api/core/state-sales-tax/last", "GET", typeof(StateSalesTaxController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/state-sales-tax/custom-fields", "GET", typeof(StateSalesTaxController), "GetCustomFields")]
         [InlineData("/api/core/state-sales-tax/custom-fields", "GET", typeof(StateSalesTaxController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/state-sales-tax/count-filtered/{filterName}", "HEAD", typeof(StateSalesTaxController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/state-sales-tax/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(StateSalesTaxController), "GetFiltered")]
         [InlineData("/api/core/state-sales-tax/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(StateSalesTaxController), "GetFiltered")]
+        [InlineData("/api/core/state-sales-tax/first", "HEAD", typeof(StateSalesTaxController), "GetFirst")]
+        [InlineData("/api/core/state-sales-tax/previous/1", "HEAD", typeof(StateSalesTaxController), "GetPrevious")]
+        [InlineData("/api/core/state-sales-tax/next/1", "HEAD", typeof(StateSalesTaxController), "GetNext")]
+        [InlineData("/api/core/state-sales-tax/last", "HEAD", typeof(StateSalesTaxController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/state-sales-tax/custom-fields", "HEAD", typeof(StateSalesTaxController), "GetCustomFields")]
         [InlineData("/api/core/state-sales-tax/custom-fields", "HEAD", typeof(StateSalesTaxController), "GetCustomFields")]

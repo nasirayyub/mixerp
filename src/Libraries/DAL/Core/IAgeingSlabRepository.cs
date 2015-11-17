@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.AgeingSlab Get(int ageingSlabId);
 
         /// <summary>
+        /// Gets the first record of AgeingSlab.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of AgeingSlab.</returns>
+        MixERP.Net.Entities.Core.AgeingSlab GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of AgeingSlab sorted by ageingSlabId. 
+        /// </summary>
+        /// <param name="ageingSlabId">The column "ageing_slab_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of AgeingSlab.</returns>
+        MixERP.Net.Entities.Core.AgeingSlab GetPrevious(int ageingSlabId);
+
+        /// <summary>
+        /// Gets the next record of AgeingSlab sorted by ageingSlabId. 
+        /// </summary>
+        /// <param name="ageingSlabId">The column "ageing_slab_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of AgeingSlab.</returns>
+        MixERP.Net.Entities.Core.AgeingSlab GetNext(int ageingSlabId);
+
+        /// <summary>
+        /// Gets the last record of AgeingSlab.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of AgeingSlab.</returns>
+        MixERP.Net.Entities.Core.AgeingSlab GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the AgeingSlab against ageingSlabIds. 
         /// </summary>
         /// <param name="ageingSlabIds">Array of column "ageing_slab_id" parameter used on where filter.</param>

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.VerificationStatus Get(short verificationStatusId);
 
         /// <summary>
+        /// Gets the first record of VerificationStatus.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of VerificationStatus.</returns>
+        MixERP.Net.Entities.Core.VerificationStatus GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of VerificationStatus sorted by verificationStatusId. 
+        /// </summary>
+        /// <param name="verificationStatusId">The column "verification_status_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of VerificationStatus.</returns>
+        MixERP.Net.Entities.Core.VerificationStatus GetPrevious(short verificationStatusId);
+
+        /// <summary>
+        /// Gets the next record of VerificationStatus sorted by verificationStatusId. 
+        /// </summary>
+        /// <param name="verificationStatusId">The column "verification_status_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of VerificationStatus.</returns>
+        MixERP.Net.Entities.Core.VerificationStatus GetNext(short verificationStatusId);
+
+        /// <summary>
+        /// Gets the last record of VerificationStatus.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of VerificationStatus.</returns>
+        MixERP.Net.Entities.Core.VerificationStatus GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the VerificationStatus against verificationStatusIds. 
         /// </summary>
         /// <param name="verificationStatusIds">Array of column "verification_status_id" parameter used on where filter.</param>

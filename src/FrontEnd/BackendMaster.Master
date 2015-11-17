@@ -145,6 +145,7 @@
                     <asp:ContentPlaceHolder ID="BodyContentPlaceholder" runat="server">
                     </asp:ContentPlaceHolder>
                     <script src="/Scripts/mixerp/utitlities/localizable.js"></script>
+                    <script src="/Scripts/mixerp/utitlities/validator.js"></script>
                 </div>
             </div>
             <div class="sixteen wide theme column" id="Footer">

@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Office.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Office.CashRepository cashRepository = Fixture().GetFirst();
+            Assert.NotNull(cashRepository);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Office.CashRepository cashRepository = Fixture().GetPrevious(0);
+            Assert.NotNull(cashRepository);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Office.CashRepository cashRepository = Fixture().GetNext(0);
+            Assert.NotNull(cashRepository);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Office.CashRepository cashRepository = Fixture().GetLast();
+            Assert.NotNull(cashRepository);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Office.CashRepository> cashRepositories = Fixture().Get(new int[] { });

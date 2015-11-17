@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.EmployeeQualification Get(long employeeQualificationId);
 
         /// <summary>
+        /// Gets the first record of EmployeeQualification.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeQualification.</returns>
+        MixERP.Net.Entities.HRM.EmployeeQualification GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of EmployeeQualification sorted by employeeQualificationId. 
+        /// </summary>
+        /// <param name="employeeQualificationId">The column "employee_qualification_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeQualification.</returns>
+        MixERP.Net.Entities.HRM.EmployeeQualification GetPrevious(long employeeQualificationId);
+
+        /// <summary>
+        /// Gets the next record of EmployeeQualification sorted by employeeQualificationId. 
+        /// </summary>
+        /// <param name="employeeQualificationId">The column "employee_qualification_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeQualification.</returns>
+        MixERP.Net.Entities.HRM.EmployeeQualification GetNext(long employeeQualificationId);
+
+        /// <summary>
+        /// Gets the last record of EmployeeQualification.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeQualification.</returns>
+        MixERP.Net.Entities.HRM.EmployeeQualification GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the EmployeeQualification against employeeQualificationIds. 
         /// </summary>
         /// <param name="employeeQualificationIds">Array of column "employee_qualification_id" parameter used on where filter.</param>

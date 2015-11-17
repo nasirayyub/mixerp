@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.currencies". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Currency" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Currency GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"Currency\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.currencies ORDER BY currency_code LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Currency>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.currencies" sorted by currencyCode.
+        /// </summary>
+        /// <param name="currencyCode">The column "currency_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Currency" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Currency GetPrevious(string currencyCode)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"Currency\" by \"CurrencyCode\" with value {CurrencyCode} was denied to the user with Login ID {_LoginId}", currencyCode, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.currencies WHERE currency_code < @0 ORDER BY currency_code DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Currency>(this._Catalog, sql, currencyCode).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.currencies" sorted by currencyCode.
+        /// </summary>
+        /// <param name="currencyCode">The column "currency_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Currency" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Currency GetNext(string currencyCode)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"Currency\" by \"CurrencyCode\" with value {CurrencyCode} was denied to the user with Login ID {_LoginId}", currencyCode, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.currencies WHERE currency_code > @0 ORDER BY currency_code LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Currency>(this._Catalog, sql, currencyCode).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.currencies". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Currency" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Currency GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"Currency\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.currencies ORDER BY currency_code DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Currency>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.currencies" with a where filter on the column "currency_code" to return a multiple instances of the "Currency" class. 
         /// </summary>
         /// <param name="currencyCodes">Array of column "currency_code" parameter used on where filter.</param>

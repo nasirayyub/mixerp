@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Config.Data
         MixERP.Net.Entities.Config.Switch Get(string key);
 
         /// <summary>
+        /// Gets the first record of Switch.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Switch.</returns>
+        MixERP.Net.Entities.Config.Switch GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Switch sorted by key. 
+        /// </summary>
+        /// <param name="key">The column "key" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Switch.</returns>
+        MixERP.Net.Entities.Config.Switch GetPrevious(string key);
+
+        /// <summary>
+        /// Gets the next record of Switch sorted by key. 
+        /// </summary>
+        /// <param name="key">The column "key" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Switch.</returns>
+        MixERP.Net.Entities.Config.Switch GetNext(string key);
+
+        /// <summary>
+        /// Gets the last record of Switch.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Switch.</returns>
+        MixERP.Net.Entities.Config.Switch GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Switch against keys. 
         /// </summary>
         /// <param name="keys">Array of column "key" parameter used on where filter.</param>

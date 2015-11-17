@@ -50,7 +50,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
         {
             tab: "",
             fields: [
-                ["CompanyName", "PoBox", "", ""]
+                ["ShipperId", "CompanyName", "", ""]
             ]
         }
     ];

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/cash-flow-setup/count-filtered/{filterName}", "GET", typeof(CashFlowSetupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/cash-flow-setup/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CashFlowSetupController), "GetFiltered")]
         [InlineData("/api/core/cash-flow-setup/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CashFlowSetupController), "GetFiltered")]
+        [InlineData("/api/core/cash-flow-setup/first", "GET", typeof(CashFlowSetupController), "GetFirst")]
+        [InlineData("/api/core/cash-flow-setup/previous/1", "GET", typeof(CashFlowSetupController), "GetPrevious")]
+        [InlineData("/api/core/cash-flow-setup/next/1", "GET", typeof(CashFlowSetupController), "GetNext")]
+        [InlineData("/api/core/cash-flow-setup/last", "GET", typeof(CashFlowSetupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/cash-flow-setup/custom-fields", "GET", typeof(CashFlowSetupController), "GetCustomFields")]
         [InlineData("/api/core/cash-flow-setup/custom-fields", "GET", typeof(CashFlowSetupController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/cash-flow-setup/count-filtered/{filterName}", "HEAD", typeof(CashFlowSetupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/cash-flow-setup/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CashFlowSetupController), "GetFiltered")]
         [InlineData("/api/core/cash-flow-setup/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CashFlowSetupController), "GetFiltered")]
+        [InlineData("/api/core/cash-flow-setup/first", "HEAD", typeof(CashFlowSetupController), "GetFirst")]
+        [InlineData("/api/core/cash-flow-setup/previous/1", "HEAD", typeof(CashFlowSetupController), "GetPrevious")]
+        [InlineData("/api/core/cash-flow-setup/next/1", "HEAD", typeof(CashFlowSetupController), "GetNext")]
+        [InlineData("/api/core/cash-flow-setup/last", "HEAD", typeof(CashFlowSetupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/cash-flow-setup/custom-fields", "HEAD", typeof(CashFlowSetupController), "GetCustomFields")]
         [InlineData("/api/core/cash-flow-setup/custom-fields", "HEAD", typeof(CashFlowSetupController), "GetCustomFields")]

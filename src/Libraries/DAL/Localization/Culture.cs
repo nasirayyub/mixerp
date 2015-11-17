@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Localization.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "localization.cultures". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Culture" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Localization.Culture GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"Culture\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM localization.cultures ORDER BY culture_code LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Localization.Culture>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "localization.cultures" sorted by cultureCode.
+        /// </summary>
+        /// <param name="cultureCode">The column "culture_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Culture" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Localization.Culture GetPrevious(string cultureCode)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"Culture\" by \"CultureCode\" with value {CultureCode} was denied to the user with Login ID {_LoginId}", cultureCode, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM localization.cultures WHERE culture_code < @0 ORDER BY culture_code DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Localization.Culture>(this._Catalog, sql, cultureCode).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "localization.cultures" sorted by cultureCode.
+        /// </summary>
+        /// <param name="cultureCode">The column "culture_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Culture" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Localization.Culture GetNext(string cultureCode)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"Culture\" by \"CultureCode\" with value {CultureCode} was denied to the user with Login ID {_LoginId}", cultureCode, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM localization.cultures WHERE culture_code > @0 ORDER BY culture_code LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Localization.Culture>(this._Catalog, sql, cultureCode).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "localization.cultures". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Culture" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Localization.Culture GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"Culture\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM localization.cultures ORDER BY culture_code DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Localization.Culture>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "localization.cultures" with a where filter on the column "culture_code" to return a multiple instances of the "Culture" class. 
         /// </summary>
         /// <param name="cultureCodes">Array of column "culture_code" parameter used on where filter.</param>

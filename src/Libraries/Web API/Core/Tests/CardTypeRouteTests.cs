@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/card-type/count-filtered/{filterName}", "GET", typeof(CardTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/card-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CardTypeController), "GetFiltered")]
         [InlineData("/api/core/card-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CardTypeController), "GetFiltered")]
+        [InlineData("/api/core/card-type/first", "GET", typeof(CardTypeController), "GetFirst")]
+        [InlineData("/api/core/card-type/previous/1", "GET", typeof(CardTypeController), "GetPrevious")]
+        [InlineData("/api/core/card-type/next/1", "GET", typeof(CardTypeController), "GetNext")]
+        [InlineData("/api/core/card-type/last", "GET", typeof(CardTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/card-type/custom-fields", "GET", typeof(CardTypeController), "GetCustomFields")]
         [InlineData("/api/core/card-type/custom-fields", "GET", typeof(CardTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/card-type/count-filtered/{filterName}", "HEAD", typeof(CardTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/card-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CardTypeController), "GetFiltered")]
         [InlineData("/api/core/card-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CardTypeController), "GetFiltered")]
+        [InlineData("/api/core/card-type/first", "HEAD", typeof(CardTypeController), "GetFirst")]
+        [InlineData("/api/core/card-type/previous/1", "HEAD", typeof(CardTypeController), "GetPrevious")]
+        [InlineData("/api/core/card-type/next/1", "HEAD", typeof(CardTypeController), "GetNext")]
+        [InlineData("/api/core/card-type/last", "HEAD", typeof(CardTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/card-type/custom-fields", "HEAD", typeof(CardTypeController), "GetCustomFields")]
         [InlineData("/api/core/card-type/custom-fields", "HEAD", typeof(CardTypeController), "GetCustomFields")]

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.PaymentCard Get(int paymentCardId);
 
         /// <summary>
+        /// Gets the first record of PaymentCard.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of PaymentCard.</returns>
+        MixERP.Net.Entities.Core.PaymentCard GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of PaymentCard sorted by paymentCardId. 
+        /// </summary>
+        /// <param name="paymentCardId">The column "payment_card_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of PaymentCard.</returns>
+        MixERP.Net.Entities.Core.PaymentCard GetPrevious(int paymentCardId);
+
+        /// <summary>
+        /// Gets the next record of PaymentCard sorted by paymentCardId. 
+        /// </summary>
+        /// <param name="paymentCardId">The column "payment_card_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of PaymentCard.</returns>
+        MixERP.Net.Entities.Core.PaymentCard GetNext(int paymentCardId);
+
+        /// <summary>
+        /// Gets the last record of PaymentCard.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of PaymentCard.</returns>
+        MixERP.Net.Entities.Core.PaymentCard GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the PaymentCard against paymentCardIds. 
         /// </summary>
         /// <param name="paymentCardIds">Array of column "payment_card_id" parameter used on where filter.</param>

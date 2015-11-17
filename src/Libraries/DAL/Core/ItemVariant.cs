@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.item_variants". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "ItemVariant" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.ItemVariant GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"ItemVariant\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.item_variants ORDER BY item_variant_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.ItemVariant>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.item_variants" sorted by itemVariantId.
+        /// </summary>
+        /// <param name="itemVariantId">The column "item_variant_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "ItemVariant" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.ItemVariant GetPrevious(int itemVariantId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"ItemVariant\" by \"ItemVariantId\" with value {ItemVariantId} was denied to the user with Login ID {_LoginId}", itemVariantId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.item_variants WHERE item_variant_id < @0 ORDER BY item_variant_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.ItemVariant>(this._Catalog, sql, itemVariantId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.item_variants" sorted by itemVariantId.
+        /// </summary>
+        /// <param name="itemVariantId">The column "item_variant_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "ItemVariant" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.ItemVariant GetNext(int itemVariantId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"ItemVariant\" by \"ItemVariantId\" with value {ItemVariantId} was denied to the user with Login ID {_LoginId}", itemVariantId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.item_variants WHERE item_variant_id > @0 ORDER BY item_variant_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.ItemVariant>(this._Catalog, sql, itemVariantId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.item_variants". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "ItemVariant" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.ItemVariant GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"ItemVariant\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.item_variants ORDER BY item_variant_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.ItemVariant>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.item_variants" with a where filter on the column "item_variant_id" to return a multiple instances of the "ItemVariant" class. 
         /// </summary>
         /// <param name="itemVariantIds">Array of column "item_variant_id" parameter used on where filter.</param>

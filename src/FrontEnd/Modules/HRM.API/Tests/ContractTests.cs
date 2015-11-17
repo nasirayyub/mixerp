@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.HRM.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.HRM.Contract contract = Fixture().GetFirst();
+            Assert.NotNull(contract);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.HRM.Contract contract = Fixture().GetPrevious(0);
+            Assert.NotNull(contract);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.HRM.Contract contract = Fixture().GetNext(0);
+            Assert.NotNull(contract);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.HRM.Contract contract = Fixture().GetLast();
+            Assert.NotNull(contract);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.HRM.Contract> contracts = Fixture().Get(new long[] { });

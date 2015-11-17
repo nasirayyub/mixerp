@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.AccountMaster Get(short accountMasterId);
 
         /// <summary>
+        /// Gets the first record of AccountMaster.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of AccountMaster.</returns>
+        MixERP.Net.Entities.Core.AccountMaster GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of AccountMaster sorted by accountMasterId. 
+        /// </summary>
+        /// <param name="accountMasterId">The column "account_master_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of AccountMaster.</returns>
+        MixERP.Net.Entities.Core.AccountMaster GetPrevious(short accountMasterId);
+
+        /// <summary>
+        /// Gets the next record of AccountMaster sorted by accountMasterId. 
+        /// </summary>
+        /// <param name="accountMasterId">The column "account_master_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of AccountMaster.</returns>
+        MixERP.Net.Entities.Core.AccountMaster GetNext(short accountMasterId);
+
+        /// <summary>
+        /// Gets the last record of AccountMaster.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of AccountMaster.</returns>
+        MixERP.Net.Entities.Core.AccountMaster GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the AccountMaster against accountMasterIds. 
         /// </summary>
         /// <param name="accountMasterIds">Array of column "account_master_id" parameter used on where filter.</param>

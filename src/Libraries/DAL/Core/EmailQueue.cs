@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.email_queue". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "EmailQueue" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.EmailQueue GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"EmailQueue\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.email_queue ORDER BY queue_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.EmailQueue>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.email_queue" sorted by queueId.
+        /// </summary>
+        /// <param name="queueId">The column "queue_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "EmailQueue" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.EmailQueue GetPrevious(long queueId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"EmailQueue\" by \"QueueId\" with value {QueueId} was denied to the user with Login ID {_LoginId}", queueId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.email_queue WHERE queue_id < @0 ORDER BY queue_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.EmailQueue>(this._Catalog, sql, queueId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.email_queue" sorted by queueId.
+        /// </summary>
+        /// <param name="queueId">The column "queue_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "EmailQueue" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.EmailQueue GetNext(long queueId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"EmailQueue\" by \"QueueId\" with value {QueueId} was denied to the user with Login ID {_LoginId}", queueId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.email_queue WHERE queue_id > @0 ORDER BY queue_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.EmailQueue>(this._Catalog, sql, queueId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.email_queue". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "EmailQueue" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.EmailQueue GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"EmailQueue\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.email_queue ORDER BY queue_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.EmailQueue>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.email_queue" with a where filter on the column "queue_id" to return a multiple instances of the "EmailQueue" class. 
         /// </summary>
         /// <param name="queueIds">Array of column "queue_id" parameter used on where filter.</param>

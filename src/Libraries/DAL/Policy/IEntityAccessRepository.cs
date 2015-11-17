@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Policy.Data
         MixERP.Net.Entities.Policy.EntityAccess Get(int entityAccessId);
 
         /// <summary>
+        /// Gets the first record of EntityAccess.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EntityAccess.</returns>
+        MixERP.Net.Entities.Policy.EntityAccess GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of EntityAccess sorted by entityAccessId. 
+        /// </summary>
+        /// <param name="entityAccessId">The column "entity_access_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EntityAccess.</returns>
+        MixERP.Net.Entities.Policy.EntityAccess GetPrevious(int entityAccessId);
+
+        /// <summary>
+        /// Gets the next record of EntityAccess sorted by entityAccessId. 
+        /// </summary>
+        /// <param name="entityAccessId">The column "entity_access_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EntityAccess.</returns>
+        MixERP.Net.Entities.Policy.EntityAccess GetNext(int entityAccessId);
+
+        /// <summary>
+        /// Gets the last record of EntityAccess.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EntityAccess.</returns>
+        MixERP.Net.Entities.Policy.EntityAccess GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the EntityAccess against entityAccessIds. 
         /// </summary>
         /// <param name="entityAccessIds">Array of column "entity_access_id" parameter used on where filter.</param>

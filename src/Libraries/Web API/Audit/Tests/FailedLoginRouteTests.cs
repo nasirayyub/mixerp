@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Audit.Tests
         [InlineData("/api/audit/failed-login/count-filtered/{filterName}", "GET", typeof(FailedLoginController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/audit/failed-login/get-filtered/{pageNumber}/{filterName}", "GET", typeof(FailedLoginController), "GetFiltered")]
         [InlineData("/api/audit/failed-login/get-filtered/{pageNumber}/{filterName}", "GET", typeof(FailedLoginController), "GetFiltered")]
+        [InlineData("/api/audit/failed-login/first", "GET", typeof(FailedLoginController), "GetFirst")]
+        [InlineData("/api/audit/failed-login/previous/1", "GET", typeof(FailedLoginController), "GetPrevious")]
+        [InlineData("/api/audit/failed-login/next/1", "GET", typeof(FailedLoginController), "GetNext")]
+        [InlineData("/api/audit/failed-login/last", "GET", typeof(FailedLoginController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/audit/failed-login/custom-fields", "GET", typeof(FailedLoginController), "GetCustomFields")]
         [InlineData("/api/audit/failed-login/custom-fields", "GET", typeof(FailedLoginController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Audit.Tests
         [InlineData("/api/audit/failed-login/count-filtered/{filterName}", "HEAD", typeof(FailedLoginController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/audit/failed-login/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(FailedLoginController), "GetFiltered")]
         [InlineData("/api/audit/failed-login/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(FailedLoginController), "GetFiltered")]
+        [InlineData("/api/audit/failed-login/first", "HEAD", typeof(FailedLoginController), "GetFirst")]
+        [InlineData("/api/audit/failed-login/previous/1", "HEAD", typeof(FailedLoginController), "GetPrevious")]
+        [InlineData("/api/audit/failed-login/next/1", "HEAD", typeof(FailedLoginController), "GetNext")]
+        [InlineData("/api/audit/failed-login/last", "HEAD", typeof(FailedLoginController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/audit/failed-login/custom-fields", "HEAD", typeof(FailedLoginController), "GetCustomFields")]
         [InlineData("/api/audit/failed-login/custom-fields", "HEAD", typeof(FailedLoginController), "GetCustomFields")]

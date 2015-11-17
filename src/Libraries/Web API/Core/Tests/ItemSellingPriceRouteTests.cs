@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/item-selling-price/count-filtered/{filterName}", "GET", typeof(ItemSellingPriceController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/item-selling-price/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ItemSellingPriceController), "GetFiltered")]
         [InlineData("/api/core/item-selling-price/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ItemSellingPriceController), "GetFiltered")]
+        [InlineData("/api/core/item-selling-price/first", "GET", typeof(ItemSellingPriceController), "GetFirst")]
+        [InlineData("/api/core/item-selling-price/previous/1", "GET", typeof(ItemSellingPriceController), "GetPrevious")]
+        [InlineData("/api/core/item-selling-price/next/1", "GET", typeof(ItemSellingPriceController), "GetNext")]
+        [InlineData("/api/core/item-selling-price/last", "GET", typeof(ItemSellingPriceController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/item-selling-price/custom-fields", "GET", typeof(ItemSellingPriceController), "GetCustomFields")]
         [InlineData("/api/core/item-selling-price/custom-fields", "GET", typeof(ItemSellingPriceController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/item-selling-price/count-filtered/{filterName}", "HEAD", typeof(ItemSellingPriceController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/item-selling-price/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ItemSellingPriceController), "GetFiltered")]
         [InlineData("/api/core/item-selling-price/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ItemSellingPriceController), "GetFiltered")]
+        [InlineData("/api/core/item-selling-price/first", "HEAD", typeof(ItemSellingPriceController), "GetFirst")]
+        [InlineData("/api/core/item-selling-price/previous/1", "HEAD", typeof(ItemSellingPriceController), "GetPrevious")]
+        [InlineData("/api/core/item-selling-price/next/1", "HEAD", typeof(ItemSellingPriceController), "GetNext")]
+        [InlineData("/api/core/item-selling-price/last", "HEAD", typeof(ItemSellingPriceController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/item-selling-price/custom-fields", "HEAD", typeof(ItemSellingPriceController), "GetCustomFields")]
         [InlineData("/api/core/item-selling-price/custom-fields", "HEAD", typeof(ItemSellingPriceController), "GetCustomFields")]

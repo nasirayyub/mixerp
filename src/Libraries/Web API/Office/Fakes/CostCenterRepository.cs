@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Office.Fakes
             return new MixERP.Net.Entities.Office.CostCenter();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Office.CostCenter> Get([FromUri] int[] costCenterIds)
+        public IEnumerable<MixERP.Net.Entities.Office.CostCenter> Get(int[] costCenterIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Office.CostCenter(), 1);
+        }
+
+        public MixERP.Net.Entities.Office.CostCenter GetFirst()
+        {
+            return new MixERP.Net.Entities.Office.CostCenter();
+        }
+
+        public MixERP.Net.Entities.Office.CostCenter GetPrevious(int costCenterId)
+        {
+            return new MixERP.Net.Entities.Office.CostCenter();
+        }
+
+        public MixERP.Net.Entities.Office.CostCenter GetNext(int costCenterId)
+        {
+            return new MixERP.Net.Entities.Office.CostCenter();
+        }
+
+        public MixERP.Net.Entities.Office.CostCenter GetLast()
+        {
+            return new MixERP.Net.Entities.Office.CostCenter();
         }
 
         public IEnumerable<MixERP.Net.Entities.Office.CostCenter> GetPaginatedResult()

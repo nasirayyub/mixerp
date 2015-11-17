@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.EmployeeIdentificationDetail Get(long employeeIdentificationDetailId);
 
         /// <summary>
+        /// Gets the first record of EmployeeIdentificationDetail.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeIdentificationDetail.</returns>
+        MixERP.Net.Entities.HRM.EmployeeIdentificationDetail GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of EmployeeIdentificationDetail sorted by employeeIdentificationDetailId. 
+        /// </summary>
+        /// <param name="employeeIdentificationDetailId">The column "employee_identification_detail_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeIdentificationDetail.</returns>
+        MixERP.Net.Entities.HRM.EmployeeIdentificationDetail GetPrevious(long employeeIdentificationDetailId);
+
+        /// <summary>
+        /// Gets the next record of EmployeeIdentificationDetail sorted by employeeIdentificationDetailId. 
+        /// </summary>
+        /// <param name="employeeIdentificationDetailId">The column "employee_identification_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeIdentificationDetail.</returns>
+        MixERP.Net.Entities.HRM.EmployeeIdentificationDetail GetNext(long employeeIdentificationDetailId);
+
+        /// <summary>
+        /// Gets the last record of EmployeeIdentificationDetail.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of EmployeeIdentificationDetail.</returns>
+        MixERP.Net.Entities.HRM.EmployeeIdentificationDetail GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the EmployeeIdentificationDetail against employeeIdentificationDetailIds. 
         /// </summary>
         /// <param name="employeeIdentificationDetailIds">Array of column "employee_identification_detail_id" parameter used on where filter.</param>

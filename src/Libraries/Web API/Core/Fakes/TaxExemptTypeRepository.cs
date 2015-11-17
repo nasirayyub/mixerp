@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.TaxExemptType(), 1);
         }
 
+        public MixERP.Net.Entities.Core.TaxExemptType GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.TaxExemptType();
+        }
+
+        public MixERP.Net.Entities.Core.TaxExemptType GetPrevious(int taxExemptTypeId)
+        {
+            return new MixERP.Net.Entities.Core.TaxExemptType();
+        }
+
+        public MixERP.Net.Entities.Core.TaxExemptType GetNext(int taxExemptTypeId)
+        {
+            return new MixERP.Net.Entities.Core.TaxExemptType();
+        }
+
+        public MixERP.Net.Entities.Core.TaxExemptType GetLast()
+        {
+            return new MixERP.Net.Entities.Core.TaxExemptType();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.TaxExemptType> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.TaxExemptType(), 1);

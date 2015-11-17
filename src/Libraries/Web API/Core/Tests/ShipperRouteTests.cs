@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/shipper/count-filtered/{filterName}", "GET", typeof(ShipperController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/shipper/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ShipperController), "GetFiltered")]
         [InlineData("/api/core/shipper/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ShipperController), "GetFiltered")]
+        [InlineData("/api/core/shipper/first", "GET", typeof(ShipperController), "GetFirst")]
+        [InlineData("/api/core/shipper/previous/1", "GET", typeof(ShipperController), "GetPrevious")]
+        [InlineData("/api/core/shipper/next/1", "GET", typeof(ShipperController), "GetNext")]
+        [InlineData("/api/core/shipper/last", "GET", typeof(ShipperController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/shipper/custom-fields", "GET", typeof(ShipperController), "GetCustomFields")]
         [InlineData("/api/core/shipper/custom-fields", "GET", typeof(ShipperController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/shipper/count-filtered/{filterName}", "HEAD", typeof(ShipperController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/shipper/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ShipperController), "GetFiltered")]
         [InlineData("/api/core/shipper/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ShipperController), "GetFiltered")]
+        [InlineData("/api/core/shipper/first", "HEAD", typeof(ShipperController), "GetFirst")]
+        [InlineData("/api/core/shipper/previous/1", "HEAD", typeof(ShipperController), "GetPrevious")]
+        [InlineData("/api/core/shipper/next/1", "HEAD", typeof(ShipperController), "GetNext")]
+        [InlineData("/api/core/shipper/last", "HEAD", typeof(ShipperController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/shipper/custom-fields", "HEAD", typeof(ShipperController), "GetCustomFields")]
         [InlineData("/api/core/shipper/custom-fields", "HEAD", typeof(ShipperController), "GetCustomFields")]

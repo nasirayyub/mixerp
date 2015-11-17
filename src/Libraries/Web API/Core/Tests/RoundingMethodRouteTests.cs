@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/rounding-method/count-filtered/{filterName}", "GET", typeof(RoundingMethodController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/rounding-method/get-filtered/{pageNumber}/{filterName}", "GET", typeof(RoundingMethodController), "GetFiltered")]
         [InlineData("/api/core/rounding-method/get-filtered/{pageNumber}/{filterName}", "GET", typeof(RoundingMethodController), "GetFiltered")]
+        [InlineData("/api/core/rounding-method/first", "GET", typeof(RoundingMethodController), "GetFirst")]
+        [InlineData("/api/core/rounding-method/previous/1", "GET", typeof(RoundingMethodController), "GetPrevious")]
+        [InlineData("/api/core/rounding-method/next/1", "GET", typeof(RoundingMethodController), "GetNext")]
+        [InlineData("/api/core/rounding-method/last", "GET", typeof(RoundingMethodController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/rounding-method/custom-fields", "GET", typeof(RoundingMethodController), "GetCustomFields")]
         [InlineData("/api/core/rounding-method/custom-fields", "GET", typeof(RoundingMethodController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/rounding-method/count-filtered/{filterName}", "HEAD", typeof(RoundingMethodController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/rounding-method/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(RoundingMethodController), "GetFiltered")]
         [InlineData("/api/core/rounding-method/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(RoundingMethodController), "GetFiltered")]
+        [InlineData("/api/core/rounding-method/first", "HEAD", typeof(RoundingMethodController), "GetFirst")]
+        [InlineData("/api/core/rounding-method/previous/1", "HEAD", typeof(RoundingMethodController), "GetPrevious")]
+        [InlineData("/api/core/rounding-method/next/1", "HEAD", typeof(RoundingMethodController), "GetNext")]
+        [InlineData("/api/core/rounding-method/last", "HEAD", typeof(RoundingMethodController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/rounding-method/custom-fields", "HEAD", typeof(RoundingMethodController), "GetCustomFields")]
         [InlineData("/api/core/rounding-method/custom-fields", "HEAD", typeof(RoundingMethodController), "GetCustomFields")]

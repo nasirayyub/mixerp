@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.ShippingPackageShape shippingPackageShape = Fixture().GetFirst();
+            Assert.NotNull(shippingPackageShape);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.ShippingPackageShape shippingPackageShape = Fixture().GetPrevious(0);
+            Assert.NotNull(shippingPackageShape);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.ShippingPackageShape shippingPackageShape = Fixture().GetNext(0);
+            Assert.NotNull(shippingPackageShape);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.ShippingPackageShape shippingPackageShape = Fixture().GetLast();
+            Assert.NotNull(shippingPackageShape);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.ShippingPackageShape> shippingPackageShapes = Fixture().Get(new int[] { });

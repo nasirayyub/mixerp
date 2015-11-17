@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/currency-layer/count-filtered/{filterName}", "GET", typeof(CurrencyLayerController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/currency-layer/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CurrencyLayerController), "GetFiltered")]
         [InlineData("/api/config/currency-layer/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CurrencyLayerController), "GetFiltered")]
+        [InlineData("/api/config/currency-layer/first", "GET", typeof(CurrencyLayerController), "GetFirst")]
+        [InlineData("/api/config/currency-layer/previous/1", "GET", typeof(CurrencyLayerController), "GetPrevious")]
+        [InlineData("/api/config/currency-layer/next/1", "GET", typeof(CurrencyLayerController), "GetNext")]
+        [InlineData("/api/config/currency-layer/last", "GET", typeof(CurrencyLayerController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/currency-layer/custom-fields", "GET", typeof(CurrencyLayerController), "GetCustomFields")]
         [InlineData("/api/config/currency-layer/custom-fields", "GET", typeof(CurrencyLayerController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/currency-layer/count-filtered/{filterName}", "HEAD", typeof(CurrencyLayerController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/currency-layer/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CurrencyLayerController), "GetFiltered")]
         [InlineData("/api/config/currency-layer/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CurrencyLayerController), "GetFiltered")]
+        [InlineData("/api/config/currency-layer/first", "HEAD", typeof(CurrencyLayerController), "GetFirst")]
+        [InlineData("/api/config/currency-layer/previous/1", "HEAD", typeof(CurrencyLayerController), "GetPrevious")]
+        [InlineData("/api/config/currency-layer/next/1", "HEAD", typeof(CurrencyLayerController), "GetNext")]
+        [InlineData("/api/config/currency-layer/last", "HEAD", typeof(CurrencyLayerController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/currency-layer/custom-fields", "HEAD", typeof(CurrencyLayerController), "GetCustomFields")]
         [InlineData("/api/config/currency-layer/custom-fields", "HEAD", typeof(CurrencyLayerController), "GetCustomFields")]

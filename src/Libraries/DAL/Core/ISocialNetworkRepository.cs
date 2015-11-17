@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.SocialNetwork Get(string socialNetworkName);
 
         /// <summary>
+        /// Gets the first record of SocialNetwork.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of SocialNetwork.</returns>
+        MixERP.Net.Entities.Core.SocialNetwork GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of SocialNetwork sorted by socialNetworkName. 
+        /// </summary>
+        /// <param name="socialNetworkName">The column "social_network_name" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of SocialNetwork.</returns>
+        MixERP.Net.Entities.Core.SocialNetwork GetPrevious(string socialNetworkName);
+
+        /// <summary>
+        /// Gets the next record of SocialNetwork sorted by socialNetworkName. 
+        /// </summary>
+        /// <param name="socialNetworkName">The column "social_network_name" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of SocialNetwork.</returns>
+        MixERP.Net.Entities.Core.SocialNetwork GetNext(string socialNetworkName);
+
+        /// <summary>
+        /// Gets the last record of SocialNetwork.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of SocialNetwork.</returns>
+        MixERP.Net.Entities.Core.SocialNetwork GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the SocialNetwork against socialNetworkNames. 
         /// </summary>
         /// <param name="socialNetworkNames">Array of column "social_network_name" parameter used on where filter.</param>

@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Config.Fakes
             return new MixERP.Net.Entities.Config.Smtp();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Config.Smtp> Get([FromUri] int[] smtpIds)
+        public IEnumerable<MixERP.Net.Entities.Config.Smtp> Get(int[] smtpIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Config.Smtp(), 1);
+        }
+
+        public MixERP.Net.Entities.Config.Smtp GetFirst()
+        {
+            return new MixERP.Net.Entities.Config.Smtp();
+        }
+
+        public MixERP.Net.Entities.Config.Smtp GetPrevious(int smtpId)
+        {
+            return new MixERP.Net.Entities.Config.Smtp();
+        }
+
+        public MixERP.Net.Entities.Config.Smtp GetNext(int smtpId)
+        {
+            return new MixERP.Net.Entities.Config.Smtp();
+        }
+
+        public MixERP.Net.Entities.Config.Smtp GetLast()
+        {
+            return new MixERP.Net.Entities.Config.Smtp();
         }
 
         public IEnumerable<MixERP.Net.Entities.Config.Smtp> GetPaginatedResult()

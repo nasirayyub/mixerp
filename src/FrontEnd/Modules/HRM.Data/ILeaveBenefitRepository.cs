@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.LeaveBenefit Get(int leaveBenefitId);
 
         /// <summary>
+        /// Gets the first record of LeaveBenefit.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of LeaveBenefit.</returns>
+        MixERP.Net.Entities.HRM.LeaveBenefit GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of LeaveBenefit sorted by leaveBenefitId. 
+        /// </summary>
+        /// <param name="leaveBenefitId">The column "leave_benefit_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of LeaveBenefit.</returns>
+        MixERP.Net.Entities.HRM.LeaveBenefit GetPrevious(int leaveBenefitId);
+
+        /// <summary>
+        /// Gets the next record of LeaveBenefit sorted by leaveBenefitId. 
+        /// </summary>
+        /// <param name="leaveBenefitId">The column "leave_benefit_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of LeaveBenefit.</returns>
+        MixERP.Net.Entities.HRM.LeaveBenefit GetNext(int leaveBenefitId);
+
+        /// <summary>
+        /// Gets the last record of LeaveBenefit.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of LeaveBenefit.</returns>
+        MixERP.Net.Entities.HRM.LeaveBenefit GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the LeaveBenefit against leaveBenefitIds. 
         /// </summary>
         /// <param name="leaveBenefitIds">Array of column "leave_benefit_id" parameter used on where filter.</param>

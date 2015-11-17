@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Policy.Data
         MixERP.Net.Entities.Policy.StorePolicy Get(long storePolicyId);
 
         /// <summary>
+        /// Gets the first record of StorePolicy.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of StorePolicy.</returns>
+        MixERP.Net.Entities.Policy.StorePolicy GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of StorePolicy sorted by storePolicyId. 
+        /// </summary>
+        /// <param name="storePolicyId">The column "store_policy_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of StorePolicy.</returns>
+        MixERP.Net.Entities.Policy.StorePolicy GetPrevious(long storePolicyId);
+
+        /// <summary>
+        /// Gets the next record of StorePolicy sorted by storePolicyId. 
+        /// </summary>
+        /// <param name="storePolicyId">The column "store_policy_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of StorePolicy.</returns>
+        MixERP.Net.Entities.Policy.StorePolicy GetNext(long storePolicyId);
+
+        /// <summary>
+        /// Gets the last record of StorePolicy.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of StorePolicy.</returns>
+        MixERP.Net.Entities.Policy.StorePolicy GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the StorePolicy against storePolicyIds. 
         /// </summary>
         /// <param name="storePolicyIds">Array of column "store_policy_id" parameter used on where filter.</param>

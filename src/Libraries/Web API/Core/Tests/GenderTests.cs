@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.Gender gender = Fixture().GetFirst();
+            Assert.NotNull(gender);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.Gender gender = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(gender);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.Gender gender = Fixture().GetNext(string.Empty);
+            Assert.NotNull(gender);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.Gender gender = Fixture().GetLast();
+            Assert.NotNull(gender);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.Gender> genders = Fixture().Get(new string[] { });

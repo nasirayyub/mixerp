@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.bonus_slab_details". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "BonusSlabDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.BonusSlabDetail GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"BonusSlabDetail\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.bonus_slab_details ORDER BY bonus_slab_detail_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.BonusSlabDetail>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.bonus_slab_details" sorted by bonusSlabDetailId.
+        /// </summary>
+        /// <param name="bonusSlabDetailId">The column "bonus_slab_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "BonusSlabDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.BonusSlabDetail GetPrevious(int bonusSlabDetailId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"BonusSlabDetail\" by \"BonusSlabDetailId\" with value {BonusSlabDetailId} was denied to the user with Login ID {_LoginId}", bonusSlabDetailId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.bonus_slab_details WHERE bonus_slab_detail_id < @0 ORDER BY bonus_slab_detail_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.BonusSlabDetail>(this._Catalog, sql, bonusSlabDetailId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.bonus_slab_details" sorted by bonusSlabDetailId.
+        /// </summary>
+        /// <param name="bonusSlabDetailId">The column "bonus_slab_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "BonusSlabDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.BonusSlabDetail GetNext(int bonusSlabDetailId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"BonusSlabDetail\" by \"BonusSlabDetailId\" with value {BonusSlabDetailId} was denied to the user with Login ID {_LoginId}", bonusSlabDetailId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.bonus_slab_details WHERE bonus_slab_detail_id > @0 ORDER BY bonus_slab_detail_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.BonusSlabDetail>(this._Catalog, sql, bonusSlabDetailId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.bonus_slab_details". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "BonusSlabDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.BonusSlabDetail GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"BonusSlabDetail\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.bonus_slab_details ORDER BY bonus_slab_detail_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.BonusSlabDetail>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.bonus_slab_details" with a where filter on the column "bonus_slab_detail_id" to return a multiple instances of the "BonusSlabDetail" class. 
         /// </summary>
         /// <param name="bonusSlabDetailIds">Array of column "bonus_slab_detail_id" parameter used on where filter.</param>

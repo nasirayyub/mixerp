@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.RoundingMethod Get(string roundingMethodCode);
 
         /// <summary>
+        /// Gets the first record of RoundingMethod.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of RoundingMethod.</returns>
+        MixERP.Net.Entities.Core.RoundingMethod GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of RoundingMethod sorted by roundingMethodCode. 
+        /// </summary>
+        /// <param name="roundingMethodCode">The column "rounding_method_code" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of RoundingMethod.</returns>
+        MixERP.Net.Entities.Core.RoundingMethod GetPrevious(string roundingMethodCode);
+
+        /// <summary>
+        /// Gets the next record of RoundingMethod sorted by roundingMethodCode. 
+        /// </summary>
+        /// <param name="roundingMethodCode">The column "rounding_method_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of RoundingMethod.</returns>
+        MixERP.Net.Entities.Core.RoundingMethod GetNext(string roundingMethodCode);
+
+        /// <summary>
+        /// Gets the last record of RoundingMethod.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of RoundingMethod.</returns>
+        MixERP.Net.Entities.Core.RoundingMethod GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the RoundingMethod against roundingMethodCodes. 
         /// </summary>
         /// <param name="roundingMethodCodes">Array of column "rounding_method_code" parameter used on where filter.</param>

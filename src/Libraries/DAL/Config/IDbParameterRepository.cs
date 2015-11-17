@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Config.Data
         MixERP.Net.Entities.Config.DbParameter Get(string key);
 
         /// <summary>
+        /// Gets the first record of DbParameter.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of DbParameter.</returns>
+        MixERP.Net.Entities.Config.DbParameter GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of DbParameter sorted by key. 
+        /// </summary>
+        /// <param name="key">The column "key" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of DbParameter.</returns>
+        MixERP.Net.Entities.Config.DbParameter GetPrevious(string key);
+
+        /// <summary>
+        /// Gets the next record of DbParameter sorted by key. 
+        /// </summary>
+        /// <param name="key">The column "key" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of DbParameter.</returns>
+        MixERP.Net.Entities.Config.DbParameter GetNext(string key);
+
+        /// <summary>
+        /// Gets the last record of DbParameter.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of DbParameter.</returns>
+        MixERP.Net.Entities.Config.DbParameter GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the DbParameter against keys. 
         /// </summary>
         /// <param name="keys">Array of column "key" parameter used on where filter.</param>

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Audit.Data
         MixERP.Net.Entities.Audit.Login Get(long loginId);
 
         /// <summary>
+        /// Gets the first record of Login.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Login.</returns>
+        MixERP.Net.Entities.Audit.Login GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Login sorted by loginId. 
+        /// </summary>
+        /// <param name="loginId">The column "login_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Login.</returns>
+        MixERP.Net.Entities.Audit.Login GetPrevious(long loginId);
+
+        /// <summary>
+        /// Gets the next record of Login sorted by loginId. 
+        /// </summary>
+        /// <param name="loginId">The column "login_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Login.</returns>
+        MixERP.Net.Entities.Audit.Login GetNext(long loginId);
+
+        /// <summary>
+        /// Gets the last record of Login.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Login.</returns>
+        MixERP.Net.Entities.Audit.Login GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Login against loginIds. 
         /// </summary>
         /// <param name="loginIds">Array of column "login_id" parameter used on where filter.</param>

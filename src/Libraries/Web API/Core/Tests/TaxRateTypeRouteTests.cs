@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/tax-rate-type/count-filtered/{filterName}", "GET", typeof(TaxRateTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/tax-rate-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(TaxRateTypeController), "GetFiltered")]
         [InlineData("/api/core/tax-rate-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(TaxRateTypeController), "GetFiltered")]
+        [InlineData("/api/core/tax-rate-type/first", "GET", typeof(TaxRateTypeController), "GetFirst")]
+        [InlineData("/api/core/tax-rate-type/previous/1", "GET", typeof(TaxRateTypeController), "GetPrevious")]
+        [InlineData("/api/core/tax-rate-type/next/1", "GET", typeof(TaxRateTypeController), "GetNext")]
+        [InlineData("/api/core/tax-rate-type/last", "GET", typeof(TaxRateTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/tax-rate-type/custom-fields", "GET", typeof(TaxRateTypeController), "GetCustomFields")]
         [InlineData("/api/core/tax-rate-type/custom-fields", "GET", typeof(TaxRateTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/tax-rate-type/count-filtered/{filterName}", "HEAD", typeof(TaxRateTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/tax-rate-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(TaxRateTypeController), "GetFiltered")]
         [InlineData("/api/core/tax-rate-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(TaxRateTypeController), "GetFiltered")]
+        [InlineData("/api/core/tax-rate-type/first", "HEAD", typeof(TaxRateTypeController), "GetFirst")]
+        [InlineData("/api/core/tax-rate-type/previous/1", "HEAD", typeof(TaxRateTypeController), "GetPrevious")]
+        [InlineData("/api/core/tax-rate-type/next/1", "HEAD", typeof(TaxRateTypeController), "GetNext")]
+        [InlineData("/api/core/tax-rate-type/last", "HEAD", typeof(TaxRateTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/tax-rate-type/custom-fields", "HEAD", typeof(TaxRateTypeController), "GetCustomFields")]
         [InlineData("/api/core/tax-rate-type/custom-fields", "HEAD", typeof(TaxRateTypeController), "GetCustomFields")]

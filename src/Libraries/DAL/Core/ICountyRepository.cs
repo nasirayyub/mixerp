@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.County Get(int countyId);
 
         /// <summary>
+        /// Gets the first record of County.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of County.</returns>
+        MixERP.Net.Entities.Core.County GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of County sorted by countyId. 
+        /// </summary>
+        /// <param name="countyId">The column "county_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of County.</returns>
+        MixERP.Net.Entities.Core.County GetPrevious(int countyId);
+
+        /// <summary>
+        /// Gets the next record of County sorted by countyId. 
+        /// </summary>
+        /// <param name="countyId">The column "county_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of County.</returns>
+        MixERP.Net.Entities.Core.County GetNext(int countyId);
+
+        /// <summary>
+        /// Gets the last record of County.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of County.</returns>
+        MixERP.Net.Entities.Core.County GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the County against countyIds. 
         /// </summary>
         /// <param name="countyIds">Array of column "county_id" parameter used on where filter.</param>

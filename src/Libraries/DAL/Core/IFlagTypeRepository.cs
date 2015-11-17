@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.FlagType Get(int flagTypeId);
 
         /// <summary>
+        /// Gets the first record of FlagType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of FlagType.</returns>
+        MixERP.Net.Entities.Core.FlagType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of FlagType sorted by flagTypeId. 
+        /// </summary>
+        /// <param name="flagTypeId">The column "flag_type_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of FlagType.</returns>
+        MixERP.Net.Entities.Core.FlagType GetPrevious(int flagTypeId);
+
+        /// <summary>
+        /// Gets the next record of FlagType sorted by flagTypeId. 
+        /// </summary>
+        /// <param name="flagTypeId">The column "flag_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of FlagType.</returns>
+        MixERP.Net.Entities.Core.FlagType GetNext(int flagTypeId);
+
+        /// <summary>
+        /// Gets the last record of FlagType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of FlagType.</returns>
+        MixERP.Net.Entities.Core.FlagType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the FlagType against flagTypeIds. 
         /// </summary>
         /// <param name="flagTypeIds">Array of column "flag_type_id" parameter used on where filter.</param>

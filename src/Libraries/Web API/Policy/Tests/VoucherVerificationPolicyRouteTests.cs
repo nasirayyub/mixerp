@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/voucher-verification-policy/count-filtered/{filterName}", "GET", typeof(VoucherVerificationPolicyController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/voucher-verification-policy/get-filtered/{pageNumber}/{filterName}", "GET", typeof(VoucherVerificationPolicyController), "GetFiltered")]
         [InlineData("/api/policy/voucher-verification-policy/get-filtered/{pageNumber}/{filterName}", "GET", typeof(VoucherVerificationPolicyController), "GetFiltered")]
+        [InlineData("/api/policy/voucher-verification-policy/first", "GET", typeof(VoucherVerificationPolicyController), "GetFirst")]
+        [InlineData("/api/policy/voucher-verification-policy/previous/1", "GET", typeof(VoucherVerificationPolicyController), "GetPrevious")]
+        [InlineData("/api/policy/voucher-verification-policy/next/1", "GET", typeof(VoucherVerificationPolicyController), "GetNext")]
+        [InlineData("/api/policy/voucher-verification-policy/last", "GET", typeof(VoucherVerificationPolicyController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/voucher-verification-policy/custom-fields", "GET", typeof(VoucherVerificationPolicyController), "GetCustomFields")]
         [InlineData("/api/policy/voucher-verification-policy/custom-fields", "GET", typeof(VoucherVerificationPolicyController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/voucher-verification-policy/count-filtered/{filterName}", "HEAD", typeof(VoucherVerificationPolicyController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/voucher-verification-policy/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(VoucherVerificationPolicyController), "GetFiltered")]
         [InlineData("/api/policy/voucher-verification-policy/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(VoucherVerificationPolicyController), "GetFiltered")]
+        [InlineData("/api/policy/voucher-verification-policy/first", "HEAD", typeof(VoucherVerificationPolicyController), "GetFirst")]
+        [InlineData("/api/policy/voucher-verification-policy/previous/1", "HEAD", typeof(VoucherVerificationPolicyController), "GetPrevious")]
+        [InlineData("/api/policy/voucher-verification-policy/next/1", "HEAD", typeof(VoucherVerificationPolicyController), "GetNext")]
+        [InlineData("/api/policy/voucher-verification-policy/last", "HEAD", typeof(VoucherVerificationPolicyController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/voucher-verification-policy/custom-fields", "HEAD", typeof(VoucherVerificationPolicyController), "GetCustomFields")]
         [InlineData("/api/policy/voucher-verification-policy/custom-fields", "HEAD", typeof(VoucherVerificationPolicyController), "GetCustomFields")]

@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.HRM.Fakes
             return new MixERP.Net.Entities.HRM.EmployeeType();
         }
 
-        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeType> Get([FromUri] int[] employeeTypeIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeType> Get(int[] employeeTypeIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.HRM.EmployeeType(), 1);
+        }
+
+        public MixERP.Net.Entities.HRM.EmployeeType GetFirst()
+        {
+            return new MixERP.Net.Entities.HRM.EmployeeType();
+        }
+
+        public MixERP.Net.Entities.HRM.EmployeeType GetPrevious(int employeeTypeId)
+        {
+            return new MixERP.Net.Entities.HRM.EmployeeType();
+        }
+
+        public MixERP.Net.Entities.HRM.EmployeeType GetNext(int employeeTypeId)
+        {
+            return new MixERP.Net.Entities.HRM.EmployeeType();
+        }
+
+        public MixERP.Net.Entities.HRM.EmployeeType GetLast()
+        {
+            return new MixERP.Net.Entities.HRM.EmployeeType();
         }
 
         public IEnumerable<MixERP.Net.Entities.HRM.EmployeeType> GetPaginatedResult()

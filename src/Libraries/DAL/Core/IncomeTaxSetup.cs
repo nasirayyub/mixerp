@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.income_tax_setup". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "IncomeTaxSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.IncomeTaxSetup GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"IncomeTaxSetup\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.income_tax_setup ORDER BY income_tax_setup_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.IncomeTaxSetup>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.income_tax_setup" sorted by incomeTaxSetupId.
+        /// </summary>
+        /// <param name="incomeTaxSetupId">The column "income_tax_setup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "IncomeTaxSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.IncomeTaxSetup GetPrevious(int incomeTaxSetupId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"IncomeTaxSetup\" by \"IncomeTaxSetupId\" with value {IncomeTaxSetupId} was denied to the user with Login ID {_LoginId}", incomeTaxSetupId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.income_tax_setup WHERE income_tax_setup_id < @0 ORDER BY income_tax_setup_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.IncomeTaxSetup>(this._Catalog, sql, incomeTaxSetupId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.income_tax_setup" sorted by incomeTaxSetupId.
+        /// </summary>
+        /// <param name="incomeTaxSetupId">The column "income_tax_setup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "IncomeTaxSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.IncomeTaxSetup GetNext(int incomeTaxSetupId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"IncomeTaxSetup\" by \"IncomeTaxSetupId\" with value {IncomeTaxSetupId} was denied to the user with Login ID {_LoginId}", incomeTaxSetupId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.income_tax_setup WHERE income_tax_setup_id > @0 ORDER BY income_tax_setup_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.IncomeTaxSetup>(this._Catalog, sql, incomeTaxSetupId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.income_tax_setup". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "IncomeTaxSetup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.IncomeTaxSetup GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"IncomeTaxSetup\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.income_tax_setup ORDER BY income_tax_setup_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.IncomeTaxSetup>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.income_tax_setup" with a where filter on the column "income_tax_setup_id" to return a multiple instances of the "IncomeTaxSetup" class. 
         /// </summary>
         /// <param name="incomeTaxSetupIds">Array of column "income_tax_setup_id" parameter used on where filter.</param>

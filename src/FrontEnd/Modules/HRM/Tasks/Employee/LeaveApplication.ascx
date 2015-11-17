@@ -25,6 +25,7 @@
         {
             tab: "",
             fields: [
+                ["LeaveApplicationId", ""],
                 ["LeaveTypeId", "EmployeeId", "", ""],
                 ["StartDate", "EndDate", "", ""],
                 ["Reason", ""]

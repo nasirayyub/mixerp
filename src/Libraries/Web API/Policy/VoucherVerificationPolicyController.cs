@@ -249,6 +249,132 @@ namespace MixERP.Net.Api.Policy
         }
 
         /// <summary>
+        ///     Returns the first instance of voucher verification policy.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/policy/voucher-verification-policy/first")]
+        public MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetFirst()
+        {
+            try
+            {
+                return this.VoucherVerificationPolicyRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of voucher verification policy.
+        /// </summary>
+        /// <param name="policyId">Enter PolicyId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{policyId}")]
+        [Route("~/api/policy/voucher-verification-policy/previous/{policyId}")]
+        public MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetPrevious(int policyId)
+        {
+            try
+            {
+                return this.VoucherVerificationPolicyRepository.GetPrevious(policyId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of voucher verification policy.
+        /// </summary>
+        /// <param name="policyId">Enter PolicyId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{policyId}")]
+        [Route("~/api/policy/voucher-verification-policy/next/{policyId}")]
+        public MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetNext(int policyId)
+        {
+            try
+            {
+                return this.VoucherVerificationPolicyRepository.GetNext(policyId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of voucher verification policy.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/policy/voucher-verification-policy/last")]
+        public MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetLast()
+        {
+            try
+            {
+                return this.VoucherVerificationPolicyRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 voucher verification policies on each page, sorted by the property PolicyId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

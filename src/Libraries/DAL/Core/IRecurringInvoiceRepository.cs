@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.RecurringInvoice Get(int recurringInvoiceId);
 
         /// <summary>
+        /// Gets the first record of RecurringInvoice.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of RecurringInvoice.</returns>
+        MixERP.Net.Entities.Core.RecurringInvoice GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of RecurringInvoice sorted by recurringInvoiceId. 
+        /// </summary>
+        /// <param name="recurringInvoiceId">The column "recurring_invoice_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of RecurringInvoice.</returns>
+        MixERP.Net.Entities.Core.RecurringInvoice GetPrevious(int recurringInvoiceId);
+
+        /// <summary>
+        /// Gets the next record of RecurringInvoice sorted by recurringInvoiceId. 
+        /// </summary>
+        /// <param name="recurringInvoiceId">The column "recurring_invoice_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of RecurringInvoice.</returns>
+        MixERP.Net.Entities.Core.RecurringInvoice GetNext(int recurringInvoiceId);
+
+        /// <summary>
+        /// Gets the last record of RecurringInvoice.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of RecurringInvoice.</returns>
+        MixERP.Net.Entities.Core.RecurringInvoice GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the RecurringInvoice against recurringInvoiceIds. 
         /// </summary>
         /// <param name="recurringInvoiceIds">Array of column "recurring_invoice_id" parameter used on where filter.</param>

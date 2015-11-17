@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Localization.Tests
         [InlineData("/api/localization/localized-resource/count-filtered/{filterName}", "GET", typeof(LocalizedResourceController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/localization/localized-resource/get-filtered/{pageNumber}/{filterName}", "GET", typeof(LocalizedResourceController), "GetFiltered")]
         [InlineData("/api/localization/localized-resource/get-filtered/{pageNumber}/{filterName}", "GET", typeof(LocalizedResourceController), "GetFiltered")]
+        [InlineData("/api/localization/localized-resource/first", "GET", typeof(LocalizedResourceController), "GetFirst")]
+        [InlineData("/api/localization/localized-resource/previous/1", "GET", typeof(LocalizedResourceController), "GetPrevious")]
+        [InlineData("/api/localization/localized-resource/next/1", "GET", typeof(LocalizedResourceController), "GetNext")]
+        [InlineData("/api/localization/localized-resource/last", "GET", typeof(LocalizedResourceController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/localization/localized-resource/custom-fields", "GET", typeof(LocalizedResourceController), "GetCustomFields")]
         [InlineData("/api/localization/localized-resource/custom-fields", "GET", typeof(LocalizedResourceController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Localization.Tests
         [InlineData("/api/localization/localized-resource/count-filtered/{filterName}", "HEAD", typeof(LocalizedResourceController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/localization/localized-resource/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(LocalizedResourceController), "GetFiltered")]
         [InlineData("/api/localization/localized-resource/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(LocalizedResourceController), "GetFiltered")]
+        [InlineData("/api/localization/localized-resource/first", "HEAD", typeof(LocalizedResourceController), "GetFirst")]
+        [InlineData("/api/localization/localized-resource/previous/1", "HEAD", typeof(LocalizedResourceController), "GetPrevious")]
+        [InlineData("/api/localization/localized-resource/next/1", "HEAD", typeof(LocalizedResourceController), "GetNext")]
+        [InlineData("/api/localization/localized-resource/last", "HEAD", typeof(LocalizedResourceController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/localization/localized-resource/custom-fields", "HEAD", typeof(LocalizedResourceController), "GetCustomFields")]
         [InlineData("/api/localization/localized-resource/custom-fields", "HEAD", typeof(LocalizedResourceController), "GetCustomFields")]

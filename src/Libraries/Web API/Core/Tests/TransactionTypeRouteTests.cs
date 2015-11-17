@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/transaction-type/count-filtered/{filterName}", "GET", typeof(TransactionTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/transaction-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(TransactionTypeController), "GetFiltered")]
         [InlineData("/api/core/transaction-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(TransactionTypeController), "GetFiltered")]
+        [InlineData("/api/core/transaction-type/first", "GET", typeof(TransactionTypeController), "GetFirst")]
+        [InlineData("/api/core/transaction-type/previous/1", "GET", typeof(TransactionTypeController), "GetPrevious")]
+        [InlineData("/api/core/transaction-type/next/1", "GET", typeof(TransactionTypeController), "GetNext")]
+        [InlineData("/api/core/transaction-type/last", "GET", typeof(TransactionTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/transaction-type/custom-fields", "GET", typeof(TransactionTypeController), "GetCustomFields")]
         [InlineData("/api/core/transaction-type/custom-fields", "GET", typeof(TransactionTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/transaction-type/count-filtered/{filterName}", "HEAD", typeof(TransactionTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/transaction-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(TransactionTypeController), "GetFiltered")]
         [InlineData("/api/core/transaction-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(TransactionTypeController), "GetFiltered")]
+        [InlineData("/api/core/transaction-type/first", "HEAD", typeof(TransactionTypeController), "GetFirst")]
+        [InlineData("/api/core/transaction-type/previous/1", "HEAD", typeof(TransactionTypeController), "GetPrevious")]
+        [InlineData("/api/core/transaction-type/next/1", "HEAD", typeof(TransactionTypeController), "GetNext")]
+        [InlineData("/api/core/transaction-type/last", "HEAD", typeof(TransactionTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/transaction-type/custom-fields", "HEAD", typeof(TransactionTypeController), "GetCustomFields")]
         [InlineData("/api/core/transaction-type/custom-fields", "HEAD", typeof(TransactionTypeController), "GetCustomFields")]

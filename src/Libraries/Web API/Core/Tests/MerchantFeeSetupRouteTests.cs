@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/merchant-fee-setup/count-filtered/{filterName}", "GET", typeof(MerchantFeeSetupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/merchant-fee-setup/get-filtered/{pageNumber}/{filterName}", "GET", typeof(MerchantFeeSetupController), "GetFiltered")]
         [InlineData("/api/core/merchant-fee-setup/get-filtered/{pageNumber}/{filterName}", "GET", typeof(MerchantFeeSetupController), "GetFiltered")]
+        [InlineData("/api/core/merchant-fee-setup/first", "GET", typeof(MerchantFeeSetupController), "GetFirst")]
+        [InlineData("/api/core/merchant-fee-setup/previous/1", "GET", typeof(MerchantFeeSetupController), "GetPrevious")]
+        [InlineData("/api/core/merchant-fee-setup/next/1", "GET", typeof(MerchantFeeSetupController), "GetNext")]
+        [InlineData("/api/core/merchant-fee-setup/last", "GET", typeof(MerchantFeeSetupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/merchant-fee-setup/custom-fields", "GET", typeof(MerchantFeeSetupController), "GetCustomFields")]
         [InlineData("/api/core/merchant-fee-setup/custom-fields", "GET", typeof(MerchantFeeSetupController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/merchant-fee-setup/count-filtered/{filterName}", "HEAD", typeof(MerchantFeeSetupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/merchant-fee-setup/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(MerchantFeeSetupController), "GetFiltered")]
         [InlineData("/api/core/merchant-fee-setup/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(MerchantFeeSetupController), "GetFiltered")]
+        [InlineData("/api/core/merchant-fee-setup/first", "HEAD", typeof(MerchantFeeSetupController), "GetFirst")]
+        [InlineData("/api/core/merchant-fee-setup/previous/1", "HEAD", typeof(MerchantFeeSetupController), "GetPrevious")]
+        [InlineData("/api/core/merchant-fee-setup/next/1", "HEAD", typeof(MerchantFeeSetupController), "GetNext")]
+        [InlineData("/api/core/merchant-fee-setup/last", "HEAD", typeof(MerchantFeeSetupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/merchant-fee-setup/custom-fields", "HEAD", typeof(MerchantFeeSetupController), "GetCustomFields")]
         [InlineData("/api/core/merchant-fee-setup/custom-fields", "HEAD", typeof(MerchantFeeSetupController), "GetCustomFields")]

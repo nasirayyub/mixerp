@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.item_cost_prices". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "ItemCostPrice" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.ItemCostPrice GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"ItemCostPrice\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.item_cost_prices ORDER BY item_cost_price_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.ItemCostPrice>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.item_cost_prices" sorted by itemCostPriceId.
+        /// </summary>
+        /// <param name="itemCostPriceId">The column "item_cost_price_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "ItemCostPrice" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.ItemCostPrice GetPrevious(long itemCostPriceId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"ItemCostPrice\" by \"ItemCostPriceId\" with value {ItemCostPriceId} was denied to the user with Login ID {_LoginId}", itemCostPriceId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.item_cost_prices WHERE item_cost_price_id < @0 ORDER BY item_cost_price_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.ItemCostPrice>(this._Catalog, sql, itemCostPriceId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.item_cost_prices" sorted by itemCostPriceId.
+        /// </summary>
+        /// <param name="itemCostPriceId">The column "item_cost_price_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "ItemCostPrice" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.ItemCostPrice GetNext(long itemCostPriceId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"ItemCostPrice\" by \"ItemCostPriceId\" with value {ItemCostPriceId} was denied to the user with Login ID {_LoginId}", itemCostPriceId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.item_cost_prices WHERE item_cost_price_id > @0 ORDER BY item_cost_price_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.ItemCostPrice>(this._Catalog, sql, itemCostPriceId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.item_cost_prices". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "ItemCostPrice" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.ItemCostPrice GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"ItemCostPrice\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.item_cost_prices ORDER BY item_cost_price_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.ItemCostPrice>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.item_cost_prices" with a where filter on the column "item_cost_price_id" to return a multiple instances of the "ItemCostPrice" class. 
         /// </summary>
         /// <param name="itemCostPriceIds">Array of column "item_cost_price_id" parameter used on where filter.</param>

@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.Frequency frequency = Fixture().GetFirst();
+            Assert.NotNull(frequency);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.Frequency frequency = Fixture().GetPrevious(0);
+            Assert.NotNull(frequency);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.Frequency frequency = Fixture().GetNext(0);
+            Assert.NotNull(frequency);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.Frequency frequency = Fixture().GetLast();
+            Assert.NotNull(frequency);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.Frequency> frequencies = Fixture().Get(new int[] { });

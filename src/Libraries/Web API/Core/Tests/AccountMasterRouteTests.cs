@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/account-master/count-filtered/{filterName}", "GET", typeof(AccountMasterController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/account-master/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AccountMasterController), "GetFiltered")]
         [InlineData("/api/core/account-master/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AccountMasterController), "GetFiltered")]
+        [InlineData("/api/core/account-master/first", "GET", typeof(AccountMasterController), "GetFirst")]
+        [InlineData("/api/core/account-master/previous/1", "GET", typeof(AccountMasterController), "GetPrevious")]
+        [InlineData("/api/core/account-master/next/1", "GET", typeof(AccountMasterController), "GetNext")]
+        [InlineData("/api/core/account-master/last", "GET", typeof(AccountMasterController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/account-master/custom-fields", "GET", typeof(AccountMasterController), "GetCustomFields")]
         [InlineData("/api/core/account-master/custom-fields", "GET", typeof(AccountMasterController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/account-master/count-filtered/{filterName}", "HEAD", typeof(AccountMasterController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/account-master/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AccountMasterController), "GetFiltered")]
         [InlineData("/api/core/account-master/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AccountMasterController), "GetFiltered")]
+        [InlineData("/api/core/account-master/first", "HEAD", typeof(AccountMasterController), "GetFirst")]
+        [InlineData("/api/core/account-master/previous/1", "HEAD", typeof(AccountMasterController), "GetPrevious")]
+        [InlineData("/api/core/account-master/next/1", "HEAD", typeof(AccountMasterController), "GetNext")]
+        [InlineData("/api/core/account-master/last", "HEAD", typeof(AccountMasterController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/account-master/custom-fields", "HEAD", typeof(AccountMasterController), "GetCustomFields")]
         [InlineData("/api/core/account-master/custom-fields", "HEAD", typeof(AccountMasterController), "GetCustomFields")]

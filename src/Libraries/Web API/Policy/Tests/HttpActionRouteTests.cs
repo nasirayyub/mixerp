@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/http-action/count-filtered/{filterName}", "GET", typeof(HttpActionController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/http-action/get-filtered/{pageNumber}/{filterName}", "GET", typeof(HttpActionController), "GetFiltered")]
         [InlineData("/api/policy/http-action/get-filtered/{pageNumber}/{filterName}", "GET", typeof(HttpActionController), "GetFiltered")]
+        [InlineData("/api/policy/http-action/first", "GET", typeof(HttpActionController), "GetFirst")]
+        [InlineData("/api/policy/http-action/previous/1", "GET", typeof(HttpActionController), "GetPrevious")]
+        [InlineData("/api/policy/http-action/next/1", "GET", typeof(HttpActionController), "GetNext")]
+        [InlineData("/api/policy/http-action/last", "GET", typeof(HttpActionController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/http-action/custom-fields", "GET", typeof(HttpActionController), "GetCustomFields")]
         [InlineData("/api/policy/http-action/custom-fields", "GET", typeof(HttpActionController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/http-action/count-filtered/{filterName}", "HEAD", typeof(HttpActionController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/http-action/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(HttpActionController), "GetFiltered")]
         [InlineData("/api/policy/http-action/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(HttpActionController), "GetFiltered")]
+        [InlineData("/api/policy/http-action/first", "HEAD", typeof(HttpActionController), "GetFirst")]
+        [InlineData("/api/policy/http-action/previous/1", "HEAD", typeof(HttpActionController), "GetPrevious")]
+        [InlineData("/api/policy/http-action/next/1", "HEAD", typeof(HttpActionController), "GetNext")]
+        [InlineData("/api/policy/http-action/last", "HEAD", typeof(HttpActionController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/http-action/custom-fields", "HEAD", typeof(HttpActionController), "GetCustomFields")]
         [InlineData("/api/policy/http-action/custom-fields", "HEAD", typeof(HttpActionController), "GetCustomFields")]

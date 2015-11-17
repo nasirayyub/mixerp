@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/sales-tax-exempt/count-filtered/{filterName}", "GET", typeof(SalesTaxExemptController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/sales-tax-exempt/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SalesTaxExemptController), "GetFiltered")]
         [InlineData("/api/core/sales-tax-exempt/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SalesTaxExemptController), "GetFiltered")]
+        [InlineData("/api/core/sales-tax-exempt/first", "GET", typeof(SalesTaxExemptController), "GetFirst")]
+        [InlineData("/api/core/sales-tax-exempt/previous/1", "GET", typeof(SalesTaxExemptController), "GetPrevious")]
+        [InlineData("/api/core/sales-tax-exempt/next/1", "GET", typeof(SalesTaxExemptController), "GetNext")]
+        [InlineData("/api/core/sales-tax-exempt/last", "GET", typeof(SalesTaxExemptController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/sales-tax-exempt/custom-fields", "GET", typeof(SalesTaxExemptController), "GetCustomFields")]
         [InlineData("/api/core/sales-tax-exempt/custom-fields", "GET", typeof(SalesTaxExemptController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/sales-tax-exempt/count-filtered/{filterName}", "HEAD", typeof(SalesTaxExemptController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/sales-tax-exempt/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SalesTaxExemptController), "GetFiltered")]
         [InlineData("/api/core/sales-tax-exempt/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SalesTaxExemptController), "GetFiltered")]
+        [InlineData("/api/core/sales-tax-exempt/first", "HEAD", typeof(SalesTaxExemptController), "GetFirst")]
+        [InlineData("/api/core/sales-tax-exempt/previous/1", "HEAD", typeof(SalesTaxExemptController), "GetPrevious")]
+        [InlineData("/api/core/sales-tax-exempt/next/1", "HEAD", typeof(SalesTaxExemptController), "GetNext")]
+        [InlineData("/api/core/sales-tax-exempt/last", "HEAD", typeof(SalesTaxExemptController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/sales-tax-exempt/custom-fields", "HEAD", typeof(SalesTaxExemptController), "GetCustomFields")]
         [InlineData("/api/core/sales-tax-exempt/custom-fields", "HEAD", typeof(SalesTaxExemptController), "GetCustomFields")]

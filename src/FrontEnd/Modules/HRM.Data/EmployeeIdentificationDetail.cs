@@ -161,6 +161,125 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "hrm.employee_identification_details". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "EmployeeIdentificationDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.EmployeeIdentificationDetail GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"EmployeeIdentificationDetail\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.employee_identification_details ORDER BY employee_identification_detail_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.EmployeeIdentificationDetail>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "hrm.employee_identification_details" sorted by employeeIdentificationDetailId.
+        /// </summary>
+        /// <param name="employeeIdentificationDetailId">The column "employee_identification_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "EmployeeIdentificationDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.EmployeeIdentificationDetail GetPrevious(long employeeIdentificationDetailId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"EmployeeIdentificationDetail\" by \"EmployeeIdentificationDetailId\" with value {EmployeeIdentificationDetailId} was denied to the user with Login ID {_LoginId}", employeeIdentificationDetailId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.employee_identification_details WHERE employee_identification_detail_id < @0 ORDER BY employee_identification_detail_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.EmployeeIdentificationDetail>(this._Catalog, sql, employeeIdentificationDetailId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "hrm.employee_identification_details" sorted by employeeIdentificationDetailId.
+        /// </summary>
+        /// <param name="employeeIdentificationDetailId">The column "employee_identification_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "EmployeeIdentificationDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.EmployeeIdentificationDetail GetNext(long employeeIdentificationDetailId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"EmployeeIdentificationDetail\" by \"EmployeeIdentificationDetailId\" with value {EmployeeIdentificationDetailId} was denied to the user with Login ID {_LoginId}", employeeIdentificationDetailId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.employee_identification_details WHERE employee_identification_detail_id > @0 ORDER BY employee_identification_detail_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.EmployeeIdentificationDetail>(this._Catalog, sql, employeeIdentificationDetailId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "hrm.employee_identification_details". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "EmployeeIdentificationDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.EmployeeIdentificationDetail GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"EmployeeIdentificationDetail\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.employee_identification_details ORDER BY employee_identification_detail_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.EmployeeIdentificationDetail>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "hrm.employee_identification_details" with a where filter on the column "employee_identification_detail_id" to return a multiple instances of the "EmployeeIdentificationDetail" class. 
         /// </summary>
         /// <param name="employeeIdentificationDetailIds">Array of column "employee_identification_detail_id" parameter used on where filter.</param>

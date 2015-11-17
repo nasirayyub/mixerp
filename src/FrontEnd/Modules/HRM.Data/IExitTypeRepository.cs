@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.ExitType Get(int exitTypeId);
 
         /// <summary>
+        /// Gets the first record of ExitType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ExitType.</returns>
+        MixERP.Net.Entities.HRM.ExitType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of ExitType sorted by exitTypeId. 
+        /// </summary>
+        /// <param name="exitTypeId">The column "exit_type_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ExitType.</returns>
+        MixERP.Net.Entities.HRM.ExitType GetPrevious(int exitTypeId);
+
+        /// <summary>
+        /// Gets the next record of ExitType sorted by exitTypeId. 
+        /// </summary>
+        /// <param name="exitTypeId">The column "exit_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ExitType.</returns>
+        MixERP.Net.Entities.HRM.ExitType GetNext(int exitTypeId);
+
+        /// <summary>
+        /// Gets the last record of ExitType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ExitType.</returns>
+        MixERP.Net.Entities.HRM.ExitType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the ExitType against exitTypeIds. 
         /// </summary>
         /// <param name="exitTypeIds">Array of column "exit_type_id" parameter used on where filter.</param>

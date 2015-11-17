@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Config Get(int configId);
 
         /// <summary>
+        /// Gets the first record of Config.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Config.</returns>
+        MixERP.Net.Entities.Core.Config GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Config sorted by configId. 
+        /// </summary>
+        /// <param name="configId">The column "config_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Config.</returns>
+        MixERP.Net.Entities.Core.Config GetPrevious(int configId);
+
+        /// <summary>
+        /// Gets the next record of Config sorted by configId. 
+        /// </summary>
+        /// <param name="configId">The column "config_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Config.</returns>
+        MixERP.Net.Entities.Core.Config GetNext(int configId);
+
+        /// <summary>
+        /// Gets the last record of Config.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Config.</returns>
+        MixERP.Net.Entities.Core.Config GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Config against configIds. 
         /// </summary>
         /// <param name="configIds">Array of column "config_id" parameter used on where filter.</param>

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.ShippingPackageShape Get(int shippingPackageShapeId);
 
         /// <summary>
+        /// Gets the first record of ShippingPackageShape.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ShippingPackageShape.</returns>
+        MixERP.Net.Entities.Core.ShippingPackageShape GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of ShippingPackageShape sorted by shippingPackageShapeId. 
+        /// </summary>
+        /// <param name="shippingPackageShapeId">The column "shipping_package_shape_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ShippingPackageShape.</returns>
+        MixERP.Net.Entities.Core.ShippingPackageShape GetPrevious(int shippingPackageShapeId);
+
+        /// <summary>
+        /// Gets the next record of ShippingPackageShape sorted by shippingPackageShapeId. 
+        /// </summary>
+        /// <param name="shippingPackageShapeId">The column "shipping_package_shape_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ShippingPackageShape.</returns>
+        MixERP.Net.Entities.Core.ShippingPackageShape GetNext(int shippingPackageShapeId);
+
+        /// <summary>
+        /// Gets the last record of ShippingPackageShape.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ShippingPackageShape.</returns>
+        MixERP.Net.Entities.Core.ShippingPackageShape GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the ShippingPackageShape against shippingPackageShapeIds. 
         /// </summary>
         /// <param name="shippingPackageShapeIds">Array of column "shipping_package_shape_id" parameter used on where filter.</param>

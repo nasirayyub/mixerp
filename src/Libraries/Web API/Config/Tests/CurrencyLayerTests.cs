@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Config.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Config.CurrencyLayer currencyLayer = Fixture().GetFirst();
+            Assert.NotNull(currencyLayer);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Config.CurrencyLayer currencyLayer = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(currencyLayer);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Config.CurrencyLayer currencyLayer = Fixture().GetNext(string.Empty);
+            Assert.NotNull(currencyLayer);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Config.CurrencyLayer currencyLayer = Fixture().GetLast();
+            Assert.NotNull(currencyLayer);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Config.CurrencyLayer> currencyLayers = Fixture().Get(new string[] { });

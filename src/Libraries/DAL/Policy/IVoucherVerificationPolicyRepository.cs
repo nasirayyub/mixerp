@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Policy.Data
         MixERP.Net.Entities.Policy.VoucherVerificationPolicy Get(int policyId);
 
         /// <summary>
+        /// Gets the first record of VoucherVerificationPolicy.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of VoucherVerificationPolicy.</returns>
+        MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of VoucherVerificationPolicy sorted by policyId. 
+        /// </summary>
+        /// <param name="policyId">The column "policy_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of VoucherVerificationPolicy.</returns>
+        MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetPrevious(int policyId);
+
+        /// <summary>
+        /// Gets the next record of VoucherVerificationPolicy sorted by policyId. 
+        /// </summary>
+        /// <param name="policyId">The column "policy_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of VoucherVerificationPolicy.</returns>
+        MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetNext(int policyId);
+
+        /// <summary>
+        /// Gets the last record of VoucherVerificationPolicy.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of VoucherVerificationPolicy.</returns>
+        MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the VoucherVerificationPolicy against policyIds. 
         /// </summary>
         /// <param name="policyIds">Array of column "policy_id" parameter used on where filter.</param>

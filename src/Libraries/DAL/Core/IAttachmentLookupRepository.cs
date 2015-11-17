@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.AttachmentLookup Get(int attachmentLookupId);
 
         /// <summary>
+        /// Gets the first record of AttachmentLookup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of AttachmentLookup.</returns>
+        MixERP.Net.Entities.Core.AttachmentLookup GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of AttachmentLookup sorted by attachmentLookupId. 
+        /// </summary>
+        /// <param name="attachmentLookupId">The column "attachment_lookup_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of AttachmentLookup.</returns>
+        MixERP.Net.Entities.Core.AttachmentLookup GetPrevious(int attachmentLookupId);
+
+        /// <summary>
+        /// Gets the next record of AttachmentLookup sorted by attachmentLookupId. 
+        /// </summary>
+        /// <param name="attachmentLookupId">The column "attachment_lookup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of AttachmentLookup.</returns>
+        MixERP.Net.Entities.Core.AttachmentLookup GetNext(int attachmentLookupId);
+
+        /// <summary>
+        /// Gets the last record of AttachmentLookup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of AttachmentLookup.</returns>
+        MixERP.Net.Entities.Core.AttachmentLookup GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the AttachmentLookup against attachmentLookupIds. 
         /// </summary>
         /// <param name="attachmentLookupIds">Array of column "attachment_lookup_id" parameter used on where filter.</param>

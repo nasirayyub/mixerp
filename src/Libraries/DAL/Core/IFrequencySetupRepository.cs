@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.FrequencySetup Get(int frequencySetupId);
 
         /// <summary>
+        /// Gets the first record of FrequencySetup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of FrequencySetup.</returns>
+        MixERP.Net.Entities.Core.FrequencySetup GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of FrequencySetup sorted by frequencySetupId. 
+        /// </summary>
+        /// <param name="frequencySetupId">The column "frequency_setup_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of FrequencySetup.</returns>
+        MixERP.Net.Entities.Core.FrequencySetup GetPrevious(int frequencySetupId);
+
+        /// <summary>
+        /// Gets the next record of FrequencySetup sorted by frequencySetupId. 
+        /// </summary>
+        /// <param name="frequencySetupId">The column "frequency_setup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of FrequencySetup.</returns>
+        MixERP.Net.Entities.Core.FrequencySetup GetNext(int frequencySetupId);
+
+        /// <summary>
+        /// Gets the last record of FrequencySetup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of FrequencySetup.</returns>
+        MixERP.Net.Entities.Core.FrequencySetup GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the FrequencySetup against frequencySetupIds. 
         /// </summary>
         /// <param name="frequencySetupIds">Array of column "frequency_setup_id" parameter used on where filter.</param>

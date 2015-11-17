@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/mixerp/count-filtered/{filterName}", "GET", typeof(MixerpController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/mixerp/get-filtered/{pageNumber}/{filterName}", "GET", typeof(MixerpController), "GetFiltered")]
         [InlineData("/api/config/mixerp/get-filtered/{pageNumber}/{filterName}", "GET", typeof(MixerpController), "GetFiltered")]
+        [InlineData("/api/config/mixerp/first", "GET", typeof(MixerpController), "GetFirst")]
+        [InlineData("/api/config/mixerp/previous/1", "GET", typeof(MixerpController), "GetPrevious")]
+        [InlineData("/api/config/mixerp/next/1", "GET", typeof(MixerpController), "GetNext")]
+        [InlineData("/api/config/mixerp/last", "GET", typeof(MixerpController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/mixerp/custom-fields", "GET", typeof(MixerpController), "GetCustomFields")]
         [InlineData("/api/config/mixerp/custom-fields", "GET", typeof(MixerpController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/mixerp/count-filtered/{filterName}", "HEAD", typeof(MixerpController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/mixerp/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(MixerpController), "GetFiltered")]
         [InlineData("/api/config/mixerp/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(MixerpController), "GetFiltered")]
+        [InlineData("/api/config/mixerp/first", "HEAD", typeof(MixerpController), "GetFirst")]
+        [InlineData("/api/config/mixerp/previous/1", "HEAD", typeof(MixerpController), "GetPrevious")]
+        [InlineData("/api/config/mixerp/next/1", "HEAD", typeof(MixerpController), "GetNext")]
+        [InlineData("/api/config/mixerp/last", "HEAD", typeof(MixerpController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/mixerp/custom-fields", "HEAD", typeof(MixerpController), "GetCustomFields")]
         [InlineData("/api/config/mixerp/custom-fields", "HEAD", typeof(MixerpController), "GetCustomFields")]

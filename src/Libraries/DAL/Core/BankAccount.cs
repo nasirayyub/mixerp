@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.bank_accounts". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "BankAccount" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.BankAccount GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"BankAccount\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.bank_accounts ORDER BY account_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.BankAccount>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.bank_accounts" sorted by accountId.
+        /// </summary>
+        /// <param name="accountId">The column "account_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "BankAccount" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.BankAccount GetPrevious(long accountId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"BankAccount\" by \"AccountId\" with value {AccountId} was denied to the user with Login ID {_LoginId}", accountId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.bank_accounts WHERE account_id < @0 ORDER BY account_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.BankAccount>(this._Catalog, sql, accountId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.bank_accounts" sorted by accountId.
+        /// </summary>
+        /// <param name="accountId">The column "account_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "BankAccount" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.BankAccount GetNext(long accountId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"BankAccount\" by \"AccountId\" with value {AccountId} was denied to the user with Login ID {_LoginId}", accountId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.bank_accounts WHERE account_id > @0 ORDER BY account_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.BankAccount>(this._Catalog, sql, accountId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.bank_accounts". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "BankAccount" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.BankAccount GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"BankAccount\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.bank_accounts ORDER BY account_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.BankAccount>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.bank_accounts" with a where filter on the column "account_id" to return a multiple instances of the "BankAccount" class. 
         /// </summary>
         /// <param name="accountIds">Array of column "account_id" parameter used on where filter.</param>

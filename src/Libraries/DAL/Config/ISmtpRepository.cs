@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Config.Data
         MixERP.Net.Entities.Config.Smtp Get(int smtpId);
 
         /// <summary>
+        /// Gets the first record of Smtp.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Smtp.</returns>
+        MixERP.Net.Entities.Config.Smtp GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Smtp sorted by smtpId. 
+        /// </summary>
+        /// <param name="smtpId">The column "smtp_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Smtp.</returns>
+        MixERP.Net.Entities.Config.Smtp GetPrevious(int smtpId);
+
+        /// <summary>
+        /// Gets the next record of Smtp sorted by smtpId. 
+        /// </summary>
+        /// <param name="smtpId">The column "smtp_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Smtp.</returns>
+        MixERP.Net.Entities.Config.Smtp GetNext(int smtpId);
+
+        /// <summary>
+        /// Gets the last record of Smtp.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Smtp.</returns>
+        MixERP.Net.Entities.Config.Smtp GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Smtp against smtpIds. 
         /// </summary>
         /// <param name="smtpIds">Array of column "smtp_id" parameter used on where filter.</param>

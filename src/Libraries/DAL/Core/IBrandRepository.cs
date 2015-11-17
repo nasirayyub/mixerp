@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Brand Get(int brandId);
 
         /// <summary>
+        /// Gets the first record of Brand.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Brand.</returns>
+        MixERP.Net.Entities.Core.Brand GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Brand sorted by brandId. 
+        /// </summary>
+        /// <param name="brandId">The column "brand_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Brand.</returns>
+        MixERP.Net.Entities.Core.Brand GetPrevious(int brandId);
+
+        /// <summary>
+        /// Gets the next record of Brand sorted by brandId. 
+        /// </summary>
+        /// <param name="brandId">The column "brand_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Brand.</returns>
+        MixERP.Net.Entities.Core.Brand GetNext(int brandId);
+
+        /// <summary>
+        /// Gets the last record of Brand.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Brand.</returns>
+        MixERP.Net.Entities.Core.Brand GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Brand against brandIds. 
         /// </summary>
         /// <param name="brandIds">Array of column "brand_id" parameter used on where filter.</param>

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/menu-policy/count-filtered/{filterName}", "GET", typeof(MenuPolicyController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/menu-policy/get-filtered/{pageNumber}/{filterName}", "GET", typeof(MenuPolicyController), "GetFiltered")]
         [InlineData("/api/policy/menu-policy/get-filtered/{pageNumber}/{filterName}", "GET", typeof(MenuPolicyController), "GetFiltered")]
+        [InlineData("/api/policy/menu-policy/first", "GET", typeof(MenuPolicyController), "GetFirst")]
+        [InlineData("/api/policy/menu-policy/previous/1", "GET", typeof(MenuPolicyController), "GetPrevious")]
+        [InlineData("/api/policy/menu-policy/next/1", "GET", typeof(MenuPolicyController), "GetNext")]
+        [InlineData("/api/policy/menu-policy/last", "GET", typeof(MenuPolicyController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/menu-policy/custom-fields", "GET", typeof(MenuPolicyController), "GetCustomFields")]
         [InlineData("/api/policy/menu-policy/custom-fields", "GET", typeof(MenuPolicyController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/menu-policy/count-filtered/{filterName}", "HEAD", typeof(MenuPolicyController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/menu-policy/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(MenuPolicyController), "GetFiltered")]
         [InlineData("/api/policy/menu-policy/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(MenuPolicyController), "GetFiltered")]
+        [InlineData("/api/policy/menu-policy/first", "HEAD", typeof(MenuPolicyController), "GetFirst")]
+        [InlineData("/api/policy/menu-policy/previous/1", "HEAD", typeof(MenuPolicyController), "GetPrevious")]
+        [InlineData("/api/policy/menu-policy/next/1", "HEAD", typeof(MenuPolicyController), "GetNext")]
+        [InlineData("/api/policy/menu-policy/last", "HEAD", typeof(MenuPolicyController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/menu-policy/custom-fields", "HEAD", typeof(MenuPolicyController), "GetCustomFields")]
         [InlineData("/api/policy/menu-policy/custom-fields", "HEAD", typeof(MenuPolicyController), "GetCustomFields")]

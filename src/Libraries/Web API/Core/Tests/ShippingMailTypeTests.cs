@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.ShippingMailType shippingMailType = Fixture().GetFirst();
+            Assert.NotNull(shippingMailType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.ShippingMailType shippingMailType = Fixture().GetPrevious(0);
+            Assert.NotNull(shippingMailType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.ShippingMailType shippingMailType = Fixture().GetNext(0);
+            Assert.NotNull(shippingMailType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.ShippingMailType shippingMailType = Fixture().GetLast();
+            Assert.NotNull(shippingMailType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.ShippingMailType> shippingMailTypes = Fixture().Get(new int[] { });

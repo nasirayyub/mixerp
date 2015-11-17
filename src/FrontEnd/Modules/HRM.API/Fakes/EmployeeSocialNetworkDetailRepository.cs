@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.HRM.Fakes
             return new MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail();
         }
 
-        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail> Get([FromUri] long[] employeeSocialNetworkDetailIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail> Get(long[] employeeSocialNetworkDetailIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail(), 1);
+        }
+
+        public MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail GetFirst()
+        {
+            return new MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail();
+        }
+
+        public MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail GetPrevious(long employeeSocialNetworkDetailId)
+        {
+            return new MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail();
+        }
+
+        public MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail GetNext(long employeeSocialNetworkDetailId)
+        {
+            return new MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail();
+        }
+
+        public MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail GetLast()
+        {
+            return new MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail();
         }
 
         public IEnumerable<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail> GetPaginatedResult()

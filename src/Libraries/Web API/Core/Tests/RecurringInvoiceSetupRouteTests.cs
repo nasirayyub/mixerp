@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/recurring-invoice-setup/count-filtered/{filterName}", "GET", typeof(RecurringInvoiceSetupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/recurring-invoice-setup/get-filtered/{pageNumber}/{filterName}", "GET", typeof(RecurringInvoiceSetupController), "GetFiltered")]
         [InlineData("/api/core/recurring-invoice-setup/get-filtered/{pageNumber}/{filterName}", "GET", typeof(RecurringInvoiceSetupController), "GetFiltered")]
+        [InlineData("/api/core/recurring-invoice-setup/first", "GET", typeof(RecurringInvoiceSetupController), "GetFirst")]
+        [InlineData("/api/core/recurring-invoice-setup/previous/1", "GET", typeof(RecurringInvoiceSetupController), "GetPrevious")]
+        [InlineData("/api/core/recurring-invoice-setup/next/1", "GET", typeof(RecurringInvoiceSetupController), "GetNext")]
+        [InlineData("/api/core/recurring-invoice-setup/last", "GET", typeof(RecurringInvoiceSetupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/recurring-invoice-setup/custom-fields", "GET", typeof(RecurringInvoiceSetupController), "GetCustomFields")]
         [InlineData("/api/core/recurring-invoice-setup/custom-fields", "GET", typeof(RecurringInvoiceSetupController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/recurring-invoice-setup/count-filtered/{filterName}", "HEAD", typeof(RecurringInvoiceSetupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/recurring-invoice-setup/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(RecurringInvoiceSetupController), "GetFiltered")]
         [InlineData("/api/core/recurring-invoice-setup/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(RecurringInvoiceSetupController), "GetFiltered")]
+        [InlineData("/api/core/recurring-invoice-setup/first", "HEAD", typeof(RecurringInvoiceSetupController), "GetFirst")]
+        [InlineData("/api/core/recurring-invoice-setup/previous/1", "HEAD", typeof(RecurringInvoiceSetupController), "GetPrevious")]
+        [InlineData("/api/core/recurring-invoice-setup/next/1", "HEAD", typeof(RecurringInvoiceSetupController), "GetNext")]
+        [InlineData("/api/core/recurring-invoice-setup/last", "HEAD", typeof(RecurringInvoiceSetupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/recurring-invoice-setup/custom-fields", "HEAD", typeof(RecurringInvoiceSetupController), "GetCustomFields")]
         [InlineData("/api/core/recurring-invoice-setup/custom-fields", "HEAD", typeof(RecurringInvoiceSetupController), "GetCustomFields")]

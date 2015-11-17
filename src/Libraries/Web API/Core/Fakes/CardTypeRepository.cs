@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.CardType(), 1);
         }
 
+        public MixERP.Net.Entities.Core.CardType GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.CardType();
+        }
+
+        public MixERP.Net.Entities.Core.CardType GetPrevious(int cardTypeId)
+        {
+            return new MixERP.Net.Entities.Core.CardType();
+        }
+
+        public MixERP.Net.Entities.Core.CardType GetNext(int cardTypeId)
+        {
+            return new MixERP.Net.Entities.Core.CardType();
+        }
+
+        public MixERP.Net.Entities.Core.CardType GetLast()
+        {
+            return new MixERP.Net.Entities.Core.CardType();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.CardType> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.CardType(), 1);

@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Config.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Config.ScrudFactory scrudFactory = Fixture().GetFirst();
+            Assert.NotNull(scrudFactory);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Config.ScrudFactory scrudFactory = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(scrudFactory);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Config.ScrudFactory scrudFactory = Fixture().GetNext(string.Empty);
+            Assert.NotNull(scrudFactory);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Config.ScrudFactory scrudFactory = Fixture().GetLast();
+            Assert.NotNull(scrudFactory);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Config.ScrudFactory> scrudFactories = Fixture().Get(new string[] { });

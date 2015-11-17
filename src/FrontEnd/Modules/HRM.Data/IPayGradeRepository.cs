@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.PayGrade Get(int payGradeId);
 
         /// <summary>
+        /// Gets the first record of PayGrade.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of PayGrade.</returns>
+        MixERP.Net.Entities.HRM.PayGrade GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of PayGrade sorted by payGradeId. 
+        /// </summary>
+        /// <param name="payGradeId">The column "pay_grade_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of PayGrade.</returns>
+        MixERP.Net.Entities.HRM.PayGrade GetPrevious(int payGradeId);
+
+        /// <summary>
+        /// Gets the next record of PayGrade sorted by payGradeId. 
+        /// </summary>
+        /// <param name="payGradeId">The column "pay_grade_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of PayGrade.</returns>
+        MixERP.Net.Entities.HRM.PayGrade GetNext(int payGradeId);
+
+        /// <summary>
+        /// Gets the last record of PayGrade.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of PayGrade.</returns>
+        MixERP.Net.Entities.HRM.PayGrade GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the PayGrade against payGradeIds. 
         /// </summary>
         /// <param name="payGradeIds">Array of column "pay_grade_id" parameter used on where filter.</param>

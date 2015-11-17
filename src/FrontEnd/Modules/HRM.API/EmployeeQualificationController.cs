@@ -245,6 +245,132 @@ namespace MixERP.Net.Api.HRM
         }
 
         /// <summary>
+        ///     Returns the first instance of employee qualification.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/hrm/employee-qualification/first")]
+        public MixERP.Net.Entities.HRM.EmployeeQualification GetFirst()
+        {
+            try
+            {
+                return this.EmployeeQualificationRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of employee qualification.
+        /// </summary>
+        /// <param name="employeeQualificationId">Enter EmployeeQualificationId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{employeeQualificationId}")]
+        [Route("~/api/hrm/employee-qualification/previous/{employeeQualificationId}")]
+        public MixERP.Net.Entities.HRM.EmployeeQualification GetPrevious(long employeeQualificationId)
+        {
+            try
+            {
+                return this.EmployeeQualificationRepository.GetPrevious(employeeQualificationId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of employee qualification.
+        /// </summary>
+        /// <param name="employeeQualificationId">Enter EmployeeQualificationId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{employeeQualificationId}")]
+        [Route("~/api/hrm/employee-qualification/next/{employeeQualificationId}")]
+        public MixERP.Net.Entities.HRM.EmployeeQualification GetNext(long employeeQualificationId)
+        {
+            try
+            {
+                return this.EmployeeQualificationRepository.GetNext(employeeQualificationId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of employee qualification.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/hrm/employee-qualification/last")]
+        public MixERP.Net.Entities.HRM.EmployeeQualification GetLast()
+        {
+            try
+            {
+                return this.EmployeeQualificationRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 employee qualifications on each page, sorted by the property EmployeeQualificationId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

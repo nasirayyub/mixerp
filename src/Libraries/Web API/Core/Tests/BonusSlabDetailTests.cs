@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.BonusSlabDetail bonusSlabDetail = Fixture().GetFirst();
+            Assert.NotNull(bonusSlabDetail);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.BonusSlabDetail bonusSlabDetail = Fixture().GetPrevious(0);
+            Assert.NotNull(bonusSlabDetail);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.BonusSlabDetail bonusSlabDetail = Fixture().GetNext(0);
+            Assert.NotNull(bonusSlabDetail);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.BonusSlabDetail bonusSlabDetail = Fixture().GetLast();
+            Assert.NotNull(bonusSlabDetail);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.BonusSlabDetail> bonusSlabDetails = Fixture().Get(new int[] { });

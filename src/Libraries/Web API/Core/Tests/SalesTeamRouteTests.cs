@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/sales-team/count-filtered/{filterName}", "GET", typeof(SalesTeamController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/sales-team/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SalesTeamController), "GetFiltered")]
         [InlineData("/api/core/sales-team/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SalesTeamController), "GetFiltered")]
+        [InlineData("/api/core/sales-team/first", "GET", typeof(SalesTeamController), "GetFirst")]
+        [InlineData("/api/core/sales-team/previous/1", "GET", typeof(SalesTeamController), "GetPrevious")]
+        [InlineData("/api/core/sales-team/next/1", "GET", typeof(SalesTeamController), "GetNext")]
+        [InlineData("/api/core/sales-team/last", "GET", typeof(SalesTeamController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/sales-team/custom-fields", "GET", typeof(SalesTeamController), "GetCustomFields")]
         [InlineData("/api/core/sales-team/custom-fields", "GET", typeof(SalesTeamController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/sales-team/count-filtered/{filterName}", "HEAD", typeof(SalesTeamController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/sales-team/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SalesTeamController), "GetFiltered")]
         [InlineData("/api/core/sales-team/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SalesTeamController), "GetFiltered")]
+        [InlineData("/api/core/sales-team/first", "HEAD", typeof(SalesTeamController), "GetFirst")]
+        [InlineData("/api/core/sales-team/previous/1", "HEAD", typeof(SalesTeamController), "GetPrevious")]
+        [InlineData("/api/core/sales-team/next/1", "HEAD", typeof(SalesTeamController), "GetNext")]
+        [InlineData("/api/core/sales-team/last", "HEAD", typeof(SalesTeamController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/sales-team/custom-fields", "HEAD", typeof(SalesTeamController), "GetCustomFields")]
         [InlineData("/api/core/sales-team/custom-fields", "HEAD", typeof(SalesTeamController), "GetCustomFields")]

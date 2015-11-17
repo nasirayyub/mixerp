@@ -82,7 +82,7 @@ namespace MixERP.Net.Entities.Core
         public decimal? CostPrice { get; set; }
 
         [Column("selling_price")]
-        [ColumnDbType("money_strict", 0, true, "")]
+        [ColumnDbType("money_strict2", 0, true, "")]
         public decimal? SellingPrice { get; set; }
 
         [Column("selling_price_includes_tax")]
@@ -120,5 +120,17 @@ namespace MixERP.Net.Entities.Core
         [Column("photo")]
         [ColumnDbType("image", 0, true, "")]
         public string Photo { get; set; }
+
+        [Column("is_variant_of")]
+        [ColumnDbType("int4", 0, true, "")]
+        public int? IsVariantOf { get; set; }
+
+        [Column("allow_sales")]
+        [ColumnDbType("bool", 0, true, "")]
+        public bool? AllowSales { get; set; }
+
+        [Column("allow_purchase")]
+        [ColumnDbType("bool", 0, true, "")]
+        public bool? AllowPurchase { get; set; }
     }
 }

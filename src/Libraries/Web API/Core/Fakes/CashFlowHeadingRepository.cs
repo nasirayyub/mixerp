@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.CashFlowHeading(), 1);
         }
 
+        public MixERP.Net.Entities.Core.CashFlowHeading GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.CashFlowHeading();
+        }
+
+        public MixERP.Net.Entities.Core.CashFlowHeading GetPrevious(int cashFlowHeadingId)
+        {
+            return new MixERP.Net.Entities.Core.CashFlowHeading();
+        }
+
+        public MixERP.Net.Entities.Core.CashFlowHeading GetNext(int cashFlowHeadingId)
+        {
+            return new MixERP.Net.Entities.Core.CashFlowHeading();
+        }
+
+        public MixERP.Net.Entities.Core.CashFlowHeading GetLast()
+        {
+            return new MixERP.Net.Entities.Core.CashFlowHeading();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.CashFlowHeading> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.CashFlowHeading(), 1);

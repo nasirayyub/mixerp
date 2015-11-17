@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/leave-type/count-filtered/{filterName}", "GET", typeof(LeaveTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/leave-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(LeaveTypeController), "GetFiltered")]
         [InlineData("/api/hrm/leave-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(LeaveTypeController), "GetFiltered")]
+        [InlineData("/api/hrm/leave-type/first", "GET", typeof(LeaveTypeController), "GetFirst")]
+        [InlineData("/api/hrm/leave-type/previous/1", "GET", typeof(LeaveTypeController), "GetPrevious")]
+        [InlineData("/api/hrm/leave-type/next/1", "GET", typeof(LeaveTypeController), "GetNext")]
+        [InlineData("/api/hrm/leave-type/last", "GET", typeof(LeaveTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/leave-type/custom-fields", "GET", typeof(LeaveTypeController), "GetCustomFields")]
         [InlineData("/api/hrm/leave-type/custom-fields", "GET", typeof(LeaveTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/leave-type/count-filtered/{filterName}", "HEAD", typeof(LeaveTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/leave-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(LeaveTypeController), "GetFiltered")]
         [InlineData("/api/hrm/leave-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(LeaveTypeController), "GetFiltered")]
+        [InlineData("/api/hrm/leave-type/first", "HEAD", typeof(LeaveTypeController), "GetFirst")]
+        [InlineData("/api/hrm/leave-type/previous/1", "HEAD", typeof(LeaveTypeController), "GetPrevious")]
+        [InlineData("/api/hrm/leave-type/next/1", "HEAD", typeof(LeaveTypeController), "GetNext")]
+        [InlineData("/api/hrm/leave-type/last", "HEAD", typeof(LeaveTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/leave-type/custom-fields", "HEAD", typeof(LeaveTypeController), "GetCustomFields")]
         [InlineData("/api/hrm/leave-type/custom-fields", "HEAD", typeof(LeaveTypeController), "GetCustomFields")]

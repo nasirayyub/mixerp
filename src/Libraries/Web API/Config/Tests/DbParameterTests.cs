@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Config.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Config.DbParameter dbParameter = Fixture().GetFirst();
+            Assert.NotNull(dbParameter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Config.DbParameter dbParameter = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(dbParameter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Config.DbParameter dbParameter = Fixture().GetNext(string.Empty);
+            Assert.NotNull(dbParameter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Config.DbParameter dbParameter = Fixture().GetLast();
+            Assert.NotNull(dbParameter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Config.DbParameter> dbParameters = Fixture().Get(new string[] { });

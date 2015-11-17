@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/salesperson-bonus-setup/count-filtered/{filterName}", "GET", typeof(SalespersonBonusSetupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/salesperson-bonus-setup/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SalespersonBonusSetupController), "GetFiltered")]
         [InlineData("/api/core/salesperson-bonus-setup/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SalespersonBonusSetupController), "GetFiltered")]
+        [InlineData("/api/core/salesperson-bonus-setup/first", "GET", typeof(SalespersonBonusSetupController), "GetFirst")]
+        [InlineData("/api/core/salesperson-bonus-setup/previous/1", "GET", typeof(SalespersonBonusSetupController), "GetPrevious")]
+        [InlineData("/api/core/salesperson-bonus-setup/next/1", "GET", typeof(SalespersonBonusSetupController), "GetNext")]
+        [InlineData("/api/core/salesperson-bonus-setup/last", "GET", typeof(SalespersonBonusSetupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/salesperson-bonus-setup/custom-fields", "GET", typeof(SalespersonBonusSetupController), "GetCustomFields")]
         [InlineData("/api/core/salesperson-bonus-setup/custom-fields", "GET", typeof(SalespersonBonusSetupController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/salesperson-bonus-setup/count-filtered/{filterName}", "HEAD", typeof(SalespersonBonusSetupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/salesperson-bonus-setup/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SalespersonBonusSetupController), "GetFiltered")]
         [InlineData("/api/core/salesperson-bonus-setup/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SalespersonBonusSetupController), "GetFiltered")]
+        [InlineData("/api/core/salesperson-bonus-setup/first", "HEAD", typeof(SalespersonBonusSetupController), "GetFirst")]
+        [InlineData("/api/core/salesperson-bonus-setup/previous/1", "HEAD", typeof(SalespersonBonusSetupController), "GetPrevious")]
+        [InlineData("/api/core/salesperson-bonus-setup/next/1", "HEAD", typeof(SalespersonBonusSetupController), "GetNext")]
+        [InlineData("/api/core/salesperson-bonus-setup/last", "HEAD", typeof(SalespersonBonusSetupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/salesperson-bonus-setup/custom-fields", "HEAD", typeof(SalespersonBonusSetupController), "GetCustomFields")]
         [InlineData("/api/core/salesperson-bonus-setup/custom-fields", "HEAD", typeof(SalespersonBonusSetupController), "GetCustomFields")]

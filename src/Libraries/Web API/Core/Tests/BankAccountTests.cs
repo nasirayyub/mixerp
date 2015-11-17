@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.BankAccount bankAccount = Fixture().GetFirst();
+            Assert.NotNull(bankAccount);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.BankAccount bankAccount = Fixture().GetPrevious(0);
+            Assert.NotNull(bankAccount);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.BankAccount bankAccount = Fixture().GetNext(0);
+            Assert.NotNull(bankAccount);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.BankAccount bankAccount = Fixture().GetLast();
+            Assert.NotNull(bankAccount);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.BankAccount> bankAccounts = Fixture().Get(new long[] { });

@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.attachment_lookup". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "AttachmentLookup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.AttachmentLookup GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"AttachmentLookup\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.attachment_lookup ORDER BY attachment_lookup_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.AttachmentLookup>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.attachment_lookup" sorted by attachmentLookupId.
+        /// </summary>
+        /// <param name="attachmentLookupId">The column "attachment_lookup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "AttachmentLookup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.AttachmentLookup GetPrevious(int attachmentLookupId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"AttachmentLookup\" by \"AttachmentLookupId\" with value {AttachmentLookupId} was denied to the user with Login ID {_LoginId}", attachmentLookupId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.attachment_lookup WHERE attachment_lookup_id < @0 ORDER BY attachment_lookup_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.AttachmentLookup>(this._Catalog, sql, attachmentLookupId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.attachment_lookup" sorted by attachmentLookupId.
+        /// </summary>
+        /// <param name="attachmentLookupId">The column "attachment_lookup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "AttachmentLookup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.AttachmentLookup GetNext(int attachmentLookupId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"AttachmentLookup\" by \"AttachmentLookupId\" with value {AttachmentLookupId} was denied to the user with Login ID {_LoginId}", attachmentLookupId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.attachment_lookup WHERE attachment_lookup_id > @0 ORDER BY attachment_lookup_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.AttachmentLookup>(this._Catalog, sql, attachmentLookupId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.attachment_lookup". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "AttachmentLookup" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.AttachmentLookup GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"AttachmentLookup\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.attachment_lookup ORDER BY attachment_lookup_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.AttachmentLookup>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.attachment_lookup" with a where filter on the column "attachment_lookup_id" to return a multiple instances of the "AttachmentLookup" class. 
         /// </summary>
         /// <param name="attachmentLookupIds">Array of column "attachment_lookup_id" parameter used on where filter.</param>

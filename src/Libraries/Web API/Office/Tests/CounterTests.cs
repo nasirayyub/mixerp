@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Office.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Office.Counter counter = Fixture().GetFirst();
+            Assert.NotNull(counter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Office.Counter counter = Fixture().GetPrevious(0);
+            Assert.NotNull(counter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Office.Counter counter = Fixture().GetNext(0);
+            Assert.NotNull(counter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Office.Counter counter = Fixture().GetLast();
+            Assert.NotNull(counter);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Office.Counter> counters = Fixture().Get(new int[] { });

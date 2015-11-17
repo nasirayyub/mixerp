@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/education-level/count-filtered/{filterName}", "GET", typeof(EducationLevelController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/education-level/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EducationLevelController), "GetFiltered")]
         [InlineData("/api/hrm/education-level/get-filtered/{pageNumber}/{filterName}", "GET", typeof(EducationLevelController), "GetFiltered")]
+        [InlineData("/api/hrm/education-level/first", "GET", typeof(EducationLevelController), "GetFirst")]
+        [InlineData("/api/hrm/education-level/previous/1", "GET", typeof(EducationLevelController), "GetPrevious")]
+        [InlineData("/api/hrm/education-level/next/1", "GET", typeof(EducationLevelController), "GetNext")]
+        [InlineData("/api/hrm/education-level/last", "GET", typeof(EducationLevelController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/education-level/custom-fields", "GET", typeof(EducationLevelController), "GetCustomFields")]
         [InlineData("/api/hrm/education-level/custom-fields", "GET", typeof(EducationLevelController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/education-level/count-filtered/{filterName}", "HEAD", typeof(EducationLevelController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/education-level/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EducationLevelController), "GetFiltered")]
         [InlineData("/api/hrm/education-level/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(EducationLevelController), "GetFiltered")]
+        [InlineData("/api/hrm/education-level/first", "HEAD", typeof(EducationLevelController), "GetFirst")]
+        [InlineData("/api/hrm/education-level/previous/1", "HEAD", typeof(EducationLevelController), "GetPrevious")]
+        [InlineData("/api/hrm/education-level/next/1", "HEAD", typeof(EducationLevelController), "GetNext")]
+        [InlineData("/api/hrm/education-level/last", "HEAD", typeof(EducationLevelController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/education-level/custom-fields", "HEAD", typeof(EducationLevelController), "GetCustomFields")]
         [InlineData("/api/hrm/education-level/custom-fields", "HEAD", typeof(EducationLevelController), "GetCustomFields")]

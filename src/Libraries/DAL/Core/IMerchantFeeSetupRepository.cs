@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.MerchantFeeSetup Get(int merchantFeeSetupId);
 
         /// <summary>
+        /// Gets the first record of MerchantFeeSetup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of MerchantFeeSetup.</returns>
+        MixERP.Net.Entities.Core.MerchantFeeSetup GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of MerchantFeeSetup sorted by merchantFeeSetupId. 
+        /// </summary>
+        /// <param name="merchantFeeSetupId">The column "merchant_fee_setup_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of MerchantFeeSetup.</returns>
+        MixERP.Net.Entities.Core.MerchantFeeSetup GetPrevious(int merchantFeeSetupId);
+
+        /// <summary>
+        /// Gets the next record of MerchantFeeSetup sorted by merchantFeeSetupId. 
+        /// </summary>
+        /// <param name="merchantFeeSetupId">The column "merchant_fee_setup_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of MerchantFeeSetup.</returns>
+        MixERP.Net.Entities.Core.MerchantFeeSetup GetNext(int merchantFeeSetupId);
+
+        /// <summary>
+        /// Gets the last record of MerchantFeeSetup.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of MerchantFeeSetup.</returns>
+        MixERP.Net.Entities.Core.MerchantFeeSetup GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the MerchantFeeSetup against merchantFeeSetupIds. 
         /// </summary>
         /// <param name="merchantFeeSetupIds">Array of column "merchant_fee_setup_id" parameter used on where filter.</param>

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Audit.Tests
         [InlineData("/api/audit/login/count-filtered/{filterName}", "GET", typeof(LoginController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/audit/login/get-filtered/{pageNumber}/{filterName}", "GET", typeof(LoginController), "GetFiltered")]
         [InlineData("/api/audit/login/get-filtered/{pageNumber}/{filterName}", "GET", typeof(LoginController), "GetFiltered")]
+        [InlineData("/api/audit/login/first", "GET", typeof(LoginController), "GetFirst")]
+        [InlineData("/api/audit/login/previous/1", "GET", typeof(LoginController), "GetPrevious")]
+        [InlineData("/api/audit/login/next/1", "GET", typeof(LoginController), "GetNext")]
+        [InlineData("/api/audit/login/last", "GET", typeof(LoginController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/audit/login/custom-fields", "GET", typeof(LoginController), "GetCustomFields")]
         [InlineData("/api/audit/login/custom-fields", "GET", typeof(LoginController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Audit.Tests
         [InlineData("/api/audit/login/count-filtered/{filterName}", "HEAD", typeof(LoginController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/audit/login/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(LoginController), "GetFiltered")]
         [InlineData("/api/audit/login/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(LoginController), "GetFiltered")]
+        [InlineData("/api/audit/login/first", "HEAD", typeof(LoginController), "GetFirst")]
+        [InlineData("/api/audit/login/previous/1", "HEAD", typeof(LoginController), "GetPrevious")]
+        [InlineData("/api/audit/login/next/1", "HEAD", typeof(LoginController), "GetNext")]
+        [InlineData("/api/audit/login/last", "HEAD", typeof(LoginController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/audit/login/custom-fields", "HEAD", typeof(LoginController), "GetCustomFields")]
         [InlineData("/api/audit/login/custom-fields", "HEAD", typeof(LoginController), "GetCustomFields")]

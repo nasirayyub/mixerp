@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.CustomFieldForm Get(string formName);
 
         /// <summary>
+        /// Gets the first record of CustomFieldForm.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CustomFieldForm.</returns>
+        MixERP.Net.Entities.Core.CustomFieldForm GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of CustomFieldForm sorted by formName. 
+        /// </summary>
+        /// <param name="formName">The column "form_name" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CustomFieldForm.</returns>
+        MixERP.Net.Entities.Core.CustomFieldForm GetPrevious(string formName);
+
+        /// <summary>
+        /// Gets the next record of CustomFieldForm sorted by formName. 
+        /// </summary>
+        /// <param name="formName">The column "form_name" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CustomFieldForm.</returns>
+        MixERP.Net.Entities.Core.CustomFieldForm GetNext(string formName);
+
+        /// <summary>
+        /// Gets the last record of CustomFieldForm.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CustomFieldForm.</returns>
+        MixERP.Net.Entities.Core.CustomFieldForm GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the CustomFieldForm against formNames. 
         /// </summary>
         /// <param name="formNames">Array of column "form_name" parameter used on where filter.</param>

@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Policy.Fakes
             return new MixERP.Net.Entities.Policy.AutoVerificationPolicy();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Policy.AutoVerificationPolicy> Get([FromUri] int[] policyIds)
+        public IEnumerable<MixERP.Net.Entities.Policy.AutoVerificationPolicy> Get(int[] policyIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Policy.AutoVerificationPolicy(), 1);
+        }
+
+        public MixERP.Net.Entities.Policy.AutoVerificationPolicy GetFirst()
+        {
+            return new MixERP.Net.Entities.Policy.AutoVerificationPolicy();
+        }
+
+        public MixERP.Net.Entities.Policy.AutoVerificationPolicy GetPrevious(int policyId)
+        {
+            return new MixERP.Net.Entities.Policy.AutoVerificationPolicy();
+        }
+
+        public MixERP.Net.Entities.Policy.AutoVerificationPolicy GetNext(int policyId)
+        {
+            return new MixERP.Net.Entities.Policy.AutoVerificationPolicy();
+        }
+
+        public MixERP.Net.Entities.Policy.AutoVerificationPolicy GetLast()
+        {
+            return new MixERP.Net.Entities.Policy.AutoVerificationPolicy();
         }
 
         public IEnumerable<MixERP.Net.Entities.Policy.AutoVerificationPolicy> GetPaginatedResult()

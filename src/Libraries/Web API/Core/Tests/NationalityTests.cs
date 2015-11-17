@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.Nationality nationality = Fixture().GetFirst();
+            Assert.NotNull(nationality);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.Nationality nationality = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(nationality);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.Nationality nationality = Fixture().GetNext(string.Empty);
+            Assert.NotNull(nationality);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.Nationality nationality = Fixture().GetLast();
+            Assert.NotNull(nationality);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.Nationality> nationalities = Fixture().Get(new string[] { });

@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Config.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Config.AttachmentFactory attachmentFactory = Fixture().GetFirst();
+            Assert.NotNull(attachmentFactory);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Config.AttachmentFactory attachmentFactory = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(attachmentFactory);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Config.AttachmentFactory attachmentFactory = Fixture().GetNext(string.Empty);
+            Assert.NotNull(attachmentFactory);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Config.AttachmentFactory attachmentFactory = Fixture().GetLast();
+            Assert.NotNull(attachmentFactory);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Config.AttachmentFactory> attachmentFactories = Fixture().Get(new string[] { });

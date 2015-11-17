@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/exchange-rate/count-filtered/{filterName}", "GET", typeof(ExchangeRateController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/exchange-rate/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ExchangeRateController), "GetFiltered")]
         [InlineData("/api/core/exchange-rate/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ExchangeRateController), "GetFiltered")]
+        [InlineData("/api/core/exchange-rate/first", "GET", typeof(ExchangeRateController), "GetFirst")]
+        [InlineData("/api/core/exchange-rate/previous/1", "GET", typeof(ExchangeRateController), "GetPrevious")]
+        [InlineData("/api/core/exchange-rate/next/1", "GET", typeof(ExchangeRateController), "GetNext")]
+        [InlineData("/api/core/exchange-rate/last", "GET", typeof(ExchangeRateController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/exchange-rate/custom-fields", "GET", typeof(ExchangeRateController), "GetCustomFields")]
         [InlineData("/api/core/exchange-rate/custom-fields", "GET", typeof(ExchangeRateController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/exchange-rate/count-filtered/{filterName}", "HEAD", typeof(ExchangeRateController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/exchange-rate/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ExchangeRateController), "GetFiltered")]
         [InlineData("/api/core/exchange-rate/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ExchangeRateController), "GetFiltered")]
+        [InlineData("/api/core/exchange-rate/first", "HEAD", typeof(ExchangeRateController), "GetFirst")]
+        [InlineData("/api/core/exchange-rate/previous/1", "HEAD", typeof(ExchangeRateController), "GetPrevious")]
+        [InlineData("/api/core/exchange-rate/next/1", "HEAD", typeof(ExchangeRateController), "GetNext")]
+        [InlineData("/api/core/exchange-rate/last", "HEAD", typeof(ExchangeRateController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/exchange-rate/custom-fields", "HEAD", typeof(ExchangeRateController), "GetCustomFields")]
         [InlineData("/api/core/exchange-rate/custom-fields", "HEAD", typeof(ExchangeRateController), "GetCustomFields")]

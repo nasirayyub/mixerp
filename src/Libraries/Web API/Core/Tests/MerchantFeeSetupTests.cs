@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.MerchantFeeSetup merchantFeeSetup = Fixture().GetFirst();
+            Assert.NotNull(merchantFeeSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.MerchantFeeSetup merchantFeeSetup = Fixture().GetPrevious(0);
+            Assert.NotNull(merchantFeeSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.MerchantFeeSetup merchantFeeSetup = Fixture().GetNext(0);
+            Assert.NotNull(merchantFeeSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.MerchantFeeSetup merchantFeeSetup = Fixture().GetLast();
+            Assert.NotNull(merchantFeeSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.MerchantFeeSetup> merchantFeeSetups = Fixture().Get(new int[] { });

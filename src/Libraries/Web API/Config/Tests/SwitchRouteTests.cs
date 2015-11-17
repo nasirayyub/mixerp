@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/switch/count-filtered/{filterName}", "GET", typeof(SwitchController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/switch/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SwitchController), "GetFiltered")]
         [InlineData("/api/config/switch/get-filtered/{pageNumber}/{filterName}", "GET", typeof(SwitchController), "GetFiltered")]
+        [InlineData("/api/config/switch/first", "GET", typeof(SwitchController), "GetFirst")]
+        [InlineData("/api/config/switch/previous/1", "GET", typeof(SwitchController), "GetPrevious")]
+        [InlineData("/api/config/switch/next/1", "GET", typeof(SwitchController), "GetNext")]
+        [InlineData("/api/config/switch/last", "GET", typeof(SwitchController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/switch/custom-fields", "GET", typeof(SwitchController), "GetCustomFields")]
         [InlineData("/api/config/switch/custom-fields", "GET", typeof(SwitchController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/switch/count-filtered/{filterName}", "HEAD", typeof(SwitchController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/switch/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SwitchController), "GetFiltered")]
         [InlineData("/api/config/switch/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(SwitchController), "GetFiltered")]
+        [InlineData("/api/config/switch/first", "HEAD", typeof(SwitchController), "GetFirst")]
+        [InlineData("/api/config/switch/previous/1", "HEAD", typeof(SwitchController), "GetPrevious")]
+        [InlineData("/api/config/switch/next/1", "HEAD", typeof(SwitchController), "GetNext")]
+        [InlineData("/api/config/switch/last", "HEAD", typeof(SwitchController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/switch/custom-fields", "HEAD", typeof(SwitchController), "GetCustomFields")]
         [InlineData("/api/config/switch/custom-fields", "HEAD", typeof(SwitchController), "GetCustomFields")]

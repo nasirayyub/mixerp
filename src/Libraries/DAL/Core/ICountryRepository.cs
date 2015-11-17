@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Country Get(int countryId);
 
         /// <summary>
+        /// Gets the first record of Country.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Country.</returns>
+        MixERP.Net.Entities.Core.Country GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Country sorted by countryId. 
+        /// </summary>
+        /// <param name="countryId">The column "country_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Country.</returns>
+        MixERP.Net.Entities.Core.Country GetPrevious(int countryId);
+
+        /// <summary>
+        /// Gets the next record of Country sorted by countryId. 
+        /// </summary>
+        /// <param name="countryId">The column "country_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Country.</returns>
+        MixERP.Net.Entities.Core.Country GetNext(int countryId);
+
+        /// <summary>
+        /// Gets the last record of Country.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Country.</returns>
+        MixERP.Net.Entities.Core.Country GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Country against countryIds. 
         /// </summary>
         /// <param name="countryIds">Array of column "country_id" parameter used on where filter.</param>

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.MenuLocale Get(int menuLocaleId);
 
         /// <summary>
+        /// Gets the first record of MenuLocale.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of MenuLocale.</returns>
+        MixERP.Net.Entities.Core.MenuLocale GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of MenuLocale sorted by menuLocaleId. 
+        /// </summary>
+        /// <param name="menuLocaleId">The column "menu_locale_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of MenuLocale.</returns>
+        MixERP.Net.Entities.Core.MenuLocale GetPrevious(int menuLocaleId);
+
+        /// <summary>
+        /// Gets the next record of MenuLocale sorted by menuLocaleId. 
+        /// </summary>
+        /// <param name="menuLocaleId">The column "menu_locale_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of MenuLocale.</returns>
+        MixERP.Net.Entities.Core.MenuLocale GetNext(int menuLocaleId);
+
+        /// <summary>
+        /// Gets the last record of MenuLocale.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of MenuLocale.</returns>
+        MixERP.Net.Entities.Core.MenuLocale GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the MenuLocale against menuLocaleIds. 
         /// </summary>
         /// <param name="menuLocaleIds">Array of column "menu_locale_id" parameter used on where filter.</param>

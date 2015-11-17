@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.genders". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Gender" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Gender GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"Gender\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.genders ORDER BY gender_code LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Gender>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.genders" sorted by genderCode.
+        /// </summary>
+        /// <param name="genderCode">The column "gender_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Gender" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Gender GetPrevious(string genderCode)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"Gender\" by \"GenderCode\" with value {GenderCode} was denied to the user with Login ID {_LoginId}", genderCode, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.genders WHERE gender_code < @0 ORDER BY gender_code DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Gender>(this._Catalog, sql, genderCode).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.genders" sorted by genderCode.
+        /// </summary>
+        /// <param name="genderCode">The column "gender_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Gender" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Gender GetNext(string genderCode)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"Gender\" by \"GenderCode\" with value {GenderCode} was denied to the user with Login ID {_LoginId}", genderCode, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.genders WHERE gender_code > @0 ORDER BY gender_code LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Gender>(this._Catalog, sql, genderCode).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.genders". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Gender" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Gender GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"Gender\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.genders ORDER BY gender_code DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Gender>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.genders" with a where filter on the column "gender_code" to return a multiple instances of the "Gender" class. 
         /// </summary>
         /// <param name="genderCodes">Array of column "gender_code" parameter used on where filter.</param>

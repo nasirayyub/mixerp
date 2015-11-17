@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/gender/count-filtered/{filterName}", "GET", typeof(GenderController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/gender/get-filtered/{pageNumber}/{filterName}", "GET", typeof(GenderController), "GetFiltered")]
         [InlineData("/api/core/gender/get-filtered/{pageNumber}/{filterName}", "GET", typeof(GenderController), "GetFiltered")]
+        [InlineData("/api/core/gender/first", "GET", typeof(GenderController), "GetFirst")]
+        [InlineData("/api/core/gender/previous/1", "GET", typeof(GenderController), "GetPrevious")]
+        [InlineData("/api/core/gender/next/1", "GET", typeof(GenderController), "GetNext")]
+        [InlineData("/api/core/gender/last", "GET", typeof(GenderController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/gender/custom-fields", "GET", typeof(GenderController), "GetCustomFields")]
         [InlineData("/api/core/gender/custom-fields", "GET", typeof(GenderController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/gender/count-filtered/{filterName}", "HEAD", typeof(GenderController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/gender/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(GenderController), "GetFiltered")]
         [InlineData("/api/core/gender/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(GenderController), "GetFiltered")]
+        [InlineData("/api/core/gender/first", "HEAD", typeof(GenderController), "GetFirst")]
+        [InlineData("/api/core/gender/previous/1", "HEAD", typeof(GenderController), "GetPrevious")]
+        [InlineData("/api/core/gender/next/1", "HEAD", typeof(GenderController), "GetNext")]
+        [InlineData("/api/core/gender/last", "HEAD", typeof(GenderController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/gender/custom-fields", "HEAD", typeof(GenderController), "GetCustomFields")]
         [InlineData("/api/core/gender/custom-fields", "HEAD", typeof(GenderController), "GetCustomFields")]

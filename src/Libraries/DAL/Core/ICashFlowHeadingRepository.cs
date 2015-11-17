@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.CashFlowHeading Get(int cashFlowHeadingId);
 
         /// <summary>
+        /// Gets the first record of CashFlowHeading.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CashFlowHeading.</returns>
+        MixERP.Net.Entities.Core.CashFlowHeading GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of CashFlowHeading sorted by cashFlowHeadingId. 
+        /// </summary>
+        /// <param name="cashFlowHeadingId">The column "cash_flow_heading_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CashFlowHeading.</returns>
+        MixERP.Net.Entities.Core.CashFlowHeading GetPrevious(int cashFlowHeadingId);
+
+        /// <summary>
+        /// Gets the next record of CashFlowHeading sorted by cashFlowHeadingId. 
+        /// </summary>
+        /// <param name="cashFlowHeadingId">The column "cash_flow_heading_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CashFlowHeading.</returns>
+        MixERP.Net.Entities.Core.CashFlowHeading GetNext(int cashFlowHeadingId);
+
+        /// <summary>
+        /// Gets the last record of CashFlowHeading.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CashFlowHeading.</returns>
+        MixERP.Net.Entities.Core.CashFlowHeading GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the CashFlowHeading against cashFlowHeadingIds. 
         /// </summary>
         /// <param name="cashFlowHeadingIds">Array of column "cash_flow_heading_id" parameter used on where filter.</param>

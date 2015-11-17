@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.RecurringInvoiceSetup(), 1);
         }
 
+        public MixERP.Net.Entities.Core.RecurringInvoiceSetup GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.RecurringInvoiceSetup();
+        }
+
+        public MixERP.Net.Entities.Core.RecurringInvoiceSetup GetPrevious(int recurringInvoiceSetupId)
+        {
+            return new MixERP.Net.Entities.Core.RecurringInvoiceSetup();
+        }
+
+        public MixERP.Net.Entities.Core.RecurringInvoiceSetup GetNext(int recurringInvoiceSetupId)
+        {
+            return new MixERP.Net.Entities.Core.RecurringInvoiceSetup();
+        }
+
+        public MixERP.Net.Entities.Core.RecurringInvoiceSetup GetLast()
+        {
+            return new MixERP.Net.Entities.Core.RecurringInvoiceSetup();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.RecurringInvoiceSetup> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.RecurringInvoiceSetup(), 1);

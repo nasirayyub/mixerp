@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/store-policy-detail/count-filtered/{filterName}", "GET", typeof(StorePolicyDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/store-policy-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(StorePolicyDetailController), "GetFiltered")]
         [InlineData("/api/policy/store-policy-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(StorePolicyDetailController), "GetFiltered")]
+        [InlineData("/api/policy/store-policy-detail/first", "GET", typeof(StorePolicyDetailController), "GetFirst")]
+        [InlineData("/api/policy/store-policy-detail/previous/1", "GET", typeof(StorePolicyDetailController), "GetPrevious")]
+        [InlineData("/api/policy/store-policy-detail/next/1", "GET", typeof(StorePolicyDetailController), "GetNext")]
+        [InlineData("/api/policy/store-policy-detail/last", "GET", typeof(StorePolicyDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/store-policy-detail/custom-fields", "GET", typeof(StorePolicyDetailController), "GetCustomFields")]
         [InlineData("/api/policy/store-policy-detail/custom-fields", "GET", typeof(StorePolicyDetailController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Policy.Tests
         [InlineData("/api/policy/store-policy-detail/count-filtered/{filterName}", "HEAD", typeof(StorePolicyDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/policy/store-policy-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(StorePolicyDetailController), "GetFiltered")]
         [InlineData("/api/policy/store-policy-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(StorePolicyDetailController), "GetFiltered")]
+        [InlineData("/api/policy/store-policy-detail/first", "HEAD", typeof(StorePolicyDetailController), "GetFirst")]
+        [InlineData("/api/policy/store-policy-detail/previous/1", "HEAD", typeof(StorePolicyDetailController), "GetPrevious")]
+        [InlineData("/api/policy/store-policy-detail/next/1", "HEAD", typeof(StorePolicyDetailController), "GetNext")]
+        [InlineData("/api/policy/store-policy-detail/last", "HEAD", typeof(StorePolicyDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/policy/store-policy-detail/custom-fields", "HEAD", typeof(StorePolicyDetailController), "GetCustomFields")]
         [InlineData("/api/policy/store-policy-detail/custom-fields", "HEAD", typeof(StorePolicyDetailController), "GetCustomFields")]

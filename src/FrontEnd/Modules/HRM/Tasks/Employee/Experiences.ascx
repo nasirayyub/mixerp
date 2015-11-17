@@ -26,7 +26,7 @@
         {
             tab: "",
             fields: [
-                ["EmployeeId", "", "", ""],
+                ["EmployeeExperienceId", "EmployeeId", "", ""],
                 ["OrganizationName", "Title", "", ""],
                 ["StartedOn", "EndedOn", "", ""],
                 ["Details", ""]

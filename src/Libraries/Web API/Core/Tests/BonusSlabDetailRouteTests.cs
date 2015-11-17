@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/bonus-slab-detail/count-filtered/{filterName}", "GET", typeof(BonusSlabDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/bonus-slab-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(BonusSlabDetailController), "GetFiltered")]
         [InlineData("/api/core/bonus-slab-detail/get-filtered/{pageNumber}/{filterName}", "GET", typeof(BonusSlabDetailController), "GetFiltered")]
+        [InlineData("/api/core/bonus-slab-detail/first", "GET", typeof(BonusSlabDetailController), "GetFirst")]
+        [InlineData("/api/core/bonus-slab-detail/previous/1", "GET", typeof(BonusSlabDetailController), "GetPrevious")]
+        [InlineData("/api/core/bonus-slab-detail/next/1", "GET", typeof(BonusSlabDetailController), "GetNext")]
+        [InlineData("/api/core/bonus-slab-detail/last", "GET", typeof(BonusSlabDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/bonus-slab-detail/custom-fields", "GET", typeof(BonusSlabDetailController), "GetCustomFields")]
         [InlineData("/api/core/bonus-slab-detail/custom-fields", "GET", typeof(BonusSlabDetailController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/bonus-slab-detail/count-filtered/{filterName}", "HEAD", typeof(BonusSlabDetailController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/bonus-slab-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(BonusSlabDetailController), "GetFiltered")]
         [InlineData("/api/core/bonus-slab-detail/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(BonusSlabDetailController), "GetFiltered")]
+        [InlineData("/api/core/bonus-slab-detail/first", "HEAD", typeof(BonusSlabDetailController), "GetFirst")]
+        [InlineData("/api/core/bonus-slab-detail/previous/1", "HEAD", typeof(BonusSlabDetailController), "GetPrevious")]
+        [InlineData("/api/core/bonus-slab-detail/next/1", "HEAD", typeof(BonusSlabDetailController), "GetNext")]
+        [InlineData("/api/core/bonus-slab-detail/last", "HEAD", typeof(BonusSlabDetailController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/bonus-slab-detail/custom-fields", "HEAD", typeof(BonusSlabDetailController), "GetCustomFields")]
         [InlineData("/api/core/bonus-slab-detail/custom-fields", "HEAD", typeof(BonusSlabDetailController), "GetCustomFields")]

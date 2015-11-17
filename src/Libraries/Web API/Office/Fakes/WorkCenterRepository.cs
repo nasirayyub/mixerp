@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Office.Fakes
             return new MixERP.Net.Entities.Office.WorkCenter();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Office.WorkCenter> Get([FromUri] int[] workCenterIds)
+        public IEnumerable<MixERP.Net.Entities.Office.WorkCenter> Get(int[] workCenterIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Office.WorkCenter(), 1);
+        }
+
+        public MixERP.Net.Entities.Office.WorkCenter GetFirst()
+        {
+            return new MixERP.Net.Entities.Office.WorkCenter();
+        }
+
+        public MixERP.Net.Entities.Office.WorkCenter GetPrevious(int workCenterId)
+        {
+            return new MixERP.Net.Entities.Office.WorkCenter();
+        }
+
+        public MixERP.Net.Entities.Office.WorkCenter GetNext(int workCenterId)
+        {
+            return new MixERP.Net.Entities.Office.WorkCenter();
+        }
+
+        public MixERP.Net.Entities.Office.WorkCenter GetLast()
+        {
+            return new MixERP.Net.Entities.Office.WorkCenter();
         }
 
         public IEnumerable<MixERP.Net.Entities.Office.WorkCenter> GetPaginatedResult()

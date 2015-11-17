@@ -82,7 +82,7 @@ namespace MixERP.Net.Entities.Core
         public decimal CostPrice { get; set; }
 
         [Column("selling_price")]
-        [ColumnDbType("money_strict", 0, false, "")]
+        [ColumnDbType("money_strict2", 0, false, "")]
         public decimal SellingPrice { get; set; }
 
         [Column("selling_price_includes_tax")]

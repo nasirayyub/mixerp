@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.MaritalStatus maritalStatus = Fixture().GetFirst();
+            Assert.NotNull(maritalStatus);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.MaritalStatus maritalStatus = Fixture().GetPrevious(0);
+            Assert.NotNull(maritalStatus);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.MaritalStatus maritalStatus = Fixture().GetNext(0);
+            Assert.NotNull(maritalStatus);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.MaritalStatus maritalStatus = Fixture().GetLast();
+            Assert.NotNull(maritalStatus);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.MaritalStatus> maritalStatuses = Fixture().Get(new int[] { });

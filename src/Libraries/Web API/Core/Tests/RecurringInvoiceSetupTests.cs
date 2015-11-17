@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.RecurringInvoiceSetup recurringInvoiceSetup = Fixture().GetFirst();
+            Assert.NotNull(recurringInvoiceSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.RecurringInvoiceSetup recurringInvoiceSetup = Fixture().GetPrevious(0);
+            Assert.NotNull(recurringInvoiceSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.RecurringInvoiceSetup recurringInvoiceSetup = Fixture().GetNext(0);
+            Assert.NotNull(recurringInvoiceSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.RecurringInvoiceSetup recurringInvoiceSetup = Fixture().GetLast();
+            Assert.NotNull(recurringInvoiceSetup);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.RecurringInvoiceSetup> recurringInvoiceSetups = Fixture().Get(new int[] { });

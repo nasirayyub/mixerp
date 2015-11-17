@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.TaxMaster Get(int taxMasterId);
 
         /// <summary>
+        /// Gets the first record of TaxMaster.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of TaxMaster.</returns>
+        MixERP.Net.Entities.Core.TaxMaster GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of TaxMaster sorted by taxMasterId. 
+        /// </summary>
+        /// <param name="taxMasterId">The column "tax_master_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of TaxMaster.</returns>
+        MixERP.Net.Entities.Core.TaxMaster GetPrevious(int taxMasterId);
+
+        /// <summary>
+        /// Gets the next record of TaxMaster sorted by taxMasterId. 
+        /// </summary>
+        /// <param name="taxMasterId">The column "tax_master_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of TaxMaster.</returns>
+        MixERP.Net.Entities.Core.TaxMaster GetNext(int taxMasterId);
+
+        /// <summary>
+        /// Gets the last record of TaxMaster.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of TaxMaster.</returns>
+        MixERP.Net.Entities.Core.TaxMaster GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the TaxMaster against taxMasterIds. 
         /// </summary>
         /// <param name="taxMasterIds">Array of column "tax_master_id" parameter used on where filter.</param>

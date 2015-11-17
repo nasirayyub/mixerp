@@ -239,6 +239,132 @@ namespace MixERP.Net.Api.Policy
         }
 
         /// <summary>
+        ///     Returns the first instance of store policy detail.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/policy/store-policy-detail/first")]
+        public MixERP.Net.Entities.Policy.StorePolicyDetail GetFirst()
+        {
+            try
+            {
+                return this.StorePolicyDetailRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of store policy detail.
+        /// </summary>
+        /// <param name="storePolicyDetailId">Enter StorePolicyDetailId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{storePolicyDetailId}")]
+        [Route("~/api/policy/store-policy-detail/previous/{storePolicyDetailId}")]
+        public MixERP.Net.Entities.Policy.StorePolicyDetail GetPrevious(long storePolicyDetailId)
+        {
+            try
+            {
+                return this.StorePolicyDetailRepository.GetPrevious(storePolicyDetailId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of store policy detail.
+        /// </summary>
+        /// <param name="storePolicyDetailId">Enter StorePolicyDetailId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{storePolicyDetailId}")]
+        [Route("~/api/policy/store-policy-detail/next/{storePolicyDetailId}")]
+        public MixERP.Net.Entities.Policy.StorePolicyDetail GetNext(long storePolicyDetailId)
+        {
+            try
+            {
+                return this.StorePolicyDetailRepository.GetNext(storePolicyDetailId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of store policy detail.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/policy/store-policy-detail/last")]
+        public MixERP.Net.Entities.Policy.StorePolicyDetail GetLast()
+        {
+            try
+            {
+                return this.StorePolicyDetailRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 store policy details on each page, sorted by the property StorePolicyDetailId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

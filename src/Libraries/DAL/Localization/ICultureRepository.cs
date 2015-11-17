@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Localization.Data
         MixERP.Net.Entities.Localization.Culture Get(string cultureCode);
 
         /// <summary>
+        /// Gets the first record of Culture.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Culture.</returns>
+        MixERP.Net.Entities.Localization.Culture GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Culture sorted by cultureCode. 
+        /// </summary>
+        /// <param name="cultureCode">The column "culture_code" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Culture.</returns>
+        MixERP.Net.Entities.Localization.Culture GetPrevious(string cultureCode);
+
+        /// <summary>
+        /// Gets the next record of Culture sorted by cultureCode. 
+        /// </summary>
+        /// <param name="cultureCode">The column "culture_code" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Culture.</returns>
+        MixERP.Net.Entities.Localization.Culture GetNext(string cultureCode);
+
+        /// <summary>
+        /// Gets the last record of Culture.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Culture.</returns>
+        MixERP.Net.Entities.Localization.Culture GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Culture against cultureCodes. 
         /// </summary>
         /// <param name="cultureCodes">Array of column "culture_code" parameter used on where filter.</param>

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Office.Data
         MixERP.Net.Entities.Office.Counter Get(int counterId);
 
         /// <summary>
+        /// Gets the first record of Counter.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Counter.</returns>
+        MixERP.Net.Entities.Office.Counter GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Counter sorted by counterId. 
+        /// </summary>
+        /// <param name="counterId">The column "counter_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Counter.</returns>
+        MixERP.Net.Entities.Office.Counter GetPrevious(int counterId);
+
+        /// <summary>
+        /// Gets the next record of Counter sorted by counterId. 
+        /// </summary>
+        /// <param name="counterId">The column "counter_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Counter.</returns>
+        MixERP.Net.Entities.Office.Counter GetNext(int counterId);
+
+        /// <summary>
+        /// Gets the last record of Counter.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Counter.</returns>
+        MixERP.Net.Entities.Office.Counter GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Counter against counterIds. 
         /// </summary>
         /// <param name="counterIds">Array of column "counter_id" parameter used on where filter.</param>

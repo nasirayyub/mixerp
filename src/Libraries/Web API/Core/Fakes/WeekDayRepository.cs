@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.WeekDay(), 1);
         }
 
+        public MixERP.Net.Entities.Core.WeekDay GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.WeekDay();
+        }
+
+        public MixERP.Net.Entities.Core.WeekDay GetPrevious(int weekDayId)
+        {
+            return new MixERP.Net.Entities.Core.WeekDay();
+        }
+
+        public MixERP.Net.Entities.Core.WeekDay GetNext(int weekDayId)
+        {
+            return new MixERP.Net.Entities.Core.WeekDay();
+        }
+
+        public MixERP.Net.Entities.Core.WeekDay GetLast()
+        {
+            return new MixERP.Net.Entities.Core.WeekDay();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.WeekDay> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.WeekDay(), 1);

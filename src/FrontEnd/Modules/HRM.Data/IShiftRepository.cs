@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.Shift Get(int shiftId);
 
         /// <summary>
+        /// Gets the first record of Shift.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Shift.</returns>
+        MixERP.Net.Entities.HRM.Shift GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Shift sorted by shiftId. 
+        /// </summary>
+        /// <param name="shiftId">The column "shift_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Shift.</returns>
+        MixERP.Net.Entities.HRM.Shift GetPrevious(int shiftId);
+
+        /// <summary>
+        /// Gets the next record of Shift sorted by shiftId. 
+        /// </summary>
+        /// <param name="shiftId">The column "shift_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Shift.</returns>
+        MixERP.Net.Entities.HRM.Shift GetNext(int shiftId);
+
+        /// <summary>
+        /// Gets the last record of Shift.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Shift.</returns>
+        MixERP.Net.Entities.HRM.Shift GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Shift against shiftIds. 
         /// </summary>
         /// <param name="shiftIds">Array of column "shift_id" parameter used on where filter.</param>

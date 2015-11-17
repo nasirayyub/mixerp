@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.HRM.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.HRM.EmployeeIdentificationDetail employeeIdentificationDetail = Fixture().GetFirst();
+            Assert.NotNull(employeeIdentificationDetail);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.HRM.EmployeeIdentificationDetail employeeIdentificationDetail = Fixture().GetPrevious(0);
+            Assert.NotNull(employeeIdentificationDetail);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.HRM.EmployeeIdentificationDetail employeeIdentificationDetail = Fixture().GetNext(0);
+            Assert.NotNull(employeeIdentificationDetail);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.HRM.EmployeeIdentificationDetail employeeIdentificationDetail = Fixture().GetLast();
+            Assert.NotNull(employeeIdentificationDetail);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.HRM.EmployeeIdentificationDetail> employeeIdentificationDetails = Fixture().Get(new long[] { });

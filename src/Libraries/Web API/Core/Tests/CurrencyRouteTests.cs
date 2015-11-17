@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/currency/count-filtered/{filterName}", "GET", typeof(CurrencyController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/currency/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CurrencyController), "GetFiltered")]
         [InlineData("/api/core/currency/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CurrencyController), "GetFiltered")]
+        [InlineData("/api/core/currency/first", "GET", typeof(CurrencyController), "GetFirst")]
+        [InlineData("/api/core/currency/previous/1", "GET", typeof(CurrencyController), "GetPrevious")]
+        [InlineData("/api/core/currency/next/1", "GET", typeof(CurrencyController), "GetNext")]
+        [InlineData("/api/core/currency/last", "GET", typeof(CurrencyController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/currency/custom-fields", "GET", typeof(CurrencyController), "GetCustomFields")]
         [InlineData("/api/core/currency/custom-fields", "GET", typeof(CurrencyController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/currency/count-filtered/{filterName}", "HEAD", typeof(CurrencyController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/currency/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CurrencyController), "GetFiltered")]
         [InlineData("/api/core/currency/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CurrencyController), "GetFiltered")]
+        [InlineData("/api/core/currency/first", "HEAD", typeof(CurrencyController), "GetFirst")]
+        [InlineData("/api/core/currency/previous/1", "HEAD", typeof(CurrencyController), "GetPrevious")]
+        [InlineData("/api/core/currency/next/1", "HEAD", typeof(CurrencyController), "GetNext")]
+        [InlineData("/api/core/currency/last", "HEAD", typeof(CurrencyController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/currency/custom-fields", "HEAD", typeof(CurrencyController), "GetCustomFields")]
         [InlineData("/api/core/currency/custom-fields", "HEAD", typeof(CurrencyController), "GetCustomFields")]

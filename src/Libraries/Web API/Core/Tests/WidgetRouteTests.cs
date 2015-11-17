@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/widget/count-filtered/{filterName}", "GET", typeof(WidgetController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/widget/get-filtered/{pageNumber}/{filterName}", "GET", typeof(WidgetController), "GetFiltered")]
         [InlineData("/api/core/widget/get-filtered/{pageNumber}/{filterName}", "GET", typeof(WidgetController), "GetFiltered")]
+        [InlineData("/api/core/widget/first", "GET", typeof(WidgetController), "GetFirst")]
+        [InlineData("/api/core/widget/previous/1", "GET", typeof(WidgetController), "GetPrevious")]
+        [InlineData("/api/core/widget/next/1", "GET", typeof(WidgetController), "GetNext")]
+        [InlineData("/api/core/widget/last", "GET", typeof(WidgetController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/widget/custom-fields", "GET", typeof(WidgetController), "GetCustomFields")]
         [InlineData("/api/core/widget/custom-fields", "GET", typeof(WidgetController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/widget/count-filtered/{filterName}", "HEAD", typeof(WidgetController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/widget/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(WidgetController), "GetFiltered")]
         [InlineData("/api/core/widget/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(WidgetController), "GetFiltered")]
+        [InlineData("/api/core/widget/first", "HEAD", typeof(WidgetController), "GetFirst")]
+        [InlineData("/api/core/widget/previous/1", "HEAD", typeof(WidgetController), "GetPrevious")]
+        [InlineData("/api/core/widget/next/1", "HEAD", typeof(WidgetController), "GetNext")]
+        [InlineData("/api/core/widget/last", "HEAD", typeof(WidgetController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/widget/custom-fields", "HEAD", typeof(WidgetController), "GetCustomFields")]
         [InlineData("/api/core/widget/custom-fields", "HEAD", typeof(WidgetController), "GetCustomFields")]

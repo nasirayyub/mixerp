@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/attachment/count-filtered/{filterName}", "GET", typeof(AttachmentController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/attachment/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AttachmentController), "GetFiltered")]
         [InlineData("/api/core/attachment/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AttachmentController), "GetFiltered")]
+        [InlineData("/api/core/attachment/first", "GET", typeof(AttachmentController), "GetFirst")]
+        [InlineData("/api/core/attachment/previous/1", "GET", typeof(AttachmentController), "GetPrevious")]
+        [InlineData("/api/core/attachment/next/1", "GET", typeof(AttachmentController), "GetNext")]
+        [InlineData("/api/core/attachment/last", "GET", typeof(AttachmentController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/attachment/custom-fields", "GET", typeof(AttachmentController), "GetCustomFields")]
         [InlineData("/api/core/attachment/custom-fields", "GET", typeof(AttachmentController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/attachment/count-filtered/{filterName}", "HEAD", typeof(AttachmentController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/attachment/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AttachmentController), "GetFiltered")]
         [InlineData("/api/core/attachment/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AttachmentController), "GetFiltered")]
+        [InlineData("/api/core/attachment/first", "HEAD", typeof(AttachmentController), "GetFirst")]
+        [InlineData("/api/core/attachment/previous/1", "HEAD", typeof(AttachmentController), "GetPrevious")]
+        [InlineData("/api/core/attachment/next/1", "HEAD", typeof(AttachmentController), "GetNext")]
+        [InlineData("/api/core/attachment/last", "HEAD", typeof(AttachmentController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/attachment/custom-fields", "HEAD", typeof(AttachmentController), "GetCustomFields")]
         [InlineData("/api/core/attachment/custom-fields", "HEAD", typeof(AttachmentController), "GetCustomFields")]

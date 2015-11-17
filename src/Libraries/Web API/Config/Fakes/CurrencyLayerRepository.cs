@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Config.Fakes
             return new MixERP.Net.Entities.Config.CurrencyLayer();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Config.CurrencyLayer> Get([FromUri] string[] keys)
+        public IEnumerable<MixERP.Net.Entities.Config.CurrencyLayer> Get(string[] keys)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Config.CurrencyLayer(), 1);
+        }
+
+        public MixERP.Net.Entities.Config.CurrencyLayer GetFirst()
+        {
+            return new MixERP.Net.Entities.Config.CurrencyLayer();
+        }
+
+        public MixERP.Net.Entities.Config.CurrencyLayer GetPrevious(string key)
+        {
+            return new MixERP.Net.Entities.Config.CurrencyLayer();
+        }
+
+        public MixERP.Net.Entities.Config.CurrencyLayer GetNext(string key)
+        {
+            return new MixERP.Net.Entities.Config.CurrencyLayer();
+        }
+
+        public MixERP.Net.Entities.Config.CurrencyLayer GetLast()
+        {
+            return new MixERP.Net.Entities.Config.CurrencyLayer();
         }
 
         public IEnumerable<MixERP.Net.Entities.Config.CurrencyLayer> GetPaginatedResult()

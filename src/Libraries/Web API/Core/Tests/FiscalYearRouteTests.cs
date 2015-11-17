@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/fiscal-year/count-filtered/{filterName}", "GET", typeof(FiscalYearController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/fiscal-year/get-filtered/{pageNumber}/{filterName}", "GET", typeof(FiscalYearController), "GetFiltered")]
         [InlineData("/api/core/fiscal-year/get-filtered/{pageNumber}/{filterName}", "GET", typeof(FiscalYearController), "GetFiltered")]
+        [InlineData("/api/core/fiscal-year/first", "GET", typeof(FiscalYearController), "GetFirst")]
+        [InlineData("/api/core/fiscal-year/previous/1", "GET", typeof(FiscalYearController), "GetPrevious")]
+        [InlineData("/api/core/fiscal-year/next/1", "GET", typeof(FiscalYearController), "GetNext")]
+        [InlineData("/api/core/fiscal-year/last", "GET", typeof(FiscalYearController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/fiscal-year/custom-fields", "GET", typeof(FiscalYearController), "GetCustomFields")]
         [InlineData("/api/core/fiscal-year/custom-fields", "GET", typeof(FiscalYearController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/fiscal-year/count-filtered/{filterName}", "HEAD", typeof(FiscalYearController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/fiscal-year/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(FiscalYearController), "GetFiltered")]
         [InlineData("/api/core/fiscal-year/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(FiscalYearController), "GetFiltered")]
+        [InlineData("/api/core/fiscal-year/first", "HEAD", typeof(FiscalYearController), "GetFirst")]
+        [InlineData("/api/core/fiscal-year/previous/1", "HEAD", typeof(FiscalYearController), "GetPrevious")]
+        [InlineData("/api/core/fiscal-year/next/1", "HEAD", typeof(FiscalYearController), "GetNext")]
+        [InlineData("/api/core/fiscal-year/last", "HEAD", typeof(FiscalYearController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/fiscal-year/custom-fields", "HEAD", typeof(FiscalYearController), "GetCustomFields")]
         [InlineData("/api/core/fiscal-year/custom-fields", "HEAD", typeof(FiscalYearController), "GetCustomFields")]

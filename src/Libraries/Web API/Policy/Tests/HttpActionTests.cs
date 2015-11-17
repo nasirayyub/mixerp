@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Policy.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Policy.HttpAction httpAction = Fixture().GetFirst();
+            Assert.NotNull(httpAction);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Policy.HttpAction httpAction = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(httpAction);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Policy.HttpAction httpAction = Fixture().GetNext(string.Empty);
+            Assert.NotNull(httpAction);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Policy.HttpAction httpAction = Fixture().GetLast();
+            Assert.NotNull(httpAction);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Policy.HttpAction> httpActions = Fixture().Get(new string[] { });

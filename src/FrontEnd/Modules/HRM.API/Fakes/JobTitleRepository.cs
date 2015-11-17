@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.HRM.Fakes
             return new MixERP.Net.Entities.HRM.JobTitle();
         }
 
-        public IEnumerable<MixERP.Net.Entities.HRM.JobTitle> Get([FromUri] int[] jobTitleIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.JobTitle> Get(int[] jobTitleIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.HRM.JobTitle(), 1);
+        }
+
+        public MixERP.Net.Entities.HRM.JobTitle GetFirst()
+        {
+            return new MixERP.Net.Entities.HRM.JobTitle();
+        }
+
+        public MixERP.Net.Entities.HRM.JobTitle GetPrevious(int jobTitleId)
+        {
+            return new MixERP.Net.Entities.HRM.JobTitle();
+        }
+
+        public MixERP.Net.Entities.HRM.JobTitle GetNext(int jobTitleId)
+        {
+            return new MixERP.Net.Entities.HRM.JobTitle();
+        }
+
+        public MixERP.Net.Entities.HRM.JobTitle GetLast()
+        {
+            return new MixERP.Net.Entities.HRM.JobTitle();
         }
 
         public IEnumerable<MixERP.Net.Entities.HRM.JobTitle> GetPaginatedResult()

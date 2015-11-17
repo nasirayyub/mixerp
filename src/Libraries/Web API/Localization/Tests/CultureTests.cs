@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Localization.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Localization.Culture culture = Fixture().GetFirst();
+            Assert.NotNull(culture);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Localization.Culture culture = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(culture);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Localization.Culture culture = Fixture().GetNext(string.Empty);
+            Assert.NotNull(culture);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Localization.Culture culture = Fixture().GetLast();
+            Assert.NotNull(culture);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Localization.Culture> cultures = Fixture().Get(new string[] { });

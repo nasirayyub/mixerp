@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Config.Data
         MixERP.Net.Entities.Config.CurrencyLayer Get(string key);
 
         /// <summary>
+        /// Gets the first record of CurrencyLayer.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CurrencyLayer.</returns>
+        MixERP.Net.Entities.Config.CurrencyLayer GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of CurrencyLayer sorted by key. 
+        /// </summary>
+        /// <param name="key">The column "key" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CurrencyLayer.</returns>
+        MixERP.Net.Entities.Config.CurrencyLayer GetPrevious(string key);
+
+        /// <summary>
+        /// Gets the next record of CurrencyLayer sorted by key. 
+        /// </summary>
+        /// <param name="key">The column "key" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of CurrencyLayer.</returns>
+        MixERP.Net.Entities.Config.CurrencyLayer GetNext(string key);
+
+        /// <summary>
+        /// Gets the last record of CurrencyLayer.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of CurrencyLayer.</returns>
+        MixERP.Net.Entities.Config.CurrencyLayer GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the CurrencyLayer against keys. 
         /// </summary>
         /// <param name="keys">Array of column "key" parameter used on where filter.</param>

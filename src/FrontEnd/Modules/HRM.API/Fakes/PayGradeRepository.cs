@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.HRM.Fakes
             return new MixERP.Net.Entities.HRM.PayGrade();
         }
 
-        public IEnumerable<MixERP.Net.Entities.HRM.PayGrade> Get([FromUri] int[] payGradeIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.PayGrade> Get(int[] payGradeIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.HRM.PayGrade(), 1);
+        }
+
+        public MixERP.Net.Entities.HRM.PayGrade GetFirst()
+        {
+            return new MixERP.Net.Entities.HRM.PayGrade();
+        }
+
+        public MixERP.Net.Entities.HRM.PayGrade GetPrevious(int payGradeId)
+        {
+            return new MixERP.Net.Entities.HRM.PayGrade();
+        }
+
+        public MixERP.Net.Entities.HRM.PayGrade GetNext(int payGradeId)
+        {
+            return new MixERP.Net.Entities.HRM.PayGrade();
+        }
+
+        public MixERP.Net.Entities.HRM.PayGrade GetLast()
+        {
+            return new MixERP.Net.Entities.HRM.PayGrade();
         }
 
         public IEnumerable<MixERP.Net.Entities.HRM.PayGrade> GetPaginatedResult()

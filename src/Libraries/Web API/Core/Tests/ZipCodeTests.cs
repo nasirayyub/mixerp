@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.ZipCode zipCode = Fixture().GetFirst();
+            Assert.NotNull(zipCode);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.ZipCode zipCode = Fixture().GetPrevious(0);
+            Assert.NotNull(zipCode);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.ZipCode zipCode = Fixture().GetNext(0);
+            Assert.NotNull(zipCode);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.ZipCode zipCode = Fixture().GetLast();
+            Assert.NotNull(zipCode);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.ZipCode> zipCodes = Fixture().Get(new long[] { });

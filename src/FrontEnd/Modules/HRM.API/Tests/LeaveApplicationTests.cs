@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.HRM.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.HRM.LeaveApplication leaveApplication = Fixture().GetFirst();
+            Assert.NotNull(leaveApplication);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.HRM.LeaveApplication leaveApplication = Fixture().GetPrevious(0);
+            Assert.NotNull(leaveApplication);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.HRM.LeaveApplication leaveApplication = Fixture().GetNext(0);
+            Assert.NotNull(leaveApplication);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.HRM.LeaveApplication leaveApplication = Fixture().GetLast();
+            Assert.NotNull(leaveApplication);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.HRM.LeaveApplication> leaveApplications = Fixture().Get(new long[] { });

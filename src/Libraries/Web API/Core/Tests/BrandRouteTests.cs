@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/brand/count-filtered/{filterName}", "GET", typeof(BrandController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/brand/get-filtered/{pageNumber}/{filterName}", "GET", typeof(BrandController), "GetFiltered")]
         [InlineData("/api/core/brand/get-filtered/{pageNumber}/{filterName}", "GET", typeof(BrandController), "GetFiltered")]
+        [InlineData("/api/core/brand/first", "GET", typeof(BrandController), "GetFirst")]
+        [InlineData("/api/core/brand/previous/1", "GET", typeof(BrandController), "GetPrevious")]
+        [InlineData("/api/core/brand/next/1", "GET", typeof(BrandController), "GetNext")]
+        [InlineData("/api/core/brand/last", "GET", typeof(BrandController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/brand/custom-fields", "GET", typeof(BrandController), "GetCustomFields")]
         [InlineData("/api/core/brand/custom-fields", "GET", typeof(BrandController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/brand/count-filtered/{filterName}", "HEAD", typeof(BrandController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/brand/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(BrandController), "GetFiltered")]
         [InlineData("/api/core/brand/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(BrandController), "GetFiltered")]
+        [InlineData("/api/core/brand/first", "HEAD", typeof(BrandController), "GetFirst")]
+        [InlineData("/api/core/brand/previous/1", "HEAD", typeof(BrandController), "GetPrevious")]
+        [InlineData("/api/core/brand/next/1", "HEAD", typeof(BrandController), "GetNext")]
+        [InlineData("/api/core/brand/last", "HEAD", typeof(BrandController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/brand/custom-fields", "HEAD", typeof(BrandController), "GetCustomFields")]
         [InlineData("/api/core/brand/custom-fields", "HEAD", typeof(BrandController), "GetCustomFields")]

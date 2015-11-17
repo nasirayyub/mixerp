@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.sales_tax_exempt_details". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTaxExemptDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTaxExemptDetail GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"SalesTaxExemptDetail\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_tax_exempt_details ORDER BY sales_tax_exempt_detail_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTaxExemptDetail>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.sales_tax_exempt_details" sorted by salesTaxExemptDetailId.
+        /// </summary>
+        /// <param name="salesTaxExemptDetailId">The column "sales_tax_exempt_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTaxExemptDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTaxExemptDetail GetPrevious(int salesTaxExemptDetailId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"SalesTaxExemptDetail\" by \"SalesTaxExemptDetailId\" with value {SalesTaxExemptDetailId} was denied to the user with Login ID {_LoginId}", salesTaxExemptDetailId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_tax_exempt_details WHERE sales_tax_exempt_detail_id < @0 ORDER BY sales_tax_exempt_detail_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTaxExemptDetail>(this._Catalog, sql, salesTaxExemptDetailId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.sales_tax_exempt_details" sorted by salesTaxExemptDetailId.
+        /// </summary>
+        /// <param name="salesTaxExemptDetailId">The column "sales_tax_exempt_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTaxExemptDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTaxExemptDetail GetNext(int salesTaxExemptDetailId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"SalesTaxExemptDetail\" by \"SalesTaxExemptDetailId\" with value {SalesTaxExemptDetailId} was denied to the user with Login ID {_LoginId}", salesTaxExemptDetailId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_tax_exempt_details WHERE sales_tax_exempt_detail_id > @0 ORDER BY sales_tax_exempt_detail_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTaxExemptDetail>(this._Catalog, sql, salesTaxExemptDetailId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.sales_tax_exempt_details". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "SalesTaxExemptDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.SalesTaxExemptDetail GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"SalesTaxExemptDetail\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.sales_tax_exempt_details ORDER BY sales_tax_exempt_detail_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.SalesTaxExemptDetail>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.sales_tax_exempt_details" with a where filter on the column "sales_tax_exempt_detail_id" to return a multiple instances of the "SalesTaxExemptDetail" class. 
         /// </summary>
         /// <param name="salesTaxExemptDetailIds">Array of column "sales_tax_exempt_detail_id" parameter used on where filter.</param>

@@ -243,6 +243,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of county sales tax.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/county-sales-tax/first")]
+        public MixERP.Net.Entities.Core.CountySalesTax GetFirst()
+        {
+            try
+            {
+                return this.CountySalesTaxRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of county sales tax.
+        /// </summary>
+        /// <param name="countySalesTaxId">Enter CountySalesTaxId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{countySalesTaxId}")]
+        [Route("~/api/core/county-sales-tax/previous/{countySalesTaxId}")]
+        public MixERP.Net.Entities.Core.CountySalesTax GetPrevious(int countySalesTaxId)
+        {
+            try
+            {
+                return this.CountySalesTaxRepository.GetPrevious(countySalesTaxId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of county sales tax.
+        /// </summary>
+        /// <param name="countySalesTaxId">Enter CountySalesTaxId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{countySalesTaxId}")]
+        [Route("~/api/core/county-sales-tax/next/{countySalesTaxId}")]
+        public MixERP.Net.Entities.Core.CountySalesTax GetNext(int countySalesTaxId)
+        {
+            try
+            {
+                return this.CountySalesTaxRepository.GetNext(countySalesTaxId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of county sales tax.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/county-sales-tax/last")]
+        public MixERP.Net.Entities.Core.CountySalesTax GetLast()
+        {
+            try
+            {
+                return this.CountySalesTaxRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 county sales taxes on each page, sorted by the property CountySalesTaxId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

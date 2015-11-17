@@ -238,6 +238,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of salesperson bonus setup.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/salesperson-bonus-setup/first")]
+        public MixERP.Net.Entities.Core.SalespersonBonusSetup GetFirst()
+        {
+            try
+            {
+                return this.SalespersonBonusSetupRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of salesperson bonus setup.
+        /// </summary>
+        /// <param name="salespersonBonusSetupId">Enter SalespersonBonusSetupId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{salespersonBonusSetupId}")]
+        [Route("~/api/core/salesperson-bonus-setup/previous/{salespersonBonusSetupId}")]
+        public MixERP.Net.Entities.Core.SalespersonBonusSetup GetPrevious(int salespersonBonusSetupId)
+        {
+            try
+            {
+                return this.SalespersonBonusSetupRepository.GetPrevious(salespersonBonusSetupId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of salesperson bonus setup.
+        /// </summary>
+        /// <param name="salespersonBonusSetupId">Enter SalespersonBonusSetupId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{salespersonBonusSetupId}")]
+        [Route("~/api/core/salesperson-bonus-setup/next/{salespersonBonusSetupId}")]
+        public MixERP.Net.Entities.Core.SalespersonBonusSetup GetNext(int salespersonBonusSetupId)
+        {
+            try
+            {
+                return this.SalespersonBonusSetupRepository.GetNext(salespersonBonusSetupId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of salesperson bonus setup.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/salesperson-bonus-setup/last")]
+        public MixERP.Net.Entities.Core.SalespersonBonusSetup GetLast()
+        {
+            try
+            {
+                return this.SalespersonBonusSetupRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 salesperson bonus setups on each page, sorted by the property SalespersonBonusSetupId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

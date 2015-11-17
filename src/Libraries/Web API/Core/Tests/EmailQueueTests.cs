@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.EmailQueue emailQueue = Fixture().GetFirst();
+            Assert.NotNull(emailQueue);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.EmailQueue emailQueue = Fixture().GetPrevious(0);
+            Assert.NotNull(emailQueue);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.EmailQueue emailQueue = Fixture().GetNext(0);
+            Assert.NotNull(emailQueue);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.EmailQueue emailQueue = Fixture().GetLast();
+            Assert.NotNull(emailQueue);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.EmailQueue> emailQueues = Fixture().Get(new long[] { });

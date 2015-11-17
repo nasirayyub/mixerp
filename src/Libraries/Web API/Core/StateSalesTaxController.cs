@@ -243,6 +243,132 @@ namespace MixERP.Net.Api.Core
         }
 
         /// <summary>
+        ///     Returns the first instance of state sales tax.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("first")]
+        [Route("~/api/core/state-sales-tax/first")]
+        public MixERP.Net.Entities.Core.StateSalesTax GetFirst()
+        {
+            try
+            {
+                return this.StateSalesTaxRepository.GetFirst();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the previous instance of state sales tax.
+        /// </summary>
+        /// <param name="stateSalesTaxId">Enter StateSalesTaxId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("previous/{stateSalesTaxId}")]
+        [Route("~/api/core/state-sales-tax/previous/{stateSalesTaxId}")]
+        public MixERP.Net.Entities.Core.StateSalesTax GetPrevious(int stateSalesTaxId)
+        {
+            try
+            {
+                return this.StateSalesTaxRepository.GetPrevious(stateSalesTaxId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the next instance of state sales tax.
+        /// </summary>
+        /// <param name="stateSalesTaxId">Enter StateSalesTaxId to search for.</param>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("next/{stateSalesTaxId}")]
+        [Route("~/api/core/state-sales-tax/next/{stateSalesTaxId}")]
+        public MixERP.Net.Entities.Core.StateSalesTax GetNext(int stateSalesTaxId)
+        {
+            try
+            {
+                return this.StateSalesTaxRepository.GetNext(stateSalesTaxId);
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
+        ///     Returns the last instance of state sales tax.
+        /// </summary>
+        /// <returns></returns>
+        [AcceptVerbs("GET", "HEAD")]
+        [Route("last")]
+        [Route("~/api/core/state-sales-tax/last")]
+        public MixERP.Net.Entities.Core.StateSalesTax GetLast()
+        {
+            try
+            {
+                return this.StateSalesTaxRepository.GetLast();
+            }
+            catch (UnauthorizedException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
+            }
+            catch (MixERPException ex)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    Content = new StringContent(ex.Message),
+                    StatusCode = HttpStatusCode.InternalServerError
+                });
+            }
+            catch
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            }
+        }
+
+        /// <summary>
         ///     Creates a paginated collection containing 10 state sales taxes on each page, sorted by the property StateSalesTaxId.
         /// </summary>
         /// <returns>Returns the first page from the collection.</returns>

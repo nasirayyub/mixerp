@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Policy.Fakes
             return new MixERP.Net.Entities.Policy.VoucherVerificationPolicy();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Policy.VoucherVerificationPolicy> Get([FromUri] int[] policyIds)
+        public IEnumerable<MixERP.Net.Entities.Policy.VoucherVerificationPolicy> Get(int[] policyIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Policy.VoucherVerificationPolicy(), 1);
+        }
+
+        public MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetFirst()
+        {
+            return new MixERP.Net.Entities.Policy.VoucherVerificationPolicy();
+        }
+
+        public MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetPrevious(int policyId)
+        {
+            return new MixERP.Net.Entities.Policy.VoucherVerificationPolicy();
+        }
+
+        public MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetNext(int policyId)
+        {
+            return new MixERP.Net.Entities.Policy.VoucherVerificationPolicy();
+        }
+
+        public MixERP.Net.Entities.Policy.VoucherVerificationPolicy GetLast()
+        {
+            return new MixERP.Net.Entities.Policy.VoucherVerificationPolicy();
         }
 
         public IEnumerable<MixERP.Net.Entities.Policy.VoucherVerificationPolicy> GetPaginatedResult()

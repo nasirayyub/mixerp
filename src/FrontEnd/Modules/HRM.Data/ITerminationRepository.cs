@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.Termination Get(int terminationId);
 
         /// <summary>
+        /// Gets the first record of Termination.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Termination.</returns>
+        MixERP.Net.Entities.HRM.Termination GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Termination sorted by terminationId. 
+        /// </summary>
+        /// <param name="terminationId">The column "termination_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Termination.</returns>
+        MixERP.Net.Entities.HRM.Termination GetPrevious(int terminationId);
+
+        /// <summary>
+        /// Gets the next record of Termination sorted by terminationId. 
+        /// </summary>
+        /// <param name="terminationId">The column "termination_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Termination.</returns>
+        MixERP.Net.Entities.HRM.Termination GetNext(int terminationId);
+
+        /// <summary>
+        /// Gets the last record of Termination.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Termination.</returns>
+        MixERP.Net.Entities.HRM.Termination GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Termination against terminationIds. 
         /// </summary>
         /// <param name="terminationIds">Array of column "termination_id" parameter used on where filter.</param>

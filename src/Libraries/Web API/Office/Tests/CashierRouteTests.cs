@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/cashier/count-filtered/{filterName}", "GET", typeof(CashierController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/cashier/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CashierController), "GetFiltered")]
         [InlineData("/api/office/cashier/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CashierController), "GetFiltered")]
+        [InlineData("/api/office/cashier/first", "GET", typeof(CashierController), "GetFirst")]
+        [InlineData("/api/office/cashier/previous/1", "GET", typeof(CashierController), "GetPrevious")]
+        [InlineData("/api/office/cashier/next/1", "GET", typeof(CashierController), "GetNext")]
+        [InlineData("/api/office/cashier/last", "GET", typeof(CashierController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/cashier/custom-fields", "GET", typeof(CashierController), "GetCustomFields")]
         [InlineData("/api/office/cashier/custom-fields", "GET", typeof(CashierController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/cashier/count-filtered/{filterName}", "HEAD", typeof(CashierController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/cashier/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CashierController), "GetFiltered")]
         [InlineData("/api/office/cashier/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CashierController), "GetFiltered")]
+        [InlineData("/api/office/cashier/first", "HEAD", typeof(CashierController), "GetFirst")]
+        [InlineData("/api/office/cashier/previous/1", "HEAD", typeof(CashierController), "GetPrevious")]
+        [InlineData("/api/office/cashier/next/1", "HEAD", typeof(CashierController), "GetNext")]
+        [InlineData("/api/office/cashier/last", "HEAD", typeof(CashierController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/cashier/custom-fields", "HEAD", typeof(CashierController), "GetCustomFields")]
         [InlineData("/api/office/cashier/custom-fields", "HEAD", typeof(CashierController), "GetCustomFields")]

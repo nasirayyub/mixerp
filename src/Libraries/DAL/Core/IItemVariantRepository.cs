@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.ItemVariant Get(int itemVariantId);
 
         /// <summary>
+        /// Gets the first record of ItemVariant.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ItemVariant.</returns>
+        MixERP.Net.Entities.Core.ItemVariant GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of ItemVariant sorted by itemVariantId. 
+        /// </summary>
+        /// <param name="itemVariantId">The column "item_variant_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ItemVariant.</returns>
+        MixERP.Net.Entities.Core.ItemVariant GetPrevious(int itemVariantId);
+
+        /// <summary>
+        /// Gets the next record of ItemVariant sorted by itemVariantId. 
+        /// </summary>
+        /// <param name="itemVariantId">The column "item_variant_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ItemVariant.</returns>
+        MixERP.Net.Entities.Core.ItemVariant GetNext(int itemVariantId);
+
+        /// <summary>
+        /// Gets the last record of ItemVariant.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ItemVariant.</returns>
+        MixERP.Net.Entities.Core.ItemVariant GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the ItemVariant against itemVariantIds. 
         /// </summary>
         /// <param name="itemVariantIds">Array of column "item_variant_id" parameter used on where filter.</param>

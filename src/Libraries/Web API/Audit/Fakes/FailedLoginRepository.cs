@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Audit.Fakes
             return new MixERP.Net.Entities.Audit.FailedLogin();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Audit.FailedLogin> Get([FromUri] long[] failedLoginIds)
+        public IEnumerable<MixERP.Net.Entities.Audit.FailedLogin> Get(long[] failedLoginIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Audit.FailedLogin(), 1);
+        }
+
+        public MixERP.Net.Entities.Audit.FailedLogin GetFirst()
+        {
+            return new MixERP.Net.Entities.Audit.FailedLogin();
+        }
+
+        public MixERP.Net.Entities.Audit.FailedLogin GetPrevious(long failedLoginId)
+        {
+            return new MixERP.Net.Entities.Audit.FailedLogin();
+        }
+
+        public MixERP.Net.Entities.Audit.FailedLogin GetNext(long failedLoginId)
+        {
+            return new MixERP.Net.Entities.Audit.FailedLogin();
+        }
+
+        public MixERP.Net.Entities.Audit.FailedLogin GetLast()
+        {
+            return new MixERP.Net.Entities.Audit.FailedLogin();
         }
 
         public IEnumerable<MixERP.Net.Entities.Audit.FailedLogin> GetPaginatedResult()

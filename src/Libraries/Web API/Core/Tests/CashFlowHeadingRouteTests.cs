@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/cash-flow-heading/count-filtered/{filterName}", "GET", typeof(CashFlowHeadingController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/cash-flow-heading/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CashFlowHeadingController), "GetFiltered")]
         [InlineData("/api/core/cash-flow-heading/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CashFlowHeadingController), "GetFiltered")]
+        [InlineData("/api/core/cash-flow-heading/first", "GET", typeof(CashFlowHeadingController), "GetFirst")]
+        [InlineData("/api/core/cash-flow-heading/previous/1", "GET", typeof(CashFlowHeadingController), "GetPrevious")]
+        [InlineData("/api/core/cash-flow-heading/next/1", "GET", typeof(CashFlowHeadingController), "GetNext")]
+        [InlineData("/api/core/cash-flow-heading/last", "GET", typeof(CashFlowHeadingController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/cash-flow-heading/custom-fields", "GET", typeof(CashFlowHeadingController), "GetCustomFields")]
         [InlineData("/api/core/cash-flow-heading/custom-fields", "GET", typeof(CashFlowHeadingController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/cash-flow-heading/count-filtered/{filterName}", "HEAD", typeof(CashFlowHeadingController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/cash-flow-heading/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CashFlowHeadingController), "GetFiltered")]
         [InlineData("/api/core/cash-flow-heading/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CashFlowHeadingController), "GetFiltered")]
+        [InlineData("/api/core/cash-flow-heading/first", "HEAD", typeof(CashFlowHeadingController), "GetFirst")]
+        [InlineData("/api/core/cash-flow-heading/previous/1", "HEAD", typeof(CashFlowHeadingController), "GetPrevious")]
+        [InlineData("/api/core/cash-flow-heading/next/1", "HEAD", typeof(CashFlowHeadingController), "GetNext")]
+        [InlineData("/api/core/cash-flow-heading/last", "HEAD", typeof(CashFlowHeadingController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/cash-flow-heading/custom-fields", "HEAD", typeof(CashFlowHeadingController), "GetCustomFields")]
         [InlineData("/api/core/cash-flow-heading/custom-fields", "HEAD", typeof(CashFlowHeadingController), "GetCustomFields")]

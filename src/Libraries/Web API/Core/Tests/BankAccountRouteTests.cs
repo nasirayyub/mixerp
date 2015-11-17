@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/bank-account/count-filtered/{filterName}", "GET", typeof(BankAccountController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/bank-account/get-filtered/{pageNumber}/{filterName}", "GET", typeof(BankAccountController), "GetFiltered")]
         [InlineData("/api/core/bank-account/get-filtered/{pageNumber}/{filterName}", "GET", typeof(BankAccountController), "GetFiltered")]
+        [InlineData("/api/core/bank-account/first", "GET", typeof(BankAccountController), "GetFirst")]
+        [InlineData("/api/core/bank-account/previous/1", "GET", typeof(BankAccountController), "GetPrevious")]
+        [InlineData("/api/core/bank-account/next/1", "GET", typeof(BankAccountController), "GetNext")]
+        [InlineData("/api/core/bank-account/last", "GET", typeof(BankAccountController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/bank-account/custom-fields", "GET", typeof(BankAccountController), "GetCustomFields")]
         [InlineData("/api/core/bank-account/custom-fields", "GET", typeof(BankAccountController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/bank-account/count-filtered/{filterName}", "HEAD", typeof(BankAccountController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/bank-account/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(BankAccountController), "GetFiltered")]
         [InlineData("/api/core/bank-account/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(BankAccountController), "GetFiltered")]
+        [InlineData("/api/core/bank-account/first", "HEAD", typeof(BankAccountController), "GetFirst")]
+        [InlineData("/api/core/bank-account/previous/1", "HEAD", typeof(BankAccountController), "GetPrevious")]
+        [InlineData("/api/core/bank-account/next/1", "HEAD", typeof(BankAccountController), "GetNext")]
+        [InlineData("/api/core/bank-account/last", "HEAD", typeof(BankAccountController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/bank-account/custom-fields", "HEAD", typeof(BankAccountController), "GetCustomFields")]
         [InlineData("/api/core/bank-account/custom-fields", "HEAD", typeof(BankAccountController), "GetCustomFields")]

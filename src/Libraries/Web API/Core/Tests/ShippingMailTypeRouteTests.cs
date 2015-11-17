@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/shipping-mail-type/count-filtered/{filterName}", "GET", typeof(ShippingMailTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/shipping-mail-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ShippingMailTypeController), "GetFiltered")]
         [InlineData("/api/core/shipping-mail-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ShippingMailTypeController), "GetFiltered")]
+        [InlineData("/api/core/shipping-mail-type/first", "GET", typeof(ShippingMailTypeController), "GetFirst")]
+        [InlineData("/api/core/shipping-mail-type/previous/1", "GET", typeof(ShippingMailTypeController), "GetPrevious")]
+        [InlineData("/api/core/shipping-mail-type/next/1", "GET", typeof(ShippingMailTypeController), "GetNext")]
+        [InlineData("/api/core/shipping-mail-type/last", "GET", typeof(ShippingMailTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/shipping-mail-type/custom-fields", "GET", typeof(ShippingMailTypeController), "GetCustomFields")]
         [InlineData("/api/core/shipping-mail-type/custom-fields", "GET", typeof(ShippingMailTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/shipping-mail-type/count-filtered/{filterName}", "HEAD", typeof(ShippingMailTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/shipping-mail-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ShippingMailTypeController), "GetFiltered")]
         [InlineData("/api/core/shipping-mail-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ShippingMailTypeController), "GetFiltered")]
+        [InlineData("/api/core/shipping-mail-type/first", "HEAD", typeof(ShippingMailTypeController), "GetFirst")]
+        [InlineData("/api/core/shipping-mail-type/previous/1", "HEAD", typeof(ShippingMailTypeController), "GetPrevious")]
+        [InlineData("/api/core/shipping-mail-type/next/1", "HEAD", typeof(ShippingMailTypeController), "GetNext")]
+        [InlineData("/api/core/shipping-mail-type/last", "HEAD", typeof(ShippingMailTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/shipping-mail-type/custom-fields", "HEAD", typeof(ShippingMailTypeController), "GetCustomFields")]
         [InlineData("/api/core/shipping-mail-type/custom-fields", "HEAD", typeof(ShippingMailTypeController), "GetCustomFields")]

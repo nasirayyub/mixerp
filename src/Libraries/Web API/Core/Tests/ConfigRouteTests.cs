@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/config/count-filtered/{filterName}", "GET", typeof(ConfigController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/config/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ConfigController), "GetFiltered")]
         [InlineData("/api/core/config/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ConfigController), "GetFiltered")]
+        [InlineData("/api/core/config/first", "GET", typeof(ConfigController), "GetFirst")]
+        [InlineData("/api/core/config/previous/1", "GET", typeof(ConfigController), "GetPrevious")]
+        [InlineData("/api/core/config/next/1", "GET", typeof(ConfigController), "GetNext")]
+        [InlineData("/api/core/config/last", "GET", typeof(ConfigController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/config/custom-fields", "GET", typeof(ConfigController), "GetCustomFields")]
         [InlineData("/api/core/config/custom-fields", "GET", typeof(ConfigController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/config/count-filtered/{filterName}", "HEAD", typeof(ConfigController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/config/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ConfigController), "GetFiltered")]
         [InlineData("/api/core/config/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ConfigController), "GetFiltered")]
+        [InlineData("/api/core/config/first", "HEAD", typeof(ConfigController), "GetFirst")]
+        [InlineData("/api/core/config/previous/1", "HEAD", typeof(ConfigController), "GetPrevious")]
+        [InlineData("/api/core/config/next/1", "HEAD", typeof(ConfigController), "GetNext")]
+        [InlineData("/api/core/config/last", "HEAD", typeof(ConfigController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/config/custom-fields", "HEAD", typeof(ConfigController), "GetCustomFields")]
         [InlineData("/api/core/config/custom-fields", "HEAD", typeof(ConfigController), "GetCustomFields")]

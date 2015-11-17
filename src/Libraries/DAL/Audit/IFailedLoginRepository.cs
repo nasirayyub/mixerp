@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Audit.Data
         MixERP.Net.Entities.Audit.FailedLogin Get(long failedLoginId);
 
         /// <summary>
+        /// Gets the first record of FailedLogin.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of FailedLogin.</returns>
+        MixERP.Net.Entities.Audit.FailedLogin GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of FailedLogin sorted by failedLoginId. 
+        /// </summary>
+        /// <param name="failedLoginId">The column "failed_login_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of FailedLogin.</returns>
+        MixERP.Net.Entities.Audit.FailedLogin GetPrevious(long failedLoginId);
+
+        /// <summary>
+        /// Gets the next record of FailedLogin sorted by failedLoginId. 
+        /// </summary>
+        /// <param name="failedLoginId">The column "failed_login_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of FailedLogin.</returns>
+        MixERP.Net.Entities.Audit.FailedLogin GetNext(long failedLoginId);
+
+        /// <summary>
+        /// Gets the last record of FailedLogin.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of FailedLogin.</returns>
+        MixERP.Net.Entities.Audit.FailedLogin GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the FailedLogin against failedLoginIds. 
         /// </summary>
         /// <param name="failedLoginIds">Array of column "failed_login_id" parameter used on where filter.</param>

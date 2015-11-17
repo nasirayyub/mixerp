@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.SalesTeam Get(int salesTeamId);
 
         /// <summary>
+        /// Gets the first record of SalesTeam.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTeam.</returns>
+        MixERP.Net.Entities.Core.SalesTeam GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of SalesTeam sorted by salesTeamId. 
+        /// </summary>
+        /// <param name="salesTeamId">The column "sales_team_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTeam.</returns>
+        MixERP.Net.Entities.Core.SalesTeam GetPrevious(int salesTeamId);
+
+        /// <summary>
+        /// Gets the next record of SalesTeam sorted by salesTeamId. 
+        /// </summary>
+        /// <param name="salesTeamId">The column "sales_team_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTeam.</returns>
+        MixERP.Net.Entities.Core.SalesTeam GetNext(int salesTeamId);
+
+        /// <summary>
+        /// Gets the last record of SalesTeam.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of SalesTeam.</returns>
+        MixERP.Net.Entities.Core.SalesTeam GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the SalesTeam against salesTeamIds. 
         /// </summary>
         /// <param name="salesTeamIds">Array of column "sales_team_id" parameter used on where filter.</param>

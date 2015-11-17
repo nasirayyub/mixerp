@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Audit.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "audit.failed_logins". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "FailedLogin" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Audit.FailedLogin GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"FailedLogin\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM audit.failed_logins ORDER BY failed_login_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Audit.FailedLogin>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "audit.failed_logins" sorted by failedLoginId.
+        /// </summary>
+        /// <param name="failedLoginId">The column "failed_login_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "FailedLogin" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Audit.FailedLogin GetPrevious(long failedLoginId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"FailedLogin\" by \"FailedLoginId\" with value {FailedLoginId} was denied to the user with Login ID {_LoginId}", failedLoginId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM audit.failed_logins WHERE failed_login_id < @0 ORDER BY failed_login_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Audit.FailedLogin>(this._Catalog, sql, failedLoginId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "audit.failed_logins" sorted by failedLoginId.
+        /// </summary>
+        /// <param name="failedLoginId">The column "failed_login_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "FailedLogin" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Audit.FailedLogin GetNext(long failedLoginId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"FailedLogin\" by \"FailedLoginId\" with value {FailedLoginId} was denied to the user with Login ID {_LoginId}", failedLoginId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM audit.failed_logins WHERE failed_login_id > @0 ORDER BY failed_login_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Audit.FailedLogin>(this._Catalog, sql, failedLoginId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "audit.failed_logins". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "FailedLogin" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Audit.FailedLogin GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"FailedLogin\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM audit.failed_logins ORDER BY failed_login_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Audit.FailedLogin>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "audit.failed_logins" with a where filter on the column "failed_login_id" to return a multiple instances of the "FailedLogin" class. 
         /// </summary>
         /// <param name="failedLoginIds">Array of column "failed_login_id" parameter used on where filter.</param>

@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/payment-term/count-filtered/{filterName}", "GET", typeof(PaymentTermController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/payment-term/get-filtered/{pageNumber}/{filterName}", "GET", typeof(PaymentTermController), "GetFiltered")]
         [InlineData("/api/core/payment-term/get-filtered/{pageNumber}/{filterName}", "GET", typeof(PaymentTermController), "GetFiltered")]
+        [InlineData("/api/core/payment-term/first", "GET", typeof(PaymentTermController), "GetFirst")]
+        [InlineData("/api/core/payment-term/previous/1", "GET", typeof(PaymentTermController), "GetPrevious")]
+        [InlineData("/api/core/payment-term/next/1", "GET", typeof(PaymentTermController), "GetNext")]
+        [InlineData("/api/core/payment-term/last", "GET", typeof(PaymentTermController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/payment-term/custom-fields", "GET", typeof(PaymentTermController), "GetCustomFields")]
         [InlineData("/api/core/payment-term/custom-fields", "GET", typeof(PaymentTermController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/payment-term/count-filtered/{filterName}", "HEAD", typeof(PaymentTermController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/payment-term/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(PaymentTermController), "GetFiltered")]
         [InlineData("/api/core/payment-term/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(PaymentTermController), "GetFiltered")]
+        [InlineData("/api/core/payment-term/first", "HEAD", typeof(PaymentTermController), "GetFirst")]
+        [InlineData("/api/core/payment-term/previous/1", "HEAD", typeof(PaymentTermController), "GetPrevious")]
+        [InlineData("/api/core/payment-term/next/1", "HEAD", typeof(PaymentTermController), "GetNext")]
+        [InlineData("/api/core/payment-term/last", "HEAD", typeof(PaymentTermController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/payment-term/custom-fields", "HEAD", typeof(PaymentTermController), "GetCustomFields")]
         [InlineData("/api/core/payment-term/custom-fields", "HEAD", typeof(PaymentTermController), "GetCustomFields")]

@@ -161,6 +161,125 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "hrm.exits". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Exit" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Exit GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"Exit\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.exits ORDER BY exit_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Exit>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "hrm.exits" sorted by exitId.
+        /// </summary>
+        /// <param name="exitId">The column "exit_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Exit" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Exit GetPrevious(long exitId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"Exit\" by \"ExitId\" with value {ExitId} was denied to the user with Login ID {_LoginId}", exitId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.exits WHERE exit_id < @0 ORDER BY exit_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Exit>(this._Catalog, sql, exitId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "hrm.exits" sorted by exitId.
+        /// </summary>
+        /// <param name="exitId">The column "exit_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Exit" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Exit GetNext(long exitId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"Exit\" by \"ExitId\" with value {ExitId} was denied to the user with Login ID {_LoginId}", exitId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.exits WHERE exit_id > @0 ORDER BY exit_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Exit>(this._Catalog, sql, exitId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "hrm.exits". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Exit" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.Exit GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"Exit\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.exits ORDER BY exit_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.Exit>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "hrm.exits" with a where filter on the column "exit_id" to return a multiple instances of the "Exit" class. 
         /// </summary>
         /// <param name="exitIds">Array of column "exit_id" parameter used on where filter.</param>

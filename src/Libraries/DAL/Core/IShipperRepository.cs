@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Shipper Get(int shipperId);
 
         /// <summary>
+        /// Gets the first record of Shipper.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Shipper.</returns>
+        MixERP.Net.Entities.Core.Shipper GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Shipper sorted by shipperId. 
+        /// </summary>
+        /// <param name="shipperId">The column "shipper_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Shipper.</returns>
+        MixERP.Net.Entities.Core.Shipper GetPrevious(int shipperId);
+
+        /// <summary>
+        /// Gets the next record of Shipper sorted by shipperId. 
+        /// </summary>
+        /// <param name="shipperId">The column "shipper_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Shipper.</returns>
+        MixERP.Net.Entities.Core.Shipper GetNext(int shipperId);
+
+        /// <summary>
+        /// Gets the last record of Shipper.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Shipper.</returns>
+        MixERP.Net.Entities.Core.Shipper GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Shipper against shipperIds. 
         /// </summary>
         /// <param name="shipperIds">Array of column "shipper_id" parameter used on where filter.</param>

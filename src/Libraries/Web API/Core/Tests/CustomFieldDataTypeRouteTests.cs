@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/custom-field-data-type/count-filtered/{filterName}", "GET", typeof(CustomFieldDataTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/custom-field-data-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CustomFieldDataTypeController), "GetFiltered")]
         [InlineData("/api/core/custom-field-data-type/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CustomFieldDataTypeController), "GetFiltered")]
+        [InlineData("/api/core/custom-field-data-type/first", "GET", typeof(CustomFieldDataTypeController), "GetFirst")]
+        [InlineData("/api/core/custom-field-data-type/previous/1", "GET", typeof(CustomFieldDataTypeController), "GetPrevious")]
+        [InlineData("/api/core/custom-field-data-type/next/1", "GET", typeof(CustomFieldDataTypeController), "GetNext")]
+        [InlineData("/api/core/custom-field-data-type/last", "GET", typeof(CustomFieldDataTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/custom-field-data-type/custom-fields", "GET", typeof(CustomFieldDataTypeController), "GetCustomFields")]
         [InlineData("/api/core/custom-field-data-type/custom-fields", "GET", typeof(CustomFieldDataTypeController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/custom-field-data-type/count-filtered/{filterName}", "HEAD", typeof(CustomFieldDataTypeController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/custom-field-data-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CustomFieldDataTypeController), "GetFiltered")]
         [InlineData("/api/core/custom-field-data-type/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CustomFieldDataTypeController), "GetFiltered")]
+        [InlineData("/api/core/custom-field-data-type/first", "HEAD", typeof(CustomFieldDataTypeController), "GetFirst")]
+        [InlineData("/api/core/custom-field-data-type/previous/1", "HEAD", typeof(CustomFieldDataTypeController), "GetPrevious")]
+        [InlineData("/api/core/custom-field-data-type/next/1", "HEAD", typeof(CustomFieldDataTypeController), "GetNext")]
+        [InlineData("/api/core/custom-field-data-type/last", "HEAD", typeof(CustomFieldDataTypeController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/custom-field-data-type/custom-fields", "HEAD", typeof(CustomFieldDataTypeController), "GetCustomFields")]
         [InlineData("/api/core/custom-field-data-type/custom-fields", "HEAD", typeof(CustomFieldDataTypeController), "GetCustomFields")]

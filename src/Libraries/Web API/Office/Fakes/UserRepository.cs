@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Office.Fakes
             return new MixERP.Net.Entities.Office.User();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Office.User> Get([FromUri] int[] userIds)
+        public IEnumerable<MixERP.Net.Entities.Office.User> Get(int[] userIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Office.User(), 1);
+        }
+
+        public MixERP.Net.Entities.Office.User GetFirst()
+        {
+            return new MixERP.Net.Entities.Office.User();
+        }
+
+        public MixERP.Net.Entities.Office.User GetPrevious(int userId)
+        {
+            return new MixERP.Net.Entities.Office.User();
+        }
+
+        public MixERP.Net.Entities.Office.User GetNext(int userId)
+        {
+            return new MixERP.Net.Entities.Office.User();
+        }
+
+        public MixERP.Net.Entities.Office.User GetLast()
+        {
+            return new MixERP.Net.Entities.Office.User();
         }
 
         public IEnumerable<MixERP.Net.Entities.Office.User> GetPaginatedResult()

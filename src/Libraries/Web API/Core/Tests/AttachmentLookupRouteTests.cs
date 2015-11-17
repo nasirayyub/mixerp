@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/attachment-lookup/count-filtered/{filterName}", "GET", typeof(AttachmentLookupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/attachment-lookup/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AttachmentLookupController), "GetFiltered")]
         [InlineData("/api/core/attachment-lookup/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AttachmentLookupController), "GetFiltered")]
+        [InlineData("/api/core/attachment-lookup/first", "GET", typeof(AttachmentLookupController), "GetFirst")]
+        [InlineData("/api/core/attachment-lookup/previous/1", "GET", typeof(AttachmentLookupController), "GetPrevious")]
+        [InlineData("/api/core/attachment-lookup/next/1", "GET", typeof(AttachmentLookupController), "GetNext")]
+        [InlineData("/api/core/attachment-lookup/last", "GET", typeof(AttachmentLookupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/attachment-lookup/custom-fields", "GET", typeof(AttachmentLookupController), "GetCustomFields")]
         [InlineData("/api/core/attachment-lookup/custom-fields", "GET", typeof(AttachmentLookupController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/attachment-lookup/count-filtered/{filterName}", "HEAD", typeof(AttachmentLookupController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/attachment-lookup/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AttachmentLookupController), "GetFiltered")]
         [InlineData("/api/core/attachment-lookup/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AttachmentLookupController), "GetFiltered")]
+        [InlineData("/api/core/attachment-lookup/first", "HEAD", typeof(AttachmentLookupController), "GetFirst")]
+        [InlineData("/api/core/attachment-lookup/previous/1", "HEAD", typeof(AttachmentLookupController), "GetPrevious")]
+        [InlineData("/api/core/attachment-lookup/next/1", "HEAD", typeof(AttachmentLookupController), "GetNext")]
+        [InlineData("/api/core/attachment-lookup/last", "HEAD", typeof(AttachmentLookupController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/attachment-lookup/custom-fields", "HEAD", typeof(AttachmentLookupController), "GetCustomFields")]
         [InlineData("/api/core/attachment-lookup/custom-fields", "HEAD", typeof(AttachmentLookupController), "GetCustomFields")]

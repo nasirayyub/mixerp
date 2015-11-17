@@ -20,12 +20,17 @@
     scrudFactory.live = "EmployeeId";
 
     scrudFactory.layout = [
-        ["ExitId", ""],
-        ["EmployeeId", "Reason", "", ""],
-        ["ChangeStatusTo", "ExitTypeId", "", ""],
-        ["ForwardTo", "ServiceEndDate", "", ""],
-        ["Details", ""],
-        ["ExitInterviewDetails", ""]
+            {
+            tab: "",
+            fields: [
+                ["ExitId", ""],
+                ["EmployeeId", "Reason", "", ""],
+                ["ChangeStatusTo", "ExitTypeId", "", ""],
+                ["ForwardTo", "ServiceEndDate", "", ""],
+                ["Details", ""],
+                ["ExitInterviewDetails", ""]
+            ]
+        }
     ];
 
     scrudFactory.keys = [

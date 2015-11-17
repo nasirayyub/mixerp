@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/filter/count-filtered/{filterName}", "GET", typeof(FilterController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/filter/get-filtered/{pageNumber}/{filterName}", "GET", typeof(FilterController), "GetFiltered")]
         [InlineData("/api/core/filter/get-filtered/{pageNumber}/{filterName}", "GET", typeof(FilterController), "GetFiltered")]
+        [InlineData("/api/core/filter/first", "GET", typeof(FilterController), "GetFirst")]
+        [InlineData("/api/core/filter/previous/1", "GET", typeof(FilterController), "GetPrevious")]
+        [InlineData("/api/core/filter/next/1", "GET", typeof(FilterController), "GetNext")]
+        [InlineData("/api/core/filter/last", "GET", typeof(FilterController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/filter/custom-fields", "GET", typeof(FilterController), "GetCustomFields")]
         [InlineData("/api/core/filter/custom-fields", "GET", typeof(FilterController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/filter/count-filtered/{filterName}", "HEAD", typeof(FilterController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/filter/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(FilterController), "GetFiltered")]
         [InlineData("/api/core/filter/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(FilterController), "GetFiltered")]
+        [InlineData("/api/core/filter/first", "HEAD", typeof(FilterController), "GetFirst")]
+        [InlineData("/api/core/filter/previous/1", "HEAD", typeof(FilterController), "GetPrevious")]
+        [InlineData("/api/core/filter/next/1", "HEAD", typeof(FilterController), "GetNext")]
+        [InlineData("/api/core/filter/last", "HEAD", typeof(FilterController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/filter/custom-fields", "HEAD", typeof(FilterController), "GetCustomFields")]
         [InlineData("/api/core/filter/custom-fields", "HEAD", typeof(FilterController), "GetCustomFields")]

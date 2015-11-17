@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Unit Get(int unitId);
 
         /// <summary>
+        /// Gets the first record of Unit.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Unit.</returns>
+        MixERP.Net.Entities.Core.Unit GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Unit sorted by unitId. 
+        /// </summary>
+        /// <param name="unitId">The column "unit_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Unit.</returns>
+        MixERP.Net.Entities.Core.Unit GetPrevious(int unitId);
+
+        /// <summary>
+        /// Gets the next record of Unit sorted by unitId. 
+        /// </summary>
+        /// <param name="unitId">The column "unit_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Unit.</returns>
+        MixERP.Net.Entities.Core.Unit GetNext(int unitId);
+
+        /// <summary>
+        /// Gets the last record of Unit.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Unit.</returns>
+        MixERP.Net.Entities.Core.Unit GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Unit against unitIds. 
         /// </summary>
         /// <param name="unitIds">Array of column "unit_id" parameter used on where filter.</param>

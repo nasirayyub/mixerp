@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/ageing-slab/count-filtered/{filterName}", "GET", typeof(AgeingSlabController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/ageing-slab/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AgeingSlabController), "GetFiltered")]
         [InlineData("/api/core/ageing-slab/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AgeingSlabController), "GetFiltered")]
+        [InlineData("/api/core/ageing-slab/first", "GET", typeof(AgeingSlabController), "GetFirst")]
+        [InlineData("/api/core/ageing-slab/previous/1", "GET", typeof(AgeingSlabController), "GetPrevious")]
+        [InlineData("/api/core/ageing-slab/next/1", "GET", typeof(AgeingSlabController), "GetNext")]
+        [InlineData("/api/core/ageing-slab/last", "GET", typeof(AgeingSlabController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/ageing-slab/custom-fields", "GET", typeof(AgeingSlabController), "GetCustomFields")]
         [InlineData("/api/core/ageing-slab/custom-fields", "GET", typeof(AgeingSlabController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/ageing-slab/count-filtered/{filterName}", "HEAD", typeof(AgeingSlabController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/ageing-slab/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AgeingSlabController), "GetFiltered")]
         [InlineData("/api/core/ageing-slab/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AgeingSlabController), "GetFiltered")]
+        [InlineData("/api/core/ageing-slab/first", "HEAD", typeof(AgeingSlabController), "GetFirst")]
+        [InlineData("/api/core/ageing-slab/previous/1", "HEAD", typeof(AgeingSlabController), "GetPrevious")]
+        [InlineData("/api/core/ageing-slab/next/1", "HEAD", typeof(AgeingSlabController), "GetNext")]
+        [InlineData("/api/core/ageing-slab/last", "HEAD", typeof(AgeingSlabController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/ageing-slab/custom-fields", "HEAD", typeof(AgeingSlabController), "GetCustomFields")]
         [InlineData("/api/core/ageing-slab/custom-fields", "HEAD", typeof(AgeingSlabController), "GetCustomFields")]

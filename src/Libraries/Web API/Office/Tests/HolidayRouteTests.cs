@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/holiday/count-filtered/{filterName}", "GET", typeof(HolidayController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/holiday/get-filtered/{pageNumber}/{filterName}", "GET", typeof(HolidayController), "GetFiltered")]
         [InlineData("/api/office/holiday/get-filtered/{pageNumber}/{filterName}", "GET", typeof(HolidayController), "GetFiltered")]
+        [InlineData("/api/office/holiday/first", "GET", typeof(HolidayController), "GetFirst")]
+        [InlineData("/api/office/holiday/previous/1", "GET", typeof(HolidayController), "GetPrevious")]
+        [InlineData("/api/office/holiday/next/1", "GET", typeof(HolidayController), "GetNext")]
+        [InlineData("/api/office/holiday/last", "GET", typeof(HolidayController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/holiday/custom-fields", "GET", typeof(HolidayController), "GetCustomFields")]
         [InlineData("/api/office/holiday/custom-fields", "GET", typeof(HolidayController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Office.Tests
         [InlineData("/api/office/holiday/count-filtered/{filterName}", "HEAD", typeof(HolidayController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/office/holiday/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(HolidayController), "GetFiltered")]
         [InlineData("/api/office/holiday/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(HolidayController), "GetFiltered")]
+        [InlineData("/api/office/holiday/first", "HEAD", typeof(HolidayController), "GetFirst")]
+        [InlineData("/api/office/holiday/previous/1", "HEAD", typeof(HolidayController), "GetPrevious")]
+        [InlineData("/api/office/holiday/next/1", "HEAD", typeof(HolidayController), "GetNext")]
+        [InlineData("/api/office/holiday/last", "HEAD", typeof(HolidayController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/office/holiday/custom-fields", "HEAD", typeof(HolidayController), "GetCustomFields")]
         [InlineData("/api/office/holiday/custom-fields", "HEAD", typeof(HolidayController), "GetCustomFields")]

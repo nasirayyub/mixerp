@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/scrud-factory/count-filtered/{filterName}", "GET", typeof(ScrudFactoryController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/scrud-factory/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ScrudFactoryController), "GetFiltered")]
         [InlineData("/api/config/scrud-factory/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ScrudFactoryController), "GetFiltered")]
+        [InlineData("/api/config/scrud-factory/first", "GET", typeof(ScrudFactoryController), "GetFirst")]
+        [InlineData("/api/config/scrud-factory/previous/1", "GET", typeof(ScrudFactoryController), "GetPrevious")]
+        [InlineData("/api/config/scrud-factory/next/1", "GET", typeof(ScrudFactoryController), "GetNext")]
+        [InlineData("/api/config/scrud-factory/last", "GET", typeof(ScrudFactoryController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/scrud-factory/custom-fields", "GET", typeof(ScrudFactoryController), "GetCustomFields")]
         [InlineData("/api/config/scrud-factory/custom-fields", "GET", typeof(ScrudFactoryController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Config.Tests
         [InlineData("/api/config/scrud-factory/count-filtered/{filterName}", "HEAD", typeof(ScrudFactoryController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/config/scrud-factory/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ScrudFactoryController), "GetFiltered")]
         [InlineData("/api/config/scrud-factory/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ScrudFactoryController), "GetFiltered")]
+        [InlineData("/api/config/scrud-factory/first", "HEAD", typeof(ScrudFactoryController), "GetFirst")]
+        [InlineData("/api/config/scrud-factory/previous/1", "HEAD", typeof(ScrudFactoryController), "GetPrevious")]
+        [InlineData("/api/config/scrud-factory/next/1", "HEAD", typeof(ScrudFactoryController), "GetNext")]
+        [InlineData("/api/config/scrud-factory/last", "HEAD", typeof(ScrudFactoryController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/config/scrud-factory/custom-fields", "HEAD", typeof(ScrudFactoryController), "GetCustomFields")]
         [InlineData("/api/config/scrud-factory/custom-fields", "HEAD", typeof(ScrudFactoryController), "GetCustomFields")]

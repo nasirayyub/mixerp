@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Config.Data
         MixERP.Net.Entities.Config.AttachmentFactory Get(string key);
 
         /// <summary>
+        /// Gets the first record of AttachmentFactory.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of AttachmentFactory.</returns>
+        MixERP.Net.Entities.Config.AttachmentFactory GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of AttachmentFactory sorted by key. 
+        /// </summary>
+        /// <param name="key">The column "key" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of AttachmentFactory.</returns>
+        MixERP.Net.Entities.Config.AttachmentFactory GetPrevious(string key);
+
+        /// <summary>
+        /// Gets the next record of AttachmentFactory sorted by key. 
+        /// </summary>
+        /// <param name="key">The column "key" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of AttachmentFactory.</returns>
+        MixERP.Net.Entities.Config.AttachmentFactory GetNext(string key);
+
+        /// <summary>
+        /// Gets the last record of AttachmentFactory.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of AttachmentFactory.</returns>
+        MixERP.Net.Entities.Config.AttachmentFactory GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the AttachmentFactory against keys. 
         /// </summary>
         /// <param name="keys">Array of column "key" parameter used on where filter.</param>

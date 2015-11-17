@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Core.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "core.attributes". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Attribute" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Attribute GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"Attribute\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.attributes ORDER BY attribute_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Attribute>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "core.attributes" sorted by attributeId.
+        /// </summary>
+        /// <param name="attributeId">The column "attribute_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Attribute" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Attribute GetPrevious(int attributeId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"Attribute\" by \"AttributeId\" with value {AttributeId} was denied to the user with Login ID {_LoginId}", attributeId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.attributes WHERE attribute_id < @0 ORDER BY attribute_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Attribute>(this._Catalog, sql, attributeId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "core.attributes" sorted by attributeId.
+        /// </summary>
+        /// <param name="attributeId">The column "attribute_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "Attribute" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Attribute GetNext(int attributeId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"Attribute\" by \"AttributeId\" with value {AttributeId} was denied to the user with Login ID {_LoginId}", attributeId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.attributes WHERE attribute_id > @0 ORDER BY attribute_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Attribute>(this._Catalog, sql, attributeId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "core.attributes". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "Attribute" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Core.Attribute GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"Attribute\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM core.attributes ORDER BY attribute_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Core.Attribute>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "core.attributes" with a where filter on the column "attribute_id" to return a multiple instances of the "Attribute" class. 
         /// </summary>
         /// <param name="attributeIds">Array of column "attribute_id" parameter used on where filter.</param>

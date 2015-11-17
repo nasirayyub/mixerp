@@ -45,6 +45,7 @@ along with MixERP.  If not, see <http://www.gnu.org/licenses />.
             tab: "item",
             fields: [
                 ["Photo", ""],
+                ["ItemId", ""],
                 ["ItemCode", "ItemName", "", ""],
                 ["ItemGroupId", "ItemTypeId", "", ""],
                 ["BrandId", "PreferredSupplierId", "", ""],

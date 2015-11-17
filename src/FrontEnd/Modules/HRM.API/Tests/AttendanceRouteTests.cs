@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/attendance/count-filtered/{filterName}", "GET", typeof(AttendanceController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/attendance/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AttendanceController), "GetFiltered")]
         [InlineData("/api/hrm/attendance/get-filtered/{pageNumber}/{filterName}", "GET", typeof(AttendanceController), "GetFiltered")]
+        [InlineData("/api/hrm/attendance/first", "GET", typeof(AttendanceController), "GetFirst")]
+        [InlineData("/api/hrm/attendance/previous/1", "GET", typeof(AttendanceController), "GetPrevious")]
+        [InlineData("/api/hrm/attendance/next/1", "GET", typeof(AttendanceController), "GetNext")]
+        [InlineData("/api/hrm/attendance/last", "GET", typeof(AttendanceController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/attendance/custom-fields", "GET", typeof(AttendanceController), "GetCustomFields")]
         [InlineData("/api/hrm/attendance/custom-fields", "GET", typeof(AttendanceController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/attendance/count-filtered/{filterName}", "HEAD", typeof(AttendanceController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/attendance/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AttendanceController), "GetFiltered")]
         [InlineData("/api/hrm/attendance/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(AttendanceController), "GetFiltered")]
+        [InlineData("/api/hrm/attendance/first", "HEAD", typeof(AttendanceController), "GetFirst")]
+        [InlineData("/api/hrm/attendance/previous/1", "HEAD", typeof(AttendanceController), "GetPrevious")]
+        [InlineData("/api/hrm/attendance/next/1", "HEAD", typeof(AttendanceController), "GetNext")]
+        [InlineData("/api/hrm/attendance/last", "HEAD", typeof(AttendanceController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/attendance/custom-fields", "HEAD", typeof(AttendanceController), "GetCustomFields")]
         [InlineData("/api/hrm/attendance/custom-fields", "HEAD", typeof(AttendanceController), "GetCustomFields")]

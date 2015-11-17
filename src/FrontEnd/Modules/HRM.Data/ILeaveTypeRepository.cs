@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.LeaveType Get(int leaveTypeId);
 
         /// <summary>
+        /// Gets the first record of LeaveType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of LeaveType.</returns>
+        MixERP.Net.Entities.HRM.LeaveType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of LeaveType sorted by leaveTypeId. 
+        /// </summary>
+        /// <param name="leaveTypeId">The column "leave_type_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of LeaveType.</returns>
+        MixERP.Net.Entities.HRM.LeaveType GetPrevious(int leaveTypeId);
+
+        /// <summary>
+        /// Gets the next record of LeaveType sorted by leaveTypeId. 
+        /// </summary>
+        /// <param name="leaveTypeId">The column "leave_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of LeaveType.</returns>
+        MixERP.Net.Entities.HRM.LeaveType GetNext(int leaveTypeId);
+
+        /// <summary>
+        /// Gets the last record of LeaveType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of LeaveType.</returns>
+        MixERP.Net.Entities.HRM.LeaveType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the LeaveType against leaveTypeIds. 
         /// </summary>
         /// <param name="leaveTypeIds">Array of column "leave_type_id" parameter used on where filter.</param>

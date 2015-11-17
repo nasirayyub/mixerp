@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Localization.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Localization.LocalizedResource localizedResource = Fixture().GetFirst();
+            Assert.NotNull(localizedResource);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Localization.LocalizedResource localizedResource = Fixture().GetPrevious(0);
+            Assert.NotNull(localizedResource);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Localization.LocalizedResource localizedResource = Fixture().GetNext(0);
+            Assert.NotNull(localizedResource);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Localization.LocalizedResource localizedResource = Fixture().GetLast();
+            Assert.NotNull(localizedResource);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Localization.LocalizedResource> localizedResources = Fixture().Get(new long[] { });

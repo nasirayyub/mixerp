@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Office.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Office.Holiday holiday = Fixture().GetFirst();
+            Assert.NotNull(holiday);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Office.Holiday holiday = Fixture().GetPrevious(0);
+            Assert.NotNull(holiday);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Office.Holiday holiday = Fixture().GetNext(0);
+            Assert.NotNull(holiday);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Office.Holiday holiday = Fixture().GetLast();
+            Assert.NotNull(holiday);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Office.Holiday> holidays = Fixture().Get(new int[] { });

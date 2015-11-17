@@ -53,6 +53,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/exit/count-filtered/{filterName}", "GET", typeof(ExitController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/exit/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ExitController), "GetFiltered")]
         [InlineData("/api/hrm/exit/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ExitController), "GetFiltered")]
+        [InlineData("/api/hrm/exit/first", "GET", typeof(ExitController), "GetFirst")]
+        [InlineData("/api/hrm/exit/previous/1", "GET", typeof(ExitController), "GetPrevious")]
+        [InlineData("/api/hrm/exit/next/1", "GET", typeof(ExitController), "GetNext")]
+        [InlineData("/api/hrm/exit/last", "GET", typeof(ExitController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/exit/custom-fields", "GET", typeof(ExitController), "GetCustomFields")]
         [InlineData("/api/hrm/exit/custom-fields", "GET", typeof(ExitController), "GetCustomFields")]
@@ -78,6 +82,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/exit/count-filtered/{filterName}", "HEAD", typeof(ExitController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/exit/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ExitController), "GetFiltered")]
         [InlineData("/api/hrm/exit/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ExitController), "GetFiltered")]
+        [InlineData("/api/hrm/exit/first", "HEAD", typeof(ExitController), "GetFirst")]
+        [InlineData("/api/hrm/exit/previous/1", "HEAD", typeof(ExitController), "GetPrevious")]
+        [InlineData("/api/hrm/exit/next/1", "HEAD", typeof(ExitController), "GetNext")]
+        [InlineData("/api/hrm/exit/last", "HEAD", typeof(ExitController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/exit/custom-fields", "HEAD", typeof(ExitController), "GetCustomFields")]
         [InlineData("/api/hrm/exit/custom-fields", "HEAD", typeof(ExitController), "GetCustomFields")]

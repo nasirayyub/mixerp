@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.HRM.Fakes
             return new MixERP.Net.Entities.HRM.OfficeHour();
         }
 
-        public IEnumerable<MixERP.Net.Entities.HRM.OfficeHour> Get([FromUri] int[] officeHourIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.OfficeHour> Get(int[] officeHourIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.HRM.OfficeHour(), 1);
+        }
+
+        public MixERP.Net.Entities.HRM.OfficeHour GetFirst()
+        {
+            return new MixERP.Net.Entities.HRM.OfficeHour();
+        }
+
+        public MixERP.Net.Entities.HRM.OfficeHour GetPrevious(int officeHourId)
+        {
+            return new MixERP.Net.Entities.HRM.OfficeHour();
+        }
+
+        public MixERP.Net.Entities.HRM.OfficeHour GetNext(int officeHourId)
+        {
+            return new MixERP.Net.Entities.HRM.OfficeHour();
+        }
+
+        public MixERP.Net.Entities.HRM.OfficeHour GetLast()
+        {
+            return new MixERP.Net.Entities.HRM.OfficeHour();
         }
 
         public IEnumerable<MixERP.Net.Entities.HRM.OfficeHour> GetPaginatedResult()

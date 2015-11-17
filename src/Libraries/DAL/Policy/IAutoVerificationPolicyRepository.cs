@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Policy.Data
         MixERP.Net.Entities.Policy.AutoVerificationPolicy Get(int policyId);
 
         /// <summary>
+        /// Gets the first record of AutoVerificationPolicy.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of AutoVerificationPolicy.</returns>
+        MixERP.Net.Entities.Policy.AutoVerificationPolicy GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of AutoVerificationPolicy sorted by policyId. 
+        /// </summary>
+        /// <param name="policyId">The column "policy_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of AutoVerificationPolicy.</returns>
+        MixERP.Net.Entities.Policy.AutoVerificationPolicy GetPrevious(int policyId);
+
+        /// <summary>
+        /// Gets the next record of AutoVerificationPolicy sorted by policyId. 
+        /// </summary>
+        /// <param name="policyId">The column "policy_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of AutoVerificationPolicy.</returns>
+        MixERP.Net.Entities.Policy.AutoVerificationPolicy GetNext(int policyId);
+
+        /// <summary>
+        /// Gets the last record of AutoVerificationPolicy.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of AutoVerificationPolicy.</returns>
+        MixERP.Net.Entities.Policy.AutoVerificationPolicy GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the AutoVerificationPolicy against policyIds. 
         /// </summary>
         /// <param name="policyIds">Array of column "policy_id" parameter used on where filter.</param>

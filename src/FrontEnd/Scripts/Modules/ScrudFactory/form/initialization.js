@@ -11,7 +11,7 @@ var defaultValuesLoaded = false;
 var formReady = false;
 
 if (typeof (scrudFactory.hidePrimaryKey) ==="undefined") {
-    scrudFactory.hidePrimaryKey = true;
+    scrudFactory.hidePrimaryKey = false;
 };
 
 if (typeof (scrudFactory.tabs) === "undefined") {

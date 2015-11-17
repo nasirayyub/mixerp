@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Menu Get(int menuId);
 
         /// <summary>
+        /// Gets the first record of Menu.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Menu.</returns>
+        MixERP.Net.Entities.Core.Menu GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Menu sorted by menuId. 
+        /// </summary>
+        /// <param name="menuId">The column "menu_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Menu.</returns>
+        MixERP.Net.Entities.Core.Menu GetPrevious(int menuId);
+
+        /// <summary>
+        /// Gets the next record of Menu sorted by menuId. 
+        /// </summary>
+        /// <param name="menuId">The column "menu_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Menu.</returns>
+        MixERP.Net.Entities.Core.Menu GetNext(int menuId);
+
+        /// <summary>
+        /// Gets the last record of Menu.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Menu.</returns>
+        MixERP.Net.Entities.Core.Menu GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Menu against menuIds. 
         /// </summary>
         /// <param name="menuIds">Array of column "menu_id" parameter used on where filter.</param>

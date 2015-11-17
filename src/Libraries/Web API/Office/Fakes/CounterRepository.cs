@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Office.Fakes
             return new MixERP.Net.Entities.Office.Counter();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Office.Counter> Get([FromUri] int[] counterIds)
+        public IEnumerable<MixERP.Net.Entities.Office.Counter> Get(int[] counterIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Office.Counter(), 1);
+        }
+
+        public MixERP.Net.Entities.Office.Counter GetFirst()
+        {
+            return new MixERP.Net.Entities.Office.Counter();
+        }
+
+        public MixERP.Net.Entities.Office.Counter GetPrevious(int counterId)
+        {
+            return new MixERP.Net.Entities.Office.Counter();
+        }
+
+        public MixERP.Net.Entities.Office.Counter GetNext(int counterId)
+        {
+            return new MixERP.Net.Entities.Office.Counter();
+        }
+
+        public MixERP.Net.Entities.Office.Counter GetLast()
+        {
+            return new MixERP.Net.Entities.Office.Counter();
         }
 
         public IEnumerable<MixERP.Net.Entities.Office.Counter> GetPaginatedResult()

@@ -161,6 +161,125 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "hrm.employee_social_network_details". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "EmployeeSocialNetworkDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"EmployeeSocialNetworkDetail\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.employee_social_network_details ORDER BY employee_social_network_detail_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "hrm.employee_social_network_details" sorted by employeeSocialNetworkDetailId.
+        /// </summary>
+        /// <param name="employeeSocialNetworkDetailId">The column "employee_social_network_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "EmployeeSocialNetworkDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail GetPrevious(long employeeSocialNetworkDetailId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"EmployeeSocialNetworkDetail\" by \"EmployeeSocialNetworkDetailId\" with value {EmployeeSocialNetworkDetailId} was denied to the user with Login ID {_LoginId}", employeeSocialNetworkDetailId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.employee_social_network_details WHERE employee_social_network_detail_id < @0 ORDER BY employee_social_network_detail_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail>(this._Catalog, sql, employeeSocialNetworkDetailId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "hrm.employee_social_network_details" sorted by employeeSocialNetworkDetailId.
+        /// </summary>
+        /// <param name="employeeSocialNetworkDetailId">The column "employee_social_network_detail_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "EmployeeSocialNetworkDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail GetNext(long employeeSocialNetworkDetailId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"EmployeeSocialNetworkDetail\" by \"EmployeeSocialNetworkDetailId\" with value {EmployeeSocialNetworkDetailId} was denied to the user with Login ID {_LoginId}", employeeSocialNetworkDetailId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.employee_social_network_details WHERE employee_social_network_detail_id > @0 ORDER BY employee_social_network_detail_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail>(this._Catalog, sql, employeeSocialNetworkDetailId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "hrm.employee_social_network_details". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "EmployeeSocialNetworkDetail" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"EmployeeSocialNetworkDetail\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.employee_social_network_details ORDER BY employee_social_network_detail_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.EmployeeSocialNetworkDetail>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "hrm.employee_social_network_details" with a where filter on the column "employee_social_network_detail_id" to return a multiple instances of the "EmployeeSocialNetworkDetail" class. 
         /// </summary>
         /// <param name="employeeSocialNetworkDetailIds">Array of column "employee_social_network_detail_id" parameter used on where filter.</param>

@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.SalesTaxExempt salesTaxExempt = Fixture().GetFirst();
+            Assert.NotNull(salesTaxExempt);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.SalesTaxExempt salesTaxExempt = Fixture().GetPrevious(0);
+            Assert.NotNull(salesTaxExempt);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.SalesTaxExempt salesTaxExempt = Fixture().GetNext(0);
+            Assert.NotNull(salesTaxExempt);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.SalesTaxExempt salesTaxExempt = Fixture().GetLast();
+            Assert.NotNull(salesTaxExempt);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.SalesTaxExempt> salesTaxExempts = Fixture().Get(new int[] { });

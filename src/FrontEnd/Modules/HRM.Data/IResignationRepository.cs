@@ -35,6 +35,32 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         MixERP.Net.Entities.HRM.Resignation Get(int resignationId);
 
         /// <summary>
+        /// Gets the first record of Resignation.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Resignation.</returns>
+        MixERP.Net.Entities.HRM.Resignation GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Resignation sorted by resignationId. 
+        /// </summary>
+        /// <param name="resignationId">The column "resignation_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Resignation.</returns>
+        MixERP.Net.Entities.HRM.Resignation GetPrevious(int resignationId);
+
+        /// <summary>
+        /// Gets the next record of Resignation sorted by resignationId. 
+        /// </summary>
+        /// <param name="resignationId">The column "resignation_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Resignation.</returns>
+        MixERP.Net.Entities.HRM.Resignation GetNext(int resignationId);
+
+        /// <summary>
+        /// Gets the last record of Resignation.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Resignation.</returns>
+        MixERP.Net.Entities.HRM.Resignation GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Resignation against resignationIds. 
         /// </summary>
         /// <param name="resignationIds">Array of column "resignation_id" parameter used on where filter.</param>

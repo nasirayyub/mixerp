@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.HRM.Fakes
             return new MixERP.Net.Entities.HRM.Resignation();
         }
 
-        public IEnumerable<MixERP.Net.Entities.HRM.Resignation> Get([FromUri] int[] resignationIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.Resignation> Get(int[] resignationIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.HRM.Resignation(), 1);
+        }
+
+        public MixERP.Net.Entities.HRM.Resignation GetFirst()
+        {
+            return new MixERP.Net.Entities.HRM.Resignation();
+        }
+
+        public MixERP.Net.Entities.HRM.Resignation GetPrevious(int resignationId)
+        {
+            return new MixERP.Net.Entities.HRM.Resignation();
+        }
+
+        public MixERP.Net.Entities.HRM.Resignation GetNext(int resignationId)
+        {
+            return new MixERP.Net.Entities.HRM.Resignation();
+        }
+
+        public MixERP.Net.Entities.HRM.Resignation GetLast()
+        {
+            return new MixERP.Net.Entities.HRM.Resignation();
         }
 
         public IEnumerable<MixERP.Net.Entities.HRM.Resignation> GetPaginatedResult()

@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.AgeingSlab ageingSlab = Fixture().GetFirst();
+            Assert.NotNull(ageingSlab);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.AgeingSlab ageingSlab = Fixture().GetPrevious(0);
+            Assert.NotNull(ageingSlab);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.AgeingSlab ageingSlab = Fixture().GetNext(0);
+            Assert.NotNull(ageingSlab);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.AgeingSlab ageingSlab = Fixture().GetLast();
+            Assert.NotNull(ageingSlab);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.AgeingSlab> ageingSlabs = Fixture().Get(new int[] { });

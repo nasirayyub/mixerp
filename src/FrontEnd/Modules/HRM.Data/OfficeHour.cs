@@ -161,6 +161,125 @@ namespace MixERP.Net.Core.Modules.HRM.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "hrm.office_hours". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "OfficeHour" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.OfficeHour GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"OfficeHour\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.office_hours ORDER BY office_hour_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.OfficeHour>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "hrm.office_hours" sorted by officeHourId.
+        /// </summary>
+        /// <param name="officeHourId">The column "office_hour_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "OfficeHour" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.OfficeHour GetPrevious(int officeHourId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"OfficeHour\" by \"OfficeHourId\" with value {OfficeHourId} was denied to the user with Login ID {_LoginId}", officeHourId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.office_hours WHERE office_hour_id < @0 ORDER BY office_hour_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.OfficeHour>(this._Catalog, sql, officeHourId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "hrm.office_hours" sorted by officeHourId.
+        /// </summary>
+        /// <param name="officeHourId">The column "office_hour_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "OfficeHour" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.OfficeHour GetNext(int officeHourId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"OfficeHour\" by \"OfficeHourId\" with value {OfficeHourId} was denied to the user with Login ID {_LoginId}", officeHourId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.office_hours WHERE office_hour_id > @0 ORDER BY office_hour_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.OfficeHour>(this._Catalog, sql, officeHourId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "hrm.office_hours". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "OfficeHour" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.HRM.OfficeHour GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"OfficeHour\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM hrm.office_hours ORDER BY office_hour_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.HRM.OfficeHour>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "hrm.office_hours" with a where filter on the column "office_hour_id" to return a multiple instances of the "OfficeHour" class. 
         /// </summary>
         /// <param name="officeHourIds">Array of column "office_hour_id" parameter used on where filter.</param>

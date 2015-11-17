@@ -25,7 +25,7 @@
         {
             tab: "",
             fields: [
-                ["EmployeeId", "", "", ""],
+                ["EmployeeQualificationId", "EmployeeId",  "", ""],
                 ["EducationLevelId", "Institution", "", ""],
                 ["Majors", "TotalYears", "", ""],
                 ["Score", "", "", ""],

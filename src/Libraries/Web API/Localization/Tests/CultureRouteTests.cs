@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Localization.Tests
         [InlineData("/api/localization/culture/count-filtered/{filterName}", "GET", typeof(CultureController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/localization/culture/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CultureController), "GetFiltered")]
         [InlineData("/api/localization/culture/get-filtered/{pageNumber}/{filterName}", "GET", typeof(CultureController), "GetFiltered")]
+        [InlineData("/api/localization/culture/first", "GET", typeof(CultureController), "GetFirst")]
+        [InlineData("/api/localization/culture/previous/1", "GET", typeof(CultureController), "GetPrevious")]
+        [InlineData("/api/localization/culture/next/1", "GET", typeof(CultureController), "GetNext")]
+        [InlineData("/api/localization/culture/last", "GET", typeof(CultureController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/localization/culture/custom-fields", "GET", typeof(CultureController), "GetCustomFields")]
         [InlineData("/api/localization/culture/custom-fields", "GET", typeof(CultureController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Localization.Tests
         [InlineData("/api/localization/culture/count-filtered/{filterName}", "HEAD", typeof(CultureController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/localization/culture/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CultureController), "GetFiltered")]
         [InlineData("/api/localization/culture/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(CultureController), "GetFiltered")]
+        [InlineData("/api/localization/culture/first", "HEAD", typeof(CultureController), "GetFirst")]
+        [InlineData("/api/localization/culture/previous/1", "HEAD", typeof(CultureController), "GetPrevious")]
+        [InlineData("/api/localization/culture/next/1", "HEAD", typeof(CultureController), "GetNext")]
+        [InlineData("/api/localization/culture/last", "HEAD", typeof(CultureController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/localization/culture/custom-fields", "HEAD", typeof(CultureController), "GetCustomFields")]
         [InlineData("/api/localization/culture/custom-fields", "HEAD", typeof(CultureController), "GetCustomFields")]

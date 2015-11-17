@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.Config.Fakes
             return new MixERP.Net.Entities.Config.AttachmentFactory();
         }
 
-        public IEnumerable<MixERP.Net.Entities.Config.AttachmentFactory> Get([FromUri] string[] keys)
+        public IEnumerable<MixERP.Net.Entities.Config.AttachmentFactory> Get(string[] keys)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Config.AttachmentFactory(), 1);
+        }
+
+        public MixERP.Net.Entities.Config.AttachmentFactory GetFirst()
+        {
+            return new MixERP.Net.Entities.Config.AttachmentFactory();
+        }
+
+        public MixERP.Net.Entities.Config.AttachmentFactory GetPrevious(string key)
+        {
+            return new MixERP.Net.Entities.Config.AttachmentFactory();
+        }
+
+        public MixERP.Net.Entities.Config.AttachmentFactory GetNext(string key)
+        {
+            return new MixERP.Net.Entities.Config.AttachmentFactory();
+        }
+
+        public MixERP.Net.Entities.Config.AttachmentFactory GetLast()
+        {
+            return new MixERP.Net.Entities.Config.AttachmentFactory();
         }
 
         public IEnumerable<MixERP.Net.Entities.Config.AttachmentFactory> GetPaginatedResult()

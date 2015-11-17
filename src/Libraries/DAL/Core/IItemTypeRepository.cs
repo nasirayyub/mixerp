@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.ItemType Get(int itemTypeId);
 
         /// <summary>
+        /// Gets the first record of ItemType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ItemType.</returns>
+        MixERP.Net.Entities.Core.ItemType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of ItemType sorted by itemTypeId. 
+        /// </summary>
+        /// <param name="itemTypeId">The column "item_type_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ItemType.</returns>
+        MixERP.Net.Entities.Core.ItemType GetPrevious(int itemTypeId);
+
+        /// <summary>
+        /// Gets the next record of ItemType sorted by itemTypeId. 
+        /// </summary>
+        /// <param name="itemTypeId">The column "item_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ItemType.</returns>
+        MixERP.Net.Entities.Core.ItemType GetNext(int itemTypeId);
+
+        /// <summary>
+        /// Gets the last record of ItemType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ItemType.</returns>
+        MixERP.Net.Entities.Core.ItemType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the ItemType against itemTypeIds. 
         /// </summary>
         /// <param name="itemTypeIds">Array of column "item_type_id" parameter used on where filter.</param>

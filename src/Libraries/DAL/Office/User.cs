@@ -161,6 +161,125 @@ namespace MixERP.Net.Schemas.Office.Data
         }
 
         /// <summary>
+        /// Gets the first record of the table "office.users". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "User" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Office.User GetFirst()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the first record of entity \"User\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM office.users ORDER BY user_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Office.User>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the previous record of the table "office.users" sorted by userId.
+        /// </summary>
+        /// <param name="userId">The column "user_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "User" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Office.User GetPrevious(int userId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the previous entity of \"User\" by \"UserId\" with value {UserId} was denied to the user with Login ID {_LoginId}", userId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM office.users WHERE user_id < @0 ORDER BY user_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Office.User>(this._Catalog, sql, userId).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the next record of the table "office.users" sorted by userId.
+        /// </summary>
+        /// <param name="userId">The column "user_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of "User" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Office.User GetNext(int userId)
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the next entity of \"User\" by \"UserId\" with value {UserId} was denied to the user with Login ID {_LoginId}", userId, this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM office.users WHERE user_id > @0 ORDER BY user_id LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Office.User>(this._Catalog, sql, userId).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Gets the last record of the table "office.users". 
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of "User" class mapped to the database row.</returns>
+        /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
+        public MixERP.Net.Entities.Office.User GetLast()
+        {
+            if (string.IsNullOrWhiteSpace(this._Catalog))
+            {
+                return null;
+            }
+
+            if (!this.SkipValidation)
+            {
+                if (!this.Validated)
+                {
+                    this.Validate(AccessTypeEnum.Read, this._LoginId, this._Catalog, false);
+                }
+                if (!this.HasAccess)
+                {
+                    Log.Information("Access to the get the last record of entity \"User\" was denied to the user with Login ID {_LoginId}", this._LoginId);
+                    throw new UnauthorizedException("Access is denied.");
+                }
+            }
+
+            const string sql = "SELECT * FROM office.users ORDER BY user_id DESC LIMIT 1;";
+            return Factory.Get<MixERP.Net.Entities.Office.User>(this._Catalog, sql).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Executes a select query on the table "office.users" with a where filter on the column "user_id" to return a multiple instances of the "User" class. 
         /// </summary>
         /// <param name="userIds">Array of column "user_id" parameter used on where filter.</param>

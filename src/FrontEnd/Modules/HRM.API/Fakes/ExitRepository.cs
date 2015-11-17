@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.HRM.Fakes
             return new MixERP.Net.Entities.HRM.Exit();
         }
 
-        public IEnumerable<MixERP.Net.Entities.HRM.Exit> Get([FromUri] long[] exitIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.Exit> Get(long[] exitIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.HRM.Exit(), 1);
+        }
+
+        public MixERP.Net.Entities.HRM.Exit GetFirst()
+        {
+            return new MixERP.Net.Entities.HRM.Exit();
+        }
+
+        public MixERP.Net.Entities.HRM.Exit GetPrevious(long exitId)
+        {
+            return new MixERP.Net.Entities.HRM.Exit();
+        }
+
+        public MixERP.Net.Entities.HRM.Exit GetNext(long exitId)
+        {
+            return new MixERP.Net.Entities.HRM.Exit();
+        }
+
+        public MixERP.Net.Entities.HRM.Exit GetLast()
+        {
+            return new MixERP.Net.Entities.HRM.Exit();
         }
 
         public IEnumerable<MixERP.Net.Entities.HRM.Exit> GetPaginatedResult()

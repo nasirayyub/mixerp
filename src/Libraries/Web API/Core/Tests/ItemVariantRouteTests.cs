@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/item-variant/count-filtered/{filterName}", "GET", typeof(ItemVariantController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/item-variant/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ItemVariantController), "GetFiltered")]
         [InlineData("/api/core/item-variant/get-filtered/{pageNumber}/{filterName}", "GET", typeof(ItemVariantController), "GetFiltered")]
+        [InlineData("/api/core/item-variant/first", "GET", typeof(ItemVariantController), "GetFirst")]
+        [InlineData("/api/core/item-variant/previous/1", "GET", typeof(ItemVariantController), "GetPrevious")]
+        [InlineData("/api/core/item-variant/next/1", "GET", typeof(ItemVariantController), "GetNext")]
+        [InlineData("/api/core/item-variant/last", "GET", typeof(ItemVariantController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/item-variant/custom-fields", "GET", typeof(ItemVariantController), "GetCustomFields")]
         [InlineData("/api/core/item-variant/custom-fields", "GET", typeof(ItemVariantController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/item-variant/count-filtered/{filterName}", "HEAD", typeof(ItemVariantController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/item-variant/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ItemVariantController), "GetFiltered")]
         [InlineData("/api/core/item-variant/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(ItemVariantController), "GetFiltered")]
+        [InlineData("/api/core/item-variant/first", "HEAD", typeof(ItemVariantController), "GetFirst")]
+        [InlineData("/api/core/item-variant/previous/1", "HEAD", typeof(ItemVariantController), "GetPrevious")]
+        [InlineData("/api/core/item-variant/next/1", "HEAD", typeof(ItemVariantController), "GetNext")]
+        [InlineData("/api/core/item-variant/last", "HEAD", typeof(ItemVariantController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/item-variant/custom-fields", "HEAD", typeof(ItemVariantController), "GetCustomFields")]
         [InlineData("/api/core/item-variant/custom-fields", "HEAD", typeof(ItemVariantController), "GetCustomFields")]

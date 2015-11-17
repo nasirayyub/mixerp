@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Variant Get(int variantId);
 
         /// <summary>
+        /// Gets the first record of Variant.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Variant.</returns>
+        MixERP.Net.Entities.Core.Variant GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Variant sorted by variantId. 
+        /// </summary>
+        /// <param name="variantId">The column "variant_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Variant.</returns>
+        MixERP.Net.Entities.Core.Variant GetPrevious(int variantId);
+
+        /// <summary>
+        /// Gets the next record of Variant sorted by variantId. 
+        /// </summary>
+        /// <param name="variantId">The column "variant_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Variant.</returns>
+        MixERP.Net.Entities.Core.Variant GetNext(int variantId);
+
+        /// <summary>
+        /// Gets the last record of Variant.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Variant.</returns>
+        MixERP.Net.Entities.Core.Variant GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Variant against variantIds. 
         /// </summary>
         /// <param name="variantIds">Array of column "variant_id" parameter used on where filter.</param>

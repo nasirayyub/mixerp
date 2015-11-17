@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/job-title/count-filtered/{filterName}", "GET", typeof(JobTitleController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/job-title/get-filtered/{pageNumber}/{filterName}", "GET", typeof(JobTitleController), "GetFiltered")]
         [InlineData("/api/hrm/job-title/get-filtered/{pageNumber}/{filterName}", "GET", typeof(JobTitleController), "GetFiltered")]
+        [InlineData("/api/hrm/job-title/first", "GET", typeof(JobTitleController), "GetFirst")]
+        [InlineData("/api/hrm/job-title/previous/1", "GET", typeof(JobTitleController), "GetPrevious")]
+        [InlineData("/api/hrm/job-title/next/1", "GET", typeof(JobTitleController), "GetNext")]
+        [InlineData("/api/hrm/job-title/last", "GET", typeof(JobTitleController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/job-title/custom-fields", "GET", typeof(JobTitleController), "GetCustomFields")]
         [InlineData("/api/hrm/job-title/custom-fields", "GET", typeof(JobTitleController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.HRM.Tests
         [InlineData("/api/hrm/job-title/count-filtered/{filterName}", "HEAD", typeof(JobTitleController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/hrm/job-title/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(JobTitleController), "GetFiltered")]
         [InlineData("/api/hrm/job-title/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(JobTitleController), "GetFiltered")]
+        [InlineData("/api/hrm/job-title/first", "HEAD", typeof(JobTitleController), "GetFirst")]
+        [InlineData("/api/hrm/job-title/previous/1", "HEAD", typeof(JobTitleController), "GetPrevious")]
+        [InlineData("/api/hrm/job-title/next/1", "HEAD", typeof(JobTitleController), "GetNext")]
+        [InlineData("/api/hrm/job-title/last", "HEAD", typeof(JobTitleController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/hrm/job-title/custom-fields", "HEAD", typeof(JobTitleController), "GetCustomFields")]
         [InlineData("/api/hrm/job-title/custom-fields", "HEAD", typeof(JobTitleController), "GetCustomFields")]

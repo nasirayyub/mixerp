@@ -39,6 +39,26 @@ namespace MixERP.Net.Api.Core.Fakes
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.MaritalStatus(), 1);
         }
 
+        public MixERP.Net.Entities.Core.MaritalStatus GetFirst()
+        {
+            return new MixERP.Net.Entities.Core.MaritalStatus();
+        }
+
+        public MixERP.Net.Entities.Core.MaritalStatus GetPrevious(int maritalStatusId)
+        {
+            return new MixERP.Net.Entities.Core.MaritalStatus();
+        }
+
+        public MixERP.Net.Entities.Core.MaritalStatus GetNext(int maritalStatusId)
+        {
+            return new MixERP.Net.Entities.Core.MaritalStatus();
+        }
+
+        public MixERP.Net.Entities.Core.MaritalStatus GetLast()
+        {
+            return new MixERP.Net.Entities.Core.MaritalStatus();
+        }
+
         public IEnumerable<MixERP.Net.Entities.Core.MaritalStatus> GetPaginatedResult()
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.Core.MaritalStatus(), 1);

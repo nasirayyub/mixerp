@@ -50,6 +50,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/week-day/count-filtered/{filterName}", "GET", typeof(WeekDayController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/week-day/get-filtered/{pageNumber}/{filterName}", "GET", typeof(WeekDayController), "GetFiltered")]
         [InlineData("/api/core/week-day/get-filtered/{pageNumber}/{filterName}", "GET", typeof(WeekDayController), "GetFiltered")]
+        [InlineData("/api/core/week-day/first", "GET", typeof(WeekDayController), "GetFirst")]
+        [InlineData("/api/core/week-day/previous/1", "GET", typeof(WeekDayController), "GetPrevious")]
+        [InlineData("/api/core/week-day/next/1", "GET", typeof(WeekDayController), "GetNext")]
+        [InlineData("/api/core/week-day/last", "GET", typeof(WeekDayController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/week-day/custom-fields", "GET", typeof(WeekDayController), "GetCustomFields")]
         [InlineData("/api/core/week-day/custom-fields", "GET", typeof(WeekDayController), "GetCustomFields")]
@@ -75,6 +79,10 @@ namespace MixERP.Net.Api.Core.Tests
         [InlineData("/api/core/week-day/count-filtered/{filterName}", "HEAD", typeof(WeekDayController), "CountFiltered")]
         [InlineData("/api/{apiVersionNumber}/core/week-day/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(WeekDayController), "GetFiltered")]
         [InlineData("/api/core/week-day/get-filtered/{pageNumber}/{filterName}", "HEAD", typeof(WeekDayController), "GetFiltered")]
+        [InlineData("/api/core/week-day/first", "HEAD", typeof(WeekDayController), "GetFirst")]
+        [InlineData("/api/core/week-day/previous/1", "HEAD", typeof(WeekDayController), "GetPrevious")]
+        [InlineData("/api/core/week-day/next/1", "HEAD", typeof(WeekDayController), "GetNext")]
+        [InlineData("/api/core/week-day/last", "HEAD", typeof(WeekDayController), "GetLast")]
 
         [InlineData("/api/{apiVersionNumber}/core/week-day/custom-fields", "HEAD", typeof(WeekDayController), "GetCustomFields")]
         [InlineData("/api/core/week-day/custom-fields", "HEAD", typeof(WeekDayController), "GetCustomFields")]

@@ -69,6 +69,38 @@ namespace MixERP.Net.Api.Core.Tests
 
         [Fact]
         [Conditional("Debug")]
+        public void First()
+        {
+            MixERP.Net.Entities.Core.TaxBaseAmountType taxBaseAmountType = Fixture().GetFirst();
+            Assert.NotNull(taxBaseAmountType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Previous()
+        {
+            MixERP.Net.Entities.Core.TaxBaseAmountType taxBaseAmountType = Fixture().GetPrevious(string.Empty);
+            Assert.NotNull(taxBaseAmountType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Next()
+        {
+            MixERP.Net.Entities.Core.TaxBaseAmountType taxBaseAmountType = Fixture().GetNext(string.Empty);
+            Assert.NotNull(taxBaseAmountType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
+        public void Last()
+        {
+            MixERP.Net.Entities.Core.TaxBaseAmountType taxBaseAmountType = Fixture().GetLast();
+            Assert.NotNull(taxBaseAmountType);
+        }
+
+        [Fact]
+        [Conditional("Debug")]
         public void GetMultiple()
         {
             IEnumerable<MixERP.Net.Entities.Core.TaxBaseAmountType> taxBaseAmountTypes = Fixture().Get(new string[] { });

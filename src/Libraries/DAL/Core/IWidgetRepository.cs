@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.Widget Get(string widgetName);
 
         /// <summary>
+        /// Gets the first record of Widget.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Widget.</returns>
+        MixERP.Net.Entities.Core.Widget GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of Widget sorted by widgetName. 
+        /// </summary>
+        /// <param name="widgetName">The column "widget_name" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Widget.</returns>
+        MixERP.Net.Entities.Core.Widget GetPrevious(string widgetName);
+
+        /// <summary>
+        /// Gets the next record of Widget sorted by widgetName. 
+        /// </summary>
+        /// <param name="widgetName">The column "widget_name" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of Widget.</returns>
+        MixERP.Net.Entities.Core.Widget GetNext(string widgetName);
+
+        /// <summary>
+        /// Gets the last record of Widget.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of Widget.</returns>
+        MixERP.Net.Entities.Core.Widget GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the Widget against widgetNames. 
         /// </summary>
         /// <param name="widgetNames">Array of column "widget_name" parameter used on where filter.</param>

@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.HRM.Fakes
             return new MixERP.Net.Entities.HRM.EmployeeQualification();
         }
 
-        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeQualification> Get([FromUri] long[] employeeQualificationIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.EmployeeQualification> Get(long[] employeeQualificationIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.HRM.EmployeeQualification(), 1);
+        }
+
+        public MixERP.Net.Entities.HRM.EmployeeQualification GetFirst()
+        {
+            return new MixERP.Net.Entities.HRM.EmployeeQualification();
+        }
+
+        public MixERP.Net.Entities.HRM.EmployeeQualification GetPrevious(long employeeQualificationId)
+        {
+            return new MixERP.Net.Entities.HRM.EmployeeQualification();
+        }
+
+        public MixERP.Net.Entities.HRM.EmployeeQualification GetNext(long employeeQualificationId)
+        {
+            return new MixERP.Net.Entities.HRM.EmployeeQualification();
+        }
+
+        public MixERP.Net.Entities.HRM.EmployeeQualification GetLast()
+        {
+            return new MixERP.Net.Entities.HRM.EmployeeQualification();
         }
 
         public IEnumerable<MixERP.Net.Entities.HRM.EmployeeQualification> GetPaginatedResult()

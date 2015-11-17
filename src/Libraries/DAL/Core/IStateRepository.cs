@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.State Get(int stateId);
 
         /// <summary>
+        /// Gets the first record of State.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of State.</returns>
+        MixERP.Net.Entities.Core.State GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of State sorted by stateId. 
+        /// </summary>
+        /// <param name="stateId">The column "state_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of State.</returns>
+        MixERP.Net.Entities.Core.State GetPrevious(int stateId);
+
+        /// <summary>
+        /// Gets the next record of State sorted by stateId. 
+        /// </summary>
+        /// <param name="stateId">The column "state_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of State.</returns>
+        MixERP.Net.Entities.Core.State GetNext(int stateId);
+
+        /// <summary>
+        /// Gets the last record of State.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of State.</returns>
+        MixERP.Net.Entities.Core.State GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the State against stateIds. 
         /// </summary>
         /// <param name="stateIds">Array of column "state_id" parameter used on where filter.</param>

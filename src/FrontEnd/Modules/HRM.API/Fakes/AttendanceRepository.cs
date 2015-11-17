@@ -34,9 +34,29 @@ namespace MixERP.Net.Api.HRM.Fakes
             return new MixERP.Net.Entities.HRM.Attendance();
         }
 
-        public IEnumerable<MixERP.Net.Entities.HRM.Attendance> Get([FromUri] long[] attendanceIds)
+        public IEnumerable<MixERP.Net.Entities.HRM.Attendance> Get(long[] attendanceIds)
         {
             return Enumerable.Repeat(new MixERP.Net.Entities.HRM.Attendance(), 1);
+        }
+
+        public MixERP.Net.Entities.HRM.Attendance GetFirst()
+        {
+            return new MixERP.Net.Entities.HRM.Attendance();
+        }
+
+        public MixERP.Net.Entities.HRM.Attendance GetPrevious(long attendanceId)
+        {
+            return new MixERP.Net.Entities.HRM.Attendance();
+        }
+
+        public MixERP.Net.Entities.HRM.Attendance GetNext(long attendanceId)
+        {
+            return new MixERP.Net.Entities.HRM.Attendance();
+        }
+
+        public MixERP.Net.Entities.HRM.Attendance GetLast()
+        {
+            return new MixERP.Net.Entities.HRM.Attendance();
         }
 
         public IEnumerable<MixERP.Net.Entities.HRM.Attendance> GetPaginatedResult()

@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Core.Data
         MixERP.Net.Entities.Core.TransactionType Get(short transactionTypeId);
 
         /// <summary>
+        /// Gets the first record of TransactionType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of TransactionType.</returns>
+        MixERP.Net.Entities.Core.TransactionType GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of TransactionType sorted by transactionTypeId. 
+        /// </summary>
+        /// <param name="transactionTypeId">The column "transaction_type_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of TransactionType.</returns>
+        MixERP.Net.Entities.Core.TransactionType GetPrevious(short transactionTypeId);
+
+        /// <summary>
+        /// Gets the next record of TransactionType sorted by transactionTypeId. 
+        /// </summary>
+        /// <param name="transactionTypeId">The column "transaction_type_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of TransactionType.</returns>
+        MixERP.Net.Entities.Core.TransactionType GetNext(short transactionTypeId);
+
+        /// <summary>
+        /// Gets the last record of TransactionType.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of TransactionType.</returns>
+        MixERP.Net.Entities.Core.TransactionType GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the TransactionType against transactionTypeIds. 
         /// </summary>
         /// <param name="transactionTypeIds">Array of column "transaction_type_id" parameter used on where filter.</param>

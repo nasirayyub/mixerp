@@ -35,6 +35,32 @@ namespace MixERP.Net.Schemas.Policy.Data
         MixERP.Net.Entities.Policy.ApiAccessPolicy Get(long apiAccessPolicyId);
 
         /// <summary>
+        /// Gets the first record of ApiAccessPolicy.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ApiAccessPolicy.</returns>
+        MixERP.Net.Entities.Policy.ApiAccessPolicy GetFirst();
+
+        /// <summary>
+        /// Gets the previous record of ApiAccessPolicy sorted by apiAccessPolicyId. 
+        /// </summary>
+        /// <param name="apiAccessPolicyId">The column "api_access_policy_id" parameter used to find the previous record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ApiAccessPolicy.</returns>
+        MixERP.Net.Entities.Policy.ApiAccessPolicy GetPrevious(long apiAccessPolicyId);
+
+        /// <summary>
+        /// Gets the next record of ApiAccessPolicy sorted by apiAccessPolicyId. 
+        /// </summary>
+        /// <param name="apiAccessPolicyId">The column "api_access_policy_id" parameter used to find the next record.</param>
+        /// <returns>Returns a non-live, non-mapped instance of ApiAccessPolicy.</returns>
+        MixERP.Net.Entities.Policy.ApiAccessPolicy GetNext(long apiAccessPolicyId);
+
+        /// <summary>
+        /// Gets the last record of ApiAccessPolicy.
+        /// </summary>
+        /// <returns>Returns a non-live, non-mapped instance of ApiAccessPolicy.</returns>
+        MixERP.Net.Entities.Policy.ApiAccessPolicy GetLast();
+
+        /// <summary>
         /// Returns multiple instances of the ApiAccessPolicy against apiAccessPolicyIds. 
         /// </summary>
         /// <param name="apiAccessPolicyIds">Array of column "api_access_policy_id" parameter used on where filter.</param>
