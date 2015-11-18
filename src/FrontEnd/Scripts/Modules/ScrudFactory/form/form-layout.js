@@ -100,9 +100,9 @@ function createLayout(collection, container) {
         if (!val.length) {
             $(".huge.header .sub.header").html("");
             $("span.live").html("");
-            $(".initial.value").html(scrudFactory.title);
+            $(".initial.value").html(window.formTitle);
         } else {
-            $(".huge.header .sub.header").html(scrudFactory.title);            
+            $(".huge.header .sub.header").html(window.formTitle);            
             $(".initial.value").html("");
             $("span.live").html(val);
         };

@@ -18,6 +18,13 @@ if (typeof (scrudFactory.tabs) === "undefined") {
     scrudFactory.tabs = [];
 };
 
+var formTitle = scrudFactory.title;
+
+var titleSuffix = getQueryStringByName("TitleSuffix");
+
+if(titleSuffix){
+    formTitle += " / " + titleSuffix;
+};
 
 createTabs();
 

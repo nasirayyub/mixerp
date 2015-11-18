@@ -81,8 +81,22 @@ function loadActions() {
 
     grid.find("tbody tr").each(function () {
         var el = $(this);
-        var vallue = el.find("td:first-child").html();
-        el.find("td:first-child").before(actionTemplate.replace(/{id}/g, vallue));
+        var value = el.find("td:first-child").html();
+        var template = actionTemplate.replace(/{id}/g, value);
+
+        var titleSuffix = actionTemplate.match("TitleSuffix={col:(.*)}");
+
+        if(titleSuffix){
+            var position = parseInt(titleSuffix.pop() || 0);
+            var selector = "td:nth-child(" + (position - 2) + ")";
+            var suffix = el.find(selector).html();
+            var find = "TitleSuffix={col:" + position + "}";
+            var replace = "TitleSuffix=" + suffix;
+
+            template = template.replace(find, replace);
+        };
+
+        el.find("td:first-child").before(template);
     });
 
     $(".scrudview.table tr").click(function (sender) {

@@ -628,6 +628,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'is_aphonic', 'I
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_autistic', 'Is Autistic');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_cash', 'Is Cash');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_cognitively_disabled', 'Is Cognitively Disabled');
+SELECT localization.add_localized_resource('ScrudResource', '', 'is_complete', 'Is Complete');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_contract', 'Is Contract');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_credit', 'Is Credit');
 SELECT localization.add_localized_resource('ScrudResource', '', 'is_debit', 'Is Debit');
@@ -761,6 +762,9 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'office_name', '
 SELECT localization.add_localized_resource('ScrudResource', '', 'opportunity_stage_code', 'Opportunity Stage Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'opportunity_stage_id', 'Opportunity Stage Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'opportunity_stage_name', 'Opportunity Stage Name');
+SELECT localization.add_localized_resource('ScrudResource', '', 'order_status_code', 'Order Status Code');
+SELECT localization.add_localized_resource('ScrudResource', '', 'order_status_id', 'Order Status Id');
+SELECT localization.add_localized_resource('ScrudResource', '', 'order_status_name', 'Order Status Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'organization_name', 'Organization Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'overtime', 'Overtime');
 SELECT localization.add_localized_resource('ScrudResource', '', 'overtime_applicable', 'Overtime Applicable');
@@ -894,6 +898,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'resource', 'Res
 SELECT localization.add_localized_resource('ScrudResource', '', 'resource_id', 'Resource Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'resource_key', 'Resource Key');
 SELECT localization.add_localized_resource('ScrudResource', '', 'revision_code', 'Revision Code');
+SELECT localization.add_localized_resource('ScrudResource', '', 'revision_number', 'Revision Number');
 SELECT localization.add_localized_resource('ScrudResource', '', 'role', 'Role');
 SELECT localization.add_localized_resource('ScrudResource', '', 'role_code', 'Role Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'role_id', 'Role Id');
@@ -903,6 +908,15 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'rounding_method
 SELECT localization.add_localized_resource('ScrudResource', '', 'rounding_method_code', 'Rounding Method Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'rounding_method_name', 'Rounding Method Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'routing', 'Routing');
+SELECT localization.add_localized_resource('ScrudResource', '', 'routing_code', 'Routing Code');
+SELECT localization.add_localized_resource('ScrudResource', '', 'routing_id', 'Routing Id');
+SELECT localization.add_localized_resource('ScrudResource', '', 'routing_name', 'Routing Name');
+SELECT localization.add_localized_resource('ScrudResource', '', 'routing_sequence_code', 'Routing Sequence Code');
+SELECT localization.add_localized_resource('ScrudResource', '', 'routing_sequence_id', 'Routing Sequence Id');
+SELECT localization.add_localized_resource('ScrudResource', '', 'routing_sequence_name', 'Routing Sequence Name');
+SELECT localization.add_localized_resource('ScrudResource', '', 'routing_type_code', 'Routing Type Code');
+SELECT localization.add_localized_resource('ScrudResource', '', 'routing_type_id', 'Routing Type Id');
+SELECT localization.add_localized_resource('ScrudResource', '', 'routing_type_name', 'Routing Type Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'salary_deduction_id', 'Salary Deduction Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'salary_frequency_id', 'Salary Frequency Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'salary_frequency_name', 'Salary Frequency Name');
@@ -956,6 +970,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'self_verificati
 SELECT localization.add_localized_resource('ScrudResource', '', 'selling_price', 'Selling Price');
 SELECT localization.add_localized_resource('ScrudResource', '', 'selling_price_includes_tax', 'Selling Price Includes Tax');
 SELECT localization.add_localized_resource('ScrudResource', '', 'semantic_css_class', 'Semantic Css Class');
+SELECT localization.add_localized_resource('ScrudResource', '', 'sequence_number', 'Sequence Number');
 SELECT localization.add_localized_resource('ScrudResource', '', 'serial_number', 'Serial Number');
 SELECT localization.add_localized_resource('ScrudResource', '', 'service_end_date', 'Service End Date');
 SELECT localization.add_localized_resource('ScrudResource', '', 'shift', 'Shift');
@@ -1072,6 +1087,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'value_date', 'V
 SELECT localization.add_localized_resource('ScrudResource', '', 'variant_code', 'Variant Code');
 SELECT localization.add_localized_resource('ScrudResource', '', 'variant_id', 'Variant Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'variant_name', 'Variant Name');
+SELECT localization.add_localized_resource('ScrudResource', '', 'verification_reason', 'Verification Reason');
 SELECT localization.add_localized_resource('ScrudResource', '', 'verification_status', 'Verification Status');
 SELECT localization.add_localized_resource('ScrudResource', '', 'verification_status_id', 'Verification Status Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'verification_status_name', 'Verification Status Name');
@@ -1105,6 +1121,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'work_center_dep
 SELECT localization.add_localized_resource('ScrudResource', '', 'work_center_department_name', 'Work Center Department Name');
 SELECT localization.add_localized_resource('ScrudResource', '', 'work_center_id', 'Work Center Id');
 SELECT localization.add_localized_resource('ScrudResource', '', 'work_center_name', 'Work Center Name');
+SELECT localization.add_localized_resource('ScrudResource', '', 'work_time_in_minutes', 'Work Time (In Minutes)');
 SELECT localization.add_localized_resource('ScrudResource', '', 'zip_code', 'Zip Code');
 SELECT localization.add_localized_resource('Titles', '', 'AboutInitializingDayEnd', 'About Initializing Day End');
 SELECT localization.add_localized_resource('Titles', '', 'AboutYourOffice', 'About Your Office');
@@ -1594,6 +1611,8 @@ SELECT localization.add_localized_resource('Titles', '', 'OnlyNumbersAllowed', '
 SELECT localization.add_localized_resource('Titles', '', 'OpenExchangeRatesParameters', 'OpenExchangeRates Parameters');
 SELECT localization.add_localized_resource('Titles', '', 'OpeningInventory', 'Opening Inventory');
 SELECT localization.add_localized_resource('Titles', '', 'OpportunityStages', 'Opportunity Stages');
+SELECT localization.add_localized_resource('Titles', '', 'OrderStatus', 'Order Status');
+SELECT localization.add_localized_resource('Titles', '', 'OrderStatuses', 'Order Statuses');
 SELECT localization.add_localized_resource('Titles', '', 'OtherDetails', 'Other Details');
 SELECT localization.add_localized_resource('Titles', '', 'OtherInformation', 'Other Information');
 SELECT localization.add_localized_resource('Titles', '', 'OtherWidgets', 'Other Widgets');
@@ -1728,6 +1747,10 @@ SELECT localization.add_localized_resource('Titles', '', 'Revision', 'Revision')
 SELECT localization.add_localized_resource('Titles', '', 'Role', 'Role');
 SELECT localization.add_localized_resource('Titles', '', 'Roles', 'Roles');
 SELECT localization.add_localized_resource('Titles', '', 'Routing', 'Routing');
+SELECT localization.add_localized_resource('Titles', '', 'RoutingSequence', 'Routing Sequence');
+SELECT localization.add_localized_resource('Titles', '', 'RoutingSequences', 'Routing Sequences');
+SELECT localization.add_localized_resource('Titles', '', 'RoutingType', 'Routing Type');
+SELECT localization.add_localized_resource('Titles', '', 'RoutingTypes', 'Routing Types');
 SELECT localization.add_localized_resource('Titles', '', 'RowNumber', 'Row Number');
 SELECT localization.add_localized_resource('Titles', '', 'RunningDatabasePatch', 'Running Database Patch');
 SELECT localization.add_localized_resource('Titles', '', 'RunningTotal', 'Running Total');

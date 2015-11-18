@@ -3,7 +3,7 @@
 
     $(".huge.header .sub.header").html("");
     $("span.live").html("");
-    $(".initial.value").html(scrudFactory.title);
+    $(".initial.value").html(window.formTitle);
 
     $(".uploader.field .ui.image.preview").attr("src", "/Static/images/mixerp-logo-light.png");
 

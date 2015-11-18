@@ -15,6 +15,11 @@
 
     if (scrudFactory.title) {
         $(".title").html(scrudFactory.title);
+
+        var titleSuffix = getQueryStringByName("TitleSuffix");
+        if(titleSuffix){
+            $(".title").append(" / " + titleSuffix);
+        };
     };
     if (scrudFactory.description) {
         $("#description").html(scrudFactory.description).show();
