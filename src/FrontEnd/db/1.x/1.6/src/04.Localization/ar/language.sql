@@ -20,6 +20,10 @@ END
 $$
 LANGUAGE plpgsql;
 
+SELECT * FROM localization.add_localized_resource('CommonResource', 'ar', 'DateMustBeGreaterThan', 'تاريخ غير صحيح. يجب أن تكون أكبر من "{0}".');--Invalid date. Must be greater than "{0}".
+SELECT * FROM localization.add_localized_resource('CommonResource', 'ar', 'DateMustBeLessThan', 'تاريخ غير صحيح. يجب أن تكون أقل من "{0}".');--Invalid date. Must be less than "{0}".
+SELECT * FROM localization.add_localized_resource('CommonResource', 'ar', 'InvalidDate', 'تاريخ غير صحيح.');--Invalid date.
+SELECT * FROM localization.add_localized_resource('CommonResource', 'ar', 'NoRecordFound', 'عذراً، لا توجد سجلات.');--Sorry, no record found.
 SELECT * FROM localization.add_localized_resource('CommonResource', 'ar', 'RequiredField', 'هذا حقل مطلوب.');--This is a required field.
 SELECT * FROM localization.add_localized_resource('DbErrors', 'ar', 'P1301', 'لا يمكن حساب الفائدة. لم يتم توفير عدد الأيام في سنة.');--Cannot calculate interest. The number of days in a year was not provided.
 SELECT * FROM localization.add_localized_resource('DbErrors', 'ar', 'P1302', 'لا يمكن ترحيل المبيعات. تعيين الحساب النقدي غير صالح في المخزن.');--Cannot post sales. Invalid cash account mapping on store.
@@ -330,6 +334,10 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'api_ac
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'applied_on', 'تطبق في');--Applied On
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'applied_on_shipping_charge', 'تطبق على رسوم الشحن');--Applied on Shipping Charge
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'as_of', 'اعتبارا من');--As Of
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'attribute_code', 'رمز سمة');--Attribute Code
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'attribute_id', 'معرف السمة');--Attribute Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'attribute_name', 'اسم السمة');--Attribute Name
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'attribute_value', 'قيمة السمة');--Attribute Value
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'audit_ts', 'مراجع الطابع الزمني');--Audit Timestamp
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'audit_user_id', 'معرف المراجع');--Audit User Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'auto_deduction_based_on_attendance', 'خصم تلقائي استناداً إلى الحضور');--Auto Deduction Based On Attendance
@@ -344,8 +352,10 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'bank_a
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'bank_accounts_pkey', 'تكرار الحساب البنكي.');--Duplicate bank account.
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'bank_address', 'عنوان البنك');--Bank Address
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'bank_branch', 'فرع البنك');--Bank Branch
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'bank_branch_name', 'اسم فرع البنك');--Bank Branch Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'bank_contact_number', 'رقم الاتصال بالبنك');--Bank Contact Number
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'bank_name', 'اسم البنك');--Bank Name
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'bank_reference_number', 'الرقم المرجعي للبنك');--Bank Reference Number
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'base_unit_id', 'معرف الوحدة الأساسية');--Base Unit Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'base_unit_name', 'اسم الوحدة الأساسية');--Base Unit Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'based_on_shipping_address', 'استناداً إلى عنوان الشحن');--Based On Shipping Address
@@ -372,6 +382,8 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'can_se
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'can_verify_gl_transactions', 'يمكن التحقق من المعاملات الاستاذ العام');--Can Verify Gl Transactions
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'can_verify_purchase_transactions', 'يمكن التحقق من معاملات المشتريات');--Can Verify Purchase Transactions
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'can_verify_sales_transactions', 'يمكن التحقق من معاملات المبيعات');--Can Verify Sales Transactions
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'capacity_per_cycle', 'القدرة في كل دورة');--Capacity Per Cycle
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'capacity_unit_id', 'معرف وحدة السعة');--Capacity Unit Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'card_type', 'نوع البطاقة');--Card Type
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'card_type_code', 'رمز نوع البطاقة');--Card Type Code
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'card_type_id', 'معرف نوع البطاقة');--Card Type Id
@@ -438,6 +450,7 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'contac
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'contact_state', 'الحالة');--Contact State
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'contact_street', 'الشارع');--Contact Street
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'contract_id', 'معرف العقد');--Contract Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'cool_down_time_in_minutes', 'وقت التوقف بالدقائق');--Cool Down Time In Minutes
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'cost_center_code', 'رمز مركز التكلفة');--Cost Center Code
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'cost_center_id', 'معرف مركز تكلفة');--Cost Center Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'cost_center_name', 'اسم مركز التكلفة');--Cost Center Name
@@ -476,6 +489,7 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'curren
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'current_role_id', 'معرف الدور الحالي');--Current Role Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'current_shift_id', 'معرف التحول الحالي');--Current Shift Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'customer_pays_fee', 'يدفع العميل رسوم');--Customer Pays Fee
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'cycle_duration_in_hour', 'مدة الدورة في الساعة');--Cycle Duration In Hour
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'date_of_birth', 'تاريخ الميلاد');--Date Of Birth
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'day_of_month', 'يوم من شهر');--Day of Month
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'day_of_week', 'يوم من الأسبوع');--Day of Week
@@ -490,6 +504,7 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'defaul
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'default_cash_repository_id', 'معرف الخزينة النقدية الافتراضي');--Default Cash Repository Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'default_employment_status_code_id', 'معرف رمز حالة العمل الافتراضي');--Default Employment Status Code Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'default_entity_access_id', 'معرف الوصول إلى الكيان الافتراضي');--Default Entity Access Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'department', 'إدارة');--Department
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'department_code', 'كود الادارة');--Department Code
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'department_id', 'معرف إدارة');--Department Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'department_name', 'اسم الإدارة');--Department Name
@@ -603,6 +618,7 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'holida
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'holiday_name', 'اسم العطلة');--Holiday Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'holiding_account', 'حساب Holiding');--Holiding Account
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'hot_item', 'البند رائج');--Hot item
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'hourly_cost', 'تكلفة الساعة');--Hourly Cost
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'hourly_rate', 'معدل سعر الساعة');--Hourly Rate
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'http_action_code', 'رمز عمل HTTP');--HTTP Action Code
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'hundredth_name', 'اسم المائتين');--Hundredth Name
@@ -615,6 +631,7 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'includ
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'income_tax_rate', 'معدل ضريبة الدخل');--Income Tax Rate
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'industry_id', 'معرف الصناعة');--Industry Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'industry_name', 'اسم الصناعة');--Industry Name
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'installation_date', 'تاريخ التثبيت');--Installation Date
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'institution', 'مؤسسة');--Institution
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'interest_compounding_frequency_id', 'معرف فائدة مجمع الفترات');--Interest Compounding Frequency Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'interest_rate', 'معدل الفائدة');--Interest Rate
@@ -639,6 +656,7 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'is_exe
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'is_flat_amount', 'مبلغ ثابت');--Is Flat Amount
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'is_frequency', 'هو التردد');--Is Frequency
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'is_legally_recognized_marriage', 'والمعترف بها قانونا الزواج');--Is Legally Recognized Marriage
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'is_machine', 'هو جهاز');--Is Machine
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'is_merchant_account', 'حساب التاجر');--Is Merchant Account
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'is_overtime', ' العمل الإضافي');--Is Overtime
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'is_party', 'هو طرف');--Is Party
@@ -651,6 +669,8 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'is_sup
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'is_system', 'نظام');--Is System
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'is_taxable', 'غير الخاضعة للضريبة');--Is Taxable
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'is_transaction_node', 'عنصر معاملة');--Is Transaction Node
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'is_variant', 'هو البديل');--Is Variant
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'is_variant_of', 'هو البديل عن');--Is Variant Of
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'is_vat', 'ضريبة القيمة المضافة');--Is Vat
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'item', 'الصنف');--Item
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'item_code', 'كود الصنف');--Item Code
@@ -668,6 +688,10 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'item_s
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'item_type_code', 'رمز نوع الصنف');--Item Type Code
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'item_type_id', 'معرف نوع الصنف');--Item Type Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'item_type_name', 'اسم نوع الصنف');--Item Type Name
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'item_variant_code', 'كود الصنف البديل');--Item Variant Code
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'item_variant_detail_id', 'معرف تفاصيل الصنف البديل');--Item Variant Detail Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'item_variant_id', 'معرف الصنف البديل');--Item Variant Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'item_variant_name', 'اسم الصنف البديل');--Item Variant Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'items_item_code_uix', ' كود الصنف مكرر');--Duplicate item code.
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'items_item_name_uix', ' اسم الصنف مكرر');--Duplicate item name.
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'items_reorder_quantity_chk', 'يجب أن تكون كمية اعادة الطلب اكبر من أو مساوية لمستوى إعادة الطلب.');--The reorder quantity must be great than or equal to the reorder level.
@@ -676,6 +700,9 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'job_ti
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'job_title_id', 'معرف عنوان الوظيفة');--Job Title Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'job_title_name', 'اسم عنوان الوظيفة');--Job Title Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'joined_on', 'وانضم إلى في');--Joined On
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'kanban_code', 'رمز Kanban');--Kanban Code
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'kanban_id', 'معرف Kanban');--Kanban Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'kanban_name', 'اسم Kanban');--Kanban Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'key', 'مفتاح');--Key
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'last_analyze', 'اخر تحليل لقاعدة البيانات في');--Last Analyze On
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'last_autoanalyze', 'اخر تحليل تلقائي لقاعدة البيانات في');--Last Autoanalyze On
@@ -707,14 +734,18 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'leave_
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'leave_type_id', 'ترك نوع معرف');--Leave Type Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'leave_type_name', 'ترك اسم النوع');--Leave Type Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'length_in_centimeters', 'الطول بالسنتيمتر');--Length In Centimeters
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'lifetime_capacity', 'الطاقة القصوي');--Lifetime Capacity
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'login_date_time', 'تاريخ ووقت الدخول');--Login Date Time
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'login_id', 'اسم المستخدم');--Login Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'logo_file', 'ملف الشعار');--Logo File
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'low_vision', 'ضعيف البصر');--Low Vision
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'machinable', 'ألي');--Machinable
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'machine_cost', 'تكلفة الجهاز');--Machine Cost
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'machine_name', 'اسم الجهاز');--Machine Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'maintain_stock', 'صيانة المخزون');--Maintain Stock
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'maintained_by_user_id', 'تمت الصيانة بواسطة');--Maintained By User Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'majors', 'التخصصات');--Majors
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'manufacturer', 'الشركة المصنعة');--Manufacturer
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'marital_status', 'الحالة الاجتماعية');--Marital Status
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'marital_status_code', 'كود الحالة الاجتماعية');--Marital Status Code
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'marital_status_id', 'معرف الحالة الاجتماعية');--Marital Status Id
@@ -722,12 +753,14 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'marita
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'max_week_hours', 'اعلي ساعات الاسبوع');--Max Week Hours
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'maximum_credit_amount', 'المبلغ الأقصى للائتمان');--Maximum Credit Amount
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'maximum_credit_period', 'فترة الائتمان كحد أقصى');--Maximum Credit Period
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'maximum_daily_work_hours', 'الحد الأقصى لساعات العمل اليومية');--Maximum Daily Work Hours
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'maximum_salary', 'الحد الأقصى للمرتبات');--Maximum Salary
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'merchant_account', 'حساب التاجر');--Merchant Account
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'merchant_account_id', 'معرف حساب التاجر');--Merchant Account Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'merchant_fee_setup_id', 'معرف الإعداد الرسوم  لحساب التاجر');--Merchant Fee Setup Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'middle_name', 'الاسم الأوسط');--Middle Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'minimum_salary', 'الحد الأدنى للراتب');--Minimum Salary
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'model_number', 'رقم الطراز');--Model Number
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'nationality', 'الجنسية');--Nationality
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'nationality_code', 'قانون الجنسية');--Nationality Code
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'nationality_name', 'اسم الجنسية');--Nationality Name
@@ -762,11 +795,17 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'parent
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'parent_cash_repository_id', 'معرف الخزينة النقدية الرئيسية ');--Parent Cash Repository Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'parent_cr_code', 'كود السجل التحاري الرئيسي');--Parent CR Code
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'parent_cr_name', 'اسم السجل التحاري الرئيسي');--Parent CR Name
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'parent_department', 'الادارة الرئيسية');--Parent Department
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'parent_industry_id', 'معرف الصناعة الرئيسي');--Parent Industry Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'parent_industry_name', 'اسم  للصناعة الرئيسية');--Parent Industry Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'parent_item_group_id', 'معرف المجموعة الصنف الرئيسي');--Parent Item Group Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'parent_office', 'الشركة الرئيسية');--Parent Office
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'parent_office_id', 'معرف الشركة الرئيسية');--Parent Office Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'parent_plant', 'المصنع الرئيسي');--Parent Plant
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'parent_plant_id', 'معرف النبات الرئيسي');--Parent Plant Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'parent_work_center', 'مركز الانتاج الرئيسي');--Parent Work Center
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'parent_work_center_department_id', 'معرف إدارة مركز الانتاج الرئيسي');--Parent Work Center Department Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'parent_work_center_id', 'معرف مركز الانتاج الرئيسي');--Parent Work Center Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'party', 'الطرف');--Party
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'party_code', 'كود الطرف');--Party Code
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'party_id', 'معرف الطرف');--Party Id
@@ -788,6 +827,7 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'paymen
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'payment_term_code', 'كود مصطلح الدفع');--Payment Term Code
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'payment_term_id', 'معرف مصطلح الدفع');--Payment Term Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'payment_term_name', 'اسم مصطلح الدفع');--Payment Term Name
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'payroll_account_id', 'معرف حساب الرواتب');--Payroll Account Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'pension_fund', 'صندوق التقاعد');--Pension Fund
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'pension_fund_code', 'كود صندوق التقاعد');--Pension Fund Code
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'pension_fund_expense_account_id', 'معرف حساب  نفقات صندوق التقاعد');--Pension Fund Expense Account Id
@@ -801,9 +841,14 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'phone_
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'phone_home', 'هاتف المنزل');--Phone Home
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'phone_office_extension', 'هاتف مكتب الإرشاد');--Phone Office Extension
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'photo', 'صورة');--Photo
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'plant', 'مصنع');--Plant
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'plant_code', 'رمز المصنع');--Plant Code
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'plant_id', 'معرف المصتع');--Plant Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'plant_name', 'اسم المصنع');--Plant Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'po_box', 'ص. ب.');--Po Box
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'poco_type_name', 'اسم نوع Poco');--Poco Type Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'policy_id', 'معرف السياسة');--Policy id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'posted_by', 'رحلت بواسطة');--Posted By
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'posting_account', 'حساب الترحيل');--Posting Account
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'posting_account_id', 'معرف حساب الترحيل');--Posting Account Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'preferred_shipping_mail_type', 'نوع الشحن بالبريد المفضل');--Preferred Shipping Mail Type
@@ -824,6 +869,7 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'price_
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'primary_sales_tax_is_vat', 'ضريبة المبيعات الرئيسية ( ضريبة القيمة المضافة)؟');--Primary Sales Tax Is Vat?
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'priority', 'الأولوية');--Priority
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'purchase_account_id', 'معرف حساب المشتريات');--Purchase Account Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'purchase_date', 'تاريخ الشراء');--Purchase Date
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'purchase_discount_account_id', 'معرف حساب خصم المشتريات');--Purchase Discount Account Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'purchase_verification_limit', 'حد تحقق المشتريات');--Purchase Verification Limit
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'quantity', 'الكمية');--Quantity
@@ -924,6 +970,7 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'self_v
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'selling_price', 'سعر البيع');--Selling Price
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'selling_price_includes_tax', 'سعر البيع يشمل الضرائب');--Selling Price Includes Tax
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'semantic_css_class', 'فئة Css الدلالية');--Semantic Css Class
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'serial_number', 'الرقم التسلسلي');--Serial Number
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'service_end_date', 'تاريخ انهاء الخدمة');--Service End Date
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'shift', 'فترة عمل');--Shift
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'shift_code', 'رمز المفتاح shift');--Shift Code
@@ -964,6 +1011,7 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'state_
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'state_sales_tax_id', 'معرف ضريبة المبيعات الدولة');--State Sales Tax Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'state_sales_tax_name', 'اسم ضريبة المبيعات الدولة');--State Sales Tax Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'statement_reference', 'مرجع البيان');--Statement Reference
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'status', 'الحالة');--Status
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'status_code', 'رمز الحالة');--Status Code
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'status_code_name', 'اسم رمز الحالة');--Status Code Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'stock_details_unit_chk', 'ادخلت وحدة غير صالحة.');--Invalid unit provided.
@@ -1015,6 +1063,8 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'total_
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'total_years', 'مجموع سنوات');--Total Years
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'tran_code', 'كود الحركة');--Tran Code
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'tran_type', 'نوع الحركة');--Tran Type
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'transaction_code', 'كود الحركة');--Transaction Code
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'transaction_master_id', 'معرف المعاملات الرئيسية');--Transaction Master Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'transaction_start_date', 'تاريخ بدأ تسجيل المعاملات');--Transaction Start Date
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'transaction_ts', 'عملية الطابع الزمني');--Transaction Timestamp
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'unit', 'وحدة');--Unit
@@ -1033,7 +1083,11 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'valid_
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'valid_till', 'سارية حتى');--Valid Till
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'value', 'القيمة');--Value
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'value_date', 'تاريخ القيمة');--Value Date
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'variant_code', 'رمز النوع');--Variant Code
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'variant_id', 'معرف النوع');--Variant Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'variant_name', 'اسم النوع');--Variant Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'verification_status_id', 'معرف حالة التحقق');--Verification Status Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'verified_by', 'التحقق من قبل');--Verified By
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'verified_by_user_id', 'التحقق من معرف المستخدم');--Verified By User Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'verified_on', 'التحقق منها في');--Verified On
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'verify_gl_transactions', 'التحقق من معاملاتالاستاذ العام');--Verify Gl Transactions
@@ -1044,6 +1098,7 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'wage_s
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'wage_setup_code', 'كود اعداد الاجور');--Wage Setup Code
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'wage_setup_id', 'معرف اعداد الاجور');--Wage Setup Id
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'wage_setup_name', 'اسم اعداد الاجور');--Wage Setup Name
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'warm_up_time_in_minutes', 'وقت الاحماء بالدقائق');--Warm Up Time In Minutes
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'website', 'موقع على شبكة الإنترنت');--Website
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'week_day', 'ايام الاسبوع');--Week Day
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'week_day_id', 'معرف يوم الأسبوع');--Week Day Id
@@ -1051,6 +1106,17 @@ SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'week_s
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'weight_in_grams', 'الوزن بالجرام');--Weight In Grams
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'width_in_centimeters', 'عرض في السنتيمتر');--Width In Centimeters
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'with_disabilities', 'ذوي الإعاقة');--With Disabilities
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'work_center', 'مركز الانتاج');--Work Center
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'work_center_capacity_id', 'معرف قدرة المركز الانتاحي');--Work Center Capacity Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'work_center_code', 'رمز مركز الانتاج');--Work Center Code
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'work_center_cost_code', 'كود تكلفة مركز الانتاج');--Work Center Cost Code
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'work_center_cost_id', 'معرف تكلفة مركز الانتاج');--Work Center Cost Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'work_center_cost_name', 'اسم تكلفة مركز الانتاج');--Work Center Cost Name
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'work_center_department_code', 'كود ادارة مركز الانتاج');--Work Center Department Code
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'work_center_department_id', 'معرف ادارة مركز الانتاج');--Work Center Department Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'work_center_department_name', 'اسم ادارة مركز الانتاج');--Work Center Department Name
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'work_center_id', 'معرف مركز الانتاج');--Work Center Id
+SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'work_center_name', 'اسم مركز الانتاج');--Work Center Name
 SELECT * FROM localization.add_localized_resource('ScrudResource', 'ar', 'zip_code', 'الرمز البريدي');--Zip Code
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'AboutInitializingDayEnd', 'حول تهيئة نهاية اليوم');--About Initializing Day End
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'AboutYourOffice', 'حول شركتك');--About Your Office
@@ -1076,6 +1142,8 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'AddNewCheckli
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'AddNewUsers', 'إضافة مستخدمين جدد');--Add New Users
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Address', 'عنوان');--Address
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'AddressAndContactInfo', 'العنوان ومعلومات الاتصال');--Address & Contact Information
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'AddressAndContactInformation', 'العنوان ومعلومات جهة الاتصال');--Address & Contact Information
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'AddressInformation', 'معلومات العنوان');--Address Information
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Adjustment', 'تسوية');--Adjustment
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'AgeingSlabs', 'شرائح تصاعدية');--Ageing Slabs
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'AgentBonusSlabAssignment', 'تعيين شرائح المكأفاة');--Bonus Slab Assignment
@@ -1097,11 +1165,19 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'AttachmentPar
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'AttachmentsPlus', 'المرفقات (+)');--Attachments (+)
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Attendance', 'الحضور');--Attendance
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Attendances', 'الحضور');--Attendances
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Attribute', 'السمة');--Attribute
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Attributes', 'سمات');--Attributes
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Authorize', 'فوض');--Authorize
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Authorized', 'مفوض');--Authorized
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'AuthorizedBy', 'مفوض من');--Authorized By
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'AutoVerificationPolicy', 'سياسة التحقق التلقائي');--Autoverification Policy
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'AutomaticallyApprovedByWorkflow', 'وافق تلقائيا بواسطة سير العمل');--Automatically Approved by Workflow
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BOM', 'قوائم المواد');--Bill of Materials
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BOMCode', 'كود قائمة المواد');--BOMCode
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BOMId', 'معرف قائمة المواد');--BOM Id
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BOMName', 'اسم قائمة المواد');--BOM Name
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BOMType', 'نوع قائمة المواد');--BOM Type
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BOMVerification', 'تحقق قائمة المواد');--Bill of Materials Verification
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Back', 'رجوع');--Back
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BackToPreviousPage', 'العودة إلى الصفحة السابقة');--Back to Previous Page
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BackupConsole', 'وحدة التحكم النسخ الاحتياطي');--Backup Console
@@ -1111,9 +1187,11 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BackupNow', '
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Balance', 'الرصيد');--Balance
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BalanceSheet', 'ميزان المراجعة');--Balance Sheet
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BankAccounts', 'حسابات بنكية');--Bank Accounts
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BankDetails', 'تفاصيل البنك');--Bank Details
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BankTransactionCode', 'كود المعاملة البنكية');--Bank Transaction Code
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BaseCurrency', 'العملة الأساسية');--Base Currency
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BaseUnitName', 'اسم الوحدة الاساسية');--Base Unit Name
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BillOfMaterials', 'قائمة المواد');--Bill of Materials
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BonusSlabDetails', 'متفاصيل شرائح المكافأة لمندوبي المبيعات ');--Bonus Slab Details for Salespersons
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Book', 'دفتر');--Book
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'BookDate', 'تاريخ الدفتر');--Book Date
@@ -1145,15 +1223,18 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ClosedTransac
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ClosingBalance', 'الرصيد الختامي');--Closing Balance
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ClosingCredit', 'اغلاق الدائن');--Closing Credit
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ClosingDebit', 'اغلاق المدين');--Closing Debit
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'CollectRawMaterialsFrom', 'جمع المواد الخام من');--Collect Raw Materials From
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ColumnName', 'اسم العمود');--Column Name
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Comment', 'تعليق');--Comment
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'CompleteTasks', 'اكمل المهام');--Complete Tasks
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ComponentObliqueBOM', 'مكون/قائمة');--Component/BOM
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'CompoundItemDetails', 'تفاصيل الصنف المركب');--Compound Item Details
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'CompoundItems', 'الاصناف المركبة');--Compound Items
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'CompoundUnitsOfMeasure', 'وحدة قياس الاصناف المركبة');--Compound Units of Measure
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Condition', 'الشرط');--Condition
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Confidential', 'سري');--Confidential
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ConfirmPassword', 'تأكيد كلمة السر');--Confirm Password
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ContactInformation', 'معلومات الاتصال');--Contact Information
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Contracts', 'العقود');--Contracts
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ConvertedtoBaseCurrency', 'تم تحويله إلى العملة الرئيسية');--Converted to Base Currency
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ConvertedtoHomeCurrency', 'تم تحويله إلى العملة المحلية');--Converted to Home Currency
@@ -1253,6 +1334,9 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'DestinationSt
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Difference', 'فرق');--Difference
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'DirectPurchase', 'الشراء المباشر');--Direct Purchase
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'DirectSales', 'مبيعات مباشرة');--Direct Sales
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Disassemble', 'تفكيك');--Disassemble
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Disassembly', 'فك التجميع');--Disassembly
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'DisassemblyVerification', 'التحقق من التفكيك');--Disassembly Verification
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Discount', 'خصم');--Discount
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Documentation', 'توثيق');--Documentation
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Download', 'تحميل');--Download
@@ -1294,6 +1378,7 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'EmployeeTypes
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'EmployeeWage', 'اجر الموظف');--Employee Wage
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'EmployeeWages', 'أجور الموظفين');--Employee Wages
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Employees', 'الموظفين');--Employees
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'EmploymentInformation', 'معلومات عن نظام العمل');--Employment Information
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'EmploymentStatus', 'الوضع الوظيفي');--Employment Status
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'EmploymentStatusCodes', 'رموز حالة العمالة');--Employment Status Codes
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'EmploymentStatuses', 'حالات الاستخدام');--Employment Statuses
@@ -1335,6 +1420,7 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'FilterConditi
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'FilterName', 'اسم عامل التصفية');--Filter Name
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'FilterStatement', 'بيان التصفية');--Filter Statement
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'FinalDueAmountinBaseCurrency', 'المبلغ المستحق النهائي باعلملة الاساسية');--Final Due Amount in Base Currency
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'FinishedGoodsStore', 'مخزن الانتاج التام');--Finished Goods Store
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'First', 'الاول');--First
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'FirstPage', 'الصفحة الاولى');--First Page
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'FirstSteps', 'الخطوات الأولى');--First Steps
@@ -1358,6 +1444,7 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'GLDetails', '
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'GLHead', 'عنوان الاستاذ العام');--GL Head
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Gender', 'جنس');--Gender
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Genders', 'الجنسين');--Genders
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'GeneralInformation', 'معلومات عامة');--General Information
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'GlobalParameters', ' اعدادات عامة');--Global Parameters
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Go', 'اذهب');--Go
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'GoToBottom', 'اذهب للاسفل');--Go to Bottom
@@ -1402,16 +1489,21 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'IsEmployee', 
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'IsParty', 'طرف');--Is Party
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'IsPresent', 'حاضر');--Is Present
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'IsSystemAccount', 'حساب النظام');--Is System Account
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'IssueMethod', 'طريقة الاصدار');--Issue Method
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ItemCode', 'كود الصنف');--Item Code
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ItemCostPrices', 'أسعار التكلفة للصنف');--Item Cost Prices
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ItemGroup', 'مجموعة الصنف');--Item Group
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ItemGroups', 'مجموعات الصنف');--Item Groups
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ItemId', 'معرف الصنف');--Item Id
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ItemInformation', 'معلومات الصنف');--Item Information
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ItemName', 'اسم الصنف');--Item Name
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ItemOverview', 'نظرة عامة على الصنف');--Item Overview
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ItemSellingPrices', 'اسعار بيع الصنف');--Item Selling Prices
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ItemType', 'نوع الصنف');--Item Type
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ItemTypes', 'انواع الصنف');--Item Types
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ItemVariant', 'نوع الصنف');--Item Variant
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ItemVariantDetails', 'تفاصيل نوع الصنف');--Item Variant Details
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ItemVariants', 'انواع الصنف');--Item Variants
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Items', 'الاصناف');--Items
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ItemsBelowReorderLevel', 'الاصناف التالية وصلت لمستوي اعادة الطلب');--Items Below Reorder Level
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'JobTitle', 'المسمى الوظيفي');--Job Title
@@ -1422,6 +1514,7 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Kanban', 'Kan
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'KanbanId', 'معرف Kanban');--Kanban Id
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'KanbanName', 'اسم Kanban');--Kanban Name
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'KanbanView', 'عرض Kanban');--Kanban View
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Kanbans', 'كانبانس');--Kanbans
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'KeyColumnEmptyExceptionMessage', 'الخاصية "KeyColumn" لا يمكن أن تترك فارغة.');--The property 'KeyColumn' cannot be left empty.
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'LCCredit', 'دائن ( بالعملة المحلية )');--LC Credit
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'LCDebit', 'مدين ( بالعملة المحلية )');--LC Debit
@@ -1450,9 +1543,13 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'LoggedInTo', 
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'LoginView', 'عرض تسجيل الدخول');--Login View
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'LunchDeduction', 'وقت الغداء');--Lunch Deduction
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'MAVCO', ' طريقة متوسط التكلفة (MAVCO)');--Moving Average Cost (MAVCO)
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'MachineInformation', 'معلومات الجهاز');--Machine Information
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'MakeAsDefault', 'جعل كافتراضي');--Make As Default
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ManageFilters', 'إدارة عوامل التصفية');--Manage Filters
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ManageProfile', 'إدارة الملف الشخصي');--Manage Profile
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Manufacture', 'تصنيع');--Manufacture
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Manufacturing', 'التصنيع');--Manufacturing
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ManufacturingVerification', 'تحقق التصنيع ');--Manufacturing Verification
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'MaritalStatus', 'الحالة الاجتماعية');--Marital Status
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'MaritalStatuses', 'الحالات الاجتماعية');--Marital Statuses
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'MaximumCreditAmount', 'الحد الأقصى لمبلغ الائتمان');--Maximum Credit Amount
@@ -1509,6 +1606,7 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'OpenExchangeR
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'OpeningInventory', 'الارصدة الافتتاحية للمخزون');--Opening Inventory
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'OpportunityStages', 'مراحل فرصة');--Opportunity Stages
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'OtherDetails', 'تفاصيل أخرى');--Other Details
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'OtherInformation', 'معلومات أخرى');--Other Information
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'OtherWidgets', 'ادوات اخري');--Other Widgets
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'OvertimeHours', 'ساعات العمل الاضافي');--Overtime Hours
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'OvertimeWage', 'اجر العمل الاضافي');--Overtime Wage
@@ -1519,6 +1617,7 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ParentAccount
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Parties', 'الأطراف');--Parties
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Party', 'طرف');--Party
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PartyCode', 'طود الطرف');--Party Code
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PartyInformation', 'معلومات الطرف');--Party Information
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PartyName', 'اسم الطرف');--Party Name
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PartySummary', 'ملخص الطرف');--Party Summary
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PartyType', 'نوع الطرف');--Party Type
@@ -1539,8 +1638,11 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PerformEODOpe
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PerformingEODOperation', 'جاري تنفيذ عملية نهاية اليوم ');--Performing EOD Operation
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PeriodicInventory', ' الجرد الدوري');--Periodic Inventory
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PerpetualInventory', ' الجرد المستمر');--Perpetual Inventory
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PersonalInformation', 'معلومات شخصية');--Personal Information
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Phone', 'تليفون');--Phone
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PlaceReorderRequests', 'ضع طلبات اعادة الطلب');--Place Reorder Request(s)
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Plant', 'مصنع');--Plant
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Plants', 'المصانع');--Plants
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PostTransaction', 'ترحيل حركة');--Post Transaction
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PostedBy', 'رحلت بواسطة');--Posted By
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PostedDate', 'تاريخ الترحيل');--Posted Date
@@ -1556,12 +1658,20 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PreviousDebit
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PreviousPage', 'الصفحة السابقة');--Previous Page
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PreviousPeriod', 'الفترة السابقة');--Previous Period  
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Price', 'السعر');--Price
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PriceDetails', 'تفاصيل الأسعار');--Price Details
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PriceType', 'نوع سعر');--Price Type
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PrimarySalesTaxType', ' نوع ضريبة المبيعات الرئيسية');--Primary Sales Tax Type
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Print', 'طباعة');--Print
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PrintGlEntry', 'طباعة قيود يومية الاستاذ العام');--Print GL Entry
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'PrintReceipt', 'طباعة الإيصال');--Print Receipt
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ProcessWage', 'أجور العملية');--Process Wage
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ProducedItem', 'الاصناف المنتجة');--Produced Item
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ProducedQuantity', 'الكمية المنتجة');--Produced Quantity
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ProducedUnit', 'وحدة إنتاج');--Produced Unit
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ProductionOrder', 'أمر الإنتاج');--Production Order
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ProductionOrderProgress', 'تقدم أمر الإنتاج');--Production Order Progress
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ProductionOrderVerification', 'التحقق أمر الإنتاج');--Production Order Verification
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ProductionOrders', 'أوامر الإنتاج');--Production Orders
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ProfitAndLossStatement', 'بيان الربح والخسارة');--Profit & Loss Statement
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ProfitBeforeTax', 'الارباح قبل الضرائب');--Profit Before Tax
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ProfitOrLoss', 'الارباح والخسائر');--Profit or Loss
@@ -1625,8 +1735,10 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Return', 'ع�
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ReturnBack', 'العودة للخلف');--Return Back
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ReturnHome', 'العودة للصفحة الرئيسية');--Return Home
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ReturnToView', 'العودة للعرض');--Return to View
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Revision', 'مراجعة');--Revision
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Role', 'وظيفة');--Role
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Roles', 'وظائف');--Roles
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Routing', 'التوجيه');--Routing
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'RowNumber', 'عدد الصفوف');--Row Number
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'RunningDatabasePatch', 'تشغيل تصحيح قاعدة البيانات');--Running Database Patch
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'RunningTotal', 'الاجمالي التشغيلي');--Running Total
@@ -1673,6 +1785,7 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Select', 'ا�
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'SelectAColumn', 'حدد عمود');--Select a Column
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'SelectAFilter', 'قم بتحديد عامل تصفية');--Select a Filter
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'SelectApi', 'حدد API');--Select API
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'SelectBOM', 'حدد قائمة المواد');--Select BOM
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'SelectCompany', 'اختار شركة');--Select Company
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'SelectCustomer', 'اختار العميل');--Select Customer
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'SelectExpensesGL', 'اختار مصروفات الاستاذ العام');--Select Expenses GL
@@ -1703,6 +1816,7 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ShippingAddre
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ShippingAddresses', 'عنوان الشحن (العناوين)');--Shipping Address(es)
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ShippingCharge', 'مصاريف الشحن');--Shipping Charge
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ShippingCompany', 'شركة الشحن');--Shipping Company
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ShippingInformation', 'معلومات الشحن');--Shipping Information
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Show', 'عرض');--Show
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ShowAll', 'عرض الكل');--Show All
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ShowCompact', 'عرض مختصر');--Show Compact
@@ -1720,6 +1834,7 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'StatementRefe
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'States', 'الدول');--States
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Status', 'الحالة');--Status
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'StockAdjustment', 'تسوية المخزون');--Stock Adjustment
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'StockDetails', 'تفاصيل المخزون');--Stock Details
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'StockTransaction', 'حركات المخزون');--Stock Transaction
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'StockTransferAcknowledgement', 'اشعار تحويل المخزون');--Stock Transfer Acknowledgement
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'StockTransferAuthorization', 'تفويض تحويل المخزون');--Stock Transfer Authorization
@@ -1811,6 +1926,8 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'VacuumDatabas
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'VacuumFullDatabase', 'تفريغ قاعدة البيانات (كاملة)');--Vacuum Database (Full)
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Value', 'القيمة');--Value
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'ValueDate', 'قيمة التاريخ');--Value Date
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Variant', 'نوع');--Variant
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Variants', 'انواع');--Variants
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Verification', 'التحقق');--Verification
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'VerificationReason', 'سبب التحقق');--Verification Reason
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'VerifiedBy', 'تم التحقق بواسطة');--Verified By
@@ -1858,6 +1975,14 @@ SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Withdraw', '�
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'WithdrawTransaction', 'سحب معاملة');--Withdraw Transaction
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Withdrawn', 'سحب');--Withdrawn
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'WithdrawnTransactions', 'سحب المعاملات');--Withdrawn Transactions
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'WorkCenter', 'مركز الانتاج');--Work Center
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'WorkCenterCapacity', 'طاقة مركز الانتاج');--Work Center Capacity
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'WorkCenterCost', 'تكلفة مركز الانتاج');--Work Center Cost
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'WorkCenterCosting', ' مركز التكلفة');--Work Center Costing
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'WorkCenterCosts', 'تكاليف مركز الانتاج');--Work Center Costs
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'WorkCenterDepartment', 'إدارة مركز الانتاج');--Work Center Department
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'WorkCenterDepartments', 'إدارات مركز الانتاج');--Work Center Departments
+SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'WorkCenters', 'المراكز الانتاجية');--Work Centers
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'WorkShifts', 'نوبات العمل');--Work Shifts
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'Workflow', 'سير العمل');--Workflow
 SELECT * FROM localization.add_localized_resource('Titles', 'ar', 'WorldSalesStatistics', 'احصائيات مبيعات الشركة العالمية');--World Sales Statistics
@@ -1870,6 +1995,7 @@ SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'BackupDirec
 SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'CannotCreateABackup', 'عذرا، لا يمكن إنشاء نسخة احتياطية قاعدة البيانات في هذا الوقت.');--Sorry, cannot create a database backup at this time.
 SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'CannotCreateFlagTransactionTableNull', 'لا يمكن إنشاء أو تحديث العلامة، لم تدخل جدول المعاملة.');--Cannot create or update flag. Transaction table was not provided.
 SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'CannotCreateFlagTransactionTablePrimaryKeyNull', 'لا يمكن إنشاء أو تحديث العلامة، لم تدخل المفتاح الرئيسي جدول المعاملة.');--Cannot create or update flag. Transaction table primary key was not provided.
+SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'CannotCreateVariantHavingMultipleAttributes', 'لا يمكن إنشاء هذا الصنف لأنه يجب عليك تحديد متغير واحد من {0} "السمة."');--Cannot create this item because you must specify a single variant of "{0}" attribute.
 SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'CannotMergeAlreadyMerged', 'المعاملات المحددة تحتوي علي اصناف تم دمجها. حاول مرة اخرى.');--The selected transactions contain items which have already been merged. Please try again.
 SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'CannotMergeDifferentPartyTransaction', 'لا يمكن دمج معاملات اطراف مختلفة دفعة واحدة. حاول مرة اخرى.');--Cannot merge transactions of different parties into a single batch. Please try again.
 SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'CannotMergeIncompatibleTax', 'لا يمكن دمج معاملات تحتوي علي أنواع ضرائب غير متوافقة. حاول مرة اخرى.');--Cannot merge transactions having incompatible tax types. Please try again.
@@ -1940,4 +2066,3 @@ SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'RestrictedT
 SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'ReturnButtonUrlNull', 'لا يمكن العودة . لم يتم توفير رابط العودة.');--Cannot return this entry. The return url was not provided.
 SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'StartDateGreaterThanEndDate', 'تاريخ البدء لا يمكن أن يكون أكبر من تاريخ انتهاء.');--The start date cannot be greater than end date.
 SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'UserIdOrPasswordIncorrect', 'اسم المستخدم أو كلمة المرور غير صحيحة.');--User id or password incorrect.
-
