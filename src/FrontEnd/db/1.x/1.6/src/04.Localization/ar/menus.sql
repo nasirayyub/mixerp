@@ -1,10 +1,11 @@
 ﻿--Contributors for this translation:
 --https://github.com/nubiancc
+
 SELECT * FROM core.create_menu_locale('AS', 'ar', 'كشف حساب');--Account Statement
 SELECT * FROM core.create_menu_locale('SAT', 'ar', 'أدوات النظام');--Admin Tools
 SELECT * FROM core.create_menu_locale('AGS', 'ar', 'شرائح العمولة');--Ageing Slabs
-SELECT * FROM core.create_menu_locale('SAA', 'ar', 'سياسة الوصول API');--Api Access Policy
 SELECT * FROM core.create_menu_locale('OTSAP', 'ar', 'متغيرات المرفقات');--Attachment Parameters
+SELECT * FROM core.create_menu_locale('ATTR', 'ar', 'سمات');--Attributes
 SELECT * FROM core.create_menu_locale('SEAR', 'ar', 'تقارير التدقيق');--Audit Reports
 SELECT * FROM core.create_menu_locale('SAV', 'ar', 'سياسة التحقق التلقائي');--Automatic Verification Policy
 SELECT * FROM core.create_menu_locale('BO', 'ar', 'المكتب الخلفي');--Back Office
@@ -36,10 +37,12 @@ SELECT * FROM core.create_menu_locale('OTSCLP', 'ar', 'Currencylayer متغير�
 SELECT * FROM core.create_menu_locale('CUF', 'ar', 'الحقول المخصصة');--Custom Fields
 SELECT * FROM core.create_menu_locale('OTSDBP', 'ar', 'متغيرات قاعدة البيانات');--Database Parameters
 SELECT * FROM core.create_menu_locale('DBSTAT', 'ar', 'احصائيات قاعدة البيانات');--Database Statistics
+SELECT * FROM core.create_menu_locale('DEFEAPOL', 'ar', 'سياسة الوصول للكيانات الافتراضي');--Default Entity Access Policy
 SELECT * FROM core.create_menu_locale('SDS', 'ar', 'إعداد  الاقسام والادارات');--Department Setup
 SELECT * FROM core.create_menu_locale('DRP', 'ar', 'الشراء المباشر');--Direct Purchase
 SELECT * FROM core.create_menu_locale('DRS', 'ar', 'مبيعات مباشرة');--Direct Sales
 SELECT * FROM core.create_menu_locale('EOD', 'ar', 'عملية نهاية اليوم');--End of Day Operation
+SELECT * FROM core.create_menu_locale('EAPOL', 'ar', 'سياسة الوصول للكيانات');--Entity Access Policy
 SELECT * FROM core.create_menu_locale('SES', 'ar', 'إعداد الكيانات');--Entity Setup
 SELECT * FROM core.create_menu_locale('ERR', 'ar', 'اسعار العملات');--Exchange Rates
 SELECT * FROM core.create_menu_locale('FI', 'ar', 'المحاسبة المالية');--Finance
@@ -48,30 +51,37 @@ SELECT * FROM core.create_menu_locale('TRF', 'ar', 'العلامات');--Flags
 SELECT * FROM core.create_menu_locale('SFR', 'ar', 'إدارة الفترات والسنة المالية');--Frequency & Fiscal Year Management
 SELECT * FROM core.create_menu_locale('SAP', 'ar', 'سياسةالوصول للاستاذ العام ');--GL Access Policy
 SELECT * FROM core.create_menu_locale('GRN', 'ar', 'ادخال مذكرة استلام الاصناف');--GRN Entry
+SELECT * FROM core.create_menu_locale('GENDR', 'ar', 'الجنس');--Genders
+SELECT * FROM core.create_menu_locale('HOLIDAY', 'ar', 'اعدادات الاجازات');--Holiday Setup
+SELECT * FROM core.create_menu_locale('IDNTYP', 'ar', 'انواع اثبات الهوية');--Identification Types
 SELECT * FROM core.create_menu_locale('SIS', 'ar', 'الإعداد الصناعة');--Industry Setup
+SELECT * FROM core.create_menu_locale('ITM', 'ar', 'المنتجات والأصناف');--Inventory
 SELECT * FROM core.create_menu_locale('IAS', 'ar', 'كشف حساب المخزون');--Inventory Account Statement
 SELECT * FROM core.create_menu_locale('IIM', 'ar', 'حركات المخزون');--Inventory Movements
 SELECT * FROM core.create_menu_locale('SIG', 'ar', 'مجموعات الاصناف');--Item Groups
 SELECT * FROM core.create_menu_locale('SSI', 'ar', 'صيانة الاصناف');--Item Maintenance
 SELECT * FROM core.create_menu_locale('SIT', 'ar', 'أنواع الأصناف');--Item Types
+SELECT * FROM core.create_menu_locale('ITMVAR', 'ar', 'انواع الاصناف');--Item Variants
 SELECT * FROM core.create_menu_locale('JVN', 'ar', 'ادخال قسيمة يومية');--Journal Voucher Entry
 SELECT * FROM core.create_menu_locale('LF', 'ar', 'الرسوم المتأخرة');--Late Fees
 SELECT * FROM core.create_menu_locale('SEAR-LV', 'ar', 'عرض تسجيل الدخول');--Login View
+SELECT * FROM core.create_menu_locale('MATSTS', 'ar', 'الحالة الاجتماعية');--Marital Statuses
 SELECT * FROM core.create_menu_locale('SMA', 'ar', 'سياسة الوصول للقائمة');--Menu Access Policy
 SELECT * FROM core.create_menu_locale('MFS', 'ar', 'إعداد الرسوم التاجر');--Merchant Fee Setup
 SELECT * FROM core.create_menu_locale('SMP', 'ar', 'المتغيرات المتنوعة');--Miscellaneous Parameters
 SELECT * FROM core.create_menu_locale('OTSMIX', 'ar', 'MixERP متغيرات');--MixERP Parameters
+SELECT * FROM core.create_menu_locale('NTNALY', 'ar', 'الجنسيات');--Nationalities
 SELECT * FROM core.create_menu_locale('SOB', 'ar', 'اعدادات الشركة والفروع');--Office & Branch Setup
 SELECT * FROM core.create_menu_locale('SOS', 'ar', 'اعدادات الشركة Office');--Office Setup
 SELECT * FROM core.create_menu_locale('OTS', 'ar', 'اعدادات اول تشغيل');--One Time Setup
 SELECT * FROM core.create_menu_locale('OTSOER', 'ar', 'OpenExchangeRates متغيرات');--OpenExchangeRates Parameters
 SELECT * FROM core.create_menu_locale('OTSI', 'ar', 'الارصدة الافتتاحية للمخزون');--Opening Inventory
+SELECT * FROM core.create_menu_locale('OTHR', 'ar', 'اعدادات اخري');--Other Setup
 SELECT * FROM core.create_menu_locale('PA', 'ar', 'حسابات الاطراف');--Party Accounts
 SELECT * FROM core.create_menu_locale('PT', 'ar', 'أنواع الاطراف');--Party Types
 SELECT * FROM core.create_menu_locale('PAC', 'ar', 'بطاقات الدفع');--Payment Cards
 SELECT * FROM core.create_menu_locale('PAT', 'ar', 'شروط الدفع');--Payment Terms
 SELECT * FROM core.create_menu_locale('SPM', 'ar', 'إدارة السياسات');--Policy Management
-SELECT * FROM core.create_menu_locale('ITM', 'ar', 'المنتجات والأصناف');--Products & Items
 SELECT * FROM core.create_menu_locale('PLA', 'ar', 'حساب الارباح والخسائر');--Profit & Loss Account
 SELECT * FROM core.create_menu_locale('PU', 'ar', 'المشتريات');--Purchase
 SELECT * FROM core.create_menu_locale('PUQ', 'ar', 'المشتريات والتسعير');--Purchase & Quotation
@@ -103,12 +113,11 @@ SELECT * FROM core.create_menu_locale('STX', 'ar', 'الضرائب على الم
 SELECT * FROM core.create_menu_locale('SST', 'ar', 'فرق المبيعات');--Sales Teams
 SELECT * FROM core.create_menu_locale('SAR-SBO', 'ar', 'المبيعات حسب الشركة');--Sales by Office
 SELECT * FROM core.create_menu_locale('SSA', 'ar', 'البائعين ومندوبي البيع');--Salespersons
-SELECT * FROM core.create_menu_locale('OTSSFP', 'ar', 'ScrudFactory متغيرات');--ScrudFactory Parameters
 SELECT * FROM core.create_menu_locale('ISP', 'ar', 'اسعار البيع');--Selling Prices
 SELECT * FROM core.create_menu_locale('SET', 'ar', 'الاعدادات');--Settings
-SELECT * FROM core.create_menu_locale('SSM', 'ar', 'الإعداد والصيانة');--Setup & Maintenance
-SELECT * FROM core.create_menu_locale('FSM', 'ar', 'الإعداد والصيانة');--Setup & Maintenance
 SELECT * FROM core.create_menu_locale('ISM', 'ar', 'الإعداد والصيانة');--Setup & Maintenance
+SELECT * FROM core.create_menu_locale('FSM', 'ar', 'الإعداد والصيانة');--Setup & Maintenance
+SELECT * FROM core.create_menu_locale('SSM', 'ar', 'الإعداد والصيانة');--Setup & Maintenance
 SELECT * FROM core.create_menu_locale('SHI', 'ar', 'معلومات شركات الشاحن');--Shipper Information
 SELECT * FROM core.create_menu_locale('PSA', 'ar', 'عناوين الشحن');--Shipping Addresses
 SELECT * FROM core.create_menu_locale('STST', 'ar', 'الضرائب على المبيعات العامة');--State Sales Taxes
@@ -133,5 +142,6 @@ SELECT * FROM core.create_menu_locale('TB', 'ar', 'ميزان المراجعة')
 SELECT * FROM core.create_menu_locale('UOM', 'ar', 'وحدات القياس');--Units of Measure
 SELECT * FROM core.create_menu_locale('UER', 'ar', 'تحديث أسعار الصرف');--Update Exchange Rates
 SELECT * FROM core.create_menu_locale('SUM', 'ar', 'إدارةالمستخدمين');--User Management
+SELECT * FROM core.create_menu_locale('VARIANT', 'ar', 'الانواع');--Variants
 SELECT * FROM core.create_menu_locale('FVV', 'ar', 'تحقق مستند القيد');--Voucher Verification
 SELECT * FROM core.create_menu_locale('SVV', 'ar', 'سياسة التحقق من مستندات القيد');--Voucher Verification Policy
