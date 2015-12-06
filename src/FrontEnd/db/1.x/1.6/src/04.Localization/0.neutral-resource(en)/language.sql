@@ -1974,10 +1974,16 @@ SELECT localization.add_localized_resource('Titles', '', 'VerificationReason', '
 SELECT localization.add_localized_resource('Titles', '', 'VerifiedBy', 'Verified By');
 SELECT localization.add_localized_resource('Titles', '', 'VerifiedOn', 'VerifiedOn');
 SELECT localization.add_localized_resource('Titles', '', 'Verify', 'Verify');
+SELECT localization.add_localized_resource('Titles', '', 'VerifyBOM', 'Verify Bill of Materials');
 SELECT localization.add_localized_resource('Titles', '', 'VerifyContracts', 'Verify Contracts');
+SELECT localization.add_localized_resource('Titles', '', 'VerifyDisassemble', 'Verify Disassemble');
 SELECT localization.add_localized_resource('Titles', '', 'VerifyExits', 'Verify Exits');
 SELECT localization.add_localized_resource('Titles', '', 'VerifyLeaveApplications', 'Verify Leave Applications');
+SELECT localization.add_localized_resource('Titles', '', 'VerifyManufacture', 'Verify Manufacture');
+SELECT localization.add_localized_resource('Titles', '', 'VerifyProductionOrder', 'Verify Production Order');
+SELECT localization.add_localized_resource('Titles', '', 'VerifyProductionOrders', 'Verify Production Orders');
 SELECT localization.add_localized_resource('Titles', '', 'VerifyResignations', 'Verify Resignations');
+SELECT localization.add_localized_resource('Titles', '', 'VerifyRouting', 'Verify Routing');
 SELECT localization.add_localized_resource('Titles', '', 'VerifyTerminations', 'Verify Terminations');
 SELECT localization.add_localized_resource('Titles', '', 'VersionName', 'Version Name');
 SELECT localization.add_localized_resource('Titles', '', 'View', 'View');

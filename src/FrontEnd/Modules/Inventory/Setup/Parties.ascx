@@ -13,7 +13,7 @@
     scrudFactory.formTableName = "core.parties";
 
     scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
-    scrudFactory.readonlyColumns = ["PartyName", "PartyCode"];
+    scrudFactory.readonlyColumns = ["PartyCode"];
     scrudFactory.hiddenColumns = ["AccountId"];
 
     scrudFactory.allowDelete = true;
@@ -28,11 +28,12 @@
             fields: 
             [
                 ["Photo", ""],
-                ["PartyId", ""],
-                ["PartyCode", "PartyName", "", ""],
+                ["PartyCode", "", "", ""],
                 ["EmployeeId", "EmployeeName", "", ""],
                 ["FirstName", "MiddleName", "LastName", "PartyTypeId", "", "", "", ""],
-                ["DateOfBirth", "CompanyName", "", ""],
+                ["CompanyName", ""],
+                ["PartyName", ""],
+                ["DateOfBirth", "", "", ""],
                 ["EntityId", "IndustryId", "", ""],
                 ["PanNumber", "SstNumber", "CstNumber", "", "", "", "", ""],
                 ["CurrencyCode", "AllowCredit", "", ""],
