@@ -1,4 +1,4 @@
-﻿-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/01.types-domains-tables-and-constraints/tables-and-constraints.sql --<--<--
+﻿-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/01.types-domains-tables-and-constraints/tables-and-constraints.sql --<--<--
  /********************************************************************************
 Copyright (C) MixERP Inc. (http://mixof.org).
 This file is part of MixERP.
@@ -382,7 +382,7 @@ CREATE UNIQUE INDEX attendance_date_employee_id_uix
 ON hrm.attendances(attendance_date, employee_id);
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_employee_by_employee_id.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_employee_by_employee_id.sql --<--<--
 DROP FUNCTION IF EXISTS hrm.get_employee_by_employee_id(_employee_id integer);
 
 CREATE FUNCTION hrm.get_employee_by_employee_id(_employee_id integer)
@@ -399,7 +399,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_employee_code_by_employee_id.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_employee_code_by_employee_id.sql --<--<--
 DROP FUNCTION IF EXISTS hrm.get_employee_code_by_employee_id(_employee_id integer);
 
 CREATE FUNCTION hrm.get_employee_code_by_employee_id(_employee_id integer)
@@ -416,7 +416,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_employee_name_by_employee_id.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_employee_name_by_employee_id.sql --<--<--
 DROP FUNCTION IF EXISTS hrm.get_employee_name_by_employee_id(_employee_id integer);
 
 CREATE FUNCTION hrm.get_employee_name_by_employee_id(_employee_id integer)
@@ -433,7 +433,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/triggers/employee_dismissal.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/triggers/employee_dismissal.sql --<--<--
 DROP FUNCTION IF EXISTS hrm.dismiss_employee() CASCADE;
 
 CREATE FUNCTION hrm.dismiss_employee()
@@ -501,7 +501,7 @@ CREATE TRIGGER undismiss_employee_trigger BEFORE DELETE ON hrm.resignations FOR 
 CREATE TRIGGER undismiss_employee_trigger BEFORE DELETE ON hrm.terminations FOR EACH ROW EXECUTE PROCEDURE hrm.undismiss_employee();
 CREATE TRIGGER undismiss_employee_trigger BEFORE DELETE ON hrm.exits FOR EACH ROW EXECUTE PROCEDURE hrm.undismiss_employee();
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/03.menus/0.menus.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/03.menus/0.menus.sql --<--<--
 --This table should not be localized.
 SELECT * FROM core.recreate_menu('Employees', '~/Modules/HRM/Index.mix', 'HRM', 0, NULL);
 
@@ -554,7 +554,7 @@ UPDATE core.menus SET sort = 0, icon = 'bar chart' WHERE parent_menu_id IN
 
 UPDATE core.menus SET sort = 2, icon = 'tasks' WHERE menu_code ='HRMTA';
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/04.default-values/01.default-values.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/04.default-values/01.default-values.sql --<--<--
 DO
 $$
 BEGIN
@@ -566,7 +566,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.contract_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.contract_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.contract_scrud_view;
 
 CREATE VIEW hrm.contract_scrud_view
@@ -597,7 +597,7 @@ ON hrm.employment_status_codes.employment_status_code_id = hrm.contracts.employm
 LEFT JOIN hrm.leave_benefits
 ON hrm.leave_benefits.leave_benefit_id = hrm.contracts.leave_benefit_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.contract_verification_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.contract_verification_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.contract_verification_scrud_view;
 
 CREATE VIEW hrm.contract_verification_scrud_view
@@ -629,7 +629,7 @@ LEFT JOIN hrm.leave_benefits
 ON hrm.leave_benefits.leave_benefit_id = hrm.contracts.leave_benefit_id
 WHERE verification_status_id = 0;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_experience_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_experience_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_experience_scrud_view;
 
 CREATE VIEW hrm.employee_experience_scrud_view
@@ -646,7 +646,7 @@ FROM hrm.employee_experiences
 INNER JOIN hrm.employees
 ON hrm.employee_experiences.employee_id = hrm.employees.employee_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_identification_detail_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_identification_detail_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_identification_detail_scrud_view;
 
 CREATE VIEW hrm.employee_identification_detail_scrud_view
@@ -668,7 +668,7 @@ ON hrm.employee_identification_details.identification_type_code = core.identific
 
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_qualification_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_qualification_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_qualification_scrud_view;
 
 CREATE VIEW hrm.employee_qualification_scrud_view
@@ -692,7 +692,7 @@ ON hrm.employee_qualifications.education_level_id = hrm.education_levels.educati
 
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_social_network_detail_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_social_network_detail_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_social_network_detail_scrud_view;
 
 CREATE VIEW hrm.employee_social_network_detail_scrud_view
@@ -714,7 +714,7 @@ ON core.social_networks.social_network_name = hrm.employee_social_network_detail
 
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_type_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_type_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_type_scrud_view;
 
 CREATE VIEW hrm.employee_type_scrud_view
@@ -725,7 +725,7 @@ SELECT
     employee_type_name
 FROM hrm.employee_types;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.exit_verification_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.exit_verification_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.exit_scrud_view;
 
 CREATE VIEW hrm.exit_scrud_view
@@ -753,7 +753,7 @@ ON forwarded_to.employee_id = hrm.exits.forward_to
 WHERE verification_status_id = 0;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.leave_application_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.leave_application_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.leave_application_scrud_view;
 
 CREATE VIEW hrm.leave_application_scrud_view
@@ -776,7 +776,7 @@ ON hrm.leave_types.leave_type_id = hrm.leave_applications.leave_type_id
 INNER JOIN office.users
 ON office.users.user_id = hrm.leave_applications.entered_by;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.leave_application_verification_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.leave_application_verification_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.leave_application_verification_scrud_view;
 
 CREATE VIEW hrm.leave_application_verification_scrud_view
@@ -800,7 +800,7 @@ INNER JOIN office.users
 ON office.users.user_id = hrm.leave_applications.entered_by
 WHERE verification_status_id = 0;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.office_hour_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.office_hour_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.office_hour_scrud_view;
 
 CREATE VIEW hrm.office_hour_scrud_view
@@ -821,7 +821,7 @@ ON hrm.shifts.shift_id = hrm.office_hours.shift_id
 INNER JOIN core.week_days
 ON core.week_days.week_day_id = hrm.office_hours.week_day_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.resignation_verification_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.resignation_verification_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.resignation_verification_scrud_view;
 
 CREATE VIEW hrm.resignation_verification_scrud_view
@@ -844,7 +844,7 @@ INNER JOIN hrm.employees AS forward_to
 ON forward_to.employee_id = hrm.resignations.forward_to
 WHERE verification_status_id = 0;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.resignation_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.resignation_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.resignation_scrud_view;
 
 CREATE VIEW hrm.resignation_scrud_view
@@ -866,7 +866,7 @@ ON hrm.employees.employee_id = hrm.resignations.employee_id
 INNER JOIN hrm.employees AS forward_to
 ON forward_to.employee_id = hrm.resignations.forward_to;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.termination_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.termination_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.termination_scrud_view;
 
 CREATE VIEW hrm.termination_scrud_view
@@ -889,7 +889,7 @@ ON hrm.employment_statuses.employment_status_id = hrm.terminations.change_status
 INNER JOIN hrm.employees AS forwarded_to
 ON forwarded_to.employee_id = hrm.terminations.forward_to;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.termination_verification_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.termination_verification_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.termination_verification_scrud_view;
 
 CREATE VIEW hrm.termination_verification_scrud_view
@@ -913,7 +913,7 @@ INNER JOIN hrm.employees AS forwarded_to
 ON forwarded_to.employee_id = hrm.terminations.forward_to
 WHERE verification_status_id = 0;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.views/hrm.attendance_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.views/hrm.attendance_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.attendance_view;
 
 CREATE VIEW hrm.attendance_view
@@ -938,7 +938,7 @@ ON office.offices.office_id = hrm.attendances.office_id
 INNER JOIN hrm.employees
 ON hrm.employees.employee_id = hrm.attendances.employee_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.views/hrm.employee_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.views/hrm.employee_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_view;
 
 CREATE VIEW hrm.employee_view
@@ -1030,7 +1030,7 @@ LEFT JOIN core.countries
 ON hrm.employees.country_id = core.countries.country_id
 WHERE COALESCE(service_ended_on, 'infinity') >= NOW();
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/99.ownership.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/99.ownership.sql --<--<--
 DO
 $$
     DECLARE this record;
@@ -1223,7 +1223,7 @@ LANGUAGE plpgsql;
 
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/99.sample/kanban.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/99.sample/kanban.sql --<--<--
 DO
 $$
     DECLARE objects text[];
