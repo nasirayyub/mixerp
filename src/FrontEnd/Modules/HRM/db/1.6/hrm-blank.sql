@@ -1,4 +1,4 @@
-﻿-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/01.types-domains-tables-and-constraints/tables-and-constraints.sql --<--<--
+﻿-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/01.types-domains-tables-and-constraints/tables-and-constraints.sql --<--<--
  /********************************************************************************
 Copyright (C) MixERP Inc. (http://mixof.org).
 This file is part of MixERP.
@@ -382,7 +382,7 @@ CREATE UNIQUE INDEX attendance_date_employee_id_uix
 ON hrm.attendances(attendance_date, employee_id);
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_employee_by_employee_id.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_employee_by_employee_id.sql --<--<--
 DROP FUNCTION IF EXISTS hrm.get_employee_by_employee_id(_employee_id integer);
 
 CREATE FUNCTION hrm.get_employee_by_employee_id(_employee_id integer)
@@ -399,7 +399,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_employee_code_by_employee_id.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_employee_code_by_employee_id.sql --<--<--
 DROP FUNCTION IF EXISTS hrm.get_employee_code_by_employee_id(_employee_id integer);
 
 CREATE FUNCTION hrm.get_employee_code_by_employee_id(_employee_id integer)
@@ -416,7 +416,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_employee_name_by_employee_id.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/functions/hrm.get_employee_name_by_employee_id.sql --<--<--
 DROP FUNCTION IF EXISTS hrm.get_employee_name_by_employee_id(_employee_id integer);
 
 CREATE FUNCTION hrm.get_employee_name_by_employee_id(_employee_id integer)
@@ -433,7 +433,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/triggers/employee_dismissal.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/02.functions-and-logic/triggers/employee_dismissal.sql --<--<--
 DROP FUNCTION IF EXISTS hrm.dismiss_employee() CASCADE;
 
 CREATE FUNCTION hrm.dismiss_employee()
@@ -501,7 +501,7 @@ CREATE TRIGGER undismiss_employee_trigger BEFORE DELETE ON hrm.resignations FOR 
 CREATE TRIGGER undismiss_employee_trigger BEFORE DELETE ON hrm.terminations FOR EACH ROW EXECUTE PROCEDURE hrm.undismiss_employee();
 CREATE TRIGGER undismiss_employee_trigger BEFORE DELETE ON hrm.exits FOR EACH ROW EXECUTE PROCEDURE hrm.undismiss_employee();
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/03.menus/0.menus.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/03.menus/0.menus.sql --<--<--
 --This table should not be localized.
 SELECT * FROM core.recreate_menu('Employees', '~/Modules/HRM/Index.mix', 'HRM', 0, NULL);
 
@@ -554,7 +554,7 @@ UPDATE core.menus SET sort = 0, icon = 'bar chart' WHERE parent_menu_id IN
 
 UPDATE core.menus SET sort = 2, icon = 'tasks' WHERE menu_code ='HRMTA';
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/04.default-values/01.default-values.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/04.default-values/01.default-values.sql --<--<--
 DO
 $$
 BEGIN
@@ -566,7 +566,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.contract_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.contract_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.contract_scrud_view;
 
 CREATE VIEW hrm.contract_scrud_view
@@ -597,7 +597,7 @@ ON hrm.employment_status_codes.employment_status_code_id = hrm.contracts.employm
 LEFT JOIN hrm.leave_benefits
 ON hrm.leave_benefits.leave_benefit_id = hrm.contracts.leave_benefit_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.contract_verification_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.contract_verification_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.contract_verification_scrud_view;
 
 CREATE VIEW hrm.contract_verification_scrud_view
@@ -629,7 +629,7 @@ LEFT JOIN hrm.leave_benefits
 ON hrm.leave_benefits.leave_benefit_id = hrm.contracts.leave_benefit_id
 WHERE verification_status_id = 0;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_experience_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_experience_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_experience_scrud_view;
 
 CREATE VIEW hrm.employee_experience_scrud_view
@@ -646,7 +646,7 @@ FROM hrm.employee_experiences
 INNER JOIN hrm.employees
 ON hrm.employee_experiences.employee_id = hrm.employees.employee_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_identification_detail_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_identification_detail_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_identification_detail_scrud_view;
 
 CREATE VIEW hrm.employee_identification_detail_scrud_view
@@ -668,7 +668,7 @@ ON hrm.employee_identification_details.identification_type_code = core.identific
 
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_qualification_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_qualification_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_qualification_scrud_view;
 
 CREATE VIEW hrm.employee_qualification_scrud_view
@@ -692,7 +692,7 @@ ON hrm.employee_qualifications.education_level_id = hrm.education_levels.educati
 
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_social_network_detail_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_social_network_detail_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_social_network_detail_scrud_view;
 
 CREATE VIEW hrm.employee_social_network_detail_scrud_view
@@ -714,7 +714,7 @@ ON core.social_networks.social_network_name = hrm.employee_social_network_detail
 
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_type_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.employee_type_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_type_scrud_view;
 
 CREATE VIEW hrm.employee_type_scrud_view
@@ -725,7 +725,7 @@ SELECT
     employee_type_name
 FROM hrm.employee_types;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.exit_verification_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.exit_verification_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.exit_scrud_view;
 
 CREATE VIEW hrm.exit_scrud_view
@@ -753,7 +753,7 @@ ON forwarded_to.employee_id = hrm.exits.forward_to
 WHERE verification_status_id = 0;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.leave_application_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.leave_application_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.leave_application_scrud_view;
 
 CREATE VIEW hrm.leave_application_scrud_view
@@ -776,7 +776,7 @@ ON hrm.leave_types.leave_type_id = hrm.leave_applications.leave_type_id
 INNER JOIN office.users
 ON office.users.user_id = hrm.leave_applications.entered_by;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.leave_application_verification_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.leave_application_verification_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.leave_application_verification_scrud_view;
 
 CREATE VIEW hrm.leave_application_verification_scrud_view
@@ -800,7 +800,7 @@ INNER JOIN office.users
 ON office.users.user_id = hrm.leave_applications.entered_by
 WHERE verification_status_id = 0;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.office_hour_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.office_hour_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.office_hour_scrud_view;
 
 CREATE VIEW hrm.office_hour_scrud_view
@@ -821,7 +821,7 @@ ON hrm.shifts.shift_id = hrm.office_hours.shift_id
 INNER JOIN core.week_days
 ON core.week_days.week_day_id = hrm.office_hours.week_day_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.resignation_verification_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.resignation_verification_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.resignation_verification_scrud_view;
 
 CREATE VIEW hrm.resignation_verification_scrud_view
@@ -844,7 +844,7 @@ INNER JOIN hrm.employees AS forward_to
 ON forward_to.employee_id = hrm.resignations.forward_to
 WHERE verification_status_id = 0;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.resignation_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.resignation_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.resignation_scrud_view;
 
 CREATE VIEW hrm.resignation_scrud_view
@@ -866,7 +866,7 @@ ON hrm.employees.employee_id = hrm.resignations.employee_id
 INNER JOIN hrm.employees AS forward_to
 ON forward_to.employee_id = hrm.resignations.forward_to;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.termination_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.termination_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.termination_scrud_view;
 
 CREATE VIEW hrm.termination_scrud_view
@@ -889,7 +889,7 @@ ON hrm.employment_statuses.employment_status_id = hrm.terminations.change_status
 INNER JOIN hrm.employees AS forwarded_to
 ON forwarded_to.employee_id = hrm.terminations.forward_to;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.termination_verification_scrud_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.scrud-views/hrm.termination_verification_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.termination_verification_scrud_view;
 
 CREATE VIEW hrm.termination_verification_scrud_view
@@ -913,7 +913,7 @@ INNER JOIN hrm.employees AS forwarded_to
 ON forwarded_to.employee_id = hrm.terminations.forward_to
 WHERE verification_status_id = 0;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.views/hrm.attendance_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.views/hrm.attendance_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.attendance_view;
 
 CREATE VIEW hrm.attendance_view
@@ -938,7 +938,7 @@ ON office.offices.office_id = hrm.attendances.office_id
 INNER JOIN hrm.employees
 ON hrm.employees.employee_id = hrm.attendances.employee_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.views/hrm.employee_view.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/05.views/hrm.employee_view.sql --<--<--
 DROP VIEW IF EXISTS hrm.employee_view;
 
 CREATE VIEW hrm.employee_view
@@ -1030,7 +1030,7 @@ LEFT JOIN core.countries
 ON hrm.employees.country_id = core.countries.country_id
 WHERE COALESCE(service_ended_on, 'infinity') >= NOW();
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/99.ownership.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/99.ownership.sql --<--<--
 DO
 $$
     DECLARE this record;
@@ -1223,159 +1223,7 @@ LANGUAGE plpgsql;
 
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/99.regional-data/Retail Industry.sample --<--<--
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/Modules/HRM/db/1.5/db/src/01.types-domains-tables-and-constraints/tables-and-constraints.sql --<--<--
-/********************************************************************************
-Copyright (C) MixERP Inc. (http://mixof.org).
-This file is part of MixERP.
-MixERP is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 2 of the License.
-MixERP is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with MixERP.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************************/
-
---The meaning of the following should not change
-INSERT INTO hrm.employment_status_codes
-SELECT -7, 'DEC', 'Deceased'                UNION ALL
-SELECT -6, 'DEF', 'Defaulter'               UNION ALL
-SELECT -5, 'TER', 'Terminated'              UNION ALL
-SELECT -4, 'RES', 'Resigned'                UNION ALL
-SELECT -3, 'EAR', 'Early Retirement'        UNION ALL
-SELECT -2, 'RET', 'Normal Retirement'       UNION ALL
-SELECT -1, 'CPO', 'Contract Period Over'    UNION ALL
-SELECT  0, 'NOR', 'Normal Employment'       UNION ALL
-SELECT  1, 'OCT', 'On Contract'             UNION ALL
-SELECT  2, 'PER', 'Permanent Job'           UNION ALL
-SELECT  3, 'RTG', 'Retiring';
-
-INSERT INTO hrm.employment_statuses(employment_status_code, employment_status_name, default_employment_status_code_id, is_contract)
-SELECT 'EMP', 'Employee',       0, false UNION ALL
-SELECT 'INT', 'Intern',         1, true UNION ALL
-SELECT 'CON', 'Contract Basis', 1, true UNION ALL
-SELECT 'PER', 'Permanent',      2, false;
-
-INSERT INTO hrm.job_titles(job_title_code, job_title_name)
-SELECT 'INT', 'Internship'                      UNION ALL
-SELECT 'DEF', 'Default'                         UNION ALL
-SELECT 'EXC', 'Executive'                       UNION ALL
-SELECT 'MAN', 'Manager'                         UNION ALL
-SELECT 'GEM', 'General Manager'                 UNION ALL
-SELECT 'BME', 'Board Member'                    UNION ALL
-SELECT 'CEO', 'Chief Executive Officer'         UNION ALL
-SELECT 'CTO', 'Chief Technology Officer';
-
-INSERT INTO hrm.pay_grades(pay_grade_code, pay_grade_name, minimum_salary, maximum_salary)
-SELECT 'L-1', 'Level 1', 0, 0;
-
-INSERT INTO hrm.shifts(shift_code, shift_name, begins_from, ends_on)
-SELECT 'MOR', 'Morning Shift',  '6:00'::time,   '14:00'::time   UNION ALL
-SELECT 'DAY', 'Day Shift',      '14:00',        '20:00'         UNION ALL
-SELECT 'NIT', 'Night Shift',    '20:00',        '6:00';
-
-INSERT INTO hrm.employee_types(employee_type_code, employee_type_name, account_id)
-SELECT 'DEF', 'Default',            core.get_account_id_by_account_number('20100') UNION ALL
-SELECT 'OUE', 'Outdoor Employees',  core.get_account_id_by_account_number('20100') UNION ALL
-SELECT 'PRO', 'Project Employees',  core.get_account_id_by_account_number('20100') UNION ALL
-SELECT 'SUP', 'Support Staffs',     core.get_account_id_by_account_number('20100') UNION ALL
-SELECT 'ENG', 'Engineers',          core.get_account_id_by_account_number('20100');
-
-INSERT INTO hrm.leave_types(leave_type_code, leave_type_name)
-SELECT 'NOR', 'Normal' UNION ALL
-SELECT 'EME', 'Emergency' UNION ALL
-SELECT 'ILL', 'Illness';
-
-INSERT INTO hrm.exit_types(exit_type_code, exit_type_name)
-SELECT 'COE', 'Contract Period Over' UNION ALL
-SELECT 'RET', 'Retirement' UNION ALL
-SELECT 'RES', 'Resignation' UNION ALL
-SELECT 'TER', 'Termination' UNION ALL
-SELECT 'DEC', 'Deceased';
-
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/99.sample/employees.sample --<--<--
-INSERT INTO hrm.employees(employee_code, first_name, middle_name, last_name, employee_name, gender_code, marital_status_id, joined_on, office_id, user_id, employee_type_id, current_department_id, current_role_id, current_employment_status_id, current_job_title_id, current_pay_grade_id, current_shift_id, date_of_birth, photo, bank_account_number, bank_name, bank_branch_name)
-SELECT 'MI-0001', 'Micheal', '', 'Paul', 'Paul, Micheal', 'M', '1'::int, '2015-09-12'::date, '2'::int, '2'::int, '1'::int, '1'::int, '1'::int, '1'::int, '1'::int, '1'::int, '2'::int, '1997-07-01'::date, 'sample/man-838636_640.jpg', '1-2939-3944-03', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'AR-0001', 'Arjun', '', 'Rivers', 'Rivers, Arjun', 'M', '2', '2015-09-05', '2', '2', '2', '2', '2', '2', '2', '1', '2', '2006-11-04', 'sample/beautiful-19075_640.jpg', '1-2939-3944-04', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'LA-0001', 'Lamar', '', 'Hull', 'Hull, Lamar', 'M', '3', '2015-09-24', '2', '2', '3', '3', '3', '3', '3', '1', '2', '1998-03-05', 'sample/beautiful-653317_640.jpg', '1-2939-3944-05', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'BE-0001', 'Beau', '', 'Stokes', 'Stokes, Beau', 'M', '4', '2015-09-21', '2', '2', '4', '4', '4', '4', '4', '1', '2', '1982-09-20', 'sample/beauty-20150_640.jpg', '1-2939-3944-06', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'KY-0001', 'Kyan', '', 'Barr', 'Barr, Kyan', 'M', '5', '2015-10-03', '2', '2', '5', '1', '5', '1', '5', '1', '2', '1978-10-21', 'sample/beauty-739667_640.jpg', '1-2939-3944-07', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'AR-0002', 'Arturo', '', 'Newman', 'Newman, Arturo', 'M', '6', '2015-09-12', '2', '2', '1', '2', '6', '2', '6', '1', '2', '2001-10-16', 'sample/brunette-15963_640.jpg', '1-2939-3944-08', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'MA-0001', 'Mateo', '', 'Mcdaniel', 'Mcdaniel, Mateo', 'F', '7', '2015-09-22', '2', '2', '2', '3', '7', '3', '7', '1', '2', '2013-12-13', 'sample/businessman-805770_640.jpg', '1-2939-3944-09', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'LA-0002', 'Larry', '', 'Farmer', 'Farmer, Larry', 'F', '1', '2015-10-06', '2', '2', '3', '4', '8', '4', '8', '1', '2', '2001-03-23', 'sample/chinese-572945_640.jpg', '1-2939-3944-10', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'BR-0001', 'Bryce', '', 'West', 'West, Bryce', 'M', '2', '2015-09-26', '2', '2', '4', '1', '9', '1', '1', '1', '2', '2012-09-18', 'sample/cowboy-67630_640.jpg', '1-2939-3944-11', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'DA-0001', 'Dalton', '', 'Cunningham', 'Cunningham, Dalton', 'F', '3', '2015-10-02', '2', '2', '5', '2', '10', '2', '2', '1', '2', '1980-10-02', 'sample/eyes-622355_640.jpg', '1-2939-3944-12', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'CH-0001', 'Chaz', '', 'Cote', 'Cote, Chaz', 'F', '4', '2015-10-02', '2', '2', '1', '3', '11', '3', '3', '1', '2', '1987-10-08', 'sample/fairy-tales-636649_640.jpg', '1-2939-3944-13', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'SY-0001', 'Sydney', '', 'Holley', 'Holley, Sydney', 'F', '5', '2015-09-08', '2', '2', '2', '4', '12', '4', '4', '1', '2', '1978-03-02', 'sample/friend-762590_640.jpg', '1-2939-3944-14', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'KA-0001', 'Karter', '', 'Barrera', 'Barrera, Karter', 'M', '6', '2015-10-01', '2', '2', '3', '1', '1', '1', '5', '1', '2', '1979-10-18', 'sample/girl-102829_640.jpg', '1-2939-3944-15', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'GU-0001', 'Gunner', '', 'Moses', 'Moses, Gunner', 'M', '7', '2015-09-14', '2', '2', '4', '2', '2', '2', '6', '1', '2', '1991-12-01', 'sample/girl-518321_640.jpg', '1-2939-3944-16', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'MA-0002', 'Marlon', '', 'Gates', 'Gates, Marlon', 'M', '1', '2015-09-11', '2', '2', '5', '3', '3', '3', '7', '1', '2', '1996-04-26', 'sample/girl-518331_640.jpg', '1-2939-3944-17', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'FI-0001', 'Fisher', '', 'Velazquez', 'Velazquez, Fisher', 'M', '2', '2015-09-12', '2', '2', '1', '4', '4', '4', '8', '1', '2', '1982-01-20', 'sample/girl-602177_640.jpg', '1-2939-3944-18', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'JA-0001', 'Jayce', '', 'Marsh', 'Marsh, Jayce', 'M', '3', '2015-08-31', '2', '2', '2', '1', '5', '1', '1', '1', '2', '1986-04-28', 'sample/girl-637568_640.jpg', '1-2939-3944-19', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'BE-0002', 'Bernardo', '', 'Franks', 'Franks, Bernardo', 'M', '4', '2015-09-12', '2', '2', '3', '2', '6', '2', '2', '1', '2', '2003-10-01', 'sample/girl-803179_640.jpg', '1-2939-3944-20', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'VI-0001', 'Victoria', '', 'Bland', 'Bland, Victoria', 'M', '5', '2015-10-01', '2', '2', '4', '3', '7', '3', '3', '1', '2', '1986-10-18', 'sample/girl-846991_640.jpg', '1-2939-3944-21', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'LE-0001', 'Lewis', '', 'Farrell', 'Farrell, Lewis', 'M', '6', '2015-08-28', '2', '2', '5', '4', '8', '4', '4', '1', '2', '1981-11-08', 'sample/girls-602168_640.jpg', '1-2939-3944-22', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'MA-0003', 'Maurice', '', 'Gibbs', 'Gibbs, Maurice', 'F', '7', '2015-10-10', '2', '2', '1', '1', '9', '1', '5', '1', '2', '1997-07-14', 'sample/guy-549173_640.jpg', '1-2939-3944-23', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'LE-0002', 'Lee', '', 'Mueller', 'Mueller, Lee', 'F', '1', '2015-10-01', '2', '2', '2', '2', '10', '2', '6', '1', '2', '1986-11-30', 'sample/indian-627831_640.jpg', '1-2939-3944-24', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'HA-0001', 'Hassan', '', 'Hendricks', 'Hendricks, Hassan', 'M', '2', '2015-09-21', '2', '2', '3', '3', '11', '3', '7', '1', '2', '1979-03-28', 'sample/james-stewart-392932_640.jpg', '1-2939-3944-25', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'IS-0001', 'Isabella', '', 'Rankin', 'Rankin, Isabella', 'F', '3', '2015-09-22', '2', '2', '4', '4', '12', '4', '8', '1', '2', '2010-08-31', 'sample/male-777913_640.jpg', '1-2939-3944-26', 'Bank of America', 'Myrtle Ave' UNION ALL
-SELECT 'MA-0004', 'Matthias', '', 'Fitzpatrick', 'Fitzpatrick, Matthias', 'F', '4', '2015-10-06', '2', '2', '5', '1', '1', '1', '1', '1', '2', '1989-09-19', 'sample/man-140547_640.jpg', '1-2939-3944-27', 'Bank of America', 'Myrtle Ave';
-
-
-DO
-$$
-    DECLARE _attendance_date date;
-    DECLARE _employee_ids integer[];
-    DECLARE _employee_id integer;
-    DECLARE _was_present boolean;
-    DECLARE _was_absent boolean;
-    DECLARE _reason text;
-    DECLARE _check_in time;
-    DECLARE _check_out time;
-    DECLARE _overtime_hours numeric;
-BEGIN
-    SELECT 
-        array_agg(employee_id) 
-    INTO
-        _employee_ids
-    FROM hrm.employees;
-    
-    DELETE FROM hrm.attendances;
-    FOR _attendance_date IN
-    SELECT * FROM generate_series('2015-9-29', '2016-9-1', INTERVAL '1 day') D
-    LOOP
-        FOREACH _employee_id IN ARRAY _employee_ids
-        LOOP
-            _was_present := cast(cast(random() as integer) as boolean);
-            _was_absent := NOT _was_present;
-            _check_in := NULL;
-            _check_out := NULL;
-            _overtime_hours := 0;
-            _reason := '';
-            
-            IF(_was_present) THEN
-                _check_in := ('2015-09-30 09:46:19.443+00'::timestamp - '1 minute'::INTERVAL * ROUND(RANDOM() * 100))::time;
-                _check_out := ('2015-09-30 16:46:19.443+00'::timestamp - '1 minute'::INTERVAL * ROUND(RANDOM() * 100))::time;
-                _overtime_hours := round(random());
-            ELSE
-                _reason := '';
-            END IF;
-            
-            
-            RAISE NOTICE '% %', _employee_id, _attendance_date;
-            INSERT INTO hrm.attendances(office_id, employee_id, attendance_date, was_present, check_in_time, check_out_time, overtime_hours, was_absent, reason_for_absenteeism)
-            SELECT 2, _employee_id, _attendance_date, _was_present, _check_in, _check_out, _overtime_hours, _was_absent, _reason;
-        END LOOP;        
-    END LOOP;
-END
-$$
-LANGUAGE plpgsql;
-
-
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/Modules/HRM/db/1.5/db/src/99.sample/kanban.sql --<--<--
+-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/mixerp/src/FrontEnd/Modules/HRM/db/1.5/db/src/99.sample/kanban.sql --<--<--
 DO
 $$
     DECLARE objects text[];

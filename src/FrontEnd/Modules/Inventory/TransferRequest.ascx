@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TransferRequest.ascx.cs" Inherits="MixERP.Net.Core.Modules.Inventory.TransferRequest" %>
 <%@ Import Namespace="MixERP.Net.i18n.Resources" %>
-<%@ Register TagPrefix="mixerp" Namespace="MixERP.Net.WebControls.Common" Assembly="MixERP.Net.WebControls.Common, Version=1.5.0.0, Culture=neutral, PublicKeyToken=a724a47a0879d02f" %>
+<%@ Register TagPrefix="mixerp" Namespace="MixERP.Net.WebControls.Common" Assembly="MixERP.Net.WebControls.Common, Version=1.6.0.0, Culture=neutral, PublicKeyToken=a724a47a0879d02f" %>
 
 <h2><%= Titles.StockTransferRequest %></h2>
 <div class="basic ui buttons">

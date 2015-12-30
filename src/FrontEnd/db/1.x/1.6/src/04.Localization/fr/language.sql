@@ -1498,7 +1498,7 @@ SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'KanbanId', 'I
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'KanbanName', 'Nom de kanban');--Kanban Name
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'KanbanView', 'Vue de kanban');--Kanban View
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'Kanbans', 'Kanbans');--Kanbans
-SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'KeyColumnEmptyExceptionMessage', 'La propriété 'KeyColumn' ne peut pas être laissé vide.');--The property 'KeyColumn' cannot be left empty.
+SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'KeyColumnEmptyExceptionMessage', 'La propriété ''KeyColumn'' ne peut pas être laissé vide.');--The property 'KeyColumn' cannot be left empty.
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'LCCredit', 'Crédit (monnaie locale)');--LC Credit
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'LCDebit', 'Débit (monnaie locale)');--LC Debit
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'LIFO', 'Last In, First Out (LIFO)');--Last In, First Out (LIFO)
@@ -1836,7 +1836,7 @@ SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'SupplierName'
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'Support', 'Soutien');--Support
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'Switches', 'Commutateurs');--Switches
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'TableEmptyExceptionMessage', 'La propriété «Tableau» ne peut pas être laissé vide.');--The property 'Table' cannot be left empty.
-SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'TableSchemaEmptyExceptionMessage', 'La propriété 'TableSchema' ne peut pas être laissé vide.');--The property 'TableSchema' cannot be left empty.
+SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'TableSchemaEmptyExceptionMessage', 'La propriété ''TableSchema'' ne peut pas être laissé vide.');--The property 'TableSchema' cannot be left empty.
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'TagName', 'Tag Nom');--Tag Name
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'TaskCompletedSuccessfully', 'La tâche a été achevée avec succès.');--The task was completed successfully.
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'Tax', 'Impôt');--Tax
@@ -1928,7 +1928,7 @@ SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'ViewBackups',
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'ViewCustomerCopy', 'Voir copie du client');--View Customer Copy
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'ViewEmptyExceptionMessage', 'La propriété "Affichage" ne peut pas être laissé vide.');--The property 'View' cannot be left empty.
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'ViewSalesInovice', 'Voir Facture de vente');--View Sales Invoice
-SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'ViewSchemaEmptyExceptionMessage', 'La propriété 'ViewSchema' ne peut pas être laissé vide.');--The property 'ViewSchema' cannot be left empty.
+SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'ViewSchemaEmptyExceptionMessage', 'La propriété ''ViewSchema'' ne peut pas être laissé vide.');--The property 'ViewSchema' cannot be left empty.
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'ViewThisAcknowledgement', 'Voir Cette reconnaissance');--View This Acknowledgement
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'ViewThisAdjustment', 'Voir cet ajustement');--View This Adjustment
 SELECT * FROM localization.add_localized_resource('Titles', 'fr', 'ViewThisAuthorization', 'Voir Cette autorisation');--View This Authorization
