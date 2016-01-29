@@ -2,7 +2,7 @@ function displayMessage(a, b) {
     $.notify(a, b);
 };
 
-function displaySucess() {
+function displaySuccess() {
     $.notify(Resources.Labels.TaskCompletedSuccessfully(), "success");
 };
 

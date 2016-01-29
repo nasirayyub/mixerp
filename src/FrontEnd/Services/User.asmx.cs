@@ -19,19 +19,10 @@ namespace MixERP.Net.FrontEnd.Services
     public class User : WebService
     {
         [WebMethod(EnableSession = true)]
-        public string Authenticate(string catalog, string username, string password, bool rememberMe, string language,
-            int branchId)
+        public string Authenticate(string catalog, string username, string password, bool rememberMe, string language, int branchId)
         {
             Thread.Sleep(this.GetDelay());
-
-            string challenge = Conversion.TryCastString(this.Session["Challenge"]);
-
-            if (string.IsNullOrWhiteSpace(challenge))
-            {
-                return Titles.AccessIsDenied;
-            }
-
-            return this.Login(catalog, branchId, username, password, language, rememberMe, challenge, this.Context);
+            return this.Login(catalog, branchId, username, password, language, rememberMe, this.Context);
         }
 
         private int GetDelay()
@@ -47,12 +38,11 @@ namespace MixERP.Net.FrontEnd.Services
         }
 
         private string Login(string catalog, int officeId, string userName, string password, string culture,
-            bool rememberMe, string challenge, HttpContext context)
+            bool rememberMe, HttpContext context)
         {
             try
             {
-                long globalLoginId = Data.Office.User.SignIn(catalog, officeId, userName, password, culture, rememberMe,
-                    challenge, context);
+                long globalLoginId = Data.Office.User.SignIn(catalog, officeId, userName, password, culture, rememberMe, context);
 
                 Log.Information("{UserName} signed in to office : #{OfficeId} from {IP}.", userName, officeId,
                     context.Request.ServerVariables["REMOTE_ADDR"]);

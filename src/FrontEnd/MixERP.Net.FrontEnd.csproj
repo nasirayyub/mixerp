@@ -1408,10 +1408,10 @@
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>https://localhost:44301/</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>https://localhost:44301/</IISAppRootUrl>
+          <IISAppRootUrl>http://localhost:8080</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>True</UseCustomServer>
-          <CustomServerUrl>http://localhost:8000</CustomServerUrl>
+          <CustomServerUrl>http://localhost:8080</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

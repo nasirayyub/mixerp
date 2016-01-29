@@ -79,7 +79,7 @@ MixERPApp.controller("AttachmentController", function ($scope, $sce, $window) {
 
             ajaxDeleteAttachment.success(function () {
                 $("#card" + id).remove();
-                displaySucess();
+                displaySuccess();
             });
 
             ajaxDeleteAttachment.fail(function (xhr) {
@@ -106,7 +106,7 @@ MixERPApp.controller("AttachmentController", function ($scope, $sce, $window) {
         ajaxSave.success(function (msg) {
             if (msg.d) {
                 resetAttachmentForm();
-                displaySucess();
+                displaySuccess();
                 $scope.displayAttachments();
             };
         });

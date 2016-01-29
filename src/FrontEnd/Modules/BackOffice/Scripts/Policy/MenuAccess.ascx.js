@@ -26,7 +26,9 @@ function updateSelection() {
 
     selectedElements.each(function () {
         var menuId = $(this).closest("tr").find("td:nth-child(3)").html();
-        items.push(menuId);
+        if (menuId) {
+            items.push(menuId);
+        };
     });
 
     selectedMenusHidden.val(items.join(","));

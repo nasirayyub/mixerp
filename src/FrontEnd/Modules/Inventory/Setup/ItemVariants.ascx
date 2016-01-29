@@ -327,7 +327,7 @@
         var ajax = request(annotation);
 
         ajax.success(function () {
-            displaySucess();
+            displaySuccess();
         });
     });
 

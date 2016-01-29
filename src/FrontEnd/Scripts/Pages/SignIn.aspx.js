@@ -41,7 +41,7 @@ signInButton.click(function () {
     var rememberMe = rememberInputCheckBox.is(":checked");
     var branchId = parseInt2(branchSelect.getSelectedValue());
     var language = languageSelect.getSelectedValue();
-    var password = getPassword(username, passwordInputPassword.val(), challenge);
+    var password = getPassword(username, passwordInputPassword.val());
 
     if (isNullOrWhiteSpace(catalog) ||
             isNullOrWhiteSpace(username) ||
@@ -144,10 +144,8 @@ function authenticate(catalog, username, password, rememberMe, language, branchI
     return getAjax(url, data);
 };
 
-function getPassword(username, password, token) {
+function getPassword(username, password) {
     var hex = new jsSHA(username + password, 'TEXT').getHash('SHA-512', 'HEX');
-    hex = new jsSHA(hex + token, 'TEXT').getHash('SHA-512', 'HEX');
-
     return hex;
 };
 
