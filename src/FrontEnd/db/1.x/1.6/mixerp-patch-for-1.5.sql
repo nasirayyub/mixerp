@@ -1534,6 +1534,7 @@ SELECT localization.add_localized_resource('ScrudResource', '', 'termination_id'
 SELECT localization.add_localized_resource('ScrudResource', '', 'title', 'Title');
 SELECT localization.add_localized_resource('ScrudResource', '', 'to_days', 'To Days');
 SELECT localization.add_localized_resource('ScrudResource', '', 'total', 'Total');
+SELECT localization.add_localized_resource('ScrudResource', '', 'total_cycles', 'Total Cycles');
 SELECT localization.add_localized_resource('ScrudResource', '', 'total_days', 'Total Days');
 SELECT localization.add_localized_resource('ScrudResource', '', 'total_duration', 'Total Duration');
 SELECT localization.add_localized_resource('ScrudResource', '', 'total_sales', 'Total Sales');

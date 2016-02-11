@@ -6,7 +6,7 @@ namespace MixERP.Net.Core.Modules.BackOffice.OTS
 {
     public partial class OpenExchangeRatesParameters : MixERPUserControl
     {
-        public override AccessLevel AccessLevel => AccessLevel.AdminOnly;
+        public override AccessLevel AccessLevel => AccessLevel.LocalhostAdmin;
 
         public override void OnControlLoad(object sender, EventArgs e)
         {

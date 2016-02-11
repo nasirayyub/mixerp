@@ -170,6 +170,7 @@
     </Compile>
     <Compile Include="Controls\Checklist.cs" />
     <Compile Include="Controls\WebReport.cs" />
+    <Compile Include="CustomInclude.cs" />
     <Compile Include="Dashboard\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

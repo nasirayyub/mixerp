@@ -22,10 +22,7 @@ namespace MixERP.Net.Core.Modules.BackOffice.Admin
     {
         private readonly PostgreSQLServer server = new PostgreSQLServer();
 
-        public override AccessLevel AccessLevel
-        {
-            get { return AccessLevel.AdminOnly; }
-        }
+        public override AccessLevel AccessLevel => AccessLevel.LocalhostAdmin;
 
         public override void OnControlLoad(object sender, EventArgs e)
         {

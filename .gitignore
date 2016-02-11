@@ -3,6 +3,7 @@ bin
 obj
 *.pdb
 vnext
+src/FrontEnd/custom.js
 src/FrontEnd/Backups
 src/FrontEnd/Modules/Payroll
 src/FrontEnd/Modules/Payroll.API

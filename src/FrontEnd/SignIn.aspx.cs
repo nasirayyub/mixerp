@@ -41,6 +41,7 @@ namespace MixERP.Net.FrontEnd
             this.CreateControls(this.Placeholder1);
             this.CreateDimmer(this.Placeholder1);
             this.AddJavascript();
+            CustomInclude.IncludeCustomJavascript(this.Page);
         }
 
         protected void Page_Load(object sender, EventArgs e)

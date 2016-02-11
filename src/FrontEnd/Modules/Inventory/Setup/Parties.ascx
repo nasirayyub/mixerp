@@ -28,7 +28,7 @@
             fields: 
             [
                 ["Photo", ""],
-                ["PartyCode", "", "", ""],
+                ["PartyId", "PartyCode", "", ""],
                 ["EmployeeId", "EmployeeName", "", ""],
                 ["FirstName", "MiddleName", "LastName", "PartyTypeId", "", "", "", ""],
                 ["CompanyName", ""],

@@ -30,7 +30,10 @@ namespace MixERP.Net.FrontEnd
                 stylesheet.Attributes["media"] = "all";
                 this.Page.Header.Controls.Add(stylesheet);
             }
+
+           CustomInclude.IncludeCustomJavascript(this.Page);
         }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
