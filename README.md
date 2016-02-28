@@ -26,7 +26,7 @@ The two main objectives of Frapid are:
 
 **Use Case for #1**
 
-You want to scale your *popular website* to multiple server.
+You want to scale your *popular website* to multiple servers.
 
 **Use Case for #2**
 
@@ -36,7 +36,7 @@ You want to create a new Frapid instance (with a bunch of your own modules and c
 * fiz.buzz.com
 * fuzz.faux.com
 
-by just pointing the DNS entries to your IIS Server. Frapid will automatically understand these domains and will create separate resources for each tenant, totally isolated from each other. By the way, Frapid also supports cookieless domains if you want to create a mirror CDN.
+by just pointing the DNS entries to your IIS Server. Frapid will automatically understand these domains and will create separate resources for each tenant, totally isolated from each other. By the way, Frapid also supports cookieless domains if you want to dedicate a domain name to serve static contents.
 
 Enough about Frapid now, go and look for yourself.
 
