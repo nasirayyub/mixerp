@@ -21,8 +21,8 @@ you to create modules that you can target for:
 
 The two main objectives of Frapid are:
 
-1. To be able to host a **single Frapid application instance** on multiple servers. Multi tenancy, web garden, web farm, or whatever they say.
-2. To be able to host unlimited tenants with or without SSL support on a **single IIS Site instance**. Opposite of above.
+1. To be able to host a **single Frapid application instance** on multiple servers. Multi tenancy, web farm, or whatever they say.
+2. To be able to host unlimited tenants with or without SSL support on a **single IIS Site instance**. Opposite of the above.
 
 **Use Case for #1**
 

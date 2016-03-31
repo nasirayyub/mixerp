@@ -419,8 +419,9 @@ namespace MixERP.Net.Schemas.Core.Data
             currency.audit_ts = System.DateTime.UtcNow;
 
             object primaryKeyValue = currency.currency_code;
+            var exists = this.Get(currency.currency_code);
 
-            if (!string.IsNullOrWhiteSpace(currency.currency_code))
+            if (exists != null)
             {
                 primaryKeyValue = currency.currency_code;
                 this.Update(currency, currency.currency_code);
@@ -480,7 +481,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, currency, "core.currencies", "currency_code");
+            return Factory.Insert(this._Catalog, currency, "core.currencies", "currency_code", false);
         }
 
         /// <summary>

@@ -54,7 +54,7 @@ namespace PetaPoco
             }
         }
 
-        public static object Insert(string catalog, object poco, string tableName = "", string primaryKeyName = "")
+        public static object Insert(string catalog, object poco, string tableName = "", string primaryKeyName = "", bool autoIncrement = true)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace PetaPoco
                 {
                     if (!string.IsNullOrWhiteSpace(tableName) && !string.IsNullOrWhiteSpace(primaryKeyName))
                     {
-                        return db.Insert(tableName, primaryKeyName, poco);
+                        return db.Insert(tableName, primaryKeyName, autoIncrement, poco);
                     }
 
                     return db.Insert(poco);
