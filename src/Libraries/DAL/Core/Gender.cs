@@ -419,8 +419,9 @@ namespace MixERP.Net.Schemas.Core.Data
             gender.audit_ts = System.DateTime.UtcNow;
 
             object primaryKeyValue = gender.gender_code;
+            var exists = this.Get(gender.gender_code);
 
-            if (!string.IsNullOrWhiteSpace(gender.gender_code))
+            if (exists != null)
             {
                 primaryKeyValue = gender.gender_code;
                 this.Update(gender, gender.gender_code);
@@ -480,7 +481,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, gender, "core.genders", "gender_code");
+            return Factory.Insert(this._Catalog, gender, "core.genders", "gender_code", false);
         }
 
         /// <summary>
