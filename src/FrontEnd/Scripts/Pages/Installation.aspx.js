@@ -59,7 +59,6 @@ var validateFields = function() {
         isNullOrWhiteSpace(fiscalYearNameInputText.val()) ||
         isNullOrWhiteSpace(startsFromInputText.val()) ||
         isNullOrWhiteSpace(endsOnInputText.val()) ||
-        !parseFloat(incomeTaxRateInputText.val()) ||
         isNullOrWhiteSpace(weekStartDaySelect.val()) ||
         isNullOrWhiteSpace(transactionStartDateInputText.val()) ||
         isNullOrWhiteSpace(adminNameInputText.val()) ||
