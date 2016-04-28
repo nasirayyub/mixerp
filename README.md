@@ -89,9 +89,9 @@ MixERP has a guided implementation feature which makes it a piece of cake for yo
 * Purchase Order
 * Direct Purchase
 * Goods Receipt Note
-Purchase Return
-Purchase Reorder
-Purchase Reports
+* Purchase Return
+* Purchase Reorder
+* Purchase Reports
 
 
 ### Inventory / Stock
@@ -194,7 +194,7 @@ We have been receiving tons of queries on why PostgreSQL? We chose PostgreSQL Se
 
 * PostgreSQL is platform independent.
 * We have plans to support Apache and nginx.
-* We support *nix based operating system.
+* We have plans to support *nix based operating system.
 * PostgreSQL is free no matter how big your data grows, unlimited processors, unlimited cores, unlimited memory. You will never be forced to upgrade to higher version due to a limitation of database size or similar.
 * PostgreSQL is an [excellent choice for enterprise application](http://www.computerweekly.com/feature/Hot-skills-PostgreSQL).
 * PostgreSQL does have [paid support plans](http://www.infoworld.com/article/2617783/open-source-software/the-stealth-success-of-postgresql.html) for enterprises.
