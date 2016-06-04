@@ -40,6 +40,12 @@ by just pointing the DNS entries to your IIS Server. Frapid will automatically u
 
 Enough about Frapid now, go and look for yourself.
 
+## v2.0 Repositories
+
+- [HRM Module](https://github.com/mixerp/hrm/)
+- [Finance Module](https://github.com/mixerp/finance) 
+
+
 # So, What Is MixERP?
 
 MixERP is an awesome feature-rich and easy-to-use free ERP software for small business.
@@ -200,8 +206,6 @@ We have been receiving tons of queries on why PostgreSQL? We chose PostgreSQL Se
 * PostgreSQL does have [paid support plans](http://www.infoworld.com/article/2617783/open-source-software/the-stealth-success-of-postgresql.html) for enterprises.
 * PostgreSQL is [ahead of commercial database](http://www.infoworld.com/article/2608863/nosql/postgresql-ramps-up-its-nosql-game.html) vendors in terms of development. Also see [this](https://wiki.postgresql.org/wiki/What%27s_new_in_PostgreSQL_9.0), [this](https://wiki.postgresql.org/wiki/What%27s_new_in_PostgreSQL_9.1), [this](https://wiki.postgresql.org/wiki/What%27s_new_in_PostgreSQL_9.2), [this](https://wiki.postgresql.org/wiki/What%27s_new_in_PostgreSQL_9.3), and [this](https://wiki.postgresql.org/wiki/What%27s_new_in_PostgreSQL_9.4). And [this](http://www.postgresql.org/docs/9.4/static/release-9-4-1.html) as well.
 * We have been SQL Server developers long before we even knew PostgreSQL Server existed. We love SQL Server, but PostgreSQL is a better fit for, and brings added advantage to MixERP.
-
-
 
 
 ![MixERP Dashboard](http://mixerp.org/images/features/mixerp-dashboard.png)
