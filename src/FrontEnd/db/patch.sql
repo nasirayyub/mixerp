@@ -1,4 +1,4 @@
-﻿-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/01.types-domains-tables-and-constraints/tables-and-constraints.sql --<--<--
+﻿-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/01.types-domains-tables-and-constraints/tables-and-constraints.sql --<--<--
 DO
 $$
 BEGIN    
@@ -159,7 +159,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/02.functions-and-logic/functions/logic/core/core.create_item_variant.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/02.functions-and-logic/functions/logic/core/core.create_item_variant.sql --<--<--
 DROP FUNCTION IF EXISTS core.create_item_variant
 (
     _variant_of             integer,
@@ -283,7 +283,7 @@ $$
 LANGUAGE plpgsql;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/02.functions-and-logic/functions/logic/core/core.delete_variant_item.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/02.functions-and-logic/functions/logic/core/core.delete_variant_item.sql --<--<--
 DROP FUNCTION IF EXISTS core.delete_variant_item(_item_id integer);
 
 CREATE FUNCTION core.delete_variant_item(_item_id integer)
@@ -298,7 +298,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/02.functions-and-logic/functions/logic/office/office.sign_in.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/02.functions-and-logic/functions/logic/office/office.sign_in.sql --<--<--
 DROP FUNCTION IF EXISTS office.sign_in
 (
     office_id       public.integer_strict, 
@@ -397,7 +397,7 @@ $$
 LANGUAGE plpgsql;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/02.functions-and-logic/functions/logic/office/office.validate_login.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/02.functions-and-logic/functions/logic/office/office.validate_login.sql --<--<--
 DROP FUNCTION IF EXISTS office.validate_login
 (
     user_name       text,
@@ -442,14 +442,14 @@ $$
 LANGUAGE plpgsql;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/03.menus/0.menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/03.menus/0.menus.sql --<--<--
 --This table should not be localized.
 SELECT * FROM core.create_menu('Attributes', '~/Modules/Inventory/Setup/Attributes.mix', 'ATTR', 2, core.get_menu_id('ISM'));
 SELECT * FROM core.create_menu('Variants', '~/Modules/Inventory/Setup/Variants.mix', 'VARIANT', 2, core.get_menu_id('ISM'));
 SELECT * FROM core.create_menu('Item Variants', '~/Modules/Inventory/Setup/ItemVariants.mix', 'ITMVAR', 2, core.get_menu_id('ISM'));
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/0.neutral-resource(en)/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/0.neutral-resource(en)/language.sql --<--<--
 SELECT localization.add_localized_resource('CommonResource', '', 'DateMustBeGreaterThan', 'Invalid date. Must be greater than "{0}".');
 SELECT localization.add_localized_resource('CommonResource', '', 'DateMustBeLessThan', 'Invalid date. Must be less than "{0}".');
 SELECT localization.add_localized_resource('CommonResource', '', 'InvalidDate', 'Invalid date.');
@@ -2568,7 +2568,7 @@ SELECT localization.add_localized_resource('Warnings', '', 'StartDateGreaterThan
 SELECT localization.add_localized_resource('Warnings', '', 'UserIdOrPasswordIncorrect', 'User id or password incorrect.');
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/ar/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/ar/language.sql --<--<--
 /********************************************************************************************************************************************************
 Contributors for this translation:
 Nubiancc https://github.com/nubiancc
@@ -4638,7 +4638,7 @@ SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'ReturnButto
 SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'StartDateGreaterThanEndDate', 'تاريخ البدء لا يمكن أن يكون أكبر من تاريخ انتهاء.');--The start date cannot be greater than end date.
 SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'UserIdOrPasswordIncorrect', 'اسم المستخدم أو كلمة المرور غير صحيحة.');--User id or password incorrect.
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/ar/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/ar/menus.sql --<--<--
 --Contributors for this translation:
 --https://github.com/nubiancc
 
@@ -4788,7 +4788,7 @@ SELECT * FROM core.create_menu_locale('FVV', 'ar', 'تحقق مستند القي
 SELECT * FROM core.create_menu_locale('SVV', 'ar', 'سياسة التحقق من مستندات القيد');--Voucher Verification Policy
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/de/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/de/language.sql --<--<--
 --This translation is originally a courtesy of Johann Schwarz
 --https://github.com/Johann-Schwarz
 SELECT * FROM localization.add_localized_resource('CommonResource', 'de', 'DateMustBeGreaterThan', 'Ungültiges Datum. Muss größer sein als "{0}".');
@@ -6719,7 +6719,7 @@ SELECT * FROM localization.add_localized_resource('Warnings', 'de', 'StartDateGr
 SELECT * FROM localization.add_localized_resource('Warnings', 'de', 'UserIdOrPasswordIncorrect', 'Benutzerkennung oder Passwort falsch.');
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/de/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/de/menus.sql --<--<--
 --This translation is originally a courtesy of Johann Schwarz
 --https://github.com/Johann-SchwarzSELECT core.create_menu_locale('ALLITMS', 'de', 'Alle Artikel');
 SELECT core.create_menu_locale('ATTNDCE', 'de', 'Anwesenheit');
@@ -6904,7 +6904,7 @@ SELECT core.create_menu_locale('SAT', 'de', 'Administrations Werkzeuge');
 SELECT core.create_menu_locale('SDS', 'de', 'Abteilungs Setup');
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/es/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/es/language.sql --<--<--
 /********************************************************************************************************************************************************
 Contributors for this translation:
 Jonathan Valle https://github.com/JonathanValle
@@ -8125,7 +8125,7 @@ SELECT * FROM localization.add_localized_resource('Warnings', 'es', 'ReturnButto
 SELECT * FROM localization.add_localized_resource('Warnings', 'es', 'UserIdOrPasswordIncorrect', 'Identificador de usuario o contraseña incorrecta.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/es/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/es/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'es', 'Losa bonificación sobre los Vendedores');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'es', 'Losas Envejecimiento');--Ageing Slabs
@@ -8244,7 +8244,7 @@ SELECT core.create_menu_locale('MFS', 'es', 'Configuración Fee Merchant');--Mer
 SELECT core.create_menu_locale('RW', 'es', 'Report Writer');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/fil/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/fil/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'fil', 'DateMustBeGreaterThan', 'Di-wastong petsa. Dapat ay mas higit "{0}".');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'fil', 'DateMustBeLessThan', 'Di-wastong petsa. Dapat na mas mababa sa "{0}".');--Invalid date. Must be less than "{0}".
@@ -9460,7 +9460,7 @@ SELECT localization.add_localized_resource('Warnings', 'fil', 'ReturnButtonUrlNu
 SELECT localization.add_localized_resource('Warnings', 'fil', 'UserIdOrPasswordIncorrect', 'Pantukoy o maling password ng user.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/fil/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/fil/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'fil', 'Bonus laha para sa Salesperson');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'fil', 'Pagtanda Slabs');--Ageing Slabs
@@ -9579,7 +9579,7 @@ SELECT core.create_menu_locale('MFS', 'fil', 'Setup Bayarin sa Merchant');--Merc
 SELECT core.create_menu_locale('RW', 'fil', 'Report Writer');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/fr/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/fr/language.sql --<--<--
 /********************************************************************************************************************************************************
 Contributors for this translation:
 Nubiancc https://github.com/nubiancc
@@ -11632,7 +11632,7 @@ SELECT * FROM localization.add_localized_resource('Warnings', 'fr', 'ReturnButto
 SELECT * FROM localization.add_localized_resource('Warnings', 'fr', 'StartDateGreaterThanEndDate', 'La date de début ne peut pas être supérieure à la date de fin.');--The start date cannot be greater than end date.
 SELECT * FROM localization.add_localized_resource('Warnings', 'fr', 'UserIdOrPasswordIncorrect', 'ID utilisateur ou mot de passe incorrect.');--User id or password incorrect.
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/fr/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/fr/menus.sql --<--<--
 /********************************************************************************************************************************************************
 Contributors for this translation:
 Nubiancc https://github.com/nubiancc
@@ -11815,7 +11815,7 @@ SELECT * FROM core.create_menu_locale('FVV', 'fr', 'Vérification du bon');--Vou
 SELECT * FROM core.create_menu_locale('SVV', 'fr', 'Politique sur la vérification bon');--Voucher Verification Policy
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/id/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/id/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'id', 'DateMustBeGreaterThan', 'Tanggal tidak valid. Harus lebih besar dari "{0}".');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'id', 'DateMustBeLessThan', 'Tanggal tidak valid. Harus kurang dari "{0}".');--Invalid date. Must be less than "{0}".
@@ -13031,7 +13031,7 @@ SELECT localization.add_localized_resource('Warnings', 'id', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'id', 'UserIdOrPasswordIncorrect', 'Identifier pengguna dan password yang salah.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/id/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/id/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'id', 'Slab bonus untuk Staf Penjualan');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'id', 'Lempengan Penuaan');--Ageing Slabs
@@ -13150,7 +13150,7 @@ SELECT core.create_menu_locale('MFS', 'id', 'Merchant Fee Pengaturan');--Merchan
 SELECT core.create_menu_locale('RW', 'id', 'laporan Penulis');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/ja/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/ja/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'ja', 'DateMustBeGreaterThan', '無効な日付。よりも大きくなければなりません"{0}"。');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'ja', 'DateMustBeLessThan', '無効な日付。未満でなければなりません"{0}"。');--Invalid date. Must be less than "{0}".
@@ -14366,7 +14366,7 @@ SELECT localization.add_localized_resource('Warnings', 'ja', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'ja', 'UserIdOrPasswordIncorrect', 'ユーザ識別子またはパスワードが正しくない。');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/ja/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/ja/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'ja', '販売員のためのボーナススラブ');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'ja', '高齢スラブ');--Ageing Slabs
@@ -14485,7 +14485,7 @@ SELECT core.create_menu_locale('MFS', 'ja', '加盟店手数料の設定');--Mer
 SELECT core.create_menu_locale('RW', 'ja', '報告書作成');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/ms/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/ms/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'ms', 'DateMustBeGreaterThan', 'Tarikh tidak sah. Mesti lebih besar daripada "{0}".');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'ms', 'DateMustBeLessThan', 'Tarikh tidak sah. Mesti kurang daripada "{0}".');--Invalid date. Must be less than "{0}".
@@ -15701,7 +15701,7 @@ SELECT localization.add_localized_resource('Warnings', 'ms', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'ms', 'UserIdOrPasswordIncorrect', 'Pengecam pengguna atau kata laluan salah.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/ms/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/ms/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('CTST', 'ms', 'Daerah-daerah Jualan Cukai');--Counties Sales Taxes
 SELECT core.create_menu_locale('ABS', 'ms', 'Slab Bonus untuk jurujual');--Bonus Slab for Salespersons
@@ -15820,7 +15820,7 @@ SELECT core.create_menu_locale('MFS', 'ms', 'Bayaran Merchant Persediaan');--Mer
 SELECT core.create_menu_locale('RW', 'ms', 'Laporan Penulis');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/nl/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/nl/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'nl', 'DateMustBeGreaterThan', 'Ongeldige datum. Moet groter zijn dan "{0}".');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'nl', 'DateMustBeLessThan', 'Ongeldige datum. Moet kleiner zijn dan "{0}".');--Invalid date. Must be less than "{0}".
@@ -17036,7 +17036,7 @@ SELECT localization.add_localized_resource('Warnings', 'nl', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'nl', 'UserIdOrPasswordIncorrect', 'Gebruiker Identifier of wachtwoord onjuist.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/nl/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/nl/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'nl', 'Bonus Slab voor Verkopers');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'nl', 'Vergrijzing Platen');--Ageing Slabs
@@ -17155,7 +17155,7 @@ SELECT core.create_menu_locale('MFS', 'nl', 'Merchant Fee Setup');--Merchant Fee
 SELECT core.create_menu_locale('RW', 'nl', 'Report Writer');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/pt/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/pt/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'pt', 'DateMustBeGreaterThan', 'Data inválida. Deve ser maior que "{0}".');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'pt', 'DateMustBeLessThan', 'Data inválida. Deve ser inferior a "{0}".');--Invalid date. Must be less than "{0}".
@@ -18371,7 +18371,7 @@ SELECT localization.add_localized_resource('Warnings', 'pt', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'pt', 'UserIdOrPasswordIncorrect', 'Identificador de usuário ou senha incorreta.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/pt/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/pt/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'pt', 'Slab Bonus para vendedores');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'pt', 'Lajes Envelhecimento');--Ageing Slabs
@@ -18490,7 +18490,7 @@ SELECT core.create_menu_locale('MFS', 'pt', 'Setup Fee Merchant');--Merchant Fee
 SELECT core.create_menu_locale('RW', 'pt', 'Report Writer');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/ru/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/ru/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'ru', 'DateMustBeGreaterThan', 'Неправильная дата. Должно быть больше, чем "{0}".');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'ru', 'DateMustBeLessThan', 'Неправильная дата. Должна быть меньше, чем "{0}".');--Invalid date. Must be less than "{0}".
@@ -19706,7 +19706,7 @@ SELECT localization.add_localized_resource('Warnings', 'ru', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'ru', 'UserIdOrPasswordIncorrect', 'Идентификатор пользователя или пароль неверен.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/ru/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/ru/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'ru', 'Бонус Плиты для продавцов');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'ru', 'Старение плиты');--Ageing Slabs
@@ -19825,7 +19825,7 @@ SELECT core.create_menu_locale('MFS', 'ru', 'Торговец Стоимость
 SELECT core.create_menu_locale('RW', 'ru', 'генератор отчетов');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/sv/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/sv/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'sv', 'DateMustBeGreaterThan', 'ogiltigt datum. Måste vara större än "{0}".');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'sv', 'DateMustBeLessThan', 'Ogiltigt datum. Måste vara mindre än "{0}".');--Invalid date. Must be less than "{0}".
@@ -21041,7 +21041,7 @@ SELECT localization.add_localized_resource('Warnings', 'sv', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'sv', 'UserIdOrPasswordIncorrect', 'Användar identifierare eller lösenord felaktigt.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/sv/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/sv/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'sv', 'Bonus Slab för Försäljare');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'sv', 'åldrande Plattor');--Ageing Slabs
@@ -21160,7 +21160,7 @@ SELECT core.create_menu_locale('MFS', 'sv', 'Merchant Fee Setup');--Merchant Fee
 SELECT core.create_menu_locale('RW', 'sv', 'Report Writer');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/zh/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/zh/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'zh', 'DateMustBeGreaterThan', '无效的日期。必须大于“{0}”。');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'zh', 'DateMustBeLessThan', '无效的日期。必须小于“{0}”。');--Invalid date. Must be less than "{0}".
@@ -22376,7 +22376,7 @@ SELECT localization.add_localized_resource('Warnings', 'zh', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'zh', 'UserIdOrPasswordIncorrect', '用户标识符或密码不正确。');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/04.Localization/zh/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/04.Localization/zh/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'zh', '奖金为平板销售人员');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'zh', '老龄板坯');--Ageing Slabs
@@ -22494,7 +22494,7 @@ SELECT core.create_menu_locale('PAC', 'zh', '支付卡');--Payment Cards
 SELECT core.create_menu_locale('MFS', 'zh', '商家安装费');--Merchant Fee Setup
 SELECT core.create_menu_locale('RW', 'zh', '报表生成器');--Report Writer
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/05.scrud-views/core/core.item_scrud_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/05.scrud-views/core/core.item_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS core.item_scrud_view;
 
 CREATE VIEW core.item_scrud_view
@@ -22544,7 +22544,7 @@ LEFT JOIN core.shipping_package_shapes
 ON core.items.shipping_package_shape_id = core.shipping_package_shapes.shipping_package_shape_id;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/05.scrud-views/core/core.item_variant_scrud_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/05.scrud-views/core/core.item_variant_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS core.item_variant_scrud_view;
 
 CREATE VIEW core.item_variant_scrud_view
@@ -22559,7 +22559,7 @@ ON core.items.item_id = core.item_variants.item_id
 INNER JOIN core.variants
 ON core.variants.variant_id = core.item_variants.variant_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/05.scrud-views/core/core.variant_scrud_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/05.scrud-views/core/core.variant_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS core.variant_scrud_view;
 
 CREATE VIEW core.variant_scrud_view
@@ -22574,7 +22574,7 @@ FROM core.variants
 INNER JOIN core.attributes
 ON core.attributes.attribute_id = core.variants.attribute_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/05.selector-views/core/core.item_selector_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/05.selector-views/core/core.item_selector_view.sql --<--<--
 DROP VIEW IF EXISTS core.item_selector_view;
 
 CREATE VIEW core.item_selector_view
@@ -22582,7 +22582,7 @@ AS
 SELECT * FROM core.items
 ORDER BY item_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/05.views/core/core.item_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.6/src/05.views/core/core.item_view.sql --<--<--
 DROP VIEW IF EXISTS core.item_view;
 
 CREATE VIEW core.item_view
