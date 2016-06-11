@@ -1,4 +1,4 @@
-﻿-->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/01.types-domains-tables-and-constraints/tables-and-constraints.sql --<--<--
+﻿-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/01.types-domains-tables-and-constraints/tables-and-constraints.sql --<--<--
 DO
 $$
     DECLARE _constraint_name text;
@@ -553,7 +553,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/core/core.create_kanban.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/core/core.create_kanban.sql --<--<--
 DROP FUNCTION IF EXISTS core.create_kanban
 (
     _object_name                        national character varying(128),
@@ -595,7 +595,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/core/core.create_menu_locale.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/core/core.create_menu_locale.sql --<--<--
 DROP FUNCTION IF EXISTS core.create_menu_locale
 (
     _menu_code          text,
@@ -622,7 +622,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/core/core.get_custom_field_definition.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/core/core.get_custom_field_definition.sql --<--<--
 DROP FUNCTION IF EXISTS core.get_custom_field_definition
 (
     _table_name             text,
@@ -695,7 +695,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/core/core.get_custom_field_form_name.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/core/core.get_custom_field_form_name.sql --<--<--
 DROP FUNCTION IF EXISTS core.get_custom_field_form_name
 (
     _table_name character varying
@@ -717,7 +717,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/core/core.get_custom_field_setup_id_by_table_name.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/core/core.get_custom_field_setup_id_by_table_name.sql --<--<--
 DROP FUNCTION IF EXISTS core.get_custom_field_setup_id_by_table_name
 (
     _table_name character varying,
@@ -742,7 +742,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/core/core.get_tax_authority_id_by_tax_authority_code.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/core/core.get_tax_authority_id_by_tax_authority_code.sql --<--<--
 DROP FUNCTION IF EXISTS core.get_tax_authority_id_by_tax_authority_code(_tax_authority_code national character varying(12));
 
 CREATE FUNCTION core.get_tax_authority_id_by_tax_authority_code(_tax_authority_code national character varying(12))
@@ -759,7 +759,7 @@ LANGUAGE plpgsql;
 
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/core/core.recreate_menu.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/core/core.recreate_menu.sql --<--<--
 DROP FUNCTION IF EXISTS core.recreate_menu
 (
     _menu_text          text,
@@ -816,7 +816,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/localization/localization.get_output_for.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/localization/localization.get_output_for.sql --<--<--
 DROP FUNCTION IF EXISTS localization.get_output_for(national character varying(3));
 
 CREATE FUNCTION localization.get_output_for(_culture_code national character varying(3))
@@ -846,7 +846,7 @@ $$
 LANGUAGE plpgsql;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/localization/localization.get_resource.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/localization/localization.get_resource.sql --<--<--
 DROP FUNCTION IF EXISTS localization.get_resource(_culture_code text, _resource_class text, _key text);
 
 CREATE FUNCTION localization.get_resource(_culture_code text, _resource_class text, _key text)
@@ -884,7 +884,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/office/office.can_login.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/office/office.can_login.sql --<--<--
 DROP FUNCTION IF EXISTS office.can_login(user_id public.integer_strict, office_id public.integer_strict, OUT result boolean, OUT message text);
 DROP FUNCTION IF EXISTS office.can_login(user_id public.integer_strict, office_id public.integer_strict);
 
@@ -928,7 +928,7 @@ END;
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/office/office.sign_in.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/office/office.sign_in.sql --<--<--
 DROP FUNCTION IF EXISTS office.sign_in
 (
     office_id       public.integer_strict, 
@@ -1034,7 +1034,7 @@ LANGUAGE plpgsql;
 --SELECT * FROM office.sign_in(2, 'binod', '4e99cb7523794ad53b4da66c91f56d0143a679e1c6d396cda9ad0c9b41ed53e90bd5c59bf98255a4f1946b216b3ba539074a8a86cedd4af8bb208a8fad748e82', 'Firefox', '0.0.0.0', 'N/A', 'en-US', 'cd0ad7446ab64801837bfd43197d19c1');
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/policy/policy.get_menu.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/policy/policy.get_menu.sql --<--<--
 DROP FUNCTION IF EXISTS policy.get_menu
 (
     _user_id    integer, 
@@ -1122,7 +1122,7 @@ $$
 LANGUAGE plpgsql;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/policy/policy.has_access.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/policy/policy.has_access.sql --<--<--
 DROP FUNCTION IF EXISTS policy.has_access(_user_id integer, _entity text, _access_type_id integer);
 
 CREATE FUNCTION policy.has_access(_user_id integer, _entity text, _access_type_id integer)
@@ -1231,7 +1231,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/public/public.get_entities.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/public/public.get_entities.sql --<--<--
 DROP FUNCTION IF EXISTS public.get_entities();
 
 CREATE FUNCTION public.get_entities()
@@ -1312,7 +1312,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/public/public.parse_default.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/public/public.parse_default.sql --<--<--
 DROP FUNCTION IF EXISTS public.parse_default(text);
 
 CREATE FUNCTION public.parse_default(text)
@@ -1339,7 +1339,7 @@ LANGUAGE plpgsql;
 
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/public/public.poco_get_table_function_annotation.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/public/public.poco_get_table_function_annotation.sql --<--<--
 DROP FUNCTION IF EXISTS public.poco_get_table_function_annotation(_schema_name text, _table_name text);
 
 CREATE FUNCTION public.poco_get_table_function_annotation(_schema_name text, _table_name text)
@@ -1401,7 +1401,7 @@ LANGUAGE plpgsql;
 --SELECT * FROM public.poco_get_table_function_annotation('transactions', 'get_product_view');
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/public/public.poco_get_table_function_definition.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/public/public.poco_get_table_function_definition.sql --<--<--
 DROP FUNCTION IF EXISTS public.poco_get_table_function_definition
 (
     _schema         text,
@@ -1576,7 +1576,7 @@ LANGUAGE plpgsql;
 --SELECT * FROM public.poco_get_table_function_definition('hrm', 'employment_statuses');
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/public/public.poco_get_tables.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/public/public.poco_get_tables.sql --<--<--
 DROP FUNCTION IF EXISTS public.poco_get_tables(_schema text);
 
 CREATE FUNCTION public.poco_get_tables(_schema text)
@@ -1647,7 +1647,7 @@ LANGUAGE plpgsql;
 
 --SELECT * FROM public.poco_get_tables('public');
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.are_sales_quotations_already_merged.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.are_sales_quotations_already_merged.sql --<--<--
 DROP FUNCTION IF EXISTS transactions.are_sales_quotations_already_merged(VARIADIC arr bigint[]);
 
 CREATE FUNCTION transactions.are_sales_quotations_already_merged(VARIADIC _stock_master_id bigint[])
@@ -1681,7 +1681,7 @@ $$
 LANGUAGE plpgsql;   
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.get_journal_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.get_journal_view.sql --<--<--
 DROP FUNCTION IF EXISTS transactions.get_journal_view
 (
     _user_id                        integer,
@@ -1787,7 +1787,7 @@ LANGUAGE plpgsql;
 --SELECT * FROM transactions.get_journal_view(2,1,'1-1-2000','1-1-2020',0,'', 'Jou', '', '','', '','','', '');
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.get_merge_model.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.get_merge_model.sql --<--<--
 DROP FUNCTION IF EXISTS transactions.get_merge_model(_tran_ids bigint[], _book text);
 
 CREATE FUNCTION transactions.get_merge_model(_tran_ids bigint[], _book text)
@@ -1889,7 +1889,7 @@ LANGUAGE plpgsql;
 
 --SELECT * FROM transactions.get_merge_model('{82}', 'Sales.Order');
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.get_non_gl_product_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.get_non_gl_product_view.sql --<--<--
 DROP FUNCTION IF EXISTS transactions.get_non_gl_product_view
 (   
     user_id_                integer,
@@ -2028,7 +2028,7 @@ LANGUAGE plpgsql;
 --SELECT * FROM transactions.get_non_gl_product_view(1,'Purchase.Order',1, '1-1-2000', '1-1-2050', '', '', '', '', '', '');
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.get_party_transaction_summary.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.get_party_transaction_summary.sql --<--<--
 DROP FUNCTION IF EXISTS transactions.get_party_transaction_summary
 (
     office_id integer, 
@@ -2095,7 +2095,7 @@ LANGUAGE plpgsql;
 
 --select * from transactions.get_party_transaction_summary(2,1);
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.get_product_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/logic/transactions/transactions.get_product_view.sql --<--<--
 DROP FUNCTION IF EXISTS transactions.get_product_view
 (   
     user_id_                integer,
@@ -2246,7 +2246,7 @@ LANGUAGE plpgsql;
 --select * from transactions.get_product_view(1, 'Inventory.Transfer', 1, '1-1-2000',  '1-1-2020', '', '', '', '', '', '');
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/policy/policy.create_access_types.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/functions/policy/policy.create_access_types.sql --<--<--
 DROP FUNCTION IF EXISTS policy.create_access_types(_access_type_id integer, _access_type_name national character varying(48));
 
 CREATE FUNCTION policy.create_access_types(_access_type_id integer, _access_type_name national character varying(48))
@@ -2272,7 +2272,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/triggers/transactions.verification_trigger.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/02.functions-and-logic/triggers/transactions.verification_trigger.sql --<--<--
 DROP FUNCTION IF EXISTS transactions.verification_trigger() CASCADE;
 CREATE FUNCTION transactions.verification_trigger()
 RETURNS TRIGGER
@@ -2553,7 +2553,7 @@ FOR EACH ROW
 EXECUTE PROCEDURE transactions.verification_trigger();
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/03.menus/0.menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/03.menus/0.menus.sql --<--<--
 --This table should not be localized.
 SELECT * FROM core.create_menu('Other Setup', NULL, 'OTHR', 1, core.get_menu_id('SET'));
 SELECT * FROM core.create_menu('Genders', '~/Modules/BackOffice/Other/Genders.mix', 'GENDR', 2, core.get_menu_id('OTHR'));
@@ -2608,7 +2608,7 @@ DELETE FROM core.menu_locale WHERE menu_id = core.get_menu_id_by_menu_code('OTSS
 DELETE FROM core.menus WHERE menu_code = 'OTSSFP';
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/0.neutral-resource(en)/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/0.neutral-resource(en)/language.sql --<--<--
 SELECT localization.add_localized_resource('CommonResource', '', 'DateMustBeGreaterThan', 'Invalid date. Must be greater than "{0}".');
 SELECT localization.add_localized_resource('CommonResource', '', 'DateMustBeLessThan', 'Invalid date. Must be less than "{0}".');
 SELECT localization.add_localized_resource('CommonResource', '', 'InvalidDate', 'Invalid date.');
@@ -4535,7 +4535,7 @@ SELECT localization.add_localized_resource('Warnings', '', 'StartDateGreaterThan
 SELECT localization.add_localized_resource('Warnings', '', 'UserIdOrPasswordIncorrect', 'User id or password incorrect.');
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/ar/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/ar/language.sql --<--<--
 /********************************************************************************************************************************************************
 Contributors for this translation:
 Nubiancc https://github.com/nubiancc
@@ -6481,7 +6481,7 @@ SELECT * FROM localization.add_localized_resource('Warnings', 'ar', 'UserIdOrPas
 
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/ar/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/ar/menus.sql --<--<--
 --Contributors for this translation:
 --https://github.com/nubiancc
 SELECT * FROM core.create_menu_locale('AS', 'ar', 'كشف حساب');--Account Statement
@@ -6621,7 +6621,7 @@ SELECT * FROM core.create_menu_locale('FVV', 'ar', 'تحقق مستند القي
 SELECT * FROM core.create_menu_locale('SVV', 'ar', 'سياسة التحقق من مستندات القيد');--Voucher Verification Policy
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/de/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/de/language.sql --<--<--
 --This translation is originally a courtesy of Johann Schwarz
 --https://github.com/Johann-Schwarz
 SELECT * FROM localization.add_localized_resource('CommonResource', 'de', 'DateMustBeGreaterThan', 'Ungültiges Datum. Muss größer sein als "{0}".');
@@ -8552,7 +8552,7 @@ SELECT * FROM localization.add_localized_resource('Warnings', 'de', 'StartDateGr
 SELECT * FROM localization.add_localized_resource('Warnings', 'de', 'UserIdOrPasswordIncorrect', 'Benutzerkennung oder Passwort falsch.');
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/de/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/de/menus.sql --<--<--
 --This translation is originally a courtesy of Johann Schwarz
 --https://github.com/Johann-SchwarzSELECT core.create_menu_locale('ALLITMS', 'de', 'Alle Artikel');
 SELECT core.create_menu_locale('ATTNDCE', 'de', 'Anwesenheit');
@@ -8737,7 +8737,7 @@ SELECT core.create_menu_locale('SAT', 'de', 'Administrations Werkzeuge');
 SELECT core.create_menu_locale('SDS', 'de', 'Abteilungs Setup');
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/es/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/es/language.sql --<--<--
 /********************************************************************************************************************************************************
 Contributors for this translation:
 Jonathan Valle https://github.com/JonathanValle
@@ -9958,7 +9958,7 @@ SELECT * FROM localization.add_localized_resource('Warnings', 'es', 'ReturnButto
 SELECT * FROM localization.add_localized_resource('Warnings', 'es', 'UserIdOrPasswordIncorrect', 'Identificador de usuario o contraseña incorrecta.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/es/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/es/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'es', 'Losa bonificación sobre los Vendedores');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'es', 'Losas Envejecimiento');--Ageing Slabs
@@ -10077,7 +10077,7 @@ SELECT core.create_menu_locale('MFS', 'es', 'Configuración Fee Merchant');--Mer
 SELECT core.create_menu_locale('RW', 'es', 'Report Writer');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/fil/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/fil/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'fil', 'DateMustBeGreaterThan', 'Di-wastong petsa. Dapat ay mas higit "{0}".');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'fil', 'DateMustBeLessThan', 'Di-wastong petsa. Dapat na mas mababa sa "{0}".');--Invalid date. Must be less than "{0}".
@@ -11293,7 +11293,7 @@ SELECT localization.add_localized_resource('Warnings', 'fil', 'ReturnButtonUrlNu
 SELECT localization.add_localized_resource('Warnings', 'fil', 'UserIdOrPasswordIncorrect', 'Pantukoy o maling password ng user.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/fil/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/fil/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'fil', 'Bonus laha para sa Salesperson');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'fil', 'Pagtanda Slabs');--Ageing Slabs
@@ -11412,7 +11412,7 @@ SELECT core.create_menu_locale('MFS', 'fil', 'Setup Bayarin sa Merchant');--Merc
 SELECT core.create_menu_locale('RW', 'fil', 'Report Writer');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/fr/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/fr/language.sql --<--<--
 /********************************************************************************************************************************************************
 Contributors for this translation:
 Nubiancc https://github.com/nubiancc
@@ -12945,7 +12945,7 @@ SELECT * FROM localization.add_localized_resource('Warnings', 'fr', 'ReturnButto
 SELECT * FROM localization.add_localized_resource('Warnings', 'fr', 'StartDateGreaterThanEndDate', 'La date de début ne peut pas être supérieure à la date de fin.');--The start date cannot be greater than end date.
 SELECT * FROM localization.add_localized_resource('Warnings', 'fr', 'userIdOrPasswordIncorrect', 'ID utilisateur ou mot de passe incorrect.');--User id or password incorrect.
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/fr/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/fr/menus.sql --<--<--
 /********************************************************************************************************************************************************
 Contributors for this translation:
 Nubiancc https://github.com/nubiancc
@@ -13091,7 +13091,7 @@ SELECT * FROM core.create_menu_locale('FVV', 'fr', 'Vérification du bon');--Vou
 SELECT * FROM core.create_menu_locale('SVV', 'fr', 'Politique sur la vérification bon');--Voucher Verification Policy
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/id/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/id/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'id', 'DateMustBeGreaterThan', 'Tanggal tidak valid. Harus lebih besar dari "{0}".');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'id', 'DateMustBeLessThan', 'Tanggal tidak valid. Harus kurang dari "{0}".');--Invalid date. Must be less than "{0}".
@@ -14307,7 +14307,7 @@ SELECT localization.add_localized_resource('Warnings', 'id', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'id', 'UserIdOrPasswordIncorrect', 'Identifier pengguna dan password yang salah.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/id/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/id/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'id', 'Slab bonus untuk Staf Penjualan');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'id', 'Lempengan Penuaan');--Ageing Slabs
@@ -14426,7 +14426,7 @@ SELECT core.create_menu_locale('MFS', 'id', 'Merchant Fee Pengaturan');--Merchan
 SELECT core.create_menu_locale('RW', 'id', 'laporan Penulis');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/ja/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/ja/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'ja', 'DateMustBeGreaterThan', '無効な日付。よりも大きくなければなりません"{0}"。');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'ja', 'DateMustBeLessThan', '無効な日付。未満でなければなりません"{0}"。');--Invalid date. Must be less than "{0}".
@@ -15642,7 +15642,7 @@ SELECT localization.add_localized_resource('Warnings', 'ja', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'ja', 'UserIdOrPasswordIncorrect', 'ユーザ識別子またはパスワードが正しくない。');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/ja/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/ja/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'ja', '販売員のためのボーナススラブ');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'ja', '高齢スラブ');--Ageing Slabs
@@ -15761,7 +15761,7 @@ SELECT core.create_menu_locale('MFS', 'ja', '加盟店手数料の設定');--Mer
 SELECT core.create_menu_locale('RW', 'ja', '報告書作成');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/ms/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/ms/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'ms', 'DateMustBeGreaterThan', 'Tarikh tidak sah. Mesti lebih besar daripada "{0}".');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'ms', 'DateMustBeLessThan', 'Tarikh tidak sah. Mesti kurang daripada "{0}".');--Invalid date. Must be less than "{0}".
@@ -16977,7 +16977,7 @@ SELECT localization.add_localized_resource('Warnings', 'ms', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'ms', 'UserIdOrPasswordIncorrect', 'Pengecam pengguna atau kata laluan salah.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/ms/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/ms/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('CTST', 'ms', 'Daerah-daerah Jualan Cukai');--Counties Sales Taxes
 SELECT core.create_menu_locale('ABS', 'ms', 'Slab Bonus untuk jurujual');--Bonus Slab for Salespersons
@@ -17096,7 +17096,7 @@ SELECT core.create_menu_locale('MFS', 'ms', 'Bayaran Merchant Persediaan');--Mer
 SELECT core.create_menu_locale('RW', 'ms', 'Laporan Penulis');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/nl/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/nl/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'nl', 'DateMustBeGreaterThan', 'Ongeldige datum. Moet groter zijn dan "{0}".');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'nl', 'DateMustBeLessThan', 'Ongeldige datum. Moet kleiner zijn dan "{0}".');--Invalid date. Must be less than "{0}".
@@ -18312,7 +18312,7 @@ SELECT localization.add_localized_resource('Warnings', 'nl', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'nl', 'UserIdOrPasswordIncorrect', 'Gebruiker Identifier of wachtwoord onjuist.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/nl/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/nl/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'nl', 'Bonus Slab voor Verkopers');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'nl', 'Vergrijzing Platen');--Ageing Slabs
@@ -18431,7 +18431,7 @@ SELECT core.create_menu_locale('MFS', 'nl', 'Merchant Fee Setup');--Merchant Fee
 SELECT core.create_menu_locale('RW', 'nl', 'Report Writer');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/pt/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/pt/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'pt', 'DateMustBeGreaterThan', 'Data inválida. Deve ser maior que "{0}".');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'pt', 'DateMustBeLessThan', 'Data inválida. Deve ser inferior a "{0}".');--Invalid date. Must be less than "{0}".
@@ -19647,7 +19647,7 @@ SELECT localization.add_localized_resource('Warnings', 'pt', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'pt', 'UserIdOrPasswordIncorrect', 'Identificador de usuário ou senha incorreta.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/pt/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/pt/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'pt', 'Slab Bonus para vendedores');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'pt', 'Lajes Envelhecimento');--Ageing Slabs
@@ -19766,7 +19766,7 @@ SELECT core.create_menu_locale('MFS', 'pt', 'Setup Fee Merchant');--Merchant Fee
 SELECT core.create_menu_locale('RW', 'pt', 'Report Writer');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/ru/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/ru/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'ru', 'DateMustBeGreaterThan', 'Неправильная дата. Должно быть больше, чем "{0}".');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'ru', 'DateMustBeLessThan', 'Неправильная дата. Должна быть меньше, чем "{0}".');--Invalid date. Must be less than "{0}".
@@ -20982,7 +20982,7 @@ SELECT localization.add_localized_resource('Warnings', 'ru', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'ru', 'UserIdOrPasswordIncorrect', 'Идентификатор пользователя или пароль неверен.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/ru/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/ru/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'ru', 'Бонус Плиты для продавцов');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'ru', 'Старение плиты');--Ageing Slabs
@@ -21101,7 +21101,7 @@ SELECT core.create_menu_locale('MFS', 'ru', 'Торговец Стоимость
 SELECT core.create_menu_locale('RW', 'ru', 'генератор отчетов');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/sv/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/sv/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'sv', 'DateMustBeGreaterThan', 'ogiltigt datum. Måste vara större än "{0}".');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'sv', 'DateMustBeLessThan', 'Ogiltigt datum. Måste vara mindre än "{0}".');--Invalid date. Must be less than "{0}".
@@ -22317,7 +22317,7 @@ SELECT localization.add_localized_resource('Warnings', 'sv', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'sv', 'UserIdOrPasswordIncorrect', 'Användar identifierare eller lösenord felaktigt.');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/sv/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/sv/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'sv', 'Bonus Slab för Försäljare');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'sv', 'åldrande Plattor');--Ageing Slabs
@@ -22436,7 +22436,7 @@ SELECT core.create_menu_locale('MFS', 'sv', 'Merchant Fee Setup');--Merchant Fee
 SELECT core.create_menu_locale('RW', 'sv', 'Report Writer');--Report Writer
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/zh/language.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/zh/language.sql --<--<--
 --Translated using a tool
 SELECT localization.add_localized_resource('CommonResource', 'zh', 'DateMustBeGreaterThan', '无效的日期。必须大于“{0}”。');--Invalid date. Must be greater than "{0}".
 SELECT localization.add_localized_resource('CommonResource', 'zh', 'DateMustBeLessThan', '无效的日期。必须小于“{0}”。');--Invalid date. Must be less than "{0}".
@@ -23652,7 +23652,7 @@ SELECT localization.add_localized_resource('Warnings', 'zh', 'ReturnButtonUrlNul
 SELECT localization.add_localized_resource('Warnings', 'zh', 'UserIdOrPasswordIncorrect', '用户标识符或密码不正确。');--User id or password incorrect.
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/04.Localization/zh/menus.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/04.Localization/zh/menus.sql --<--<--
 --Translated using a tool
 SELECT core.create_menu_locale('ABS', 'zh', '奖金为平板销售人员');--Bonus Slab for Salespersons
 SELECT core.create_menu_locale('AGS', 'zh', '老龄板坯');--Ageing Slabs
@@ -23770,7 +23770,7 @@ SELECT core.create_menu_locale('PAC', 'zh', '支付卡');--Payment Cards
 SELECT core.create_menu_locale('MFS', 'zh', '商家安装费');--Merchant Fee Setup
 SELECT core.create_menu_locale('RW', 'zh', '报表生成器');--Report Writer
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/core/core.item_cost_price_scrud_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/core/core.item_cost_price_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS core.item_cost_price_scrud_view;
 
 CREATE VIEW core.item_cost_price_scrud_view
@@ -23794,7 +23794,7 @@ ON core.item_cost_prices.party_id = core.parties.party_id;
 
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/core/core.item_scrud_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/core/core.item_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS core.item_scrud_view;
 
 CREATE VIEW core.item_scrud_view
@@ -23844,7 +23844,7 @@ LEFT JOIN core.shipping_package_shapes
 ON core.items.shipping_package_shape_id = core.shipping_package_shapes.shipping_package_shape_id;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/core/core.party_scrud_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/core/core.party_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS core.party_scrud_view;
 
 CREATE VIEW core.party_scrud_view
@@ -23892,7 +23892,7 @@ ON parties.party_type_id = party_types.party_type_id
 INNER JOIN core.accounts 
 ON parties.account_id = accounts.account_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/core/core.recurring_invoice_setup_scrud_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/core/core.recurring_invoice_setup_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS core.recurring_invoice_setup_scrud_view;
 
 CREATE VIEW core.recurring_invoice_setup_scrud_view
@@ -23928,7 +23928,7 @@ INNER JOIN core.payment_terms
 ON core.recurring_invoice_setup.payment_term_id = core.payment_terms.payment_term_id;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/core/core.sales_tax_exempt_detail_scrud_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/core/core.sales_tax_exempt_detail_scrud_view.sql --<--<--
 CREATE VIEW core.sales_tax_exempt_detail_scrud_view
 AS
 SELECT 
@@ -23960,7 +23960,7 @@ ON core.sales_tax_exempt_details.item_group_id = core.item_groups.item_group_id;
 
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/core/core.salesperson_scrud_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/core/core.salesperson_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS core.salesperson_scrud_view;
 
 CREATE VIEW core.salesperson_scrud_view
@@ -23983,7 +23983,7 @@ INNER JOIN core.accounts
 ON core.salespersons.account_id = core.accounts.account_id;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/core/core.shipping_address_scrud_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/core/core.shipping_address_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS core.shipping_address_scrud_view;
 
 CREATE VIEW core.shipping_address_scrud_view
@@ -24004,7 +24004,7 @@ INNER JOIN core.parties
 ON core.shipping_addresses.party_id=core.parties.party_id;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/policy/policy.default_entity_access_scrud_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/policy/policy.default_entity_access_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS policy.default_entity_access_scrud_view;
 
 CREATE VIEW policy.default_entity_access_scrud_view
@@ -24021,7 +24021,7 @@ ON office.roles.role_id = policy.default_entity_access.role_id
 LEFT JOIN policy.access_types
 ON policy.access_types.access_type_id = policy.default_entity_access.access_type_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/policy/policy.entity_access_scrud_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.scrud-views/policy/policy.entity_access_scrud_view.sql --<--<--
 DROP VIEW IF EXISTS policy.entity_access_scrud_view;
 
 CREATE VIEW policy.entity_access_scrud_view
@@ -24038,7 +24038,7 @@ ON office.users.user_id = policy.entity_access.user_id
 LEFT JOIN policy.access_types
 ON policy.access_types.access_type_id = policy.entity_access.access_type_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.selector-views/core.party_selector_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.selector-views/core.party_selector_view.sql --<--<--
 CREATE VIEW core.party_selector_view
 AS
 SELECT
@@ -24081,7 +24081,7 @@ INNER JOIN core.accounts
 ON core.parties.account_id=core.accounts.account_id;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.selector-views/core.supplier_selector_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.selector-views/core.supplier_selector_view.sql --<--<--
 DROP VIEW IF EXISTS core.supplier_selector_view;
 CREATE VIEW core.supplier_selector_view
 AS
@@ -24128,7 +24128,7 @@ INNER JOIN core.accounts
 ON core.parties.account_id=core.accounts.account_id
 WHERE is_supplier=true;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.attachment_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.attachment_view.sql --<--<--
 DROP VIEW IF EXISTS core.attachment_view;
 
 CREATE VIEW core.attachment_view
@@ -24149,7 +24149,7 @@ FROM core.attachments
 INNER JOIN core.attachment_lookup
 ON core.attachments.resource = core.attachment_lookup.resource;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.custom_field_definition_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.custom_field_definition_view.sql --<--<--
 DROP VIEW IF EXISTS core.custom_field_definition_view;
 
 CREATE VIEW core.custom_field_definition_view
@@ -24178,7 +24178,7 @@ ON core.custom_field_forms.form_name = core.custom_field_setup.form_name
 ORDER BY field_order;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.custom_field_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.custom_field_view.sql --<--<--
 DROP VIEW IF EXISTS core.custom_field_view;
 
 CREATE VIEW core.custom_field_view
@@ -24209,7 +24209,7 @@ ON core.custom_fields.custom_field_setup_id = core.custom_field_setup.custom_fie
 ORDER BY field_order;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.filter_name_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.filter_name_view.sql --<--<--
 DROP VIEW IF EXISTS core.filter_name_view;
 
 CREATE VIEW core.filter_name_view
@@ -24221,7 +24221,7 @@ SELECT
     is_default
 FROM core.filters;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.flag_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.flag_view.sql --<--<--
 DROP VIEW IF EXISTS core.flag_view;
 
 CREATE VIEW core.flag_view
@@ -24241,7 +24241,7 @@ FROM core.flags
 INNER JOIN core.flag_types
 ON core.flags.flag_type_id = core.flag_types.flag_type_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.item_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.item_view.sql --<--<--
 DROP VIEW IF EXISTS core.item_view;
 
 CREATE VIEW core.item_view
@@ -24295,7 +24295,7 @@ ON core.items.preferred_shipping_mail_type_id = core.shipping_mail_types.shippin
 LEFT JOIN core.shipping_package_shapes
 ON core.items.shipping_package_shape_id = core.shipping_package_shapes.shipping_package_shape_id;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.party_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.party_view.sql --<--<--
 DROP VIEW IF EXISTS core.party_view;
 
 CREATE VIEW core.party_view
@@ -24345,7 +24345,7 @@ ON core.parties.account_id=core.accounts.account_id;
 
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.supplier_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.views/core/core.supplier_view.sql --<--<--
 CREATE VIEW core.supplier_view
 AS
 SELECT * FROM core.parties
@@ -24355,7 +24355,7 @@ WHERE party_type_id IN
         WHERE is_supplier=true
 );
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.views/core/custom_field_definition_value_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.views/core/custom_field_definition_value_view.sql --<--<--
 DROP FUNCTION IF EXISTS core.get_custom_field_definition
 (
     _table_name             text,
@@ -24428,7 +24428,7 @@ END
 $$
 LANGUAGE plpgsql;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.views/transactions/transactions.receipt_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.views/transactions/transactions.receipt_view.sql --<--<--
 DROP VIEW IF EXISTS transactions.receipt_view;
 
 CREATE VIEW transactions.receipt_view
@@ -24480,7 +24480,7 @@ WHERE transactions.transaction_master.book = 'Sales.Receipt'
 AND transactions.transaction_master.verification_status_id > 0;
 
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.views/transactions/transactions.sales_delivery_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.views/transactions/transactions.sales_delivery_view.sql --<--<--
 DROP VIEW IF EXISTS transactions.sales_delivery_view;
 
 CREATE VIEW transactions.sales_delivery_view
@@ -24523,7 +24523,7 @@ AND transactions.transaction_master.verification_status_id > 0;
 
 --SELECT * FROM transactions.sales_delivery_view;
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.views/transactions/transactions.sales_order_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.views/transactions/transactions.sales_order_view.sql --<--<--
 DROP VIEW IF EXISTS transactions.sales_order_view;
 
 CREATE VIEW transactions.sales_order_view
@@ -24550,7 +24550,7 @@ INNER JOIN core.price_types
 ON transactions.non_gl_stock_master.price_type_id = core.price_types.price_type_id
 WHERE transactions.non_gl_stock_master.book = 'Sales.Order';
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/05.views/transactions/transactions.sales_quotation_view.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/05.views/transactions/transactions.sales_quotation_view.sql --<--<--
 DROP VIEW IF EXISTS transactions.sales_quotation_view;
 
 CREATE VIEW transactions.sales_quotation_view
@@ -24577,12 +24577,12 @@ INNER JOIN core.price_types
 ON transactions.non_gl_stock_master.price_type_id = core.price_types.price_type_id
 WHERE transactions.non_gl_stock_master.book = 'Sales.Quotation';
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/99.sample-data/00.custom-fields.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/99.sample-data/00.custom-fields.sql --<--<--
 UPDATE core.custom_field_data_types
 SET is_number = false
 WHERE data_type = 'Text';
 
--->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.5/src/99.sample-data/99.ownership.sql --<--<--
+-->-->-- C:/DATA/Repos/MixERP/src/FrontEnd/db/1.x/1.5/src/99.sample-data/99.ownership.sql --<--<--
 DO
 $$
     DECLARE this record;
