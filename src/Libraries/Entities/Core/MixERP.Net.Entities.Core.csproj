@@ -186,6 +186,7 @@
     <Compile Include="Period.cs" />
     <Compile Include="PriceType.cs" />
     <Compile Include="PriceTypeSelectorView.cs" />
+    <Compile Include="PrintedReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurcahseAccountSelectorView.cs" />
     <Compile Include="PurchaseAccountSelectorView.cs" />

@@ -1,8 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <MixERPReport>
-  <Title>{Resources.Titles.SalesInvoice}</Title>
+  <Title>{Resources.Titles.SalesInvoice}
+  </Title>
   <TopSection>
+    <h4>{DataSource[2].title}</h4>
+
     <table class="table horizontal">
+      <tr>
+        <td>
+          Print Count
+        </td>
+        <td>
+          {DataSource[2].count}
+        </td>
+      </tr>
       <tr>
         <td>{Resources.Titles.TranId}</td>
         <td>
@@ -164,6 +175,19 @@
       <RunningTotalTextColumnIndex>3</RunningTotalTextColumnIndex>
       <RunningTotalFieldIndices>5,6,7,8,9</RunningTotalFieldIndices>
       <DecimalFieldIndices>4,5,6,7,8,9</DecimalFieldIndices>
+    </DataSource>
+
+    <DataSource>
+      <Query>
+        SELECT CASE WHEN COUNT(*) > 1 THEN 'Copy of original' ELSE '' END AS title,
+        COUNT(*) AS count 
+        FROM core.printed_reports
+        WHERE core.printed_reports.report_title = 'Sales.Direct' 
+		AND core.printed_reports.tran_id=@transaction_master_id;
+      </Query>
+      <Parameters>
+        <Parameter Name="@transaction_master_id" Type="Number" />
+      </Parameters>
     </DataSource>
   </DataSources>
 </MixERPReport>
