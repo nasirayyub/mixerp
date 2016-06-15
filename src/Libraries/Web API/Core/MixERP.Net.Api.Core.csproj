@@ -736,6 +736,7 @@
     <Compile Include="PaymentTermScrudViewController.cs" />
     <Compile Include="PriceTypeController.cs" />
     <Compile Include="PriceTypeSelectorViewController.cs" />
+    <Compile Include="PrintedReportController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurcahseAccountSelectorViewController.cs" />
     <Compile Include="PurchaseAccountSelectorViewController.cs" />

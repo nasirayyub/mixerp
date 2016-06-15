@@ -157,3 +157,27 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+DO
+$$
+BEGIN    
+    IF NOT EXISTS (
+        SELECT 1 
+        FROM   pg_catalog.pg_class c
+        JOIN   pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+        WHERE  n.nspname = 'core'
+        AND    c.relname = 'printed_reports'
+        AND    c.relkind = 'r'
+    ) THEN
+		CREATE TABLE core.printed_reports(
+			id                      BIGSERIAL NOT NULL PRIMARY KEY,
+			report_title            national character varying(100) NOT NULL,
+			tran_id                 bigint NOT NULL,
+			description             text,
+			audit_user_id           integer NOT NULL REFERENCES office.users,
+			audit_ts                TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT(NOW())
+		);
+    END IF;    
+END
+$$
+LANGUAGE plpgsql;

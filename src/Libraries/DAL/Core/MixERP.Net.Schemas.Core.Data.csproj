@@ -588,6 +588,7 @@
     <Compile Include="IPaymentTermScrudViewRepository.cs" />
     <Compile Include="IPriceTypeRepository.cs" />
     <Compile Include="IPriceTypeSelectorViewRepository.cs" />
+    <Compile Include="IPrintedReportRepository.cs" />
     <Compile Include="IPurcahseAccountSelectorViewRepository.cs" />
     <Compile Include="IPurchaseAccountSelectorViewRepository.cs" />
     <Compile Include="IPurchaseDiscountAccountSelectorViewRepository.cs" />
@@ -719,6 +720,7 @@
     <Compile Include="PaymentTermScrudView.cs" />
     <Compile Include="PriceType.cs" />
     <Compile Include="PriceTypeSelectorView.cs" />
+    <Compile Include="PrintedReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurcahseAccountSelectorView.cs" />
     <Compile Include="PurchaseAccountSelectorView.cs" />
