@@ -11,6 +11,7 @@ namespace MixERP.Net.FrontEnd.Application
             {
                 Log.Information("Registering routes.");
                 routes.Ignore("{resource}.axd");
+				routes.Ignore("{*url}", new { url = @".*\.asmx(/.*)?" });
                 routes.MapPageRoute("DefaultRoute", "", "~/SignIn.aspx");
                 routes.MapPageRoute("Reporting", "Reports/{path}", "~/Reports/ReportMaster.aspx");
                 routes.MapPageRoute("Modules", "Modules/{*path}", "~/Modules/Default.aspx");
