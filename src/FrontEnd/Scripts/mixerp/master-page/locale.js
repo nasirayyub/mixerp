@@ -1,29 +1,48 @@
-﻿function urlExists(url) {
-    var http = new XMLHttpRequest();
-    http.open('HEAD', url, false);
-    http.send();
-    return http.status !== 404;
-};
-
+﻿function urlCheck(url, existsCallback, errorCallback) {
+	$.ajax({
+		url: url,
+		type: 'HEAD',
+		type: "get",
+		async: true,
+		error: function () {
+			errorCallback();
+		},
+		success: function () {
+			existsCallback();
+		}
+	});
+}
 
 $(document).ready(function () {
-    loadDatePickerLocale();
+	loadDatePickerLocale(
+		window.datepickerLanguagePath,
+		function (datepickerLanguagePath) {
+			addScriptReference(datepickerLanguagePath);
+		},
+		function () {
+			window.datepickerLanguagePath = "";
+		});
 });
 
-function loadDatePickerLocale() {
-    window.datepickerLanguagePath = window.jqueryUIi18nPath + '/datepicker-' + window.culture + '.js';
+function loadDatePickerLocale(datepickerLanguagePath, existsCallback, otherwiseCallback) {
+	datepickerLanguagePath = window.jqueryUIi18nPath + '/datepicker-' + window.culture + '.js';
 
-    if (!urlExists(window.datepickerLanguagePath)) {
-        window.datepickerLanguagePath = window.jqueryUIi18nPath + '/datepicker-' + window.language + '.js';
-    };
+	urlCheck(datepickerLanguagePath,
+		function () {
+			existsCallback(datepickerLanguagePath);
+		},
+		function () {
+			datepickerLanguagePath = window.jqueryUIi18nPath + '/datepicker-' + window.language + '.js';
 
-    if (!urlExists(window.datepickerLanguagePath)) {
-        window.datepickerLanguagePath = "";
-    };
-
-    if (window.datepickerLanguagePath) {
-        addScriptReference(window.datepickerLanguagePath);
-    };
+			urlCheck(datepickerLanguagePath,
+				function () {
+					existsCallback(datepickerLanguagePath);
+				},
+				function () {
+					otherwiseCallback();
+				});
+		}
+	);
 };
 
 function addScriptReference(path) {
