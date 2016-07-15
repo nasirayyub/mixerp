@@ -309,6 +309,7 @@ var addRow = function (statementReference, accountNumber, account, cashRepositor
 
     if (!currencyCode) {
         makeDirty(currencySelect);
+		removeLoader(transactionGridView);
         return;
     };
 
@@ -322,6 +323,8 @@ var addRow = function (statementReference, accountNumber, account, cashRepositor
                 $.notify(Resources.Warnings.DuplicateEntry());
                 makeDirty(accountNumberInputText);
                 duplicateEntry = true;
+
+				removeLoader(transactionGridView);
                 return;
             };
         };
@@ -336,6 +339,7 @@ var addRow = function (statementReference, accountNumber, account, cashRepositor
     });
 
     if (duplicateEntry) {
+		removeLoader(transactionGridView);
         return;
     };
 

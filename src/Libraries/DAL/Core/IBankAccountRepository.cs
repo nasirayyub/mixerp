@@ -104,8 +104,8 @@ namespace MixERP.Net.Schemas.Core.Data
         /// Updates IBankAccountRepository with an instance of BankAccount class against the primary key value.
         /// </summary>
         /// <param name="bankAccount">The instance of BankAccount class to update.</param>
-        /// <param name="accountId">The value of the column "account_id" which will be updated.</param>
-        void Update(dynamic bankAccount, long accountId);
+        /// <param name="bankAccountId">The value of the column "account_id" which will be updated.</param>
+        void Update(dynamic bankAccount, long bankAccountId);
 
         /// <summary>
         /// Deletes BankAccount from  IBankAccountRepository against the primary key value.

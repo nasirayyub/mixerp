@@ -114,9 +114,9 @@ namespace MixERP.Net.Api.Core.Fakes
             return true;
         }
 
-        public void Update(dynamic bankAccount, long accountId)
+        public void Update(dynamic bankAccount, long bankAccountId)
         {
-            if (accountId > 0)
+            if (bankAccountId > 0)
             {
                 return;
             }

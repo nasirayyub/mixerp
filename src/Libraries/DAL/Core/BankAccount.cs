@@ -418,16 +418,16 @@ namespace MixERP.Net.Schemas.Core.Data
             bankAccount.audit_user_id = this._UserId;
             bankAccount.audit_ts = System.DateTime.UtcNow;
 
-            object primaryKeyValue = bankAccount.account_id;
+            object candidateKeyValue = bankAccount.bank_account_id;
 
-            if (Cast.To<long>(primaryKeyValue) > 0)
+            if (Cast.To<long>(candidateKeyValue) > 0)
             {
-                primaryKeyValue = bankAccount.account_id;
-                this.Update(bankAccount, long.Parse(bankAccount.account_id));
+                candidateKeyValue = bankAccount.bank_account_id;
+                this.Update(bankAccount, long.Parse(bankAccount.bank_account_id));
             }
             else
             {
-                primaryKeyValue = this.Add(bankAccount);
+                candidateKeyValue = this.Add(bankAccount);
             }
 
             string sql = "DELETE FROM core.custom_fields WHERE custom_field_setup_id IN(" +
@@ -440,7 +440,7 @@ namespace MixERP.Net.Schemas.Core.Data
 
             if (customFields == null)
             {
-                return primaryKeyValue;
+                return candidateKeyValue;
             }
 
             foreach (var field in customFields)
@@ -449,10 +449,10 @@ namespace MixERP.Net.Schemas.Core.Data
                       "SELECT core.get_custom_field_setup_id_by_table_name('core.bank_accounts', @0::character varying(100)), " +
                       "@1, @2;";
 
-                Factory.NonQuery(this._Catalog, sql, field.FieldName, primaryKeyValue, field.Value);
+                Factory.NonQuery(this._Catalog, sql, field.FieldName, candidateKeyValue, field.Value);
             }
 
-            return primaryKeyValue;
+            return candidateKeyValue;
         }
 
         /// <summary>
@@ -480,7 +480,7 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
             }
 
-            return Factory.Insert(this._Catalog, bankAccount, "core.bank_accounts", "account_id");
+            return Factory.Insert(this._Catalog, bankAccount, "core.bank_accounts", "bank_account_id");
         }
 
         /// <summary>
@@ -563,9 +563,9 @@ namespace MixERP.Net.Schemas.Core.Data
         /// Updates the row of the table "core.bank_accounts" with an instance of "BankAccount" class against the primary key value.
         /// </summary>
         /// <param name="bankAccount">The instance of "BankAccount" class to update.</param>
-        /// <param name="accountId">The value of the column "account_id" which will be updated.</param>
+        /// <param name="bankAccountId">The value of the column "account_id" which will be updated.</param>
         /// <exception cref="UnauthorizedException">Thown when the application user does not have sufficient privilege to perform this action.</exception>
-        public void Update(dynamic bankAccount, long accountId)
+        public void Update(dynamic bankAccount, long bankAccountId)
         {
             if (string.IsNullOrWhiteSpace(this._Catalog))
             {
@@ -580,12 +580,12 @@ namespace MixERP.Net.Schemas.Core.Data
                 }
                 if (!this.HasAccess)
                 {
-                    Log.Information("Access to edit entity \"BankAccount\" with Primary Key {PrimaryKey} was denied to the user with Login ID {LoginId}. {BankAccount}", accountId, this._LoginId, bankAccount);
+                    Log.Information("Access to edit entity \"BankAccount\" with Primary Key {PrimaryKey} was denied to the user with Login ID {LoginId}. {BankAccount}", bankAccountId, this._LoginId, bankAccount);
                     throw new UnauthorizedException("Access is denied.");
                 }
             }
 
-            Factory.Update(this._Catalog, bankAccount, accountId, "core.bank_accounts", "account_id");
+            Factory.Update(this._Catalog, bankAccount, bankAccountId, "core.bank_accounts", "bank_account_id");
         }
 
         /// <summary>
