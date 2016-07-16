@@ -14,7 +14,7 @@
             <label for="ValueDateTextBox">
                 <asp:Literal ID="ValueDateLiteral" runat="server" />
             </label>
-            <mixerp:DateTextBox ID="ValueDateTextBox" runat="server" Mode="Today" CssClass="date" />
+            <mixerp:DateTextBox ID="ValueDateTextBox" runat="server" CssClass="date" />
         </div>
         <div class="field">
             <label for="BookDateTextBox">

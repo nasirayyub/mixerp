@@ -4,6 +4,7 @@ using MixERP.Net.FrontEnd.Base;
 using MixERP.Net.i18n.Resources;
 using MixERP.Net.WebControls.AttachmentFactory;
 using System;
+using MixERP.Net.Entities;
 using MixERP.Net.Framework.Contracts;
 
 namespace MixERP.Net.Core.Modules.Finance.Entry
@@ -31,8 +32,14 @@ namespace MixERP.Net.Core.Modules.Finance.Entry
             this.CreditTotalLiteral.Text = Titles.CreditTotal;
             this.PostTransactionLiteral.Text = Titles.PostTransaction;
             this.AddInputButton.Value = Titles.Add;
+
             this.ValueDateTextBox.OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
+            this.ValueDateTextBox.Catalog = AppUsers.GetCurrentUserDB();
+            this.ValueDateTextBox.Mode = FrequencyType.Today;
+
             this.BookDateTextBox.OfficeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
+            this.BookDateTextBox.Catalog = AppUsers.GetCurrentUserDB();
+            this.BookDateTextBox.Mode = FrequencyType.Today;
 
             using (Attachment attachment = new Attachment(AppUsers.GetCurrentUserDB()))
             {

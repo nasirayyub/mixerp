@@ -181,3 +181,8 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
+
+
+ALTER TABLE transactions.transaction_master
+ALTER COLUMN book_date
+DROP DEFAULT;
