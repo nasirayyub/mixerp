@@ -11,6 +11,7 @@
     scrudFactory.formTableName = "core.bank_accounts";
 
     scrudFactory.excludedColumns = ["AuditUserId", "AuditTs"];
+    scrudFactory.hiddenColumns = ["BankAccountId"];
 
     scrudFactory.allowDelete = true;
     scrudFactory.allowEdit = true;
@@ -23,7 +24,8 @@
                 ["BankName", "BankBranch", "", ""],
                 ["OfficeId", "MaintainedByUserId", "", ""],
                 ["BankAccountNumber", "BankContactNumber", "", ""],
-                ["BankAddress", ""]
+                ["BankAddress", ""],
+                ["BankAccountType", "RelationshipOfficerName","",""]
             ]
         }
     ];

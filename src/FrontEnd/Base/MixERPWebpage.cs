@@ -96,6 +96,7 @@ namespace MixERP.Net.FrontEnd.Base
             string encryptedCookie = FormsAuthentication.Encrypt(ticket);
 
             HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedCookie);
+
             cookie.Domain = FormsAuthentication.CookieDomain;
             cookie.Path = ticket.CookiePath;
 

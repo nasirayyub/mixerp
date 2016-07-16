@@ -16,10 +16,7 @@ namespace MixERP.Net.Core.Modules.BackOffice.Policy
 {
     public partial class MenuAccess : MixERPUserControl
     {
-        public override AccessLevel AccessLevel
-        {
-            get { return AccessLevel.LocalhostAdmin; }
-        }
+        public override AccessLevel AccessLevel => AccessLevel.LocalhostAdmin;
 
         public override void OnControlLoad(object sender, EventArgs e)
         {

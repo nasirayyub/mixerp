@@ -76,6 +76,7 @@ namespace MixERP.Net.Api.Core
                 PrimaryKey = "account_id",
                 Columns = new List<EntityColumn>()
                                 {
+                                        new EntityColumn { ColumnName = "bank_account_id",  PropertyName = "BankAccountId",  DataType = "int",  DbDataType = "int",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = true,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "account_id",  PropertyName = "AccountId",  DataType = "long",  DbDataType = "int8",  IsNullable = false,  IsPrimaryKey = true,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "maintained_by_user_id",  PropertyName = "MaintainedByUserId",  DataType = "int",  DbDataType = "int4",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
                                         new EntityColumn { ColumnName = "office_id",  PropertyName = "OfficeId",  DataType = "int",  DbDataType = "int4",  IsNullable = false,  IsPrimaryKey = false,  IsSerial = false,  Value = "",  MaxLength = 0 },
