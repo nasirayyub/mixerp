@@ -1,3 +1,16 @@
+# Update October 19, 2016
+We do have some great news related to the new version of MixERP which is undergoing rapid development. On top of that, we've decided to open source the POS solution as well. MixERP v2 is the coolest kid in the town which has a lot of exciting new features along with CMS and POS.
+
+MixERP will natively support SQL Server from v2.0 Beta 1 onward.
+
+### How to Access MixERP v2 Demo?
+
+MixERP v2 demo site is now a part of the build process. We've written build scripts so that the v2 version of demo site is updated as soon as there is new code change in one of our git repositories.
+
+This page contains information on how you can access the new demo
+
+https://mixerp.org/site/erp/demo
+
 # Roadmap for the Next Version (v2.0)
 
 Due to popular demand, MixERP 2.0 will also support SQL Server and SQL Azure and will be developed keeping
