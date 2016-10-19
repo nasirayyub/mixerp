@@ -80,15 +80,8 @@
     var selectedIndex;
 
     $(document).on("viewready", function () {
-        var reasonTextArea = $("#ReasonTextArea");
-
-        var scrudView = $("#ScrudView");
-        var modal = $("#ActionModal");
-        var verifyButton = $("#VerifyButton");
-
-
         function getSelectedItem() {
-            var selectedControl = scrudView.find("input:checked").first();
+            var selectedControl = $("#ScrudView").find("input:checked").first();
             selectedIndex = parseInt(selectedControl.parent().parent().parent().index());
 
             if (selectedControl.length) {
@@ -99,8 +92,8 @@
         };
 
         function showModal() {
-            var header = modal.find(".ui.massive.header");
-            var subheader = modal.find(".ui.dividing.header");
+            var header = $("#ActionModal").find(".ui.massive.header");
+            var subheader = $("#ActionModal").find(".ui.dividing.header");
 
             header.html(Resources.Titles.RejectThisTransaction());
             subheader.html(String.format(Resources.Titles.TranIdParameter(), tranId));
@@ -111,7 +104,7 @@
                 header.removeClass("red").addClass("green");
             };
 
-            modal.modal('setting', 'closable', false).modal('show');
+            $("#ActionModal").modal('setting', 'closable', false).modal('show');
         };
 
         $("#VerificationApproveButton").click(function () {
@@ -133,7 +126,7 @@
         });
 
         function loadCheckList(tranId, callBack) {
-            var book = scrudView.find("tr").eq(selectedIndex + 1).find("td:nth-child(5)").html();
+            var book = $("#ScrudView").find("tr").eq(selectedIndex + 1).find("td:nth-child(5)").html();
             var path;
 
             switch (book) {
@@ -204,7 +197,7 @@
         };
 
         function removeRow(index, callback) {
-            scrudView.find("tr").eq(index + 1).addClass("negative").fadeOut(500, function () {
+            $("#ScrudView").find("tr").eq(index + 1).addClass("negative").fadeOut(500, function () {
                 $(this).remove();
 
                 if (typeof (callback) === "function") {
@@ -214,11 +207,11 @@
         };
 
         function hideModal() {
-            modal.modal("hide");
+            $("#ActionModal").modal("hide");
         };
 
-        verifyButton.click(function () {
-            var reason = reasonTextArea.val();
+        $("#VerifyButton").click(function () {
+            var reason = $("#ReasonTextArea").val();
             var ajaxAction;
 
             if (approve) {
@@ -231,7 +224,7 @@
                 var cascadingTranId = parseFloat(msg.d);
                 if (cascadingTranId) {
 
-                    scrudView.find("tr td:nth-child(3)").each(function (i) {
+                    $("#ScrudView").find("tr td:nth-child(3)").each(function (i) {
                         var tranId = parseFloat($(this).text() || 0);
 
                         if (cascadingTranId === tranId) {
@@ -257,7 +250,7 @@
                 var rowNumber = e.keyCode - 47;
 
                 if (rowNumber < 10) {
-                    scrudView.find("tr").eq(rowNumber).find("input").trigger('click');
+                    $("#ScrudView").find("tr").eq(rowNumber).find("input").trigger('click');
                 };
             };
         });
@@ -267,8 +260,8 @@
         });
 
         shortcut.add("CTRL+RETURN", function () {
-            if (modal.is(":visible")) {
-                verifyButton.trigger("click");
+            if ($("#ActionModal").is(":visible")) {
+                $("#VerifyButton").trigger("click");
             };
         });
 
