@@ -55,9 +55,14 @@ Enough about Frapid now, go and look for yourself.
 
 ## v2.0 Repositories
 
+- [Frapid Core](https://github.com/frapid/frapid/)
 - [HRM Module](https://github.com/mixerp/hrm/)
 - [Finance Module](https://github.com/mixerp/finance) 
+- [Inventory Module](https://github.com/mixerp/inventory)
+- [Purchase Module](https://github.com/mixerp/purchases)
+- [Sales Module](https://github.com/mixerp/sales)
 
+Please note that the sales module has POS features.
 
 # So, What Is MixERP?
 
