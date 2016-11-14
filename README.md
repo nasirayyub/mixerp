@@ -1,3 +1,9 @@
+# Update November 15, 2016
+
+## Release Date
+
+We are pleased to annouce the first beta release of Frapid CMS and MixERP v2 on early January 2017. Please check the v2.0 repositories below.
+
 # Update October 19, 2016
 We do have some great news related to the new version of MixERP which is undergoing rapid development. On top of that, we've decided to open source the POS solution as well. MixERP v2 is the coolest kid in the town which has a lot of exciting new features along with CMS and POS.
 
