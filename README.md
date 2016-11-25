@@ -1,3 +1,9 @@
+# Update Novemver 26, 2016
+
+Please follow this repository to setup a development instance of MixERP v2.0 in your computer.
+
+https://github.com/mixerp/init
+
 # Update November 15, 2016
 
 ## Release Date
