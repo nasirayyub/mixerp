@@ -1,3 +1,11 @@
+# Update December 15, 2016
+
+We have been porting MixERP v2 database to SQL Server for quite some time. Please wait for a week or two, while we quality test the script and update the SQL Server CI instance:
+
+http://ci2.frapid.com/
+
+All of the v2 repositories now support SQL Server.
+
 # Update Novemver 26, 2016
 
 Please follow this repository to setup a development instance of MixERP v2.0 in your computer.
