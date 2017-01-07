@@ -188,6 +188,25 @@ ALTER TABLE transactions.transaction_master
 ALTER COLUMN book_date
 DROP DEFAULT;
 
+DO
+$$
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM   pg_attribute 
+        WHERE  attrelid = 'core.bank_accounts'::regclass
+        AND    attname = 'bank_account_id'
+        AND    NOT attisdropped
+    ) THEN
+        ALTER TABLE core.bank_accounts
+        ADD COLUMN bank_account_id SERIAL;
+    END IF;
+END
+$$
+LANGUAGE plpgsql;
+
+
 -->-->-- C:/Users/nirvan/Desktop/mixerp/0. GitHub/src/FrontEnd/db/1.x/1.6/src/02.functions-and-logic/functions/logic/core/core.create_item_variant.sql --<--<--
 DROP FUNCTION IF EXISTS core.create_item_variant
 (

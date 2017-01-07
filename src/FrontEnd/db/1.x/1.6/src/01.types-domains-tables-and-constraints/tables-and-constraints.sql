@@ -186,3 +186,21 @@ LANGUAGE plpgsql;
 ALTER TABLE transactions.transaction_master
 ALTER COLUMN book_date
 DROP DEFAULT;
+
+DO
+$$
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM   pg_attribute 
+        WHERE  attrelid = 'core.bank_accounts'::regclass
+        AND    attname = 'bank_account_id'
+        AND    NOT attisdropped
+    ) THEN
+        ALTER TABLE core.bank_accounts
+        ADD COLUMN bank_account_id SERIAL;
+    END IF;
+END
+$$
+LANGUAGE plpgsql;

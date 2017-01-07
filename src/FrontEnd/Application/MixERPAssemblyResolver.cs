@@ -26,6 +26,9 @@ namespace MixERP.Net.FrontEnd.Application
                 baseAssemblies.Add(item);
             }
 
+            var names = string.Join(Environment.NewLine, baseAssemblies.Select(x => x.GetName().Name));
+            Log.Information("Registered the following assemblies. {names}", names);
+
             return assemblies;
         }
     }
@@ -39,7 +42,7 @@ namespace MixERP.Net.FrontEnd.Application
 
             try
             {
-                Type type = typeof (ApiController);
+                Type type = typeof(ApiController);
 
                 IEnumerable<Assembly> items = AppDomain.CurrentDomain.GetAssemblies()
                     .SelectMany(s => s.GetTypes())
@@ -49,9 +52,14 @@ namespace MixERP.Net.FrontEnd.Application
                 {
                     baseAssemblies.Add(item);
                 }
+
+                var names = string.Join(Environment.NewLine, baseAssemblies.Select(x => x.GetName().Name));
+                Log.Information("Registered the following assemblies. {names}", names);
             }
             catch (ReflectionTypeLoadException ex)
             {
+                Log.Information("An error occured while registering assemblies. {ex}", ex);
+
                 foreach (Exception exception in ex.LoaderExceptions)
                 {
                     Log.Error("Could not load assemblies containing MixERP Web API. Exception: {Exception}", exception);

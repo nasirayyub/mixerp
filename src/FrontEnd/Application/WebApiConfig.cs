@@ -20,10 +20,12 @@ namespace MixERP.Net.FrontEnd.Application
 
             if (assemblyResolverType == "Classic")
             {
+                Log.Information("Registering Classic Web API Resolver.");
                 config.Services.Replace(typeof (IAssembliesResolver), new ClassicAssemblyResolver());
             }
             else
             {
+                Log.Information("Registering Default Web API Resolver.");
                 config.Services.Replace(typeof (IAssembliesResolver), new MixERPAssemblyResolver());
             }
 
