@@ -80,7 +80,7 @@
         if (window.editData) {
             if (scrudFactory.disabledOnEdit) {
                 if (scrudFactory.disabledOnEdit.indexOf(v.PropertyName) !== -1) {
-                    return false;
+                    return true;
                 };
             };
         };

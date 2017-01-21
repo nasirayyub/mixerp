@@ -98,7 +98,7 @@ namespace MixERP.Net.FrontEnd.Site.Account
             this.changePasswordButton = new Button();
             this.changePasswordButton.Text = Titles.ChangePassword;
             this.changePasswordButton.CssClass = "ui pink button";
-            this.changePasswordButton.OnClientClick = "return $('.form').form('validate form');";
+            this.changePasswordButton.OnClientClick = "return validateChangePassword();";
             this.changePasswordButton.Click += this.ChangePasswordButton_Click;
             container.Controls.Add(this.changePasswordButton);
 
@@ -116,9 +116,7 @@ namespace MixERP.Net.FrontEnd.Site.Account
         {
             using (HtmlGenericControl field = HtmlControlHelper.GetField())
             {
-                using (
-                    HtmlGenericControl label = HtmlControlHelper.GetLabel(Titles.ConfirmPassword,
-                        "ConfirmPasswordInputPassword"))
+                using (HtmlGenericControl label = HtmlControlHelper.GetLabel(Titles.ConfirmPassword, "ConfirmPasswordInputPassword"))
                 {
                     field.Controls.Add(label);
                 }

@@ -1,9 +1,8 @@
-﻿using MixERP.Net.Common;
+﻿using System;
+using System.Web.UI.WebControls;
+using MixERP.Net.Common;
 using MixERP.Net.Common.Helpers;
 using MixERP.Net.i18n;
-using System;
-using System.Threading;
-using System.Web.UI.WebControls;
 
 namespace MixERP.Net.WebControls.ReportEngine
 {
@@ -11,9 +10,8 @@ namespace MixERP.Net.WebControls.ReportEngine
     {
         private void GridView_DataBound(object sender, EventArgs e)
         {
-            GridView grid = (GridView) sender;
-
-            int arg = Conversion.TryCastInteger(grid.ID.Replace("GridView", ""));
+            var grid = (GridView) sender;
+            var arg = Conversion.TryCastInteger(grid.ID.Replace("GridView", ""));
 
             if (string.IsNullOrWhiteSpace(this.runningTotalFieldIndicesCollection[arg]))
             {
@@ -27,19 +25,20 @@ namespace MixERP.Net.WebControls.ReportEngine
 
             grid.FooterRow.Visible = true;
 
-            for (int i = 0; i < this.runningTotalTextColumnIndexCollection[arg]; i++)
+            for (var i = 0; i < this.runningTotalTextColumnIndexCollection[arg]; i++)
             {
                 grid.FooterRow.Cells[i].Visible = false;
             }
 
-            grid.FooterRow.Cells[this.runningTotalTextColumnIndexCollection[arg]].ColumnSpan = this.runningTotalTextColumnIndexCollection[arg] + 1;
+            grid.FooterRow.Cells[this.runningTotalTextColumnIndexCollection[arg]].ColumnSpan =
+                this.runningTotalTextColumnIndexCollection[arg] + 1;
             grid.FooterRow.Cells[this.runningTotalTextColumnIndexCollection[arg]].Text = this.RunningTotalText;
             grid.FooterRow.Cells[this.runningTotalTextColumnIndexCollection[arg]].Style.Add("text-align", "right");
             grid.FooterRow.Cells[this.runningTotalTextColumnIndexCollection[arg]].Font.Bold = true;
 
-            foreach (string field in this.runningTotalFieldIndicesCollection[arg].Split(','))
+            foreach (var field in this.runningTotalFieldIndicesCollection[arg].Split(','))
             {
-                int index = Conversion.TryCastInteger(field.Trim());
+                var index = Conversion.TryCastInteger(field.Trim());
 
                 decimal total = 0;
 
@@ -55,7 +54,8 @@ namespace MixERP.Net.WebControls.ReportEngine
 
 
                     var culture = CultureManager.GetCurrent();
-                    grid.FooterRow.Cells[index].Text = total.ToString("C", culture).Replace(culture.NumberFormat.CurrencySymbol, "");
+                    grid.FooterRow.Cells[index].Text =
+                        total.ToString("C", culture).Replace(culture.NumberFormat.CurrencySymbol, "");
                     grid.FooterRow.Cells[index].CssClass = "text right";
                     grid.FooterRow.Cells[index].Font.Bold = true;
                 }
@@ -66,13 +66,13 @@ namespace MixERP.Net.WebControls.ReportEngine
         {
             if (e.Row.RowType == DataControlRowType.Header)
             {
-                for (int i = 0; i < e.Row.Cells.Count; i++)
+                for (var i = 0; i < e.Row.Cells.Count; i++)
                 {
-                    string cellText = e.Row.Cells[i].Text;
+                    var cellText = e.Row.Cells[i].Text;
 
-                    string className = ConfigurationHelper.GetReportParameter("ResourceClassName");
+                    var className = ConfigurationHelper.GetReportParameter("ResourceClassName");
 
-                    string localized = ResourceManager.GetString(className, cellText);
+                    var localized = ResourceManager.GetString(className, cellText);
 
                     cellText = localized;
                     e.Row.Cells[i].Text = cellText;
@@ -81,8 +81,8 @@ namespace MixERP.Net.WebControls.ReportEngine
 
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                GridView grid = (GridView) sender;
-                int arg = Conversion.TryCastInteger(grid.ID.Replace("GridView", ""));
+                var grid = (GridView) sender;
+                var arg = Conversion.TryCastInteger(grid.ID.Replace("GridView", ""));
 
 
                 //Apply formatting on decimal fields
@@ -91,11 +91,11 @@ namespace MixERP.Net.WebControls.ReportEngine
                     return;
                 }
 
-                string decimalFields = this.decimalFieldIndicesCollection[arg];
-                foreach (string fieldIndex in decimalFields.Split(','))
+                var decimalFields = this.decimalFieldIndicesCollection[arg];
+                foreach (var fieldIndex in decimalFields.Split(','))
                 {
-                    int index = Conversion.TryCastInteger(fieldIndex);
-                    decimal value = Conversion.TryCastDecimal(e.Row.Cells[index].Text);
+                    var index = Conversion.TryCastInteger(fieldIndex);
+                    var value = Conversion.TryCastDecimal(e.Row.Cells[index].Text);
                     e.Row.Cells[index].Text = string.Format(CultureManager.GetCurrent(), "{0:N}", value);
                     e.Row.Cells[index].CssClass = "text right";
                 }

@@ -12,6 +12,7 @@ using MixERP.Net.ApplicationState.Cache;
 using MixERP.Net.Common;
 using MixERP.Net.Common.Helpers;
 using MixERP.Net.Framework;
+using MixERP.Net.Framework.Extensions;
 using MixERP.Net.i18n;
 
 namespace MixERP.Net.WebControls.ReportEngine.Helpers
@@ -46,7 +47,19 @@ namespace MixERP.Net.WebControls.ReportEngine.Helpers
                         {
                             if (table[index].Columns.Contains(column))
                             {
-                                string value = table[index].Rows[0][column].ToString();
+                                object columnValue = table[index].Rows[0][column];
+
+                                string value;
+
+                                if (columnValue is decimal)
+                                {
+                                    value = columnValue.To<decimal>().ToString("N2");
+                                }
+                                else
+                                {
+                                    value = Regex.Replace(columnValue.ToString(), @"\r\n?|\n", "<br />", RegexOptions.Compiled);
+                                }
+
                                 expression = expression.Replace(word, value);
                             }
                         }
@@ -168,7 +181,7 @@ namespace MixERP.Net.WebControls.ReportEngine.Helpers
                         {
                             expression = expression.Replace(word,
                                 GetSum(dataTableCollection[dataSourceIndex], index)
-                                    .ToString(CultureInfo.InvariantCulture));
+                                    .ToString("N2"));
                         }
                     }
                 }

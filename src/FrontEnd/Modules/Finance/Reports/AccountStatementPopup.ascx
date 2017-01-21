@@ -1,6 +1,8 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AccountStatement.ascx.cs"
     Inherits="MixERP.Net.Core.Modules.Finance.Reports.AccountStatement"
-    MasterPageId="MixERPBlankMaster.Master" %>
+    MasterPageId="MixERPBlankMaster.Master"
+    OverridePath="/Modules/Finance/Reports/AccountStatement.mix"
+     %>
 
 <style type="text/css">
     #AccountOverViewGrid td:nth-child(1),

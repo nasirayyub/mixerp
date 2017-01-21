@@ -17,6 +17,8 @@ namespace MixERP.Net.Core.Modules.Sales.Reports
             {
                 report.AddParameterToCollection(list);
                 report.AddParameterToCollection(list);
+                report.AddParameterToCollection(list);
+                report.AddParameterToCollection(list);
                 report.AutoInitialize = true;
                 report.Path = "~/Modules/Sales/Reports/Source/Sales.Quotation.xml";
 

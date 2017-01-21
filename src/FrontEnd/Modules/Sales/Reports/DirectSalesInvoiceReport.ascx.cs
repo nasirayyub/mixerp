@@ -12,10 +12,11 @@ namespace MixERP.Net.Core.Modules.Sales.Reports
         {
             Collection<KeyValuePair<string, object>> list = new Collection<KeyValuePair<string, object>>();
             list.Add(new KeyValuePair<string, object>("@transaction_master_id", this.Page.Request["TranId"]));
-            list.Add(new KeyValuePair<string, object>("@transaction_master_id", this.Page.Request["TranId"]));
 
             using (WebReport report = new WebReport())
             {
+                report.AddParameterToCollection(list);
+                report.AddParameterToCollection(list);
                 report.AddParameterToCollection(list);
                 report.AddParameterToCollection(list);
                 report.AutoInitialize = true;

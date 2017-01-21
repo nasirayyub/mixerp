@@ -2,8 +2,7 @@
     var localized = executeFunctionByName("Resources.Titles." + text, window);
 
     if (!localized) {
-        var underscoreCase = toUnderscoreCase(text);
-        localized = executeFunctionByName("Resources.ScrudResource." + underscoreCase, window);
+        localized = executeFunctionByName("Resources.ScrudResource." + text, window);
     };
 
     if (localized) {
