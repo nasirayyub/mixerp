@@ -1252,9 +1252,23 @@ function getMergeModel() {
     updateval("#ShippingAddressSelect", mergeModel[0].ShippingAddresssCode);
     updateval("#StatementReferenceTextArea", mergeModel[0].StatementReference);
 
+    var disableEdit = mergeModel[0].DisableEdit;
+
     $.each(mergeModel, function (i, v) {
         addRowToTable(v.ItemCode, v.ItemName, v.Quantity, v.UnitName, v.Price, v.Discount, v.ShippingCharge, v.TaxCode, v.Tax);
     });
+
+    setTimeout(function(){
+        if(disableEdit){
+            var editIcon = $("#ProductGridView .ui.edit.icon");
+            var deleteIcon = $("#ProductGridView .ui.delete.icon");
+
+            editIcon.parent().remove();
+            deleteIcon.parent().remove();
+
+            addButton.closest("tr").remove();
+        };
+    }, 100);
 
     tranIdCollectionHiddenField.val(window.localStorage.getItem('TranIds'));
     localStorage.removeItem('MergeModel');

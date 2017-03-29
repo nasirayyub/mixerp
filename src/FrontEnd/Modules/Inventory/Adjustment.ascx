@@ -2,7 +2,6 @@
 
 <asp:PlaceHolder runat="server" ID="Placeholder1"></asp:PlaceHolder>
 <script type="text/javascript">
-    var showButotn = $("#ShowButton");
     var storeHidden = $("#StoreHidden");
     var storeSelect = $("#StoreSelect");
     var semanticGrid = $("#grid");

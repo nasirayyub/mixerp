@@ -50,6 +50,12 @@
             text: Resources.Titles.MergeBatchToSalesDelivery(),
             href : "",
             onclick : "onMergeToSalesDelivery();"
+        },
+        {
+            id: "SupplyPlannerButton",
+            text: "Supply Planner",
+            href: "",
+            onclick: "onSupplyPlanner();"
         }
     ];
 
@@ -85,6 +91,16 @@
 
             window.location.href = "/Modules/Sales/Entry/Delivery.mix";
         });
+    };
+
+    function onSupplyPlanner() {
+        const ids = getSelectedCheckBoxItemIds(2, 3, $("#ScrudView"));
+
+        if (!ids.length) {
+            return;
+        };
+
+        window.location.href = "/Modules/Sales/SupplyPlanner.mix?OrderId=" + ids[0];
     };
 </script>
 

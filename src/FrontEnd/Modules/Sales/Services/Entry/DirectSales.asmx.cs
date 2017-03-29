@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Web.Script.Services;
 using System.Web.Services;
 using MixERP.Net.ApplicationState.Cache;
+using MixERP.Net.Common;
 using MixERP.Net.Common.Extensions;
 using MixERP.Net.Core.Modules.Sales.Data.Helpers;
 using MixERP.Net.Entities.Core;
@@ -59,10 +60,19 @@ namespace MixERP.Net.Core.Modules.Sales.Services.Entry
                 int userId = AppUsers.GetCurrent().View.UserId.ToInt();
                 long loginId = AppUsers.GetCurrent().View.LoginId.ToLong();
 
+                var tranIds = new Collection<long>();
+                if (!string.IsNullOrWhiteSpace(transactionIds))
+                {
+                    foreach (string transactionId in transactionIds.Split(','))
+                    {
+                        tranIds.Add(Conversion.TryCastLong(transactionId));
+                    }
+                }
+
                 return Data.Transactions.DirectSales.Add(AppUsers.GetCurrentUserDB(), officeId, userId, loginId,
                     valueDate, storeId, isCredit, paymentTermId, partyCode, salespersonId, priceTypeId, details,
                     shipperId, shippingAddressCode, shippingCharge, costCenterId, referenceNumber, statementReference,
-                    attachments, nonTaxable);
+                    attachments, nonTaxable, tranIds);
             }
             catch (Exception ex)
             {

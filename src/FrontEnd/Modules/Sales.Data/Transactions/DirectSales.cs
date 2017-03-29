@@ -11,7 +11,7 @@ namespace MixERP.Net.Core.Modules.Sales.Data.Transactions
             bool isCredit, int paymentTermId, string partyCode, int agentId, int priceTypeId,
             Collection<StockDetail> details, int shipperId, string shippingAddressCode, decimal shippingCharge,
             int costCenterId, string referenceNumber, string statementReference, Collection<Attachment> attachments,
-            bool nonTaxable)
+            bool nonTaxable, Collection<long> tranIds)
         {
             StockMaster stockMaster = new StockMaster();
 
@@ -26,7 +26,7 @@ namespace MixERP.Net.Core.Modules.Sales.Data.Transactions
             stockMaster.StoreId = storeId;
 
             long transactionMasterId = GlTransaction.Add(catalog, "Sales.Direct", valueDate, officeId, userId, loginId,
-                costCenterId, referenceNumber, statementReference, stockMaster, details, attachments, nonTaxable, null);
+                costCenterId, referenceNumber, statementReference, stockMaster, details, attachments, nonTaxable, tranIds);
 
             return transactionMasterId;
         }
