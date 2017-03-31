@@ -89,6 +89,13 @@
 
                     const available = parseInt(row.find("td:nth-child(5)").attr("data-available-quantity"));
 
+                    if (adjusted === 0) {
+                        row.remove();
+                        return;
+                    } else if (adjusted < 0) {
+                        return;
+                    };
+
                     if (adjusted <= available) {
                         row.removeClass("error");
                     } else {

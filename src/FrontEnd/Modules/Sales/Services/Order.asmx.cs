@@ -22,10 +22,32 @@ namespace MixERP.Net.Core.Modules.Sales.Services
         }
 
         [WebMethod]
+        public string GetOrderSummaryView(string partyCode)
+        {
+            int officeId = AppUsers.GetCurrent().View.OfficeId ?? 0;
+
+            var model = Data.Transactions.Order.GetOrderSummaryView(AppUsers.GetCurrentUserDB(), partyCode, officeId);
+            var result = JsonConvert.SerializeObject(model);
+
+            return result;
+        }
+
+        [WebMethod]
+        public string GetOrderSummaryInfo(long salesOrderId, long salesId)
+        {
+            var model = Data.Transactions.Order.GetOrderSummaryInfo(AppUsers.GetCurrentUserDB(), salesOrderId, salesId);
+            var result = JsonConvert.SerializeObject(model);
+
+            return result;
+        }
+
+        [WebMethod]
         public string ListStock(int storeId, int[] itemIds)
         {
             if (itemIds.Length == 0)
+            {
                 return string.Empty;
+            }
 
             var model = Data.Transactions.Order.ListClosingStock(AppUsers.GetCurrentUserDB(), storeId, itemIds);
             var result = JsonConvert.SerializeObject(model);

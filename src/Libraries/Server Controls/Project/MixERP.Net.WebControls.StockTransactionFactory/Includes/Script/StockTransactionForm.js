@@ -1263,10 +1263,10 @@ function getMergeModel() {
             var editIcon = $("#ProductGridView .ui.edit.icon");
             var deleteIcon = $("#ProductGridView .ui.delete.icon");
 
-            editIcon.parent().remove();
-            deleteIcon.parent().remove();
+            editIcon.parent().hide();
+            deleteIcon.parent().hide();
 
-            addButton.closest("tr").remove();
+            addButton.closest("tr").hide();
         };
     }, 100);
 

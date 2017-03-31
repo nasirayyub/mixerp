@@ -14,6 +14,7 @@ using MixERP.Net.Entities.Core;
 using MixERP.Net.Entities.Transactions.Models;
 using MixERP.Net.i18n.Resources;
 using MixERP.Net.Messaging.Email;
+using Newtonsoft.Json;
 using Serilog;
 using CollectionHelper = MixERP.Net.WebControls.StockTransactionFactory.Helpers.CollectionHelper;
 
@@ -25,6 +26,20 @@ namespace MixERP.Net.Core.Modules.Sales.Services.Entry
     [ScriptService]
     public class Order : WebService
     {
+        [WebMethod]
+        public string GetUndeliveredProducts(string partyCode, int storeId)
+        {
+            if (string.IsNullOrWhiteSpace(partyCode))
+            {
+                return string.Empty;
+            }
+
+            int officeId = AppUsers.GetCurrent().View.OfficeId.ToInt();
+            var model = Data.Transactions.Order.GetUndeliveredProducts(AppUsers.GetCurrentUserDB(), officeId, partyCode, storeId);
+            var response = JsonConvert.SerializeObject(model);
+            return response;
+        }
+
         [WebMethod]
         public long Save(DateTime valueDate, int storeId, string partyCode, int priceTypeId, string referenceNumber,
             string data, string statementReference, string transactionIds, string attachmentsJSON, bool nonTaxable,

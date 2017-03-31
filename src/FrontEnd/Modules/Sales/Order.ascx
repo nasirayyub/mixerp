@@ -53,9 +53,15 @@
         },
         {
             id: "SupplyPlannerButton",
-            text: "Supply Planner",
+            text: "Planning",
             href: "",
             onclick: "onSupplyPlanner();"
+        },
+        {
+            id: "OrderSummaryButton",
+            text: "Summary",
+            href: "/Modules/Sales/OrderSummary.mix",
+            onclick: ""
         }
     ];
 
@@ -75,6 +81,7 @@
         var ids = getSelectedCheckBoxItemIds(2, 3, $("#ScrudView"));
 
         if (!ids.length) {
+            window.displayMessage("Please select an item.");
             return;
         };
 
@@ -97,6 +104,7 @@
         const ids = getSelectedCheckBoxItemIds(2, 3, $("#ScrudView"));
 
         if (!ids.length) {
+            window.displayMessage("Please select an item.");
             return;
         };
 

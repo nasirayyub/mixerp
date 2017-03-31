@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -17,6 +18,24 @@ namespace MixERP.Net.Core.Modules.Sales.Data.Transactions
             var sql = new Sql("SELECT * FROM transactions.list_closing_stock(@0::integer)", storeId);
             sql.Where("item_id IN (@ItemIds)", new {ItemIds = itemIds});
             return Factory.Get<DbListClosingStockResult>(catalog, sql);
+        }
+
+        public static IEnumerable<dynamic> GetUndeliveredProducts(string catalog, int officeId, string partyCode, int storeId)
+        {
+            const string sql = "SELECT * FROM transactions.get_undelivered_products(@0, core.get_party_id_by_party_code(@1), @2);";
+            return Factory.Get<dynamic>(catalog, sql, officeId, partyCode, storeId);
+        }
+
+        public static IEnumerable<dynamic> GetOrderSummaryView(string catalog, string partyCode, int officeId)
+        {
+            const string sql = "SELECT * FROM transactions.get_order_summary(core.get_party_id_by_party_code(@0), @1::int)";
+            return Factory.Get<dynamic>(catalog, sql, partyCode, officeId);
+        }
+
+        public static IEnumerable<dynamic> GetOrderSummaryInfo(string catalog, long salesOrderId, long salesId)
+        {
+            const string sql = "SELECT * FROM transactions.get_order_summary_info(@0, @1)";
+            return Factory.Get<dynamic>(catalog, sql, salesOrderId, salesId);
         }
 
         public static IEnumerable<dynamic> GetSupplyPlannerView(string catalog, long orderId)
@@ -50,5 +69,6 @@ namespace MixERP.Net.Core.Modules.Sales.Data.Transactions
             const string sql = "SELECT * FROM transactions.sales_order_view WHERE tran_id = @0;";
             return Factory.Get<SalesOrderView>(catalog, sql, tranId).FirstOrDefault();
         }
+
     }
 }

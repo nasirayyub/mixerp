@@ -80,6 +80,7 @@
     <Content Include="Confirmation\Return.ascx" />
     <Content Include="Entry\Receipt.ascx" />
     <Content Include="Entry\Return.ascx" />
+    <Content Include="OrderSummary.ascx" />
     <Content Include="Package.xml" />
     <Content Include="Reports\CustomerInvoiceReport.ascx" />
     <Content Include="Confirmation\Delivery.ascx" />
@@ -218,6 +219,13 @@
     </Compile>
     <Compile Include="Entry\Return.ascx.designer.cs">
       <DependentUpon>Return.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OrderSummary.ascx.cs">
+      <DependentUpon>OrderSummary.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrderSummary.ascx.designer.cs">
+      <DependentUpon>OrderSummary.ascx</DependentUpon>
     </Compile>
     <Compile Include="Reports\CustomerInvoiceReport.ascx.cs">
       <DependentUpon>CustomerInvoiceReport.ascx</DependentUpon>
