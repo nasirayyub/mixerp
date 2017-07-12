@@ -1,3 +1,7 @@
+# Update July 12, 2017
+
+Thank you for supporting MixERP v1. If you cannot find latest activities in this repository, don't worry. We're working on Frapid framework and individual v2 repositories (listed below) instead. 
+
 # Update December 17, 2016
 
 As planned, a dedicated CI instance of MixERP v2.0 (on SQL Server) has been deployed:
