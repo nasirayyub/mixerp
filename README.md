@@ -1,3 +1,10 @@
+![MixERP Dashboard](https://raw.githubusercontent.com/mixerp/mixerp/master/screenshots/dashboard.png)
+
+# Update September 29, 2017
+
+- Follow the developer documentation in youtube. Please subscribe to our channel: [MixERP Youtube Channel](https://www.youtube.com/channel/UCS5Bt00s3_8-o0oI4CLDYDg).
+- [List of v2 feature screenshot](features.md).
+
 # Update July 12, 2017
 
 Thank you for supporting MixERP v1. If you cannot find latest activities in this repository, don't worry. We're working on Frapid framework and individual v2 repositories (listed below) instead. 
@@ -256,8 +263,6 @@ We have been receiving tons of queries on why PostgreSQL? We chose PostgreSQL Se
 * PostgreSQL is [ahead of commercial database](http://www.infoworld.com/article/2608863/nosql/postgresql-ramps-up-its-nosql-game.html) vendors in terms of development. Also see [this](https://wiki.postgresql.org/wiki/What%27s_new_in_PostgreSQL_9.0), [this](https://wiki.postgresql.org/wiki/What%27s_new_in_PostgreSQL_9.1), [this](https://wiki.postgresql.org/wiki/What%27s_new_in_PostgreSQL_9.2), [this](https://wiki.postgresql.org/wiki/What%27s_new_in_PostgreSQL_9.3), and [this](https://wiki.postgresql.org/wiki/What%27s_new_in_PostgreSQL_9.4). And [this](http://www.postgresql.org/docs/9.4/static/release-9-4-1.html) as well.
 * We have been SQL Server developers long before we even knew PostgreSQL Server existed. We love SQL Server, but PostgreSQL is a better fit for, and brings added advantage to MixERP.
 
-
-![MixERP Dashboard](http://mixerp.org/images/features/mixerp-dashboard.png)
 
 ##You Don't Have to Bang Your Head to Learn or Implement MixERP
 
