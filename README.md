@@ -7,17 +7,6 @@ To keep enchancing and improving MixERP, Frapid, and several other open source p
 |--- |--- |--- |
 |BTC|Bitcoin|1LJJDmFUvDw4yjf5jm5uwJQ4AgYbp5p8bj|
 |ETH|Ethereum|0xc3cad0b41adb78760a5d53e381fe4b7390e630fc|
-|ETC|Ethereum Classic|0xc3cad0b41adb78760a5d53e381fe4b7390e630fc|
-|LTC|Litecoin|Le5kpLJ3XJDRZjGXiZNzBnB3F3RwwtHhzT|
-|USDT|US Dollar Tether|1NcntiVJDCk1bLXDhkuaJtJ1MqTPU1hUvT|
-|ZEC|ZCash|t1b7Qm6EByoDVFe3Abx2Qq7MPeey6aQZ5JU|
-|DASH|Dash|XkWsQcSL5sPxkQxhNtoBTJ3ke4v6XameVh|
-|ICX|Icon|0xc3cad0b41adb78760a5d53e381fe4b7390e630fc|
-|EOS|EOS|0xc3cad0b41adb78760a5d53e381fe4b7390e630fc|
-|OMG|OmniseGo|0xc3cad0b41adb78760a5d53e381fe4b7390e630fc|
-|EOS|EOS|0xc3cad0b41adb78760a5d53e381fe4b7390e630fc|
-|NEO|NEO|AScNj7vhZxBnJk7ycLMr3uYTnmQSLFmLxg|
-|XVG|Verge|DT7WgdXboohvFDc7YMrJPmUWBfTcGWQWa5|
 
 ![MixERP Dashboard](https://raw.githubusercontent.com/mixerp/mixerp/master/screenshots/dashboard.png)
 
