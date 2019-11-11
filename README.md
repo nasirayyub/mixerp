@@ -1,13 +1,3 @@
-## Support MixERP Project
-
-To keep enchancing and improving MixERP, Frapid, and several other open source projects that we've built, please consider a donation.
-
-
-|Symbol|Coin|Address|
-|--- |--- |--- |
-|BTC|Bitcoin|1LJJDmFUvDw4yjf5jm5uwJQ4AgYbp5p8bj|
-|ETH|Ethereum|0xc3cad0b41adb78760a5d53e381fe4b7390e630fc|
-
 ![MixERP Dashboard](https://raw.githubusercontent.com/mixerp/mixerp/master/screenshots/dashboard.png)
 
 # Update September 29, 2017
